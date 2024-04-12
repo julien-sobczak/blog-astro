@@ -5,6 +5,8 @@
 
 ```sh
 npm create astro@latest -- --template minimal
+npx astro add react
+npx astro add astro-expressive-code
 ```
 
 ## 🚀 Project Structure

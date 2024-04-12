@@ -15,6 +15,13 @@ Published on: 2022-07-01
 
 Welcome to my _new blog_ about learning Astro! Here, I will share my learning journey as I build a new website.
 
+```js {2-3}
+function demo() {
+  // This line (#2) and the next one are highlighted
+  return 'This is line #3 of this snippet';
+}
+```
+
 ## What I've accomplished
 
 1. **Installing Astro**: First, I created a new Astro project and set up my online accounts.
