@@ -1,0 +1,1275 @@
+/*
+ * Common
+ */
+
+ :root {
+  --font-base: 'Open Sans', 'Roboto', sans-serif;
+  --font-manuscript:  'Nothing You Could Do', cursive;
+  --font-title:       'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  /* Colors */
+  --color-base: #4185f4;
+  --color-gray: #2C3E50;
+
+  /* CSS variables are not supported in media queries.  */
+  /* Use the static value and append a comment with the variable name. */
+  /* IMPROVE follow https://drafts.csswg.org/mediaqueries-5/#custom-mq */
+  --screen-xsmall-max:   767px;
+  --screen-small-min:    calc(var(--screen-xsmall-max) + 1);
+  --screen-small-max:    991px;
+  --screen-medium-min:   calc(var(--screen-small-max) + 1);
+  --screen-medium-max:   1199px;
+  --screen-large-min:    calc(var(--screen-medium-max) + 1);
+  --screen-large-max:    1599px;
+  --screen-xlarge-min:   calc(var(--screen-large-max) + 1);
+ }
+
+ *, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+  font-size: 100%;
+}
+
+body {
+  font-family: var(--font-base);
+	line-height: 1.4;
+  color: #333;
+  overflow-x: hidden;
+}
+
+.hidden {
+  display: none;
+}
+
+
+/* Title */
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-title);
+  font-weight: 500;
+  line-height: 1.2;
+  color: inherit;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+h1, h2, h3 {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+h1 { font-size: 2rem; }
+h2 { font-size: 1.6rem; }
+h3 { font-size: 1.4rem; }
+h4 { font-size: 1.2rem; }
+h5 { font-size: 1.1rem; }
+h6 { font-size: 1rem; }
+
+hr.star-light,
+hr.star-primary {
+  padding: 0;
+  border: none;
+  border-top: solid 5px;
+  text-align: center;
+  max-width: 250px;
+  margin: 25px auto 30px;
+}
+hr.star-light {
+  border-color: white;
+}
+hr.star-primary {
+  border-color: var(--color-gray);
+}
+
+
+/* Text */
+
+p {
+  margin: 1.5em 0;
+}
+.lead p {
+  font-style: italic;
+  font-size: 1.1em;
+}
+p.small {
+  font-size: 0.9em;
+}
+
+/* Links */
+a {
+  color: #337ab7;
+  text-decoration: none;
+}
+a:hover,
+a:focus,
+a:active,
+a.active {
+  color: #23527c;
+  text-decoration: underline;
+  outline: none;
+}
+a:focus {
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+
+
+/* Buttons */
+
+button, html input[type=button], input[type=reset], input[type=submit] {
+  cursor: pointer;
+}
+
+.btn {
+ 	display: inline-block;
+ 	padding: 0.5rem 1rem;
+ 	margin-bottom: 0;
+ 	font-size: 1rem;
+ 	font-weight: 400;
+ 	line-height: 1.5rem;
+ 	text-align: center;
+ 	white-space: nowrap;
+ 	vertical-align: middle;
+ 	touch-action: manipulation;
+ 	cursor: pointer;
+ 	user-select: none;
+ 	border: 1px solid transparent;
+ 	border-radius: 0.2em;
+  text-decoration: none !important;
+}
+
+/* Container */
+
+.container {
+  padding-right: 1em;
+  padding-left: 1em;
+  margin-right: auto;
+  margin-left: auto;
+}
+@media (min-width: 768px) { /* --screen-small-min */
+  .container {
+    width: calc(var(--screen-small-min) - 20px);
+  }
+}
+@media (min-width: 992px) { /* --screen-medium-min */
+  .container {
+    width: calc(var(--screen-medium-min) - 25px);
+  }
+}
+@media (min-width: 1200px) { /* --screen-large-min */
+  .container {
+    width: calc(var(--screen-large-min) - 30px);
+  }
+}
+@media (min-width: 1600px) { /* --screen-xlarge-min */
+  .container {
+    width: calc(var(--screen-xlarge-min) - 35px);
+  }
+}
+
+
+/*
+ * Template
+ */
+
+
+/* Menu */
+/* Inspired by https://alligator.io/css/collapsible/ */
+
+.navbar-default {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  background: var(--color-gray);
+  font-family: var(--font-title);
+  text-transform: uppercase;
+  font-weight: 700;
+  border: none;
+  padding: 0 !important;
+  z-index: 998;
+  transition: left 1s ease-in-out;
+}
+.navbar-default a {
+  text-decoration: none !important;
+}
+
+/* The site name */
+.navbar-default .navbar-brand {
+  float: left;
+  padding: 1em;
+  font-size: 1.3em;
+  line-height: 1.3em;
+  color: white;
+}
+
+.navbar-collabsible .navbar-checkbox-toggle {
+  display: none;
+}
+
+.navbar-collabsible .navbar-label-toggle {
+  cursor: pointer;
+  color: white;
+  float: right;
+  padding: 0.5em;
+  border-radius: 0.2em;
+  border: 1px solid white;
+  margin: 0.5em;
+}
+
+.navbar-checkbox-toggle:checked + .navbar-label-toggle + .navbar-collapse {
+  display: block;
+  max-height: 100vh;
+  width: 100%;
+}
+
+/* The container around the collapsible menu */
+.navbar-collapse {
+  display: none;
+  clear: right;
+  border-top: 1px solid white;
+  max-height: 0px;
+  overflow: hidden;
+  transition: max-height .25s ease-in-out;
+}
+
+/* The list of links in the collapsible menu */
+.navbar-default ul {
+  letter-spacing: 1px;
+  list-style-type: none;
+  padding: 0.5em 0;
+  margin: 0;
+}
+.navbar-default li {
+  text-align: left;
+  padding: 0.5em 0;
+}
+.navbar-default li a {
+  display: inline-block;
+  color: white;
+  padding: 0.5em 1em;
+}
+.navbar-default li a:hover {
+  color: var(--color-base);
+  outline: none;
+}
+.navbar-default li.active a {
+  color: white !important;
+  background: var(--color-base);
+}
+
+.navbar-default .navbar-brand {
+  padding: 1em;
+}
+
+/* Zen Mode */
+
+/* // How it works?
+// Two toggle buttons on the right corner allows the user to enable/disable the zen mode.
+// In zen mode, we hide the main menu (but only in affix mode, but on page display).
+// The zen mode is only available on page posts. */
+
+button#zen-mode-in,
+button#zen-mode-out {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+
+  display: none;
+  font-size: 2rem;
+  color: var(--color-gray);
+
+  /* Disable browser default link decoration */
+  text-decoration: none;
+  outline: 0;
+  border: none;
+  background: inherit;
+}
+
+/* In Zen mode, hiden the minus button, and show the plus button to restore the navbar */
+#page-post.affix.zen button#zen-mode-in {
+  display: none;
+  transition: all 1s linear;
+}
+#page-post.affix button#zen-mode-out.visible {
+  display: block;
+}
+
+/* Responsive Menu */
+/* // On large-enough screen, the collapsed menu is displayed directly in the menu bar. */
+
+@media (min-width: 992px) { /* --screen-medium-min */
+
+  /* Increase menu size */
+  .navbar-default {
+    transition: all 0.5s;
+  }
+
+  .navbar-default .container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  /* Enlarge site name */
+  .navbar-default .navbar-brand {
+    font-size: 1.8em;
+    transition: all 0.3s;
+    flex-grow: 1;
+  }
+  .affix .navbar-default .navbar-brand {
+    font-size: 1.4em;
+  }
+
+  #page-post.affix .navbar-default button#zen-mode-in {
+    display: block;
+  }
+
+  #page-post.affix.zen .navbar-default {
+    /* Move the navbar on the left of the screen */
+    left: -100vw;
+    right: 100vw;
+    overflow: hidden;
+  }
+
+  /* Affix mode */
+  /* We reduce the menu height and adjust text size accordingly. */
+
+  /* On post page make the bar "disappear" to keep the reader focused on the content. */
+  #page-post.affix .navbar-default {
+    background-color: white;
+    box-shadow: 0 5px 5px rgba(0,0,0,.2);
+    color: var(--color-gray);
+  }
+  #page-post.affix .navbar-default .navbar-brand {
+    color: var(--color-base);
+  }
+  #page-post.affix .navbar-default li a {
+    color: var(--color-gray);
+  }
+
+  /* Hide the menu button for small screens */
+  .navbar-label-toggle {
+    display: none;
+  }
+
+  /* but reveal the menu */
+  .navbar-collabsible {
+    text-align: right;
+    flex-grow: 2;
+  }
+  .navbar-collapse {
+    display: inline-block;
+    border: none;
+    max-height: inherit;
+    overflow: visible;
+  }
+
+  /* horizontally */
+  .navbar-collapse ul {
+    margin: 0;
+  }
+  .navbar-collapse li {
+    display: inline-block;
+    margin: 0 1em;
+  }
+  .navbar-collapse li a {
+    padding: 0.5em;
+  }
+
+}
+
+/* HACK: Prevent the header from being too large (there is not so much to display) */
+body > nav .container, body > header .container {
+  max-width: var(--screen-medium-max) !important;
+}
+
+/* Buttons */
+
+/* Main button on the main page */
+.btn-outline {
+  color: white;
+  font-size: 1.4rem;
+  border: solid 2px white;
+  background: transparent;
+  transition: all 0.3s ease-in-out;
+  margin-top: 1rem;
+  border-radius: 4px;
+}
+.btn-outline:hover,
+.btn-outline:focus,
+.btn-outline:active,
+.btn-outline.active {
+  color: var(--color-base);
+  background: white;
+  border: solid 2px white;
+}
+.btn-outline-colored {
+  background-color: var(--color-base);
+}
+
+/* Secondary buttons on the footer */
+.btn-social {
+  display: inline-block;
+  height: 50px;
+  width: 50px;
+  border: 2px solid white;
+  border-radius: 100%;
+  text-align: center;
+  font-size: 20px;
+  line-height: 45px;
+}
+.btn:focus,
+.btn:active,
+.btn.active {
+  outline: none;
+}
+
+
+/* Custom */
+
+.manuscript {
+  font-family: var(--font-manuscript);
+  font-size: 1.2em;
+}
+
+#page-home > * {
+  text-align: center;
+  padding: 100px;
+}
+
+@media (max-width: 767px) { /* --screen-xsmall-max */
+  #page-home > * {
+    padding: 50px 15px;
+  }
+}
+
+/* Header */
+
+header {
+  background-image: url("../img/pattern.png");
+  background-color: var(--color-base);
+  color: white;
+  font-size: 0.8rem; /* Used for the home page but not ideal for post pages */
+  padding-top: 150px !important;
+}
+#page-home header #logo {
+  margin: 0 auto 20px;
+  /* Draw a round circle behind the logo: */
+  width: 250px;
+  height: 250px;
+  border: 1px solid var(--color-base);
+  border-radius: 50%;
+  background-color: var(--color-gray);
+  /* Center the logo */
+  text-align: center;
+  overflow: hidden;
+}
+#page-home header #logo img {
+  margin-top: 45px;
+}
+
+#page-home header .intro-text .name {
+  display: block;
+  font-family: var(--font-title);
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 2em;
+}
+#page-home header .intro-text .author {
+  display: block;
+  font-size: 1em;
+}
+#page-home header .intro-text .headline {
+  font-size: 1.25em;
+  font-weight: 300;
+}
+#page-home header blockquote {
+  font-size: 1em;
+}
+@media (min-width: 768px) { /* --screen-small-min */
+  #page-home header .intro-text .name {
+    font-size: 4.75em;
+  }
+  #page-home header .intro-text .author {
+    font-size: 2em;
+  }
+  #page-home header .intro-text .headline {
+    font-size: 1.75em;
+  }
+  #page-home header blockquote {
+    font-size: 1.5em;
+  }
+}
+
+
+/* Sections */
+
+section {
+  padding: 100px 0;
+}
+
+section .categories {
+  margin: 50px 0 0;
+  display: flex;
+  flex-direction: column;
+}
+@media (min-width: 768px) { /*--screen-small-min */
+  section .categories  {
+    flex-direction: row;
+  }
+}
+section .categories > div {
+  flex: 1;
+  padding: 25px;
+}
+section .categories img {
+  width: 200px;
+  height: 200px;
+}
+section .categories h3 {
+  font-size: 160%;
+  color: #666;
+}
+section .categories p.manuscript {
+  font-size: 150%;
+  height: 90px;
+  margin-top: 30px;
+  margin-bottom: 50px;
+  text-align: center;
+}
+section .categories ul {
+  /* Put everything on the same line (simulate a paragraph) */
+  font-size: 16px;
+  list-style-type: none;
+  li {
+    display: inline-block;
+    margin: 0 2px;
+  }
+}
+
+.text-colored {
+  color: var(--color-base);
+}
+
+
+section.widescreen {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+
+section h2 {
+  margin: 0;
+  font-size: 2em;
+}
+section.colored {
+  background: var(--color-base);
+  color: white;
+}
+section.colored a {
+  text-decoration: underline;
+  color: inherit;
+}
+@media (max-width: 767px) { /* --screen-xsmall-max */
+  section {
+    padding: 75px 0;
+  }
+  section.first {
+    padding-top: 75px;
+  }
+}
+
+/* - About Me */
+
+#about-me .row {
+  margin: 50px 0;
+  padding: 0 50px;
+  line-height: 1.7em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+#about-me .col {
+  text-align: left;
+}
+@media (min-width: 768px) { /* --screen-small-min */
+  #about-me .row {
+    flex-direction: row;
+  }
+  #about-me .col {
+    margin: 0 20px;
+    width: 360px;
+  }
+}
+
+
+
+
+/* Footer */
+
+footer {
+  padding: 0 !important; /* Cancel padding because footer is composed of two rows with distinct colors */
+  color: white;
+  font-size: 0.9rem;
+  text-align: center;
+  position: relative;
+}
+
+.footer-above {
+  padding: 50px 15px;
+  background-color: var(--color-gray);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+@media (min-width: 768px) { /* --screen-small-min */
+  .footer-above {
+    flex-direction: row;
+  }
+}
+
+footer img.footer-me {
+  position: absolute;
+  display: none;
+  visibility: hidden;
+}
+
+@media (min-width: 992px) { /* --screen-medium-min */
+  footer img.footer-me {
+    visibility: visible;
+    display: block;
+    bottom: 139px;
+    left: 50%;
+    margin-left: -150px; /* Compensate 50% */
+  }
+}
+
+.footer-above h3 {
+  margin-bottom: 30px;
+}
+
+.list-inline {
+  padding-left: 0;
+  margin-left: -5px;
+  list-style: none;
+}
+.list-inline > li {
+	display: inline-block;
+	padding-right: 5px;
+	padding-left: 5px;
+}
+
+.footer-below {
+  padding: 25px 15px;
+  background-color: #233140;
+}
+
+
+
+/* Reading progress indicator */
+#reading-bar {
+  background: var(--color-base);
+  width: 0%;
+  height: 5px;
+  transition: all .3s ease;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+#reading-bar.finished {
+  display: none;
+}
+
+
+/* *****************************************
+ * Category
+ ******************************************* */
+
+#page-category {
+  background-color: #FAFAFA;
+}
+
+/* *****************************************
+ * Post
+ ******************************************* */
+
+#page-post header {
+  padding-bottom: 100px;
+  font-size: 1rem;
+}
+#page-post header .date {
+  display: inline-block;
+  color: #fff;
+  font-size: 0.9em;
+  font-weight: 300;
+  margin-right: 10px;
+  text-transform: uppercase;
+}
+#page-post header .label, #page-post #recommendations .label, #page-category .list-view .label {
+  display: inline-block;
+  border-radius: 0.2em;
+  font-size: 0.9em;
+  font-weight: 600;
+  margin: 0 0.4em;
+  padding: 0.2em 0.4em;
+  color: white;
+  text-transform: uppercase;
+  text-decoration: none !important;
+  background-color: #93c90E;
+}
+#page-post header ul.language {
+  display: inline-block;
+  list-style-type: none;
+  padding: 0;
+  margin-left: 10px;
+}
+#page-post header ul.language li {
+  display: inline-block;
+  margin-right: 5px;
+  margin-left: 0;
+  min-width: 30px;
+  text-align: center;
+}
+#page-post header ul.language li a {
+  border: 1px solid white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  background: white;
+  color: #444;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.8em;
+  line-height: 27px;
+  display: inline-block;
+  padding: 0 5px;
+}
+#page-post header ul.language li.current-language a {
+  background: var(--color-gray);
+  border-color: var(--color-gray);
+  color: white;
+}
+#page-post header .author-name {
+  font-size: 1.4em;
+  color: white;
+}
+#page-post header .author-name a {
+  color: white;
+  text-decoration: none;
+}
+#page-post header .author-name a:hover {
+  text-decoration: underline;
+}
+#page-post header h3 {
+  font-family: var(--font-manuscript);
+}
+
+#page-post header.post-title .icon-category {
+  float: right;
+  margin-top: 30px;
+  width: 175px;
+  height: 175px;
+  background-size: 150px 150px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: white;
+  border: 1px solid white;
+  border-radius: 50%;
+}
+#page-post header.post-read .icon-category {
+  background-image: url(../img/imreadinit-icon.png);
+}
+#page-post header.post-write .icon-category {
+  background-image: url(../img/imwritinit-icon.png);
+}
+#page-post header.post-inspect .icon-category {
+  background-image: url(../img/iminspectinit-icon.png);
+}
+
+@media (max-width: 767px) { /* --screen-xsmall-max */
+  #page-post header {
+    padding: 100px 0 50px 0 !important;
+    margin: 0;
+  }
+
+  #page-post header .date {
+    display: block;
+    margin-bottom: 20px;
+  }
+  #page-post header ul.language,
+  #page-post header.post-title .icon-category {
+    display: none;
+  }
+}
+
+#page-post article {
+  width: 100%;
+  margin: 0 auto;
+
+  .content {
+    li {
+      margin: 1em 0;
+
+      p {
+        margin: 0;
+      }
+    }
+  }
+}
+
+@media (max-width: 767px) { /* --screen-small-max */
+  #page-post article {
+    max-width: 800px;
+    font-size: 1em;
+    line-height: 1.5em;
+  }
+}
+
+@media (min-width: 992px) { /* --screen-medium-min */
+  #page-post article {
+    max-width: 800px;
+    font-size: 1.15em;
+    line-height: 1.6em;
+  }
+}
+
+@media (min-width: 1199px) { /* --screen-large-min */
+  #page-post article {
+    max-width: 800px;
+    font-size: 1.25em;
+    line-height: 1.7em;
+  }
+}
+
+#page-post p.headline {
+  @extend .manuscript;
+  text-align: center;
+  font-size: 1.4em;
+}
+
+#page-post .star {
+  text-align: center;
+  margin: 40px 0;
+  font-size: 0.8em;
+
+  i {
+    background-color: white;
+    padding: 5px;
+    margin: -2px;
+  }
+}
+
+#page-post img {
+  max-width: 100%;
+}
+
+/* A class for short list */
+#page-post .compact > ul {
+  li {
+    margin: 0.5em 0 !important;
+  }
+  p {
+    margin: 0 !important;
+  }
+}
+
+img.cover {
+  display: block;
+  border: 20px solid white;
+  box-shadow: 0px 0px 10px rgba(0,0,0,.2);
+  margin: 0 auto;
+  width: 40%;
+}
+
+.author-bio {
+  position: relative;
+  min-height: 110px;
+  border-left: 8px solid var(--color-gray);
+  border-right: 8px solid var(--color-gray);
+  margin-top: 70px;
+  padding: 10px 20px;
+  padding-bottom: 40px;
+  font-size: 0.8em;
+  background-color: var(--color-base);
+  color: white;
+
+  img {
+    float: right;
+    box-shadow: -8px 8px var(--color-gray);
+    width: 100px;
+    height: 100px;
+    margin-top: 10px;
+    margin-left: 20px;
+  }
+
+  p strong {
+    font-size: 1.2em;
+    font-style: normal;
+    border-bottom: 6px dotted var(--color-gray);
+  }
+  p {
+    margin: 20px 0;
+    margin-right: 40px;
+  }
+  a {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 5px 0;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    font-weight: 600;
+    text-align: center;
+    background-color: var(--color-gray);
+    color: var(--color-base);
+  }
+  a:hover {
+    color: white;
+    text-decoration: none;
+  }
+}
+
+
+figure {
+  text-align: center;
+  overflow: hidden;
+}
+
+
+#recommendations {
+  background-color: var(--color-gray);
+  color: white;
+
+  h2 {
+    text-align: center;
+
+    strong {
+      font-size: 1.5em;
+    }
+  }
+
+  ul {
+    max-width: 600px;
+    margin: 0 auto;
+
+    li {
+      list-style-type: disc;
+      margin: 50px auto 25px;
+
+      a.title {
+        color: white;
+        text-decoration: none;
+        font-size: 1.3em;
+        margin-right: 25px; /* add negative space with labels */
+
+        /* https://www.konbini.com/fr/gaming/retour-sur-30-jeux-cultes-de-la-game-boy-qui-fete-ses-30-ans/ */
+        box-shadow: inset 0 -5px 0 var(--color-base);
+        transition: box-shadow 0.3s ease-in-out;
+      }
+      a:hover {
+        box-shadow: inset 0 -30px 0 var(--color-base);
+      }
+    }
+
+    .subtitle {
+      display: block;
+      font-size: 1.2em;
+      font-family: var(--font-manuscript);
+      margin-top: 10px; /* add space with title */
+    }
+  }
+}
+
+
+/* Asciidoc */
+
+.listingblock {
+  font-size: 0.9rem; /* Be sure to display 80 characters per line */
+  line-height: 1.5em;
+  border-top: 1px solid gray;
+
+  pre {
+    padding-bottom: 20px;
+  }
+}
+
+@media (min-width: 768px) { /* --screen-small-min */
+  .listingblock {
+    /* replace scrollbar by a border */
+    border-bottom: 1px solid gray;
+    pre {
+      padding-bottom: 0;
+    }
+  }
+}
+
+.quoteblock {
+  margin: 40px 80px;
+}
+.quoteblock blockquote {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-family: "Noto Serif","DejaVu Serif","Serif",serif;
+}
+.quoteblock blockquote, .quoteblock blockquote p {
+    color: rgba(0,0,0,0.9);
+    font-size: 1.15rem;
+    line-height: 1.75;
+    word-spacing: 0.1em;
+    letter-spacing: 0;
+    font-style: italic;
+    text-align: justify;
+}
+.quoteblock blockquote p {
+  margin: 0;
+}
+.quoteblock blockquote::before {
+    content: "\201c";
+    float: left;
+    font-size: 2.75em;
+    font-weight: bold;
+    line-height: 0.6em;
+    margin-left: -0.6em;
+    color: var(--color-base);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+.quoteblock .attribution, .verseblock .attribution {
+    font-size: .9375em;
+    line-height: 1.45;
+    font-style: italic;
+}
+.quoteblock .attribution {
+    margin-top: 0.5em;
+    margin-right: 0.5ex;
+    text-align: right;
+}
+.quoteblock .attribution cite, .verseblock .attribution cite {
+    display: block;
+    letter-spacing: -0.05em;
+    color: rgba(0,0,0,0.6);
+}
+
+
+.admonitionblock {
+  font-size: 0.9em;
+  position: relative;
+  padding: 30px;
+  min-height: 100px;
+  margin-top: 35px;
+  margin-bottom: 35px;
+  border-left: 10px solid rgba(0,0,0,.4);
+}
+
+@media (min-width: 768px) { /* --screen-small-min */
+  .admonitionblock {
+    border-left: none; /* Replace the border by a beautiful icon: */
+  }
+  .admonitionblock.caution,
+  .admonitionblock.experiment,
+  .admonitionblock.congratulations,
+  .admonitionblock.tip,
+  .admonitionblock.remember {
+    padding-right: 110px; /* Add a little space for the background icon */
+  }
+  .admonitionblock.caution::after,
+  .admonitionblock.experiment::after,
+  .admonitionblock.congratulations::after,
+  .admonitionblock.tip::after,
+  .admonitionblock.remember::after {
+    content: '';
+    background-image: url('../img/icons-list-posts.png');
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    bottom: 0px;
+    right: 0;
+  }
+  .caution::after         { background-position: 0 -400px; }
+  .experiment::after      { background-position: -100px -400px; }
+  .congratulations::after { background-position: -200px -400px; }
+  .tip::after             { background-position: -300px -400px; }
+  .remember::after        { background-position: 0 -200px; }
+}
+
+.admonitionblock .icon {
+  display: none;
+}
+.admonitionblock .content {
+  width: 100%;
+}
+.note            { background-color: #F1F1F1; color: black !important; }
+.caution         { background-color: #024F79; color: white !important; }
+.experiment      { background-color: #024F79; color: white !important; }
+.congratulations { background-color: #77B3D5; color: white !important; }
+.tip             { background-color: #F6B92B; color: black !important; }
+.remember        { background-color: #62BCA0; color: black !important; }
+
+.caution p {
+  z-index: 10;
+  line-height: 1.6em;
+}
+
+.admonitionblock .content > .title {
+  font-family: "Noto Serif","DejaVu Serif","Serif",serif;
+  font-size: 150%;
+  margin-bottom: 25px;
+}
+
+.note .content > .title,
+.congratulations .content > .title {
+  color: black;
+  text-shadow: 1px 1px white;
+  border-bottom: 1px solid black;
+}
+.caution .content > .title,
+.experiment .content > .title,
+.tip .content > .title,
+.remember .content > .title {
+  color: white;
+  text-shadow: 1px 1px black;
+  border-bottom: 1px solid white;
+}
+
+.note li, .caution li, .experiment li, .tip li, .remember li, .congratulations li {
+  margin-top: 0.5em !important;
+  margin-bottom: 0.5em !important;
+}
+
+.note a, .caution a, .experiment a, .tip a, .remember a, .congratulations a {
+  text-decoration: underline;
+  color: inherit;
+}
+
+.admonitionblock .listingblock {
+  padding: 0 20px;
+  background: white;
+  color: black !important;
+}
+.admonitionblock .listingblock .title {
+  line-height: 1.45;
+  color: #333;
+  font-weight: 400;
+  margin-bottom: .25em;
+  margin-top: .25em;
+}
+
+
+article {
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 2em;
+    margin-bottom: 1em;
+  }
+}
+
+#footnotes .footnote {
+  font-size: 0.75em;
+  margin: 20px 15px;
+}
+
+
+/* Model of post */
+
+.imageblock {
+  text-align: center;
+}
+
+
+/* Callout */
+
+.conum[data-value] {
+	display: inline-block;
+	color: #fff !important;
+	background-color: rgba(0,0,0,0.8);
+	border-radius: 100px;
+	text-align: center;
+	width: 1.67em;
+	height: 1.67em;
+	font-size: 0.75em;
+	line-height: 1.67em;
+	font-family: var(--font-base);
+	font-style: normal;
+	font-weight: bold;
+}
+.conum[data-value] * {
+	color: #fff !important;
+}
+.conum[data-value]+b {
+	display: none;
+}
+.conum[data-value]:after {
+	content: attr(data-value);
+}
+pre .conum[data-value] {
+	position: relative;
+	top: -0.125em;
+}
+b.conum * {
+	color: inherit !important;
+}
+.conum:not([data-value]):empty {
+	display: none;
+}
+.colist {
+  margin-top: 15px;
+  font-size: 0.9em;
+}
+.colist td {
+  padding: 5px 10px;
+}
+.colist tr > td:nth-child(1) { /* Callout Numbers */
+  vertical-align: top;
+}
+
+
+/* Tables */
+
+table.tableblock thead th, table.tableblock tfoot th { font-weight: bold; }
+table.tableblock { background: white; margin-bottom: 1.25em; border: solid 1px #dddddd; }
+table.tableblock thead, table.tableblock tfoot { background: whitesmoke; font-weight: bold; }
+table.tableblock thead tr th, table.tableblock thead tr td, table.tableblock tfoot tr th, table.tableblock tfoot tr td { padding: 0.5em 0.625em 0.625em; font-size: inherit; color: #222222; text-align: left; }
+table.tableblock tr th, table.tableblock tr td { padding: 0.5625em 0.625em; font-size: inherit; color: #222222; }
+table.tableblock tr.even, table.tableblock tr.alt, table.tableblock tr:nth-of-type(even) { background: #f9f9f9; }
+table.tableblock thead tr th, table.tableblock tfoot tr th, table.tableblock tbody tr td, table.tableblock tr td, table.tableblock tfoot tr td { display: table-cell; line-height: 1.6; }
+
+table.tableblock.grid-all { border-collapse: separate; border-spacing: 1px; -webkit-border-radius: 4px; border-radius: 4px; border-top: 1px solid grey; border-bottom: 1px solid grey; }
+
+table.tableblock.frame-topbot, table.tableblock.frame-none { border-left: 0; border-right: 0; }
+
+table.tableblock.frame-sides, table.tableblock.frame-none { border-top: 0; border-bottom: 0; }
+
+table.tableblock td .paragraph:last-child p, table.tableblock td > p:last-child { margin-bottom: 0; }
+
+th.tableblock.halign-left, td.tableblock.halign-left { text-align: left; }
+
+th.tableblock.halign-right, td.tableblock.halign-right { text-align: right; }
+
+th.tableblock.halign-center, td.tableblock.halign-center { text-align: center; }
+
+th.tableblock.valign-top, td.tableblock.valign-top { vertical-align: top; }
+
+th.tableblock.valign-bottom, td.tableblock.valign-bottom { vertical-align: bottom; }
+
+th.tableblock.valign-middle, td.tableblock.valign-middle { vertical-align: middle; }
+
+p.tableblock.header { color: #222222; font-weight: bold; }
+
+/* misc */
+
+hr {
+  border: 0;
+  height: 1px;
+  background: darkgrey;
+  margin: 4rem auto;
+  width: 50%;
+}
+

@@ -2,16 +2,21 @@ import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
 
 export async function get() {
-  const posts = await getCollection('posts');
+  const postsRead = await getCollection('read');
+  const postsWrite = await getCollection('write');
+  const postsInspect = await getCollection('inspect');
+
+  const posts = [...postsRead, ...postsWrite, ...postsInspect]
+
   return rss({
-    title: 'Astro Learner | Blog',
-    description: 'My journey learning Astro',
-    site: 'https://my-blog-site.netlify.app',
+    title: 'Julien Sobczak | Blog',
+    description: 'Diary of a Life Long Learner',
+    site: 'https://juliensobczak.com',
     items: posts.map((post) => ({
       title: post.data.title,
-      pubDate: post.data.pubDate,
+      date: post.data.date,
       description: post.data.description,
-      link: `/posts/${post.slug}/`,
+      link: `/read/${post.slug}/`,
     })),
     customData: `<language>en-us</language>`,
   });

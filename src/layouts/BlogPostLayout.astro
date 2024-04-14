@@ -1,0 +1,81 @@
+---
+import { getEntries } from 'astro:content';
+import PageLayout from './PageLayout.astro'
+const { frontmatter } = Astro.props;
+let relatedPosts = [];
+if (frontmatter.recommendations) {
+  relatedPosts = await getEntries(frontmatter.recommendations);
+}
+---
+
+<PageLayout
+  pageTitle={frontmatter.title}
+  category={frontmatter.category}
+  contentBased={true}>
+
+  <header class=`post-title post-${frontmatter.category }`>
+    <div class="container">
+
+      <div class="icon-category">
+      </div>
+
+      <div class="metadata">
+        <!-- FIXME use same formating as before -->
+        <span class="date">{ frontmatter.date}</span>
+
+        {frontmatter.tags && frontmatter.tags.map(tag => {
+          return <a href={`/tags/${tag}`} class="label">{tag.toUpperCase()}</a>
+        })}
+
+        {frontmatter.unofficialTags && frontmatter.unofficialTags.map(tag => {
+          return <span class="label">{tag.toUpperCase()}</span>
+        })}
+
+        <ul class="language">
+          <li class="current-language"><a class="active" href="#">EN</a></li>
+        </ul>
+
+        <h2>{frontmatter.title}</h2>
+        {frontmatter.subtitle && <h3>{ frontmatter.subtitle }</h3>}
+
+        <p class="author-name">
+          <!-- We explicit that the book was not written by the author of the review -->
+          {frontmatter.category === 'read' && <span>A review by </span>}
+          {frontmatter.category !== 'read' && <span>By </span>}
+          <a href="/#about-me">{frontmatter.author}</a>
+        </p>
+
+      </div>
+      </div>
+    </div>
+  </header>
+
+  <slot />
+
+  {relatedPosts.length > 0 &&
+    <section id="recommendations">
+      <div class="container">
+        <h2>You may also <strong>&hearts;</strong></h2>
+        <hr class="star-light">
+        <ul>
+          {relatedPosts.map(post => {
+            <li>
+              <a class="title" href={post.slug}>{post.data.title }</a>
+
+              {post.data.tags && post.data.tags.map(tag => {
+                return <a href={`/tags/${tag}`} class="label">{tag.toUpperCase()}</a>
+              })}
+
+              {post.data.unofficialTags && post.data.unofficialTags.map(tag => {
+                return <span class="label">{tag.toUpperCase()}</span>
+              })}
+
+              {post.data.subtitle && <span class="subtitle">{ post.data.subtitle }</span>}
+            </li>
+          })}
+        </ul>
+      </div>
+    </section>
+  }
+
+</PageLayout>

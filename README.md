@@ -3,11 +3,15 @@
 
 ## Setup
 
+Simply run `npm install`. The following commands were run to populate the first version of `package.json`:
+
 ```sh
-npm create astro@latest -- --template minimal
+npm create astro@latest # Choose empty
 npx astro add react
 npx astro add astro-expressive-code
+npm install @astrojs/rss
 ```
+
 
 ## 🚀 Project Structure
 

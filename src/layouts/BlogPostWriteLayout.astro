@@ -1,0 +1,24 @@
+---
+import MyBio from '../components/MyBio.astro';
+import BlogPostLayout from './BlogPostLayout.astro'
+const { frontmatter } = Astro.props;
+---
+
+<BlogPostLayout frontmatter={frontmatter}>
+  <section class="content">
+
+    <div class="container sticky-container">
+
+      <!-- FIXME understand the model attribute -->
+      <article class={ frontmatter.model ? frontmatter.model : ''}>
+
+        <div class="content">
+          <slot />
+        </div>
+
+        <MyBio />
+      </article>
+
+    </div>
+  </section>
+</BlogPostLayout>

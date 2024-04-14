@@ -1,0 +1,48 @@
+---
+import MyBio from '../components/MyBio.astro';
+import BlogPostLayout from './BlogPostLayout.astro'
+const { frontmatter } = Astro.props;
+---
+
+<BlogPostLayout frontmatter={frontmatter}>
+  <section class="content">
+
+    <div class="container">
+
+      <article>
+
+        <img class="cover" src={ frontmatter.cover } alt=`Book Cover - ${frontmatter.title}` />
+
+        <p class="headline">
+          { frontmatter.headline }
+        </p>
+
+        <div class="star">
+
+          <i class="fas fa-star fa-3x" aria-hidden="true"></i>
+
+          {frontmatter.stars >= 2 && <i class="fas fa-star fa-3x" aria-hidden="true"></i>}
+          {frontmatter.stars < 2 && <i class="far fa-star fa-3x" aria-hidden="true"></i>}
+
+          {frontmatter.stars >= 3 && <i class="fas fa-star fa-3x" aria-hidden="true"></i>}
+          {frontmatter.stars < 3 && <i class="far fa-star fa-3x" aria-hidden="true"></i>}
+
+          {frontmatter.stars >= 4 && <i class="fas fa-star fa-3x" aria-hidden="true"></i>}
+          {frontmatter.stars < 4 && <i class="far fa-star fa-3x" aria-hidden="true"></i>}
+
+          {frontmatter.stars >= 5 && <i class="fas fa-star fa-3x" aria-hidden="true"></i>}
+          {frontmatter.stars < 5 && <i class="far fa-star fa-3x" aria-hidden="true"></i>}
+
+        </div>
+
+        <div class="content">
+          <slot />
+        </div>
+
+        <MyBio />
+
+      </article>
+
+    </div>
+  </section>
+</BlogPostLayout>
