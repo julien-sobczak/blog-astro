@@ -9,9 +9,13 @@ const readCollection = defineCollection({
     description: z.string().optional(), // FIXME make mandatory to use in RSS feed
     author: z.string(),
     cover: z.string(),
+    note: z.number(),
+    stars: z.number(),
     tags: z.array(z.string()),
     unofficialTags: z.array(z.string()).optional(),
     subject: z.string().optional(),
+    bookAuthors: z.string(),
+    bookIsbn: z.string(),
     recommendations: z.array(reference('read')).optional(),
   })
 });

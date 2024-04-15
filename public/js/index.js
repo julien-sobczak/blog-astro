@@ -1,7 +1,5 @@
 window.addEventListener('load', (event) => {
 
-  document.body.classList.add('loaded');
-
   //
   // Reading bar
   // Inspired by https://codepen.io/haroldjc/pen/GZaqWa
@@ -79,84 +77,6 @@ window.addEventListener('load', (event) => {
     }
   }, false);
 
-
-  //
-  // Posts List
-  //
-
-  // Mansory effect
-  var grid = document.querySelector('.grid-view');
-  if (grid) {
-    new Colcade(grid, {
-      columns: '.grid-col',
-      items: '.grid-item',
-    });
-  }
-
-  // Filters on posts list
-  const filterByRating = stars => {
-    const itemStars1 = [...document.querySelectorAll(".item-stars-1")];
-    const itemStars2 = [...document.querySelectorAll(".item-stars-2")];
-    const itemStars3 = [...document.querySelectorAll(".item-stars-3")];
-    const itemStars4 = [...document.querySelectorAll(".item-stars-4")];
-    const itemStars5 = [...document.querySelectorAll(".item-stars-5")];
-    itemStars1.map(e => e.classList.remove('hidden'));
-    itemStars2.map(e => e.classList.remove('hidden'));
-    itemStars3.map(e => e.classList.remove('hidden'));
-    itemStars4.map(e => e.classList.remove('hidden'));
-    itemStars5.map(e => e.classList.remove('hidden'));
-    if (stars >= 2) {
-      itemStars1.map(e => e.classList.add('hidden'));
-    }
-    if (stars >= 3) {
-      itemStars2.map(e => e.classList.add('hidden'));
-    }
-    if (stars >= 4) {
-      itemStars3.map(e => e.classList.add('hidden'));
-    }
-    if (stars >= 5) {
-      itemStars4.map(e => e.classList.add('hidden'));
-    }
-  }
-  const filterStar1 = document.getElementById('filter-star-1');
-  const filterStar2 = document.getElementById('filter-star-2');
-  const filterStar3 = document.getElementById('filter-star-3');
-  const filterStar4 = document.getElementById('filter-star-4');
-  const filterStar5 = document.getElementById('filter-star-5');
-  if (filterStar1) {
-    filterStar1.addEventListener('click', () => filterByRating(1));
-    filterStar2.addEventListener('click', () => filterByRating(2));
-    filterStar3.addEventListener('click', () => filterByRating(3));
-    filterStar4.addEventListener('click', () => filterByRating(4));
-    filterStar5.addEventListener('click', () => filterByRating(5));
-  }
-
-  // Support multiple view modes
-  const filterGrid = document.getElementById('filter-grid-mode');
-  const filterList = document.getElementById('filter-list-mode');
-  if (filterGrid) {
-    const showListView = () => {
-      document.querySelector('.grid-view').classList.add('hidden');
-      document.querySelector('.list-view').classList.remove('hidden');
-      localStorage.setItem('view','list');
-    };
-    const showGridView = () => {
-      document.querySelector('.list-view').classList.add('hidden');
-      document.querySelector('.grid-view').classList.remove('hidden');
-      localStorage.setItem('view','grid');
-    };
-    // Register Event Listeners
-    filterGrid.addEventListener('click', showGridView);
-    filterList.addEventListener('click', showListView);
-
-    // Check preferences
-    let preferredView = localStorage.getItem('view');
-    if (preferredView && preferredView == "list") {
-      showListView();
-    } else {
-      showGridView();
-    }
-  }
 
   //
   // Zen Mode

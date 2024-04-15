@@ -1273,3 +1273,45 @@ hr {
   width: 50%;
 }
 
+
+/* imported from _list.scss */
+
+
+.category-content {
+	margin-top: 8rem;
+  padding: 30px;
+  text-align: center;
+}
+
+
+.list-view {
+  clear: both;
+
+  ul {
+    list-style-type: none;
+
+    li {
+      margin: 2.5em;
+
+      h4 {
+        font-size: 0.8rem;
+        margin: 0.2em 0;
+      }
+      h3 {
+        margin-top: 0;
+        text-transform: none;
+        font-family: 'Righteous', cursive;
+
+        .authors {
+          font-size: 0.6em;
+          color: gray;
+        }
+
+        .rating {
+          font-size: 0.6em;
+        }
+      }
+    }
+  }
+}
+

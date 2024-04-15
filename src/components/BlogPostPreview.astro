@@ -1,0 +1,41 @@
+---
+const { category, post } = Astro.props;
+---
+<div class={`post-preview post-${category}-preview`}>
+
+  <h4>{ post.data.date.toLocaleDateString('en-us', { year:"numeric", month:"long", day:"numeric"})}</h4>
+
+  <h3>
+    <a href={`/${category}/${post.slug}`}>{ post.data.shortTitle ? post.data.shortTitle : post.data.title }</a>
+    {post.data.stars &&
+      <span class="rating">
+        <i class="fas fa-star"></i>
+        {post.data.stars >= 2 && <i class="fas fa-star"></i>}
+        {post.data.stars >= 3 && <i class="fas fa-star"></i>}
+        {post.data.stars >= 4 && <i class="fas fa-star"></i>}
+        {post.data.stars >= 5 && <i class="fas fa-star"></i>}
+      </span>
+    }
+  </h3>
+
+  {category === 'read' && <span class="authors">{ post.data.bookAuthors }</span>}
+
+  <!-- FIXME still relevant to exclude readings? --->
+  {category !== 'read' &&
+    <span>
+      {post.data.tags && post.data.tags.map(tag => {
+        return (
+          <a href="{{ '/tags/' | append: tag | relative_url }}" class="label">
+            {tag.toUpperCase()}
+          </a>
+        )
+      })}
+      {post.data.unofficialTags && post.data.unofficialTags.map(tag => {
+        return (
+          <span class="label">
+            {tag.toUpperCase()}
+          </span>
+        )
+      })}
+  }
+</div>

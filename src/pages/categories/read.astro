@@ -1,0 +1,19 @@
+---
+import { getCollection } from "astro:content";
+import PageLayout from "../../layouts/PageLayout.astro";
+import BlogPostList from "../../components/BlogPostList.astro";
+const posts = await getCollection('read');
+---
+
+<PageLayout category="read" contentBased={false} pageTitle="I'm readin' I.T.">
+  <section class="category-content">
+
+    <div>
+      <h2>I'm readin' I.T.</h2>
+      <hr class="star-primary">
+    </div>
+
+    <BlogPostList category="read" posts={posts} />
+
+  </section>
+</PageLayout>

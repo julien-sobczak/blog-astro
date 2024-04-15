@@ -3,16 +3,14 @@ title: "Book Review: The Checklist Manifesto: How to Get Things Right"
 shortTitle: "The Checklist Manifesto"
 author: Julien Sobczak
 date: 2023-07-17
-category: read
 subject: Efficiency
 headline: Effective teamwork using the cheapest technique
 note: 12
 stars: 3
 tags: []
 cover: "/posts_resources/covers/the-checklist-manifesto.png"
-metadata:
-  authors: "Atul Gawande"
-  isbn: '9780805091748'
+bookAuthors: "Atul Gawande"
+bookIsbn: '9780805091748'
 ---
 
 Simple techniques can produce huge results. But more often than not, simple techniques are easy to explain but hard to put into practice efficiently. A checklist is definitely one of these techniques.

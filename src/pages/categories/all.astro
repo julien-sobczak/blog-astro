@@ -1,0 +1,26 @@
+---
+import { getCollection } from "astro:content";
+import PageLayout from "../../layouts/PageLayout.astro";
+import BlogPostList from "../../components/BlogPostList.astro";
+const postsRead = await getCollection('read');
+const postsWrite = await getCollection('write');
+const postsInspect = await getCollection('inspect');
+
+const sortByDate = (a, b) => {
+  return new Date(b.frontmatter.date).valueOf() - new Date(a.frontmatter.date).valueOf()
+}
+const posts = [...postsRead, ...postsWrite, ...postsInspect].sort(sortByDate);
+---
+
+<PageLayout category="read" contentBased={false} pageTitle="I'm lovin' I.T.">
+  <section class="category-content">
+
+    <div>
+      <h2>I'm lovin' I.T.</h2>
+      <hr class="star-primary">
+    </div>
+
+    <BlogPostList category="all" posts={posts} />
+
+  </section>
+</PageLayout>

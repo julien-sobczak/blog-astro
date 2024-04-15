@@ -1,10 +1,10 @@
 ---
-import MyBio from "../components/MyBio.astro";
+import MyBio from "../components/Bio.astro";
 import BlogPostLayout from "./BlogPostLayout.astro";
 const { frontmatter } = Astro.props;
 ---
 
-<BlogPostLayout frontmatter={frontmatter}>
+<BlogPostLayout category="inspect" frontmatter={frontmatter}>
   <div class="container">
     <article>
       <div class="content">

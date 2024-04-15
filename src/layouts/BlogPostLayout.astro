@@ -1,7 +1,7 @@
 ---
 import { getEntries } from 'astro:content';
 import PageLayout from './PageLayout.astro'
-const { frontmatter } = Astro.props;
+const { category, frontmatter } = Astro.props;
 let relatedPosts = [];
 if (frontmatter.recommendations) {
   relatedPosts = await getEntries(frontmatter.recommendations);
@@ -10,18 +10,17 @@ if (frontmatter.recommendations) {
 
 <PageLayout
   pageTitle={frontmatter.title}
-  category={frontmatter.category}
+  category={category}
   contentBased={true}>
 
-  <header class=`post-title post-${frontmatter.category }`>
+  <header class=`post-title post-${category }`>
     <div class="container">
 
       <div class="icon-category">
       </div>
 
       <div class="metadata">
-        <!-- FIXME use same formating as before -->
-        <span class="date">{ frontmatter.date}</span>
+        <span class="date">{ frontmatter.date.toLocaleDateString('en-us', { year:"numeric", month:"long", day:"numeric"})}</span>
 
         {frontmatter.tags && frontmatter.tags.map(tag => {
           return <a href={`/tags/${tag}`} class="label">{tag.toUpperCase()}</a>
@@ -40,8 +39,8 @@ if (frontmatter.recommendations) {
 
         <p class="author-name">
           <!-- We explicit that the book was not written by the author of the review -->
-          {frontmatter.category === 'read' && <span>A review by </span>}
-          {frontmatter.category !== 'read' && <span>By </span>}
+          {category === 'read' && <span>A review by </span>}
+          {category !== 'read' && <span>By </span>}
           <a href="/#about-me">{frontmatter.author}</a>
         </p>
 
