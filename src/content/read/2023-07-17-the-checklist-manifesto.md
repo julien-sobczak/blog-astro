@@ -1,4 +1,5 @@
 ---
+slug: 2023/07/17/the-checklist-manifesto
 title: "Book Review: The Checklist Manifesto: How to Get Things Right"
 shortTitle: "The Checklist Manifesto"
 author: Julien Sobczak

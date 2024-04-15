@@ -5,5 +5,16 @@ import react from "@astrojs/react";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [expressiveCode(), react()]
+  integrations: [expressiveCode(), react()],
+  redirects: {
+    // Backward-compatibility with Jekyll, which uses a file extension
+    '/read/[...slug].html': '/read/[...slug]',
+    '/write/[...slug].html': '/write/[...slug]',
+    '/inspect/[...slug].html': '/inspect/[...slug]',
+    '/categories/all.html': '/categories/all',
+    '/categories/read.html': '/categories/read',
+    '/categories/write.html': '/categories/write',
+    '/categories/inspect.html': '/categories/inspect',
+    '/tags/[...tag].html': '/tags/[...tag]',
+  },
 });

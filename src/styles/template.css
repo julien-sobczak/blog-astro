@@ -451,7 +451,7 @@ body > nav .container, body > header .container {
 /* Header */
 
 header {
-  background-image: url("../img/pattern.png");
+  background-image: url("/img/pattern.png");
   background-color: var(--color-base);
   color: white;
   font-size: 0.8rem; /* Used for the home page but not ideal for post pages */
@@ -785,13 +785,13 @@ footer img.footer-me {
   border-radius: 50%;
 }
 #page-post header.post-read .icon-category {
-  background-image: url(../img/imreadinit-icon.png);
+  background-image: url(/img/imreadinit-icon.png);
 }
 #page-post header.post-write .icon-category {
-  background-image: url(../img/imwritinit-icon.png);
+  background-image: url(/img/imwritinit-icon.png);
 }
 #page-post header.post-inspect .icon-category {
-  background-image: url(../img/iminspectinit-icon.png);
+  background-image: url(/img/iminspectinit-icon.png);
 }
 
 @media (max-width: 767px) { /* --screen-xsmall-max */
@@ -1087,7 +1087,7 @@ figure {
   .admonitionblock.tip::after,
   .admonitionblock.remember::after {
     content: '';
-    background-image: url('../img/icons-list-posts.png');
+    background-image: url('/img/icons-list-posts.png');
     width: 100px;
     height: 100px;
     position: absolute;
