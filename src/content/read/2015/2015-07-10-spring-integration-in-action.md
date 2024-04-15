@@ -10,7 +10,7 @@ note: 16
 stars: 4
 tags: ['frameworks']
 unofficialTags: ['java']
-cover: "https://d.gr-assets.com/books/1361784282l/9327132.jpg"
+cover: "/posts_resources/covers/spring-integration-in-action.jpg"
 bookAuthors: "Mark Fisher, Jonas Partner, Marius Bogoevici, Iwein Fuld"
 bookIsbn: '1935182439'
 ---

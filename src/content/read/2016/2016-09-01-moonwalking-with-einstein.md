@@ -10,7 +10,7 @@ note: 17
 stars: 4
 tags: ['learning']
 unofficialTags: []
-cover: "https://images.gr-assets.com/books/1347705105l/6346975.jpg"
+cover: "/posts_resources/covers/moonwalking-with-einstein.jpg"
 bookAuthors: "Joshua Foer (Goodreads Author)"
 bookIsbn: '159420229X'
 ---

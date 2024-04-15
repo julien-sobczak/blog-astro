@@ -10,7 +10,7 @@ note: 17
 stars: 4
 tags: ['craftsmanship', 'languages']
 unofficialTags: []
-cover: "https://images.gr-assets.com/books/1348558067l/7912517.jpg"
+cover: "/posts_resources/covers/seven-languages-in-seven-weeks.jpg"
 bookAuthors: "Bruce A. Tate"
 bookIsbn: '193435659X'
 ---

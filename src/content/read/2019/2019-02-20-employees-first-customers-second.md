@@ -10,7 +10,7 @@ note: 14
 stars: 3
 tags: ['management']
 unofficialTags: []
-cover: "https://images.gr-assets.com/books/1328765371l/8038126.jpg"
+cover: "/posts_resources/covers/employees-first-customers-second.jpg"
 bookAuthors: "Vineet Nayar"
 bookIsbn: '1422139069'
 ---

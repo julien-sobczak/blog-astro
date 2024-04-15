@@ -10,7 +10,7 @@ note: 16
 stars: 5
 tags: ['craftsmanship']
 unofficialTags: []
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1531857377l/39996759._SX318_.jpg"
+cover: "/posts_resources/covers/a-philosophy-of-software-design.jpg"
 bookAuthors: "John Ousterhout"
 bookIsbn: '1732102201'
 ---

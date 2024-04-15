@@ -11,7 +11,7 @@ stars: 2
 tags:
   - devops
   - tools
-cover: 'https://d.gr-assets.com/books/1328761496l/11709965.jpg'
+cover: '/posts_resources/covers/jenkins-the-definitive-guide.jpg'
 bookAuthors: John Ferguson Smart
 bookIsbn: '1449305350'
 ---

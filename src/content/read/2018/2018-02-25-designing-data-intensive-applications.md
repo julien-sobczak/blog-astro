@@ -10,7 +10,7 @@ note: 19
 stars: 5
 tags: ['data', 'architecture']
 unofficialTags: []
-cover: "https://images.gr-assets.com/books/1415816873l/23463279.jpg"
+cover: "/posts_resources/covers/designing-data-intensive-applications.jpg"
 bookAuthors: "Martin Kleppmann"
 bookIsbn: '978-1449373320'
 ---

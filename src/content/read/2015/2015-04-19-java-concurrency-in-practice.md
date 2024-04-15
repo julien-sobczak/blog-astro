@@ -13,7 +13,7 @@ tags:
   - computer-science
 unofficialTags:
   - java
-cover: 'https://d.gr-assets.com/books/1349044077l/127932.jpg'
+cover: '/posts_resources/covers/java-concurrency-in-practice.jpg'
 bookAuthors: Brian Goetz, Tim Peierls, Joshua Bloch, Joseph Bowbeer, David Holmes, Doug Lea
 bookIsbn: '0321349601'
 ---

@@ -10,7 +10,7 @@ note: 15
 stars: 3
 tags: ['self-help']
 unofficialTags: ['meditation']
-cover: "https://images.gr-assets.com/books/1509153842l/34962306.jpg"
+cover: "/posts_resources/covers/meditation-for-fidgety-skeptics.jpg"
 bookAuthors: "Dan Harris"
 bookIsbn: '0399588949'
 ---

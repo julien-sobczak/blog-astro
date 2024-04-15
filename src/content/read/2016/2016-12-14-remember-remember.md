@@ -10,7 +10,7 @@ note: 14
 stars: 3
 tags: ['learning']
 unofficialTags: []
-cover: "https://images.gr-assets.com/books/1349917314l/5149957.jpg"
+cover: "/posts_resources/covers/remember-remember.jpg"
 bookAuthors: "Ed Cooke"
 bookIsbn: '0670917850'
 ---

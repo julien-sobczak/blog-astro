@@ -10,7 +10,7 @@ note: 15
 stars: 3
 tags: ['self-help', 'learning']
 unofficialTags: []
-cover: "https://images.gr-assets.com/books/1474483048l/31558644.jpg"
+cover: "/posts_resources/covers/mindshift.jpg"
 bookAuthors: "Barbara Oakley"
 bookIsbn: '1101982853'
 ---

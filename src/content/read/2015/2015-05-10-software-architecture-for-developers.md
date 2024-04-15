@@ -10,7 +10,7 @@ note: 9
 stars: 1
 tags:
   - architecture
-cover: 'https://d.gr-assets.com/books/1341368491l/15734781.jpg'
+cover: '/posts_resources/covers/software-architecture-for-developers.jpg'
 bookAuthors: Simon Brown
 ---
 

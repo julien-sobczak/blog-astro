@@ -10,7 +10,7 @@ note: 10
 stars: 1
 tags: ['data', 'frameworks']
 unofficialTags: ['big-data']
-cover: "https://d.gr-assets.com/books/1380034125l/17318146.jpg"
+cover: "/posts_resources/covers/learning-spark.jpg"
 bookAuthors: "Mark Hamstra, Matei Zaharia"
 bookIsbn: '1449358624'
 ---

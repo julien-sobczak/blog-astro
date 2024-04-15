@@ -10,7 +10,7 @@ note: 18
 stars: 5
 tags: ['computer-science', 'languages']
 unofficialTags: []
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1391032527l/43713.jpg"
+cover: "/posts_resources/covers/structure-and-interpretation-of-computer-programs.jpg"
 bookAuthors: "Harold Abelson, Gerald Jay Sussman, Julie Sussman"
 bookIsbn: '0262510871'
 ---

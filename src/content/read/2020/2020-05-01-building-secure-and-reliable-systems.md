@@ -10,7 +10,7 @@ note: 12
 stars: 3
 tags: ['architecture']
 unofficialTags: []
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1583200803l/52362720.jpg"
+cover: "/posts_resources/covers/building-secure-and-reliable-systems.jpg"
 bookAuthors: "Heather Adkins, Betsy Beyer, Paul Blankinship, Piotr Lewandowski, Ana Oprea, Adam Stubblefield"
 bookIsbn: '1492083127'
 ---

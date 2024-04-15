@@ -10,7 +10,7 @@ note: 15
 stars: 4
 tags: ['management']
 unofficialTags: []
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1595815356l/49099937.jpg"
+cover: "/posts_resources/covers/no-rules-rules.jpg"
 bookAuthors: "Reed Hastings, Erin Meyer"
 bookIsbn: '0593152387'
 ---

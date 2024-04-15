@@ -11,7 +11,7 @@ stars: 4
 tags:
   - architecture
   - devops
-cover: 'https://d.gr-assets.com/books/1403186979l/22512931.jpg'
+cover: '/posts_resources/covers/building-microservices.jpg'
 bookAuthors: 'Sam Newman'
 bookIsbn: '1491950358'
 ---

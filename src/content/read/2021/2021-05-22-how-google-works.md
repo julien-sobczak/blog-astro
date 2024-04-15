@@ -10,7 +10,7 @@ note: 16
 stars: 5
 tags: ['management']
 unofficialTags: []
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1422538855l/23158207.jpg"
+cover: "/posts_resources/covers/how-google-works.jpg"
 bookAuthors: "Eric Schmidt, Jonathan Rosenberg"
 bookIsbn: '978-1444792461'
 ---

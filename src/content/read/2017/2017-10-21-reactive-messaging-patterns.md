@@ -10,7 +10,7 @@ note: 6
 stars: 1
 tags: ['architecture']
 unofficialTags: []
-cover: "https://images.gr-assets.com/books/1403533773l/22251127.jpg"
+cover: "/posts_resources/covers/reactive-messaging-patterns.jpg"
 bookAuthors: "Vaughn Vernon"
 bookIsbn: '0133846830'
 ---

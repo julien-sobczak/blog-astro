@@ -10,7 +10,7 @@ note: 14
 stars: 3
 tags: ['self-help', 'productivity', 'human']
 unofficialTags: []
-cover: "https://images.gr-assets.com/books/1465761302l/28257707.jpg"
+cover: "/posts_resources/covers/the-subtle-art-of-not-giving-a-f-ck.jpg"
 bookAuthors: "Mark Manson"
 bookIsbn: '006245773X'
 ---

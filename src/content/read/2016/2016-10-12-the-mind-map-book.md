@@ -10,7 +10,7 @@ note: 15
 stars: 3
 tags: ['learning', 'productivity', 'self-help']
 unofficialTags: []
-cover: "https://images.gr-assets.com/books/1442851303l/80762.jpg"
+cover: "/posts_resources/covers/the-mind-map-book.jpg"
 bookAuthors: "Tony Buzan, Barry Buzan"
 bookIsbn: '0452273226'
 ---

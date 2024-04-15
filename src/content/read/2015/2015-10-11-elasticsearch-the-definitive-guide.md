@@ -10,7 +10,7 @@ note: 15
 stars: 3
 tags: ['data']
 unofficialTags: []
-cover: "https://images.gr-assets.com/books/1422215264l/21557290.jpg"
+cover: "/posts_resources/covers/elasticsearch-the-definitive-guide.jpg"
 bookAuthors: "Clinton Gormley, Zachary Tong"
 bookIsbn: '1449358543'
 ---

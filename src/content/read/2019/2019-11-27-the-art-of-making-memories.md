@@ -10,7 +10,7 @@ note: 16
 stars: 4
 tags: ['people']
 unofficialTags: []
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1546272513l/43245559.jpg"
+cover: "/posts_resources/covers/the-art-of-making-memories.jpg"
 bookAuthors: "Meik Wiking"
 bookIsbn: '0062943391'
 ---

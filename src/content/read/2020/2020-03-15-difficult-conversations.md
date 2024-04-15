@@ -10,7 +10,7 @@ note: 19
 stars: 5
 tags: ['human', 'management']
 unofficialTags: []
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1394996504l/7887687.jpg"
+cover: "/posts_resources/covers/difficult-conversations.jpg"
 bookAuthors: "Douglas Stone, Bruce Patton, Sheila Heen"
 bookIsbn: '0143118447'
 ---

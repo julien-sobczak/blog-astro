@@ -10,7 +10,7 @@ note: 8
 stars: 1
 tags: ['architecture']
 unofficialTags: []
-cover: "https://images.gr-assets.com/books/1507020307l/35755822.jpg"
+cover: "/posts_resources/covers/building-evolutionary-architectures.jpg"
 bookAuthors: "Neal Ford, Rebecca Parsons, Patrick Kua"
 bookIsbn: '1491986360'
 ---

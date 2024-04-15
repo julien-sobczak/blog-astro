@@ -10,7 +10,7 @@ note: 18
 stars: 5
 tags: ['devops', 'architecture']
 unofficialTags: []
-cover: "https://images.gr-assets.com/books/1459115220l/27968891.jpg"
+cover: "/posts_resources/covers/site-reliability-engineering.jpg"
 bookAuthors: "Betsy Beyer, Chris Jones, Jennifer Petoff, Niall Richard Murphy"
 bookIsbn: '149192912X'
 ---

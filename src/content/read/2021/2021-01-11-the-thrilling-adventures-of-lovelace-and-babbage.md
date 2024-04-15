@@ -10,7 +10,7 @@ note: 18
 stars: 5
 tags: ['computer-science']
 unofficialTags: ['comics']
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1412530488l/22822839.jpg"
+cover: "/posts_resources/covers/the-thrilling-adventures-of-lovelace-and-babbage.jpg"
 bookAuthors: "Sydney Padua"
 bookIsbn: '978-0141981536'
 ---

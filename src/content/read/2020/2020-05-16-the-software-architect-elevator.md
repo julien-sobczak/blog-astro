@@ -10,7 +10,7 @@ note: 19
 stars: 5
 tags: ['architecture']
 unofficialTags: []
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1585196491l/49828197.jpg"
+cover: "/posts_resources/covers/the-software-architect-elevator.jpg"
 bookAuthors: "Gregor Hohpe"
 bookIsbn: '1492077542'
 ---

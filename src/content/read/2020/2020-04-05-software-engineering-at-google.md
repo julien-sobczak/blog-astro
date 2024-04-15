@@ -10,7 +10,7 @@ note: 15
 stars: 4
 tags: ['tools']
 unofficialTags: []
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1576579607l/48816586.jpg"
+cover: "/posts_resources/covers/software-engineering-at-google.jpg"
 bookAuthors: "Titus Winters, Tom Manshreck, Hyrum Wright"
 bookIsbn: '1492082791'
 ---

@@ -10,7 +10,7 @@ note: 17
 stars: 5
 tags: ['productivity']
 unofficialTags: []
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1549433350l/40672036._SY475_.jpg"
+cover: "/posts_resources/covers/digital-minimalism.jpg"
 bookAuthors: "Cal Newport"
 bookIsbn: '978-0525542872'
 ---

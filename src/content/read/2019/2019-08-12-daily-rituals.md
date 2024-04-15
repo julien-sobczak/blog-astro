@@ -10,7 +10,7 @@ note: 9
 stars: 1
 tags: ['productivity']
 unofficialTags: ['habit']
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1344618847l/15799151.jpg"
+cover: "/posts_resources/covers/daily-rituals.jpg"
 bookAuthors: "Mason Currey"
 bookIsbn: '0307273601'
 ---

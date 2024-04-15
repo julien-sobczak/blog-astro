@@ -10,7 +10,7 @@ note: 17
 stars: 5
 tags: ['management', 'people', 'productivity']
 unofficialTags: []
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1589286110l/52578860.jpg"
+cover: "/posts_resources/covers/humor-seriously.jpg"
 bookAuthors: "Jennifer Aaker, Naomi Bagdonas"
 bookIsbn: '0593135288'
 ---

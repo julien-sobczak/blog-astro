@@ -10,7 +10,7 @@ note: 16
 stars: 4
 tags: ['computer-science']
 unofficialTags: ['linux']
-cover: "https://images.gr-assets.com/books/1513487692l/36014120.jpg"
+cover: "/posts_resources/covers/unix-and-linux-system-administration-handbook.jpg"
 bookAuthors: "Evi Nemeth, Garth Snyder,‎ Trent R. Hein,‎ Ben Whaley,‎ Dan Mackin"
 bookIsbn: '0134278283'
 ---

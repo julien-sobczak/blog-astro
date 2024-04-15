@@ -10,7 +10,7 @@ note: 9
 stars: 1
 tags: ['computer-science']
 unofficialTags: ['algorithms']
-cover: "https://images.gr-assets.com/books/1490789883l/34695800.jpg"
+cover: "/posts_resources/covers/a-common-sense-guide-to-data-structures-and-algorithms.jpg"
 bookAuthors: "Jay Wengrow"
 bookIsbn: '1680502441'
 ---

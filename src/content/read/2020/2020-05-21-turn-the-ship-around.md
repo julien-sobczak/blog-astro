@@ -10,7 +10,7 @@ note: 15
 stars: 4
 tags: ['management']
 unofficialTags: ['leadership']
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1363560329l/16158601.jpg"
+cover: "/posts_resources/covers/turn-the-ship-around.jpg"
 bookAuthors: "L. David Marquet"
 bookIsbn: '1591846404'
 ---

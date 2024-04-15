@@ -10,7 +10,7 @@ note: 12
 stars: 2
 tags: ['frameworks']
 unofficialTags: ['java']
-cover: "https://d.gr-assets.com/books/1442410340l/332070.jpg"
+cover: "/posts_resources/covers/ibatis-in-action.jpg"
 bookAuthors: "Clinton Begin, Brandon Goodin, Larry Meadors"
 bookIsbn: '1932394826'
 ---

@@ -10,7 +10,7 @@ note: 6
 stars: 1
 tags: ['computer-science']
 unofficialTags: ['Linux']
-cover: "https://images.gr-assets.com/books/1416182343l/19484963.jpg"
+cover: "/posts_resources/covers/how-linux-works.jpg"
 bookAuthors: "Brian Ward"
 bookIsbn: '1593275676'
 ---

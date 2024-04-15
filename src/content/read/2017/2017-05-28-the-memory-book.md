@@ -10,7 +10,7 @@ note: 13
 stars: 2
 tags: ['learning']
 unofficialTags: ['memory']
-cover: "https://images.gr-assets.com/books/1388186863l/349426.jpg"
+cover: "/posts_resources/covers/the-memory-book.jpg"
 bookAuthors: "Harry Lorayne, Jerry Lucas"
 bookIsbn: '0345337581'
 ---

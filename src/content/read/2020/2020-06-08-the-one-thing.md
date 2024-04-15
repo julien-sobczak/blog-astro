@@ -10,7 +10,7 @@ note: 17
 stars: 5
 tags: ['self-help', 'productivity']
 unofficialTags: []
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1559563270l/16256798._SX318_.jpg"
+cover: "/posts_resources/covers/the-one-thing.jpg"
 bookAuthors: "Gary Keller, Jay Papasan"
 bookIsbn: '1885167776'
 ---

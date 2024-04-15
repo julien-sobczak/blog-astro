@@ -10,7 +10,7 @@ note: 15
 stars: 3
 tags: ['devops']
 unofficialTags: []
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1536389636l/41737449._SX318_.jpg"
+cover: "/posts_resources/covers/seeking-sre.jpg"
 bookAuthors: "David N. Blank-Edelman"
 bookIsbn: '978-1491978863'
 ---

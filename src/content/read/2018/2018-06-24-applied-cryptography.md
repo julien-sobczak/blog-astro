@@ -10,7 +10,7 @@ note: 17
 stars: 4
 tags: ['classics', 'computer-science']
 unofficialTags: ['security', 'cryptography']
-cover: "https://images.gr-assets.com/books/1387734235l/351301.jpg"
+cover: "/posts_resources/covers/applied-cryptography.jpg"
 bookAuthors: "Bruce Schneier"
 bookIsbn: '0471128457'
 ---

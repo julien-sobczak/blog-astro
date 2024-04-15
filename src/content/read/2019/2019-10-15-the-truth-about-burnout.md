@@ -10,7 +10,7 @@ note: 16
 stars: 4
 tags: ['management', 'productivity']
 unofficialTags: []
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1348914125l/884279.jpg"
+cover: "/posts_resources/covers/the-truth-about-burnout.jpg"
 bookAuthors: "Christina Maslach"
 bookIsbn: '0787908746'
 ---

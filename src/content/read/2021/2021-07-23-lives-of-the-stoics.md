@@ -10,7 +10,7 @@ note: 13
 stars: 3
 tags: ['human']
 unofficialTags: []
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1594616854l/50484473.jpg"
+cover: "/posts_resources/covers/lives-of-the-stoics.jpg"
 bookAuthors: "Ryan Holiday, Stephen Hanselman"
 bookIsbn: '052554187X'
 ---

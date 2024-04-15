@@ -11,7 +11,7 @@ stars: 3
 tags:
   - people
   - management
-cover: 'https://images.gr-assets.com/books/1427779756l/51370.jpg'
+cover: '/posts_resources/covers/leading-change.jpg'
 bookAuthors: 'John P. Kotter'
 bookIsbn: '0875847471'
 ---

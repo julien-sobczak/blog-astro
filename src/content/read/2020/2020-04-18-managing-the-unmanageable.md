@@ -10,7 +10,7 @@ note: 12
 stars: 3
 tags: ['management']
 unofficialTags: []
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1573799416l/48816027._SX318_.jpg"
+cover: "/posts_resources/covers/managing-the-unmanageable.jpg"
 bookAuthors: "Mickey W. Mantle, Ron Lichty"
 bookIsbn: '978-0135667361'
 ---

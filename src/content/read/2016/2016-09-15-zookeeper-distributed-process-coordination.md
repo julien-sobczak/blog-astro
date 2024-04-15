@@ -10,7 +10,7 @@ note: 16
 stars: 4
 tags: ['data', 'architecture']
 unofficialTags: []
-cover: "https://images.gr-assets.com/books/1380143327l/18079367.jpg"
+cover: "/posts_resources/covers/zookeeper-distributed-process-coordination.jpg"
 bookAuthors: "Flavio Junqueira, Benjamin Reed"
 bookIsbn: '1449361307'
 ---

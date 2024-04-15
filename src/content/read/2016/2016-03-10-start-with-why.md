@@ -10,7 +10,7 @@ note: 17
 stars: 4
 tags: ['human', 'management']
 unofficialTags: []
-cover: "https://images.gr-assets.com/books/1360936414l/7108725.jpg"
+cover: "/posts_resources/covers/start-with-why.jpg"
 bookAuthors: "Simon Sinek"
 bookIsbn: '1591842808'
 ---

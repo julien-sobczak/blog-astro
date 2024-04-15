@@ -10,7 +10,7 @@ note: 8
 stars: 1
 tags: ['self-help']
 unofficialTags: ['creativity']
-cover: "https://images.gr-assets.com/books/1440952332l/615570.jpg"
+cover: "/posts_resources/covers/the-artists-way.jpg"
 bookAuthors: "Julia Cameron"
 bookIsbn: '1585421464'
 ---

@@ -10,7 +10,7 @@ note: 5
 stars: 1
 tags: ['devops', 'tools']
 unofficialTags: []
-cover: "https://images.gr-assets.com/books/1379334130l/17919001.jpg"
+cover: "/posts_resources/covers/pro-puppet.jpg"
 bookAuthors: "Spencer Krum, William Van Hevelingen, Ben Kero, James Turnbull, Jeffrey McCune"
 bookIsbn: '1430260408'
 ---

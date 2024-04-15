@@ -10,7 +10,7 @@ note: 16
 stars: 4
 tags: ['craftsmanship']
 unofficialTags: ['testing']
-cover: "https://d.gr-assets.com/books/1359031267l/17282399.jpg"
+cover: "/posts_resources/covers/effective-unit-testing.jpg"
 bookAuthors: "Lasse Koskela"
 bookIsbn: '9781935182573'
 ---

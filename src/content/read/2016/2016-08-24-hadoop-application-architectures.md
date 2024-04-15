@@ -10,7 +10,7 @@ note: 10
 stars: 1
 tags: ['data', 'architecture']
 unofficialTags: []
-cover: "https://images.gr-assets.com/books/1445881091l/27280918.jpg"
+cover: "/posts_resources/covers/hadoop-application-architectures.jpg"
 bookAuthors: "Gwen Shapira, Ted Malaska Jonathan S Mark Grover"
 bookIsbn: '978-1491900086'
 ---

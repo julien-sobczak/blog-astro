@@ -10,7 +10,7 @@ note: 17
 stars: 4
 tags: ['human']
 unofficialTags: ['life']
-cover: "https://images.gr-assets.com/books/1497866764l/34879265.jpg"
+cover: "/posts_resources/covers/the-little-book-of-lykke.jpg"
 bookAuthors: "Meik Wiking"
 bookIsbn: '0241302013'
 ---

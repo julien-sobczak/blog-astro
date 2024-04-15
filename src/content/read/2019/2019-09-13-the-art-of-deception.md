@@ -10,7 +10,7 @@ note: 14
 stars: 3
 tags: []
 unofficialTags: ['security']
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1385273509l/18160.jpg"
+cover: "/posts_resources/covers/the-art-of-deception.jpg"
 bookAuthors: "Kevin D. Mitnick, William L. Simon"
 bookIsbn: '076454280X'
 ---

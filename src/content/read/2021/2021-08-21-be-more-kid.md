@@ -10,7 +10,7 @@ note: 14
 stars: 4
 tags: ['self-help']
 unofficialTags: []
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1603741510l/54999279.jpg"
+cover: "/posts_resources/covers/be-more-kid.jpg"
 bookAuthors: "Mark Taylor, Nicky Taylor, Ed James"
 bookIsbn: '0857088831'
 ---

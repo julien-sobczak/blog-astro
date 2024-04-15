@@ -10,7 +10,7 @@ note: 16
 stars: 4
 tags: ['learning']
 unofficialTags: []
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1554211384l/44770129._SY475_.jpg"
+cover: "/posts_resources/covers/ultralearning.jpg"
 bookAuthors: "Scott H. Young"
 bookIsbn: '978-0062852687'
 ---

@@ -10,7 +10,7 @@ note: 12
 stars: 2
 tags: ['management']
 unofficialTags: []
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1439820428l/7679810._SY475_.jpg"
+cover: "/posts_resources/covers/the-way-were-working-isnt-working.jpg"
 bookAuthors: "Tony Schwartz"
 bookIsbn: '1439127662'
 ---

@@ -10,7 +10,7 @@ note: 18
 stars: 5
 tags: ['productivity']
 unofficialTags: []
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1535115320l/40121378._SY475_.jpg"
+cover: "/posts_resources/covers/atomic-habits.jpg"
 bookAuthors: "James Clear"
 bookIsbn: '978-0593189641'
 ---

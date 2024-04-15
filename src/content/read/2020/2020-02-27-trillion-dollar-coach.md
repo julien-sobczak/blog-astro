@@ -10,7 +10,7 @@ note: 16
 stars: 4
 tags: ['management', 'people']
 unofficialTags: []
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1551314075l/36501797._SX318_.jpg"
+cover: "/posts_resources/covers/trillion-dollar-coach.jpg"
 bookAuthors: "Eric Schmidt, Jonathan Rosenberg, Alan Eagle"
 bookIsbn: '0062839276'
 ---

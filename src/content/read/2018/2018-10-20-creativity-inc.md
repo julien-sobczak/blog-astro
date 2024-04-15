@@ -10,7 +10,7 @@ note: 19
 stars: 5
 tags: ['management']
 unofficialTags: ['creativity']
-cover: "https://images.gr-assets.com/books/1400863577l/18077903.jpg"
+cover: "/posts_resources/covers/creativity-inc.jpg"
 bookAuthors: "Ed Catmull, Amy Wallace"
 bookIsbn: '0812993012'
 ---

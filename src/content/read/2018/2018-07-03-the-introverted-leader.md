@@ -10,7 +10,7 @@ note: 14
 stars: 3
 tags: ['self-help']
 unofficialTags: ['introversion']
-cover: "https://images.gr-assets.com/books/1354900257l/16056951.jpg"
+cover: "/posts_resources/covers/the-introverted-leader.jpg"
 bookAuthors: "Jennifer B. Kahnweiler"
 bookIsbn: '1609942000'
 ---

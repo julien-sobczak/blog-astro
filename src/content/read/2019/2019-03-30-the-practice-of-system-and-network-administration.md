@@ -10,7 +10,7 @@ note: 14
 stars: 3
 tags: ['management']
 unofficialTags: ['linux']
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1471284526l/29510089.jpg"
+cover: "/posts_resources/covers/the-practice-of-system-and-network-administration.jpg"
 bookAuthors: "Thomas A. Limoncelli, Christina J. Hogan, Strata R. Chalup"
 bookIsbn: '0321919165'
 ---

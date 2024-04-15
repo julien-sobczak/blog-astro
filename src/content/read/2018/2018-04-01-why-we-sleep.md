@@ -10,7 +10,7 @@ note: 15
 stars: 3
 tags: ['self-help']
 unofficialTags: []
-cover: "https://images.gr-assets.com/books/1506854639l/34466963.jpg"
+cover: "/posts_resources/covers/why-we-sleep.jpg"
 bookAuthors: "Matthew P. Walker"
 bookIsbn: '1501144316'
 ---

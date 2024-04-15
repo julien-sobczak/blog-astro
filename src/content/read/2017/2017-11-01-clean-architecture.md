@@ -10,7 +10,7 @@ note: 17
 stars: 4
 tags: ['architecture', 'craftsmanship']
 unofficialTags: []
-cover: "https://images.gr-assets.com/books/1471680093l/18043011.jpg"
+cover: "/posts_resources/covers/clean-architecture.jpg"
 bookAuthors: "Robert C. Martin"
 bookIsbn: '0134494164'
 ---

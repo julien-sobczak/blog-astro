@@ -10,7 +10,7 @@ note: 17
 stars: 4
 tags: ['devops']
 unofficialTags: ['reliability']
-cover: "https://images.gr-assets.com/books/1515495557l/26759355.jpg"
+cover: "/posts_resources/covers/kubernetes-up-and-running.jpg"
 bookAuthors: "Kelsey Hightower, Brendan Burns, Joe Beda"
 bookIsbn: '1491935677'
 ---

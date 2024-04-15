@@ -10,7 +10,7 @@ note: 15
 stars: 3
 tags: ['self-help']
 unofficialTags: []
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1391440316l/18668059.jpg"
+cover: "/posts_resources/covers/the-obstacle-is-the-way.jpg"
 bookAuthors: "Ryan Holiday"
 bookIsbn: '1591846358'
 ---

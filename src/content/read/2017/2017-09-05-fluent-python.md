@@ -10,7 +10,7 @@ note: 15
 stars: 3
 tags: ['languages']
 unofficialTags: ['python']
-cover: "https://images.gr-assets.com/books/1442848456l/22800567.jpg"
+cover: "/posts_resources/covers/fluent-python.jpg"
 bookAuthors: "Luciano Ramalho"
 bookIsbn: '1491946008'
 ---

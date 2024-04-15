@@ -10,7 +10,7 @@ note: 17
 stars: 4
 tags: ['computer-science']
 unofficialTags: ['security']
-cover: "https://images.gr-assets.com/books/1348133302l/7602360.jpg"
+cover: "/posts_resources/covers/cryptography-engineering.jpg"
 bookAuthors: "Niels Ferguson, Bruce Schneier, Tadayoshi Kohno"
 bookIsbn: '0470474246'
 ---

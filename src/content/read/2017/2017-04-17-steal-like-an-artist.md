@@ -10,7 +10,7 @@ note: 17
 stars: 4
 tags: ['self-help']
 unofficialTags: ['creativity']
-cover: "https://images.gr-assets.com/books/1404576602l/13099738.jpg"
+cover: "/posts_resources/covers/steal-like-an-artist.jpg"
 bookAuthors: "Austin Kleon"
 bookIsbn: '0761169253'
 ---

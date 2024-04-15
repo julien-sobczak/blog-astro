@@ -10,7 +10,7 @@ note: 18
 stars: 5
 tags: ['management', 'productivity']
 unofficialTags: []
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1526057292l/38900866.jpg"
+cover: "/posts_resources/covers/it-doesnt-have-to-be-crazy-at-work.jpg"
 bookAuthors: "Jason Fried, David Heinemeier Hansson"
 bookIsbn: '0062874780'
 ---

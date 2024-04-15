@@ -10,7 +10,7 @@ note: 15
 stars: 3
 tags: ['data']
 unofficialTags: ['big-data']
-cover: "https://images.gr-assets.com/books/1470664545l/31372333.jpg"
+cover: "/posts_resources/covers/hadoop-the-definitive-guide.jpg"
 bookAuthors: "Tom White"
 bookIsbn: '9781491901'
 ---

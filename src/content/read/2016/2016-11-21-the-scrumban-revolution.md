@@ -10,7 +10,7 @@ note: 3
 stars: 1
 tags: ['management']
 unofficialTags: ['agile']
-cover: "https://images.gr-assets.com/books/1437508857l/25953144.jpg"
+cover: "/posts_resources/covers/the-scrumban-revolution.jpg"
 bookAuthors: "Ajay Reddy"
 bookIsbn: '978-0134086217'
 ---

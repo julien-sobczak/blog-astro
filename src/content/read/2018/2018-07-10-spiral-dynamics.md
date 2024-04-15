@@ -10,7 +10,7 @@ note: 16
 stars: 4
 tags: ['human', 'management']
 unofficialTags: []
-cover: "https://images.gr-assets.com/books/1388192228l/204687.jpg"
+cover: "/posts_resources/covers/spiral-dynamics.jpg"
 bookAuthors: "Don Edward Beck, Christopher C. Cowan"
 bookIsbn: '1405133562'
 ---

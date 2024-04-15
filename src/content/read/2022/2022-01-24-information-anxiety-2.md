@@ -7,10 +7,10 @@ date: 2022-01-24
 subject: "Understanding"
 headline: "The only book that doesn't increase information anxiety."
 note: 14
-stars: 4 
+stars: 4
 tags: []
 unofficialTags: []
-cover: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1387739193i/259121.jpg"
+cover: "/posts_resources/covers/information-anxiety-2.jpg"
 bookAuthors: "Richard Saul Wurman"
 bookIsbn: '978-0789724106'
 ---

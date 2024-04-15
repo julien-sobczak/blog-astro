@@ -10,7 +10,7 @@ note: 17
 stars: 4
 tags: ['tools', 'craftsmanship']
 unofficialTags: []
-cover: "https://d.gr-assets.com/books/1415174686l/23502608.jpg"
+cover: "/posts_resources/covers/sonarqube-in-action.jpg"
 bookAuthors: "Patroklos P. Papapetrou"
 bookIsbn: '978-1617290954'
 ---

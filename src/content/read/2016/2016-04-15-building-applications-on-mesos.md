@@ -10,7 +10,7 @@ note: 8
 stars: 1
 tags: ['devops', 'architecture']
 unofficialTags: []
-cover: "https://images.gr-assets.com/books/1450041191l/27015346.jpg"
+cover: "/posts_resources/covers/building-applications-on-mesos.jpg"
 bookAuthors: "David Greenberg"
 bookIsbn: '149192652X'
 ---

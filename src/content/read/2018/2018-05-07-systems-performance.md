@@ -10,7 +10,7 @@ note: 16
 stars: 4
 tags: ['devops']
 unofficialTags: ['performance']
-cover: "https://images.gr-assets.com/books/1372681832l/18058001.jpg"
+cover: "/posts_resources/covers/systems-performance.jpg"
 bookAuthors: "Brendan Gregg"
 bookIsbn: '0133390098'
 ---

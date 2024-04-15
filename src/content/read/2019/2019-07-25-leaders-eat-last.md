@@ -10,7 +10,7 @@ note: 17
 stars: 4
 tags: ['management']
 unofficialTags: ['leadership']
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1400881733l/16144853.jpg"
+cover: "/posts_resources/covers/leaders-eat-last.jpg"
 bookAuthors: "Simon Sinek"
 bookIsbn: '1591845327'
 ---

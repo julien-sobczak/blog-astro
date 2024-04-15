@@ -10,7 +10,7 @@ note: 15
 stars: 3
 tags: ['self-help']
 unofficialTags: []
-cover: "https://images.gr-assets.com/books/1459114043l/27036528.jpg"
+cover: "/posts_resources/covers/ego-is-the-enemy.jpg"
 bookAuthors: "Ryan Holiday"
 bookIsbn: '1591847818'
 ---

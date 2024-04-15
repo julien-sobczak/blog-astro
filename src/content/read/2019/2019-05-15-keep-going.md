@@ -10,7 +10,7 @@ note: 17
 stars: 4
 tags: ['self-help']
 unofficialTags: ['creativity']
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1535883531l/40591677._SX318_.jpg"
+cover: "/posts_resources/covers/keep-going.jpg"
 bookAuthors: "Austin Kleon"
 bookIsbn: '1523506644'
 ---

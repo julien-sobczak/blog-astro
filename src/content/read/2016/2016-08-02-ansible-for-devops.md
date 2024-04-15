@@ -10,7 +10,7 @@ note: 16
 stars: 4
 tags: ['tools', 'devops']
 unofficialTags: []
-cover: "https://images.gr-assets.com/books/1444973445l/27111284.jpg"
+cover: "/posts_resources/covers/ansible-for-devops.jpg"
 bookAuthors: "Jeff Geerling (Goodreads Author)"
 bookIsbn: '978-0986393426'
 ---

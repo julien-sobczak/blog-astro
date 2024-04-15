@@ -10,7 +10,7 @@ note: 15
 stars: 3
 tags: ['craftsmanship']
 unofficialTags: []
-cover: "https://images.gr-assets.com/books/1349026758l/6713575.jpg"
+cover: "/posts_resources/covers/coders-at-work.jpg"
 bookAuthors: "Peter Seibel"
 bookIsbn: '1430219483'
 ---

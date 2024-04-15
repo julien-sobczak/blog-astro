@@ -10,7 +10,7 @@ note: 18
 stars: 5
 tags: ['self-help']
 unofficialTags: ['stoicism', 'meditation']
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1566883842l/43582733.jpg"
+cover: "/posts_resources/covers/stillness-is-the-key.jpg"
 bookAuthors: "Ryan Holiday"
 bookIsbn: '0525538585'
 ---

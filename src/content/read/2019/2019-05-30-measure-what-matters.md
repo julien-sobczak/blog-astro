@@ -10,7 +10,7 @@ note: 18
 stars: 5
 tags: ['management', 'productivity']
 unofficialTags: []
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1521104315l/39286958._SY475_.jpg"
+cover: "/posts_resources/covers/measure-what-matters.jpg"
 bookAuthors: "John Doerr"
 bookIsbn: '978-0525538349'
 ---

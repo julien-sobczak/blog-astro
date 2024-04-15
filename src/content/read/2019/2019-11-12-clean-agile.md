@@ -10,7 +10,7 @@ note: 12
 stars: 2
 tags: ['craftsmanship']
 unofficialTags: ['agile']
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1568477691l/45280021._SX318_.jpg"
+cover: "/posts_resources/covers/clean-agile.jpg"
 bookAuthors: "Robert C. Martin"
 bookIsbn: '0135781868'
 ---

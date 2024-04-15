@@ -10,7 +10,7 @@ note: 14
 stars: 3
 tags: ['productivity', 'self-help']
 unofficialTags: []
-cover: "https://images.gr-assets.com/books/1366758683l/12609433.jpg"
+cover: "/posts_resources/covers/the-power-of-habit.jpg"
 bookAuthors: "Charles Duhigg"
 bookIsbn: '1400069289'
 ---

@@ -10,7 +10,7 @@ note: 16
 stars: 4
 tags: ['self-help']
 unofficialTags: []
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1360564614l/13525945.jpg"
+cover: "/posts_resources/covers/so-good-they-cant-ignore-you.jpg"
 bookAuthors: "Cal Newport"
 bookIsbn: '1455509108'
 ---

@@ -10,7 +10,7 @@ note: 16
 stars: 5
 tags: ['architecture']
 unofficialTags: []
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1582029299l/51459236._SY475_.jpg"
+cover: "/posts_resources/covers/cloud-strategy.jpg"
 bookAuthors: "Gregor Hohpe (Goodreads Author)"
 bookIsbn: '79-8665253046'
 ---

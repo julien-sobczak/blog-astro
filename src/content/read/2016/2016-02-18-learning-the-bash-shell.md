@@ -10,7 +10,7 @@ note: 15
 stars: 3
 tags: ['tools']
 unofficialTags: ['linux']
-cover: "https://images.gr-assets.com/books/1328834519l/299534.jpg"
+cover: "/posts_resources/covers/learning-the-bash-shell.jpg"
 bookAuthors: "Cameron Newham, Bill Rosenblatt"
 bookIsbn: '0596009658'
 ---

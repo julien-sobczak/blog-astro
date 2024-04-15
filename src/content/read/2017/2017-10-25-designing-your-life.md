@@ -10,7 +10,7 @@ note: 17
 stars: 4
 tags: ['self-help']
 unofficialTags: []
-cover: "https://images.gr-assets.com/books/1469406987l/28814910.jpg"
+cover: "/posts_resources/covers/designing-your-life.jpg"
 bookAuthors: "Bill Burnett, David J. Evans"
 bookIsbn: '1101875321'
 ---

@@ -10,7 +10,7 @@ note: 17
 stars: 5
 tags: ['devops']
 unofficialTags: []
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1391032547l/7672214.jpg"
+cover: "/posts_resources/covers/the-linux-programming-interface.jpg"
 bookAuthors: "Michael Kerrisk"
 bookIsbn: '1593272200'
 ---

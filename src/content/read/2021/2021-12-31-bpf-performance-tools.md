@@ -10,7 +10,7 @@ note: 15
 stars: 4
 tags: ['devops']
 unofficialTags: ['performance']
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1563239967l/51635102._SX318_SY475_.jpg"
+cover: "/posts_resources/covers/bpf-performance-tools.jpg"
 bookAuthors: "Brendan Gregg"
 bookIsbn: '0136554822'
 ---

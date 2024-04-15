@@ -10,7 +10,7 @@ note: 17
 stars: 5
 tags: ['self-help']
 unofficialTags: []
-cover: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1375064486l/18114120.jpg"
+cover: "/posts_resources/covers/thanks-for-the-feedback.jpg"
 bookAuthors: "Douglas Stone, Sheila Heen"
 bookIsbn: '0670014664'
 ---

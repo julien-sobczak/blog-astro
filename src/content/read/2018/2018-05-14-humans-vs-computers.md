@@ -10,7 +10,7 @@ note: 19
 stars: 5
 tags: ['craftsmanship']
 unofficialTags: ['quality']
-cover: "https://images.gr-assets.com/books/1503610919l/36118272.jpg"
+cover: "/posts_resources/covers/humans-vs-computers.jpg"
 bookAuthors: "Gojko Adzic"
 bookIsbn: '0993088147'
 ---

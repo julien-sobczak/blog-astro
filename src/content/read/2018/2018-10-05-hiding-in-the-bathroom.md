@@ -10,7 +10,7 @@ note: 14
 stars: 3
 tags: ['self-help']
 unofficialTags: ['introversion']
-cover: "https://images.gr-assets.com/books/1500881894l/33914043.jpg"
+cover: "/posts_resources/covers/hiding-in-the-bathroom.jpg"
 bookAuthors: "Morra Aarons-Mele"
 bookIsbn: '006266610X'
 ---

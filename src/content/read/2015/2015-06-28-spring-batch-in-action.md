@@ -10,7 +10,7 @@ note: 4
 stars: 4
 tags: ['frameworks']
 unofficialTags: ['java']
-cover: "https://d.gr-assets.com/books/1347812155l/11493933.jpg"
+cover: "/posts_resources/covers/spring-batch-in-action.jpg"
 bookAuthors: "Arnaud Cogoluegnes, Thierry Templier, Gary Gregory, Olivier Bazoud"
 bookIsbn: '1935182951'
 ---
