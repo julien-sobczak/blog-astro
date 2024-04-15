@@ -15,7 +15,7 @@ const readCollection = defineCollection({
     unofficialTags: z.array(z.string()).optional(),
     subject: z.string().optional(),
     bookAuthors: z.string(),
-    bookIsbn: z.string(),
+    bookIsbn: z.string().optional(), // Ex: LeanPub
     recommendations: z.array(reference('read')).optional(),
   })
 });

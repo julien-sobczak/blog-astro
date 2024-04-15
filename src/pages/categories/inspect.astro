@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import PageLayout from "../../layouts/PageLayout.astro";
 import BlogPostList from "../../components/BlogPostList.astro";
 const posts = await getCollection('inspect');
+posts.reverse();
 ---
 
 <PageLayout category="read" contentBased={false} pageTitle="I'm inspectin' I.T.">

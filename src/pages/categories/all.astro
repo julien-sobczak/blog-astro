@@ -7,7 +7,7 @@ const postsWrite = await getCollection('write');
 const postsInspect = await getCollection('inspect');
 
 const sortByDate = (a, b) => {
-  return new Date(b.frontmatter.date).valueOf() - new Date(a.frontmatter.date).valueOf()
+  return new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
 }
 const posts = [...postsRead, ...postsWrite, ...postsInspect].sort(sortByDate);
 ---
