@@ -1119,22 +1119,22 @@ figure {
   line-height: 1.6em;
 }
 
-.admonitionblock .content > .title {
+.admonitionblock > .title {
   font-family: "Noto Serif","DejaVu Serif","Serif",serif;
   font-size: 150%;
   margin-bottom: 25px;
 }
 
-.note .content > .title,
-.congratulations .content > .title {
+.note > .title,
+.congratulations  > .title {
   color: black;
   text-shadow: 1px 1px white;
   border-bottom: 1px solid black;
 }
-.caution .content > .title,
-.experiment .content > .title,
-.tip .content > .title,
-.remember .content > .title {
+.caution > .title,
+.experiment > .title,
+.tip > .title,
+.remember > .title {
   color: white;
   text-shadow: 1px 1px black;
   border-bottom: 1px solid white;

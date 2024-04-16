@@ -1,0 +1,12 @@
+---
+const { type, title, className } = Astro.props
+---
+
+<div class=`admonitionblock ${type} ${className}`>
+  {/* FIXME add style */}
+  {title && <div class="title">{title}</div>}
+  <div class="content">
+    <slot />
+  </div>
+</div>
+

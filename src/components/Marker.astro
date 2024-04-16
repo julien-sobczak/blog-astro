@@ -1,0 +1,18 @@
+---
+const { number } = Astro.props;
+---
+<sup>{number}</sup>
+
+<style type="text/css">
+  sup {
+    display: inline-flex;
+    background-color: black;
+    color: white;
+    border-radius: 50%;
+    height: 1.2rem;
+    width: 1.2rem;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+  }
+</style>
