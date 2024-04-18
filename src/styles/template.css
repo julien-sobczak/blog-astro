@@ -47,6 +47,11 @@ body {
   display: none;
 }
 
+/* Utility class on images in MDX document */
+.center {
+  margin-left: auto;
+  margin-right: auto;
+}
 
 /* Title */
 

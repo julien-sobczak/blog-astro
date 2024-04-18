@@ -1,52 +1,43 @@
 ---
-layout: post-write
-title: 'Anki Scripting: Automate your flashcards'
-author: 'Julien Sobczak'
-date: '2016-12-26 09:15:00.000+01:00'
-category: write
-subject: SRS
-tags:
-  - tools
-  - learning
-unofficialTags:
-  - flashcards
-toc: true
-recommendations:
-  - 2020-12-26-anki-scripting-for-non-programmers
-  - 2018-12-01-10-rules-for-better-flashcards
-  - 2018-12-30-should-i-create-a-flashcard
+slug: "2016/12/26/anki-scripting"
+title: "Anki Scripting: Automate your flashcards"
+author: "Julien Sobczak"
+date: 2016-12-26
+subject: "SRS"
+tags: ['tools', 'learning']
+unofficialTags: ['flashcards']
+recommendations: ['2020-12-26-anki-scripting-for-non-programmers', '2018-12-01-10-rules-for-better-flashcards', '2018-12-30-should-i-create-a-flashcard']
 ---
+import Admonition from '../../components/Admonition.astro'
+import Marker from '../../components/Marker.astro'
+import Lead from '../../components/Lead.astro'
 
-:page-liquid:
 :imagesdir: {{ '/posts_resources/2016-12-26-anki-scripting/' | relative_url }}
 
-[CAUTION.license]
-====
-There is a newer version of this article, link:{% post_url write/2020-12-26-anki-scripting-for-non-programmers %}[_Anki Scripting for Non-Programmers_]. This new post is shorter and is a great introduction to the subject. You can come back to this older article if you want more details about Anki and/or learn about some advanced use cases like converting an ebook into flashcards.
-====
+<Admonition type="caution" className="license" title="None">
+There is a newer version of this article, [_Anki Scripting for Non-Programmers_]({% post_url write/2020-12-26-anki-scripting-for-non-programmers %}). This new post is shorter and is a great introduction to the subject. You can come back to this older article if you want more details about Anki and/or learn about some advanced use cases like converting an ebook into flashcards.
+</Admonition>
 
-== A look inside the Anki model
+## A look inside the Anki model
 
 This is the first part in this lengthy article on Anki and how to use it to create your flashcards programmatically. We will begin by presenting the inner model of Anki, how the different classes interact and when the database is updated when we are using the desktop application. In the next part, we will be doing the same thing without using the GUI, using only the internal API of Anki. We will also cover how to script Anki to bulk load flashcards, useful for example when you need to learn the 5000 most common words in a new language. Let's get started!
 
 
-=== Anki Reverse Engineering
+### Anki Reverse Engineering
 
 A good start is to begin by cloning the official repository of Anki:
 
-----
-$ git clone https://github.com/dae/anki.git
-----
+```
+```
 
 When the clone of the repository is finished, enter into this new directory `anki` et let's see how the code is organized.
 
 
-==== Project organization
+#### Project organization
 
 Not all directories are pertinent for our analysis. Here is an annotated description of each folder:
 
-----
-anki/          -> Main Anki logic. Contains the model and the SRS algorithm
+```
   | importing/ -> Logic to import various file formats including Anki1, Anki2,
                   Supermemo (a paid Anki-like tool)
   | template/  -> Anki uses a modified version of Pystache to provide
@@ -63,26 +54,21 @@ tools/         -> Simple shell scripts to launch the tests or the UI generation
 Makefile       -> Basic build script to install or uninstall Anki
                   (create folders and move files using mkdir
                   and mv Unix commands)
-----
+```
 
 The two most important folders are `anki` and `aqt`: the first contains all the core logic behind Anki (model, SRS algorithm) while the second contains all the code concerning the Desktop GUI, using the QT library.
 
 When you click on the Anki icon, the script `runanki.py` is executed. This script does not do much except launching the GUI:
 
-[source,python]
-----
+```python
 import aqt
 aqt.run()
-----
+```
 
-[TIP]
-.Where are stored my cards?
-====
+<Admonition type="tip" className="None" title="Where are stored my cards?">
 Anki stores your decks in the folder associated with your profile. This folder stores all of your Anki data in a single location, to make backups easy. By default, Anki uses the folder ~/Documents/Anki under your home directory:
 
-[source,python]
-.aqt/profiles.py
-----
+```python title="aqt/profiles.py"
 def _defaultBase(self):
     if isWin:
         if False: #qtmajor >= 5:
@@ -110,16 +96,15 @@ def _defaultBase(self):
                 return os.path.expanduser("~/Documents/Anki")
             else:
                 return os.path.join(loc, "Anki")
-----
+```
 
 To tell Anki to use a different location, please see: https://ankisrs.net/docs/manual.html#startupopts
 This could be very useful when you experiment with Anki to avoid corrupting our data!
-====
+</Admonition>
 
 Now, we know where is stored our database, let's inspect the different files present under this directory.
 
-----
-~/Documents/Anki
+```
  |- addons: a list of third-party add-ons that you can install directly
  |          from Anki > Tools > Add-ons > ...
  |          On fresh install, this folder is empty as no add-ons are installed
@@ -141,13 +126,11 @@ Now, we know where is stored our database, let's inspect the different files pre
  |   \- deleted.txt: A log of card deletions acting as the trash bin.
  |                   The file is always appended by Anki but never read directly
  \- prefs.db: A SQLite database to contains your preferences.
-----
+```
 
 The most important files are clearly the SQLite databases (`collection.anki2` and `collection.media.db2`).
 
-[TIP]
-.What is SQLite?
-====
+<Admonition type="tip" className="None" title="What is SQLite?">
 SQLite is a self-contained, zero-configuration, transactional SQL database engine. SQLite is not directly comparable to client/server SQL database engines such as MySQL, Oracle, PostgreSQL, or SQL Server since SQLite is trying to solve a different problem.
 
 Client/server SQL database engines strive to implement a shared repository of enterprise data. They emphasis scalability, concurrency, centralization, and control. SQLite strives to provide local data storage for individual applications and devices. SQLite emphasizes economy, efficiency, reliability, independence, and simplicity.
@@ -155,42 +138,38 @@ Client/server SQL database engines strive to implement a shared repository of en
 So, SQLite does not compete with client/server databases. SQLite competes with `fopen()` and is particularly well adapted in these situations: as the datastore for an embedded devices, as an application file format (such as Anki), or as the main storage for a medium website or just as a file archive.
 
 Refer to the https://www.sqlite.org/[official documentation] for more information.
-====
+</Admonition>
 
 
 
-[TIP]
-.apkg, anki2, what are these file extensions?
-- A *anki2* file is a DB2 database archive (SQLite).
-- A *apkg file* is just an archive (you could use 7zip or your favorite decompression utility to see its content) containing the anki2 file that we just described and a file media. This media file is a simple text file containing an empty JSON object. As mentioned inside the Preferences dialog, Medias are not backed up. We need to create a periodic backup of our Anki folder to be safe. If you use AnkiWeb, our media are already synchronized in the cloud but be careful, decks stored in your account may be archived and eventually deleted if they are not accessed for 3 months or longer. If you are not planning to study for a few months, the manual backup of the content on your own computer is still required.
+- A **anki2** file is a DB2 database archive (SQLite).
+- A **apkg file** is just an archive (you could use 7zip or your favorite decompression utility to see its content) containing the anki2 file that we just described and a file media. This media file is a simple text file containing an empty JSON object. As mentioned inside the Preferences dialog, Medias are not backed up. We need to create a periodic backup of our Anki folder to be safe. If you use AnkiWeb, our media are already synchronized in the cloud but be careful, decks stored in your account may be archived and eventually deleted if they are not accessed for 3 months or longer. If you are not planning to study for a few months, the manual backup of the content on your own computer is still required.
 
 
 To understand Anki, we need at least a basic understanding of how the data are organized. Let's inspect the database to determine its schema and the different tables.
 
 
-=== Anki Database Schema
+### Anki Database Schema
 
 The most complete "official" description of the database schema is available on GitHub under the Android application source:
 https://github.com/ankidroid/Anki-Android/wiki/Database-Structure
 
 We will start from this description and complete where information is missing.
 
-[TIP]
 .How to inspect the Anki database?
-====
+<Admonition type="tip" className="None" title="apkg, anki2, what are these file extensions?">
 
 - Download the SQLite DB Browser: https://sqlitebrowser.org/
 - Unzip the .apkg file that has been generated
 - Open the collection.anki2 with SQLiteBrowser (launch the executable on Windows) (be sure to consider all file extensions)
 - You should see a dialog like this:
-====
+</Admonition>
 
-image::sqlitebrowser-anki2-collection.png[width="750"]
+<img src="sqlitebrowser-anki2-collection.png" />
 
 What follows is the complete annotated schema. You could safely skim this part and use it as a reference. Note: the model in Python files is rarely documented.
 
-[source,sql]
-----
+```sql
 -- Cards are what you review.
 -- There can be multiple cards for each note, as determined by the Template.
 CREATE TABLE cards (
@@ -259,10 +238,9 @@ CREATE TABLE cards (
     data            text not null
     -- currently unused (always empty string)
 )
-----
+```
 
-[source,sql]
-----
+```sql
 -- The collection (contains one or many decks)
 -- col contains a single row that holds various information about the collection
 CREATE TABLE col (
@@ -316,14 +294,13 @@ CREATE TABLE col (
     -- a cache of tags used in the collection (probably for autocomplete etc)
     -- see below
 )
-----
+```
 
 Where:
 
 - Field `conf` contains various deck configuration options used by the SRS algorithm:
 
-[source,json]
-----
+```json
 {
     "activeDecks": [1],
     "curDeck": 1,
@@ -338,12 +315,11 @@ Where:
     "sortBackwards": false,
     "addToCur": true
 }
-----
+```
 
 Whose definition follows:
 
-[source,json]
-----
+```json
 {
     "activeDecks": "List of active decks",
     "curDeck": "decks.id of the deck to highlight when opening Anki",
@@ -361,13 +337,12 @@ Whose definition follows:
     "addToCur": "Add new to currently selected deck?"
 }
 
-----
+```
 
 - Field `models` contains the JSON representation of a ModelManager (`anki/models.py`):
 
 {% raw %}
-[source,json,subs="verbatim"]
-----
+```json
 {
    "1355577990691": {
       "vers": [],
@@ -463,13 +438,12 @@ Whose definition follows:
       "latexPre":"\\documentclass[12pt]{article}\n\\special{papersize=3in,5in}\n\\usepackage{amssymb,amsmath}\n\\pagestyle{empty}\n\\setlength{\\parindent}{0in}\n\\begin{document}\n"
    }
 }
-----
+```
 {% endraw %}
 
 Whose definition follows:
 
-[source,json]
-----
+```json
 {
     "css": "CSS, shared for all templates",
     "did":
@@ -521,13 +495,12 @@ Whose definition follows:
     "usn": "Update sequence number: used in same way as other usn vales in db",
     "vers": "Legacy version number (unused)"
 }
-----
+```
 
 
 - Field `decks` contains the JSON representation of a DeckManager (anki/decks.py). One key-value for each deck present in this collection:
 
-[source,json]
-----
+```json
 {
    "1": {
       "desc": "",
@@ -547,12 +520,11 @@ Whose definition follows:
       "mod": 1417423954
    }
 }
-----
+```
 
 Whose definition follows:
 
-[source,json]
-----
+```json
 {
     "name": "name of deck",
     "extendRev": "extended review card limit (for custom study)",
@@ -570,14 +542,13 @@ Whose definition follows:
     "mod": "last modification time",
     "desc": "deck description"
 }
-----
+```
 
 - Field `dconf` contains the JSON representation of a Deck Configuration:
 
-image::deck-configuration.png[]
+<img src="deck-configuration.png" />
 
-[source,json]
-----
+```json
 {
    "1": {
       "id": 1,
@@ -616,12 +587,11 @@ image::deck-configuration.png[]
       }
    }
 }
-----
+```
 
 - Field `tags` contains the JSON representation of TagManager (anki/tags.py). Contains all tags in the collection with the usn number. (see above):
 
-[source,json]
-----
+```json
 {
    "Web": 336,
    "Git": 336,
@@ -643,10 +613,9 @@ image::deck-configuration.png[]
    "Concurrency": 336,
    "Algorithms": 336,
 }
-----
+```
 
-[source,sql]
-----
+```sql
 -- Deletion log (content of the file deleted.txt in your Anki home directory)
 -- Contains deleted cards, notes, and decks that need to be synced.
 -- usn ,
@@ -662,10 +631,9 @@ CREATE TABLE graves (
     type            integer not null
     -- type: 0 for a card, 1 for a note and 2 for a deck
 )
-----
+```
 
-[source,sql]
-----
+```sql
 -- Notes contain the raw information that is formatted into a number of cards
 -- according to the models
 CREATE TABLE notes (
@@ -709,10 +677,9 @@ CREATE TABLE notes (
     data            text not null
     -- unused. Always an empty string
 )
-----
+```
 
-[source,sql]
-----
+```sql
 -- revlog is a review history; it has a row for every review you've ever done!
 CREATE TABLE revlog (
     id              integer primary key,
@@ -745,14 +712,13 @@ CREATE TABLE revlog (
     type            integer not null
     -- 0=lrn, 1=rev, 2=relrn, 3=cram
 )
-----
+```
 
 
 
-=== Anki Media Database Schema
+### Anki Media Database Schema
 
-[source,sql]
-----
+```sql
 CREATE TABLE media (
     fname text not null primary key,
     -- The filename relative (no path, filename is always relative
@@ -777,39 +743,36 @@ CREATE TABLE meta (
     -- Last synch update timestamp concerning the media folder only
     -- (different from Cards USN)
 )
-----
+```
 
 
 
 
-=== Step by Step
+### Step by Step
 
 In this part, we will create through the GUI a new deck and add a new card. We use a fresh anki installation.
 
-[NOTE]
-.How to inspect database changes when using Anki?
-====
+<Admonition type="note" className="None" title="How to inspect database changes when using Anki?">
 We could use the sqlite CLI to generate a dump before and after each operation executed through the Anki Desktop application.
 
 - Download the executable : https://www.sqlite.org/download.html (make sure that the mention "including the command-line shell program" is present on the binary description).
 - Place the `sqlite3.exe` along your `collection.anki2` file.
 - Open an interpreter prompt (`cmd` on Windows)
 
-----
-$ sqlite3 collection.anki2
+```
 sqlite>.databases
 seq name  file
 --- ----- --------------------
 0   main  C:\collection.anki2
 sqlite>.once dump.sql
 sqlite>.dump
-----
+```
 
 By default, sqlite3 sends query results to standard output. So, we use the ".once" command to redirect query results to a file.
 (Use the ".output" option to redirect all commands and not just the next one). Check the official documentation for help about the CLI options: https://www.sqlite.org/cli.html
 
 Finally, we can use the generated dumps to compare the data and determine what was exactly updated by Anki.
-====
+</Admonition>
 
 
 To force Anki to use a fresh installation, we will override the folder location to point to an empty directory (see https://ankisrs.net/docs/manual.html#startupopts for more information about the option `-b`).
@@ -819,12 +782,11 @@ On Windows, just click right on the icon and update the target field to add the 
 
 Relaunch Anki, select your language, and the home screen should appear, containing only the deck "Default":
 
-image::anki-home.png[]
+<img src="anki-home.png" />
 
 By default, Anki creates a default collection. This is the only row present in database at first:
 
-[source,sql]
-----
+```sql
 INSERT INTO "col"
   (id, crt, mod, scm, ver, dty, usn, ls, conf, models, decks, dconf, tags)
   VALUES (
@@ -839,58 +801,53 @@ INSERT INTO "col"
     '{"id": 1, "mod": 0, "curDeck": 1, "dueCounts": true, ... }',
     '{}'
 );
-----
+```
 
 Let's try to create a new deck.
 
-==== Deck creation
+#### Deck creation
 
-image::anki-new_deck.png[]
+<img src="anki-new_deck.png" />
 
 Internally Anki just update the default collection to add the new deck in the `dconf` field:
 
-[source,json]
-----
+```json
 {
   "1":             { "name": "Default" ... }
   "1468406431488": {"name": "French",  ... }
 }
-----
+```
 
 The code: (`aqt/deckbrowser.py#53`)
 
-[source,python]
-----
+```python
 deck = getOnlyText(_("Name for deck:"))
 if deck:
     self.mw.col.decks.id(deck)
-----
+```
 
 And in `anki/decks.py#125`:
 
-[source,python]
-----
+```python
 def id(self, name, create=True, type=defaultDeck):
     "Add a deck with NAME. Reuse deck if already exists. Return id as int."
-----
+```
 
-==== Card creation
+#### Card creation
 
-image::anki-new_card.png[]
+<img src="anki-new_card.png" />
 
 Anki updates the collection to add the new tag (field `tags`):
 
-[source,sql]
-----
+```sql
 UPDATE col SET tags = '{"vocabulary": -1}' WHERE id = 1
-----
+```
 
 (`-1` is used to tell Anki to synchronize this tag with the server on the next synchronization with AnkiWeb)
 
 Anki inserts a new row in the table `notes`:
 
-[source,sql]
-----
+```sql
 INSERT INTO "notes"
   VALUES(
     1468406595423,
@@ -905,12 +862,11 @@ INSERT INTO "notes"
     0,
     ''
   );
-----
+```
 
 And a new row in the table `cards` as it is a Basic card:
 
-[source,sql]
-----
+```sql
 INSERT INTO "cards"
   VALUES(
     1468406609380,
@@ -919,14 +875,13 @@ INSERT INTO "cards"
     0,
     1468406609,
     -1,0,0,1,0,0,0,0,0,0,0,0,'');
-----
+```
 
 The code: (`aqt/addcards.py`)
 
 On dialog opening:
 
-[source,python]
-----
+```python
 def __init__(self, mw):
     f = self.mw.col.newNote()
     self.editor.setNote(f, focus=True)
@@ -953,24 +908,22 @@ def saveAddModeVars(self):
 def addNote(self, note):
     note.model()['did'] = self.deckChooser.selectedId()
     cards = self.mw.col.addNote(note)
-----
+```
 
 In `anki/collection.py`:
 
-[source,python]
-----
+```python
 def addNote(self, note):
     "Add a note to the collection. Return number of new cards."
-----
+```
 
 Let's try a card of type "Reversed":
 
-image::anki-new_reversed_card.png[]
+<img src="anki-new_reversed_card.png" />
 
 Adding a reversed card does not change anything in the UI code. The only difference is that the previous method `addNode` defined in `collection.py` will returned two cards instead of one in our first example. In database, two rows will be added in the table `cards`:
 
-[source,sql]
-----
+```sql
 INSERT INTO "notes"
   VALUES(1468406642317,'OfSY=ipt]-',1468406557940,1468406643,
          -1,' vocabulary ','CarVoiture','Car',3158811612,0,'');
@@ -978,21 +931,20 @@ INSERT INTO "cards"
   VALUES(1468406643702,1468406642317,1468406570134,0,...);
 INSERT INTO "cards"
   VALUES(1468406643703,1468406642317,1468406570134,1,...);
-----
+```
 
 
-==== Studying
+#### Studying
 
 Studying is the act of reviewing our previously created card. After each review, the SRS algorithm runs to reschedule the card. The metadata required by the algorithm is updated to reflect the new due date.
 
-image::anki-study.png[]
+<img src="anki-study.png" />
 
-image::anki-study_card.png[]
+<img src="anki-study_card.png" />
 
 For this card, we choose the second button, to study again the card in 10 minutes from now.
 
-[source,sql]
-----
+```sql
 UPDATE cards
 SET type   = 1          -- new => learning
     queue  = 1          -- new queue => learning queue
@@ -1002,12 +954,11 @@ SET type   = 1          -- new => learning
     lapses = 0          -- We don't have forgot the answer
     left   = 1001       -- 1001 repetitions left till graduation
 WHERE id = 1468406609380
-----
+```
 
 We register the review in the table `revlog`:
 
-[source,sql]
-----
+```sql
 INSERT INTO "revlog" (id, cid, usn, ease, ivl, lastIvl, factor, time, type)
     VALUES(
         1468406665035,
@@ -1020,36 +971,33 @@ INSERT INTO "revlog" (id, cid, usn, ease, ivl, lastIvl, factor, time, type)
         2016,          -- 2 seconds to answer
         0              -- learning
     );
-----
+```
 
 In the code: (`aqt/reviewer.py#259`)
 
-[source,python]
-----
+```python
 def _answerCard(self, ease):
     "Reschedule card and show next."
     self.mw.col.sched.answerCard(self.card, ease)
     self.mw.autosave()
     self.nextCard()
-----
+```
 
 Where `answerCard` is defined in `anki/sched.py#58`:
 
-[source,python]
-----
+```python
 def answerCard(self, card, ease):
     "Entry point to the SRS algorithm"
-----
+```
 
 In `anki/collection.py#136`:
 
-[source,python]
-----
+```python
 def autosave(self):
     "Save if 5 minutes has passed since last save."
     if time.time() - self._lastSave > 300:
         self.save()
-----
+```
 
 This method `autosave` explain why Anki need to synchronize when we quit the application. Anki does not save systematically after each command but wait 5 minutes between two saves to minimize the interaction with the database.
 
@@ -1060,11 +1008,11 @@ In the next part, we are going to use this knowledge to create programmatically 
 
 
 
-== Anki Scripting Background
+## Anki Scripting Background
 
 *Creating a flashcard is the first step to learn something new. To make it more memorable, you could customize the content of your flashcard: add a sound with the pronunciation of a new word, add a funny picture, and so one. Therefore, creating flashcards manually is important. But creating flashcards through the UI is also time-consuming in some cases. What if we need to create thousands of flashcards to learn the 5000 most common words in a new language?*
 
-=== Introduction
+### Introduction
 
 Anki is an open-source solution, published on GitHub. The code source is accessible to anyone going on the repository. With minimal programming skills, it is easy to script Anki to add new flashcards. Several options are possible:
 
@@ -1074,28 +1022,25 @@ Anki is an open-source solution, published on GitHub. The code source is accessi
 This post will concentrate on the second option. The first option could be implemented based on the information published in the first part but is not the optimal solution (high coupling, necessity to specify all fields when most of them are irrelevant). This solution was already partially https://decks.wikia.com/wiki/Anki_APKG_format_documentation[documented online]. The Python solution is more powerful. You could use a Python module to read a PDF or an Epub and generate the associated flashcards. You could use the Google Images API to retrieve funny pictures to integrate in our flashcards. The only limit is our imagination.
 
 
-=== Python Scripting
+### Python Scripting
 
 The Anki source is not intended to be reused in other program so the code is not packaged as a Python module we could install as easily as:
 
-----
-$ pip install anki
+```
 # Doesn't work
-----
+```
 
 One solution is to clone the official repository and put our code along the Anki code source but this solution is not optimal. To decouple our code from the Anki Source, a better strategy is to use a Git submodule.
 
 First, create new project:
 
-----
-$ git init anki-scripting
+```
 $ cd anki-scripting/
-----
+```
 
 Clone Anki using the following command:
 
-----
-$ git submodule add https://github.com/dae/anki.git
+```
 Cloning into 'anki'...
 remote: Counting objects: 4890, done.
 remote: Total 4890 (delta 0), reused 0 (delta 0), pack-reused 4890
@@ -1104,41 +1049,35 @@ Resolving deltas: 100% (3374/3374), done.
 Checking connectivity... done.
 $ ls
 anki
-----
+```
 
 Then, we need to download Anki dependencies. In this post, we will use https://pypi.python.org/pypi/pip[Pip], the classic tool for installing Python packages. To avoid polluting existing Python projects you could have in local, we will use https://virtualenv.pypa.io/en/stable/[virtualenv]. The recommended way to do that in Python is to use virtualenv to isolate our project from other projects, so two projects could depend on conflicting versions of the same dependency. To install virtualenv globally, run the following command:
 
-----
-$ sudo pip install virtualenv
-----
+```
+```
 
-NOTE: *virtualenv* is probably the only dependency you need to install globally when doing Python. Once installed, add a new virtual environment to each Python project, so their dependencies get installed under their directory.
+NOTE: **virtualenv** is probably the only dependency you need to install globally when doing Python. Once installed, add a new virtual environment to each Python project, so their dependencies get installed under their directory.
 
 At the root of the repository, execute the following command to create a new virtual environment:
 
-----
-$ virtualenv venv
+```
 $ source venv/bin/activate
-----
+```
 
 When you need to switch to another project, just run the commands:
 
-----
-$ deactivate  # added by the activate script
+```
 $ source <myotherproject>/venv/bin/activate
-----
+```
 
 So, to install Anki dependencies, everything we need to do is run the Pip installer, passing the `requirements.txt` file present at the root of the Anki repository. This file contains the list of Python modules required by Anki.
 
-----
-$ pip install -r anki/requirements.txt
-----
+```
+```
 
 We could now create our first script. Add a new file at the root of the project:
 
-[source,python]
-.listcards.py
-----
+```python title="listcards.py" showLineMarkers:{'1': [1127], '2': [1131], '3': [1138]}
 import sys, os
 
 # Load Anki library
@@ -1157,81 +1096,74 @@ for cid in col.findNotes("tag:English"): # <3>
     note = col.getNote(cid)
     front =  note.fields[0] # "Front" is the first field of these cards
     print(front)
-----
-<1> We need to add the Anki project in our path
-<2> We use the default installation folder of Anki on Linux. Please update the variable `PROFILE_HOME` to match your configuration.
-<3> We filter the cards to only keep the card concerning the `English` language. Use `tag:*` to select all of your cards.
+```
+* <Marker number={1} /> We need to add the Anki project in our path
+* <Marker number={2} /> We use the default installation folder of Anki on Linux. Please update the variable `PROFILE_HOME` to match your configuration.
+* <Marker number={3} /> We filter the cards to only keep the card concerning the `English` language. Use `tag:*` to select all of your cards.
 
 When running the script, you will see the "Front" field of each card displayed to the console:
 
-----
-Car
+```
 Dog
 House
 Train
 Computer
-----
+```
 
 Congratulations! You just have created your first Python script using the Anki API.
 
 As time passes, Anki source will be updated. To update our submodule, just move to the submodule directory and update the HEAD reference like any other repository. Do not forget to commit in order to update the reference maintained by the parent repository:
 
-----
-$ cd anki
+```
 $ git pull
 $ cd ..
 $ git commit -am "Update Anki source"
-----
+```
 
 This ends our introduction of the Anki API. We covered enough information to get started but before tackling the problem of bulk loading, let's begin with a simple use case: export all our flashcards to HTML, probably the most universal format today. If one day, we choose an alternative solution to Anki, it would be easy to import-export our cards to this other tool (most modern tool like Evernote, Google Keep, and many others offers a REST API for this purpose).
 
 
 
-== Case Study: Exporting flashcards in HTML
+## Case Study: Exporting flashcards in HTML
 
 Let's begin with a basic version to dump each card answer in its own HTML file.
 
 First, we create a new file `generate_site.py` inside a new folder `userscripts` at the root of the project. The folder hierarchy should be:
 
-----
-anki/ <-- submodule
+```
   anki/
   aqt/
   ...
 userscripts/ <-- custom code
   generate_site.py
-----
+```
 
 As for the previous example, we need to include the anki source in our path to be able to exploit the Anki API:
 
-[source,python]
-----
+```python
 sys.path.append("../anki")
 from anki.storage import Collection # OK
-----
+```
 
 We define constants to configure our environment:
 
-[source,python]
-----
+```python
 PROFILE_HOME = "~/Documents/Anki/User 1"
 OUTPUT_DIRECTORY = "/tmp/out"
-----
+```
 
 We start by loading the existing anki collection:
 
-[source,python]
-----
+```python
 cpath = os.path.join(PROFILE_HOME, "collection.anki2")
 col = Collection(cpath, log=True) # Entry point to the API
-----
+```
 
 The class `Collection` contains a long list of methods and attributes to access the notes, the cards, and the models.
 We use the method `findCards` to restrict the cards to export:
 
 
-[source,python]
-----
+```python
 for cid in col.findCards("tag:Git"):
 
     card = col.getCard(cid)
@@ -1274,18 +1206,17 @@ for cid in col.findCards("tag:Git"):
         os.path.join(OUTPUT_DIRECTORY, card_filename), "w", "utf-8")
     card_file.write(html)
     card_file.close()
-----
+```
 
 The code iterate over the card identifiers and begin by collecting required information about the card (template, css, ...). Once this is done, we create the HTML content by injecting the model CSS and the rendered card content (fields are replaced by values with the method `renderQA`).
 
 When running, the program generate a list of files inside the folder defined by the constant `OUTPUT_DIRECTORY`. Here is the content of the file `card-1429876617511.html`:
 
-image::card-export-HTML.png[]
+<img src="card-export-HTML.png" />
 
 To generate an index page listing all the exported cards, we need to update the previous code to store the list of processed card:
 
-[source,python]
-----
+```python
 cards = {} # Keep a log of processed cards
 for cid in col.findCards("tag:Git"):
     # ...
@@ -1293,12 +1224,11 @@ for cid in col.findCards("tag:Git"):
         'file': card_filename,
         'question': question
     }
-----
+```
 
 Next, we iterate over this list to generate an HTML list before injecting it in an HTML document:
 
-[source,python]
-----
+```python
 card_list = ''
 for cid, props in cards.iteritems():
     card_list += "<li><a href=\"%s\">%s</a></li>" %
@@ -1322,19 +1252,18 @@ index_file = codecs.open(os.path.join(OUTPUT_DIRECTORY, index_filename), \
                          "w", "utf-8")
 index_file.write(html)
 index_file.close()
-----
+```
 
 When running the program, a new file `index.html` is generated in the target directory:
 
-image::cards-export-HTML.png[]
+<img src="cards-export-HTML.png" />
 
 The code works but there remains a concern to address: the medias. Indeed, cards could reference external resources like images or sounds, which are all stored in a single folder `collection.media` under your profile directory. So, we need to extract there resources too and update the links inside the card text to reflect the new location.
 
 A basic strategy could be to duplicate the whole folder. To avoid copying resources from cards that we don't want to export, we will instead copy each file independently while processing the card. So, we need to update again the card processing code again:
 
 
-[source,python]
-----
+```python
 for cid in col.findCards("tag:Git"):
     # ...
     rendering = col.renderQA([cid], "card")[0]
@@ -1363,31 +1292,29 @@ def extractMedia(text):
     text_with_prefix_folder = re.sub(regex, r'<img src="medias/\1" />', text)
 
     return text_with_prefix_folder
-----
+```
 
 When running the program again, a new folder `medias` will be created inside the target directory:
 
-----
-out/
+```
   medias/
     paste-2911987826689.jpg
-----
+```
 
 If we open the associated card in our browser, we should see this picture displayed correctly:
 
-image::card-export-img.png[]
+<img src="card-export-img.png" />
 
 
 Great! We have successfully exported our Anki collection into a standard format but the result does not look good. Let's add a little bit of JavaScript and CSS to make the application looks better.
 
 What we want is a basic single-page application (SPA) that displays our flashcards. A search field will be available at the top of the page to help us filter the cards. Flashcard content will only be displayed when selecting the flashcard title in the list. The following is a draft of this application demo:
 
-image::app-export-html.png[]
+<img src="app-export-html.png" />
 
 To add dynamic behavior to our SPA, we will use AngularJS. AngularJS keep our code clean by separating our model from the view and controller (Pattern MVC). To do that, we are going to convert the static HTML list of cards to JSON format:
 
-[source,python]
-----
+```python
 card_list = '['
 for cid, props in cards.iteritems():
     card_list += "{ 'name': \"%s\", 'file': '%s', 'tags': [ %s ] },\n" % (
@@ -1396,24 +1323,22 @@ for cid, props in cards.iteritems():
         props['answer_file'],
         "\"" + "\",\"".join(props['tags']) + "\"")
 card_list += ']'
-----
+```
 
 We also exploit the card's tags, easily retrieved from the note object:
 
-[source,python]
-----
+```python
 cards[cid] = {
     'name': rawText(question), # rawText remove HTML tags from card content
     'file': card_filename,
     'tags': note.tags
 }
-----
+```
 
 We could now redesign our HTML template to integrate the new layout:
 
 {% raw %}
-[source,python,subs="verbatim"]
-----
+```python
 html = """<!doctype html>
 <html lang="fr" ng-app="ankiApp">
 <head>
@@ -1455,15 +1380,14 @@ angular.module('ankiApp', [])
   </div>
 </body>
 </html>""" % (card_list)
-----
+```
 {% endraw %}
 
 We iterate over the JSON array containing the cards we just created. When the user clicks on a card title, the method `select` defined in the controller is called. This method stores the selected card in the model. AngularJS refreshes our page and the iframe is updated with the content of the selected flashcard. Last thing to notice, we only display the flashcards matching the query entered by the user in the search field.
 
 Let's add the "final touch", the CSS:
 
-[source,html]
-----
+```html
 <style>
  body {
      background-color: #0079bf;
@@ -1527,12 +1451,12 @@ Let's add the "final touch", the CSS:
      font-family: Arial;
  }
 </style>
-----
+```
 
 The layout is divided in three section: the search bar at the top, the list of flashcards on the left and the currently selected flashcard on the right. We use fixed positioning to keep all sections always present on the screen. The results now looks like:
 
 
-image::generated-styled-site.png[]
+<img src="generated-styled-site.png" />
 
 
 This ends our first case study. We have seen how to exploit the Anki API to retrieve our data and export them to another format. In the next case study, we are going to use the Anki API to load a batch of cards, created from a book.
@@ -1540,8 +1464,7 @@ This ends our first case study. We have seen how to exploit the Anki API to retr
 Here is the full listing of the code:
 
 {% raw %}
-[source,python,subs="verbatim"]
-----
+```python
 import sys, os, codecs, re, shutil
 sys.path.append("..")
 from anki.storage import Collection
@@ -1766,25 +1689,23 @@ index_file = codecs.open(os.path.join(OUTPUT_DIRECTORY, index_filename), \
                          "w", "utf-8")
 index_file.write(html)
 index_file.close()
-----
+```
 {% endraw %}
 
 
 
-== Case Study: Convert an EPUB to Flashcards
+## Case Study: Convert an EPUB to Flashcards
 
 _Let's me present you the context. We just bought a new https://www.amazon.fr/Harraps-Expressions-anglaises-Collectif/dp/2818704480[book to learn the common English expressions]. This book contains around 4000 expressions. If we consider it takes two minutes to create a flashcard, more than 100 hours will be required to overcome this daunting task. So, what can we do? One solution is to script the creation of the flashcards and this is exactly what we are going to do here._
 
 This post will be divided in two sections. In the first part of this post, we are going to create a small program to read an Epub file in Python. In the second part, we will extend this program to insert the content directly into our Anki collection.
 
-[NOTE]
-.But does it not preferable to manually create the flashcards in order to retain more?
-====
+<Admonition type="note" className="None" title="But does it not preferable to manually create the flashcards in order to retain more?">
 Of course! Creating manually a flashcard is always better than automating its creation. When you enter the words on the keyboard, or when you search on Google Images a memorable picture, you create connections inside your memory and this considerably help you to start fixing this new information. The manual creation is perfectly fine when learning your first words in a new language because it is easy to find a great picture or a personal story about it. Here, we are interested in common idioms, phrases that often does not mean what common sense would say. Relevant memorable pictures are difficult to find, so creating the flashcards manually does not help that much to fix the information in your brain. It is better to spend the 100 or more hours on studying the flashcards than on creating them.
-====
+</Admonition>
 
 
-=== Part I: Reading the Ebook (ePub)
+### Part I: Reading the Ebook (ePub)
 
 The book is available in ePub format. The term is short for _electronic publication_. EPUB 3 is currently the most portable ebook format (Amazon has its own proprietary format for its Kindle but every other software readers such as Kobo or Bookeen supports this format).
 
@@ -1792,14 +1713,13 @@ For our task, we only need to know that an ePub is just a ZIP archive containing
 
 The ebook is subject to a copyright, so to avoid any violation, I rewrite a short version by customizing the text. This demonstration ebook is available in the https://github.com/julien-sobczak/anki-scripting/tree/master/anki-usecase-enidioms[repository associated to this post]. To inspect its content, just unzip the archive:
 
-image::epub-unzipped.png[]
+<img src="epub-unzipped.png" />
 
 The first file in the archive must be the `mimetype` file. It must be uncompressed so that non-ZIP utilities can read the mimetype. The `mimetype` file must be an ASCII file that contains the string `application/epub+zip`.
 
 There must be a `META-INF` directory containing `container.xml`. This file points to the file defining the contents of the book:
 
-[source,xml]
-----
+```xml
 <?xml version="1.0"?>
 <container version="1.0"
            xmlns="urn:oasis:names:tc:opendocument:xmlns:container">
@@ -1808,12 +1728,11 @@ There must be a `META-INF` directory containing `container.xml`. This file point
             media-type="application/oebps-package+xml" />
 </rootfiles>
 </container>
-----
+```
 
 Apart from `mimetype` and `META-INF/container.xml`, the other files (HTML, CSS and images files) are traditionally put in a directory named `OEBPS`. This directory contains the `volume.opf` file referenced in the previous file. Here is an example of this file:
 
-[source,xml]
-----
+```xml
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <package xmlns="http://www.idpf.org/2007/opf"
          prefix="cc: http://creativecommons.org/ns"
@@ -1844,19 +1763,18 @@ Apart from `mimetype` and `META-INF/container.xml`, the other files (HTML, CSS a
     <itemref idref="Page_2" linear="yes" properties="page-spread-right"/>
   <spine>
 </package>
-----
+```
 
 In the manifest section, we can see all web resources included in this epub. This are these files that interested us, in particular the HTML files. If you open the book with an ebook reader (your device or an application like Calibre), you could see the book content:
 
-image::epub-preview.png[]
+<img src="epub-preview.png" />
 
 If you want to know more about the epub format, O'Reilly published whole https://shop.oreilly.com/product/0636920024897.do[books] on the subject.
 
 Let's see how the HTML looks like. The `Page_1.html` page contains only a picture with the cover of the book. We could ignore it. The next page `Page_2.html` is an example of page we need to parse to extract the English expressions. Here is an extract of this file:
 
 
-[source,xml]
-----
+```xml
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -1916,28 +1834,26 @@ Let's see how the HTML looks like. The `Page_1.html` page contains only a pictur
 </div>
 </body>
 </html>
-----
+```
 
 
 If we simplify the HTML definition, we get something like this:
 
-----
-.Bloc-de-texte-standard#_idContainer* --> New page containing expressions
-  .*Chapter-Heading_Toc* ---------------> New category found
+```
+  .**Chapter-Heading_Toc** ---------------> New category found
 
   ._1_IDIOM ----------------------------> New idiom found
   .EXEMPLE-IDIO ------------------------> An example of the idiom examples
   .WARNING -----------------------------> A warning to complement the idiom
 
 (Where * matches one or many characters)
-----
+```
 
 We now have all the necessary information to begin our program. As usual, we will write our program in Python, the same language used by Anki.
 
 First, we need to open each HTML page and check if this page contains idioms or not:
 
-[source,python]
-----
+```python
 import codecs
 
 for i in range(2, 3): # Only page 2 exists in our demo ebook...
@@ -1956,7 +1872,7 @@ for i in range(2, 3): # Only page 2 exists in our demo ebook...
         # Only page with id beginning by _idContainer contains idioms
         if bloc.get('id') and bloc.get('id').startswith('_idContainer'):
             process_block(soup, bloc)
-----
+```
 
 Then, for each block of idioms, the function `process_block` is called. This method takes two parameters:
 - the BeautifulSoup HTML parser,
@@ -1964,8 +1880,7 @@ Then, for each block of idioms, the function `process_block` is called. This met
 
 As some idioms cross two pages, we need to keep the chapter number (idioms are grouped by general subjects), the category (each subject is divided into many related categories) and the current idiom to complete it when we will parsed the next page. To do so, we will use global variables (not good OO-design but an adequate choice for such a simple program). The code consists of a loop to iterate over paragraphs and uses CSS classes to determine the type of each paragraph (idiom, example or warning). Here is the code:
 
-[source,python]
-----
+```python
 def process_block(soup, bloc_element):
     global chapter
     global category
@@ -2026,15 +1941,14 @@ def process_block(soup, bloc_element):
             idiom.add_warning(p.get_text())
         else:
             print "[ERROR] Unknown class %s" % (classes)
-----
+```
 
 To avoid being polluted with all the `span` tag present in the source (the original epub contains a lot more span!), we use the method `get_text()` of the Soup parser to only extract the raw text. If the paragraph is an idiom, we know the english and french translations are separated by the special character ●. If the paragraph is an example, we search for a phrase separator (dot, question mark, exclamation point, etc). If the paragraph is a warning, we just have the keep the whole text.
 
 For each idiom, we create a new object of type `Idiom` to group all the information about a given idiom. The collection of idioms is defined globally and will be reused in the second section of this blog post. Here is the definition of the class `Idiom`:
 
 
-[source,python]
-----
+```python
 class Idiom:
 
     def __init__(self, chapter, category):
@@ -2062,33 +1976,32 @@ class Idiom:
 
 # List of all idioms
 idioms = []
-----
+```
 
 This ends the first section of this post. We have extracted all the relevant text from the ebook. The next big task is to load all of these idioms directly inside Anki.
 
 
-=== Part II: Bulk loading the flashcards
+### Part II: Bulk loading the flashcards
 
 Before importing a flashcard, we need to design the card template. By default, Anki includes only simple card types: Basic, Basic (with reversed card). These card types have only two fields: the front text, and the back text. We need something more evolved to be able to includes examples and/or note information. We want our cards to look like the following picture:
 
-image::english-card-type.png[]
+<img src="english-card-type.png" />
 
 We have two solutions: either we create the card type manually using the Anki API directly in Python, or create the card type through the GUI to benefit the direct feedback when defining the CSS declarations. We will choose the second solution but implementing the first one is relatively easy using code similar to the code we already wrote.
 
-So, run the Anki program, and go to *"Tools > Manage Note Types..."*, click on *"Add"*, and choose *"Clone: Basic (with reversed card)"* as the model to clone. Name our note type *Idiom*.
+So, run the Anki program, and go to *"Tools > Manage Note Types..."*, click on *"Add"*, and choose *"Clone: Basic (with reversed card)"* as the model to clone. Name our note type **Idiom**.
 
 Return to the "Manage Note Types" screen and click on *"Fields..."*. Remove the `Front` and `Back` fields and add four new fields like this:
 
-image::note-type-fields.png[]
+<img src="note-type-fields.png" />
 
 Close the dialog and click on *"Cards..."*. Again, we need the update the content to match the following screenshot:
 
-image::note-type-card1.png[]
+<img src="note-type-card1.png" />
 
 Here is the full CSS code:
 
-[source,css]
-----
+```css
 .card {
  font-family: arial, sans-serif;
  font-size: 20px;
@@ -2128,23 +2041,21 @@ Here is the full CSS code:
   color: #333;
   font-size: 16px;
 }
-----
+```
 
 The back card is very similar. You only need to invert the `French` and `English` fields as shown in the following screenshot:
 
-image::note-type-card2.png[]
+<img src="note-type-card2.png" />
 
 Then, close Anki to force it to write the changes to disk. Let's go back to our program to add a new line at the end of the source code:
 
-[source,python]
-----
+```python
 bulk_loading_anki(idioms)
-----
+```
 
 The function `bulk_loading_anki` iterate over the idioms, and create a new note for each of them. Before that, we need to retrieve our new note type `Idiom` to define it as the default (like we do when we use Anki through the UI). We also need to retrieve the deck in which to create the notes (`English` in our example but any deck would works too). Here is the code:
 
-[source,python]
-----
+```python showLineMarkers:{'1': [2133], '2': [2134], '3': [2172], '4': [2177], '5': [2196]}
 def bulk_loading_anki(idioms):
 
     # Load the anki collection
@@ -2212,21 +2123,20 @@ def bulk_loading_anki(idioms):
 
     # Save the changes to DB
     col.save() # <5>
-----
-<1> Load the collection from the local disk.
-<2> The code reflects the Anki terminology (note, card, field, deck, tag, etc). If some term are unclear to you, check the official documentation.
-<3> CSS classes defined in the note type could be used to stylize our cards. Unlike the desktop application, HTML is not escaped.
-<4> The order of the fields should follow the same order as defined in the GUI.
-<5> Without the explicit call to the `save` method, the flashcards would not be saved to disk. Indeed, the Anki application schedules a task every 5 minutes to call this method.
+```
+* <Marker number={1} /> Load the collection from the local disk.
+* <Marker number={2} /> The code reflects the Anki terminology (note, card, field, deck, tag, etc). If some term are unclear to you, check the official documentation.
+* <Marker number={3} /> CSS classes defined in the note type could be used to stylize our cards. Unlike the desktop application, HTML is not escaped.
+* <Marker number={4} /> The order of the fields should follow the same order as defined in the GUI.
+* <Marker number={5} /> Without the explicit call to the `save` method, the flashcards would not be saved to disk. Indeed, the Anki application schedules a task every 5 minutes to call this method.
 
 The function `highlight_qualifier` used in the previous code is defined like this:
 
-[source,python]
-----
+```python
 def highlight_qualifier(text):
     """ Surround text in parenthesis with a stylized HTML tag. """
     return re.sub(r'[(](.*?)[)]', r'<span class="qualifier">(\1)</span>', text)
-----
+```
 
 Rerun the program and open Anki again. You should see thousands of new card to study! (Go to *"Browse"* and select the *"idiom"* tag to see them all).
 
@@ -2234,20 +2144,18 @@ Our case study is finished. We have converted an ebook purchased online into tho
 
 
 
-== Case Study: Learn the 5000 most frequent words
+## Case Study: Learn the 5000 most frequent words
 
 Learning the vocabulary of a new language is probably one the best use case for Anki. Many famous polyglot use it daily to practice their vocabulary. To help us identify the list of frequent words in our target language, you can buy a frequency book on Amazon, or you can use free resources like Wikipedia: https://en.wiktionary.org/wiki/Wiktionary:Frequency_lists.
 
 In this post, we are targeting the English language and will use Wikipedia.
 
 
-=== The frequency list
+### The frequency list
 
 Wikipedia currently offers multiple frequency lists based on different sources: films, project Gutenberg containing thousand of freely available classic romans, and even the integral of the Simpsons episodes. The lists are split in several pages (1-999, 1000-1999, and so on). By using the browser developer tool, we could easily extract the HTML to create a single HTML file containing the entire list. Here is a sample of the extracted list based on the project Gutenberg:
 
-[source,html]
-.40000_frequency_list_gutenberg.txt
-----
+```html title="40000_frequency_list_gutenberg.txt"
 <table>
 <thead>
 <tr>
@@ -2275,15 +2183,13 @@ Wikipedia currently offers multiple frequency lists based on different sources: 
 ... <!-- 39 997 other entries -->
 </tbody>
 </table>
-----
+```
 
 NOTE: Like your browser, most HTML parsers are very tolerant concerning HTML syntax. We don't need to create a perfectly valid HTML document to be able to parse it. We will continue to use the Python language, and its most popular HTML parser https://www.crummy.com/software/BeautifulSoup/bs4/doc/[BeautifulSoup].
 
 Here is a basic program to parse this HTML file and generate a csv file:
 
-[source,python]
-.html2csv.python
-----
+```python title="html2csv.python"
 #/usr/bin/python
 
 from bs4 import BeautifulSoup
@@ -2301,25 +2207,23 @@ with open(html_file, 'r') as input_file:
     for tr in soup.select('tbody tr'):
       cells = tr.find_all('td')
       print(','.join(c.get_text() for c in cells))
-----
+```
 
 To convert the previous HTML file to a CSV file, launch the program using the command:
 
-----
-$ python html2csv.py 40000_frequency_list_gutenberg.html > \
+```
       40000_frequency_list_gutenberg.csv
-----
+```
 
 
 Project Gutenberg is a wonderful place to find famous old roman but we could miss usual words nowadays, so we do the same task with the TV frequency list. This results in two files `40000_frequency_list_gutenberg.csv` and `40000_frequency_list_tv.csv` having most of the words in common but with different rankings. We need to merge the two list.
 
-image::assistant-merge-frequency-lists.png[]
+<img src="assistant-merge-frequency-lists.png" />
 
 Here is a small program to produce a unique CSV file containing only two fields: the rank and the word.
 
 
-[source,python]
-----
+```python
 import sys
 import codecs
 import operator
@@ -2363,18 +2267,16 @@ i = 0
 for word, rank in frequencies_sorted:
     i += 1
     print("%s,%s" % (i, word))
-----
+```
 
 To generate the new list:
 
-----
-$ python calculate_frequency_list.py > my_english_frequency_list.csv
-----
+```
+```
 
 If we inspect the resulting file, we notice numerous unwanted words such as "Mickey." Let's remove them by updating our program:
 
-[source,python]
-----
+```python
 def filter(word):
     # Remove Proper name (ex: Mickey)
     if word[0].isupper():
@@ -2399,16 +2301,15 @@ for word, ranks in frequencies.iteritems():
         continue     # New
     rank = int(reduce(lambda x, y: x + y, ranks) / len(ranks))
     frequencies_avg[word] = rank
-----
+```
 
 We still have not finished. If we look again at the output, we notice words sharing the same radical (ex: bill/bills, displease/displeased). These words could not be filtered as before but could only be removed at the end of the program (when we are sure we have found the different syntaxes).
 
-image::assistant-filter-words.png[]
+<img src="assistant-filter-words.png" />
 
 So, let's update our program to add the following code just before printing the result:
 
-[source,python]
-----
+```python
 frequencies_avg_copy = frequencies_avg.copy() # Work on a copy
                                               # to delete during iteration
 for word, rank in frequencies_avg_copy.iteritems():
@@ -2441,33 +2342,32 @@ for word, rank in frequencies_avg_copy.iteritems():
         singular_word = word[:len(word) - 1]
         if plural_word in frequencies_avg and singular_word in frequencies_avg:
             del frequencies_avg[plural_word]
-----
+```
 
 
 
-=== The definitions
+### The definitions
 
 When learning a new language, it is better to left out completely your tongue language of our flashcards. Popular flashcard application Memrise does exactly that. Instead, we will include the definitions written in the same language as the word. To do so, we will use Wiktionary. Like its sister project Wikipedia, Wiktionary is run by the Wikimedia Foundation, and is edited collaboratively by volunteers. This dictionary is available in 172 languages and probably contains the most exhaustive list of words (500 000 words for the english dictionary!).
 
 
-==== Reading the data
+#### Reading the data
 
 Wiktionary, like other Wikimedia projects, offers a https://en.wiktionary.org/w/api.php[REST API] to retrieve a single page. The API is still in active development. Another option is to exploit the https://dumps.wikimedia.org/[generated dumps]. Indeed, Wikimedia hosts numerous dumps of its database (useful for example in natural language processing tasks or for reseach project). The one that interest us is the https://dumps.wikimedia.org/enwiktionary/[enwiktionary dump], in particular the first archive described as "Articles, templates, media/file descriptions, and primary meta-pages".
 
 Once downloaded, we extract the tar.gz archive to find a single XML file with a size of 4,5 GB!
 
 
-==== Parsing the Wiktionary dump
+#### Parsing the Wiktionary dump
 
 The downloaded file contains every dictionary written in the english language (English => English, Spanish => English, ...). To avoid parsing the whole file many times, we need to extract only the relevant information.
 
-image::assistant-filter-english.png[]
+<img src="assistant-filter-english.png" />
 
 Here is a preview of its content:
 
 {% raw %}
-[source,xml,subs="verbatim"]
-----
+```xml
 <mediawiki xmlns="http://www.mediawiki.org/xml/export-0.10/"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.10/
@@ -2533,16 +2433,14 @@ is labelled &quot;fat '''free'''&quot;, meaning it contains no fat]]
 </page>
 <!-- Million of pages... -->
 </mediawiki>
-----
+```
 {% endraw %}
 
 When parsing such a large file, we should be careful and not load the full file in memory. A solution is to use a SAX Parser. But unlike a DOM parser, it is not possible to simply traverse the XML document to extract the relevant information. SAX Parsers are event-driven. We need to listen to each new tag, each character text, and so on. We also need to remember our position inside the file to answer question such as "Does the text correspond to the title tag?".
 
 The following program extracts the id, title, and text and generates another XML file containing only the English words. The result is a smaller file (less than 300 Mb), that does not take 45 minutes to be parsed on my machine...
 
-[source,python]
-.parse_wiktionary.py
-----
+```python title="parse_wiktionary.py"
 """
 Parses a XML wiktionary dump using a SAX parser (humongous file!).
 Produces another XML files containing only the english words
@@ -2649,13 +2547,12 @@ if __name__ == "__main__":
 # Results:
 # - 34 307 common words extracted from 615 209 English words
 #   among a total of 5 113 338 words.
-----
+```
 
 When running the program, a new file `enwiktionary-frequency.xml` appears in the current folder. Here is an excerpt of its content:
 
 {% raw %}
-[source,xml,subs="verbatim"]
-----
+```xml
 <dictionary>
   <entry>
     <id>45268</id>
@@ -2700,20 +2597,19 @@ usage, translations, and other data.
 </dictionary>
 
 ===Etymology===
-----
+```
 {% endraw %}
 
 This file could quickly be parsed (10s on my local machine). The next step is to parse the value of the `text` tag to extract all relevant information.
 
-==== Parsing the x-wiki text to generate a JSON file
+#### Parsing the x-wiki text to generate a JSON file
 
 The `<text>` tag contains a x-wiki document whose main syntax is defined https://platform.xwiki.org/xwiki/bin/view/Main/XWikiSyntax[here]. Wikipedia add a lot of semantic above this syntax through the use of numerous labels. I didn't find a document that describes the Wiktionary syntax, so we need to revert to reverse engineering.
 
 Here is an shortened example of a x-wiki document (about the word `keyboard`):
 
 {% raw %}
-----
-{{also|Keyboard}}
+```
 ==English== // <1>
 {{wikipedia|dab=keyboard|lang=en}}
 [[Image:Player piano keyboard.jpg|thumb|100px|A piano keyboard]]
@@ -2789,22 +2685,21 @@ from the keyboard device.
 
 ====Synonyms====
 * {{sense|computing}} {{l|nl|toetsenbord}}
-----
+```
 {% endraw %}
-<1> A wiktionary entry contains the text of multiple dictionaries (English-English, English-Dutch). Only the English-English dictionary is relevant when learning the English language.
-<2> A given word could be used as a noun, a verb, etc. We need to extract the definition for each type while keeping note of the type.
-<3> Label syntax such as {% raw %}{{t+|fr|clavier|m}}{% endraw %} is used exhaustively inside the wiki text. Most of the content is present inside these labels but the syntax is not easily parseable.
-<4> There are many translation blocks. Often, the first one is the only translation we are interested.
+* <Marker number={1} /> A wiktionary entry contains the text of multiple dictionaries (English-English, English-Dutch). Only the English-English dictionary is relevant when learning the English language.
+* <Marker number={2} /> A given word could be used as a noun, a verb, etc. We need to extract the definition for each type while keeping note of the type.
+* <Marker number={3} /> Label syntax such as {% raw %}{{t+|fr|clavier|m}}{% endraw %} is used exhaustively inside the wiki text. Most of the content is present inside these labels but the syntax is not easily parseable.
+* <Marker number={4} /> There are many translation blocks. Often, the first one is the only translation we are interested.
 
 On this example, the definitions are easily parseable but not all the words are so simple in practice. Consider the word 'car':
 
-image::wiktionary-car.png[width="750"]
+image:wiktionary-car.png[width="750"]
 
 Here the same content as x-wiki:
 
 {% raw %}
-----
-====Noun====
+```
 {{en-noun}}
 
 # {{lb|en|dated}} A [[wheeled]] [[vehicle]],
@@ -2821,17 +2716,16 @@ would move society away from the ever more expensive}}
 # {{lb|en|rail transport|chiefly|North America}} An unpowered
 unit in a [[railroad]] train.
 #: ''The conductor coupled the '''cars''' to the locomotive.''
-----
+```
 {% endraw %}
-<1> Quotes could be on a line starting with `#:`, be surrounded with `''`
-<2> While other quotes could be on a line containing a label with the attribute `passage` containing the quote text.
+* <Marker number={1} /> Quotes could be on a line starting with `#:`, be surrounded with `''`
+* <Marker number={2} /> While other quotes could be on a line containing a label with the attribute `passage` containing the quote text.
 
 This is only one example of subtlety among many others. Wiktionary syntax is full of surprise but also full of interesting content.
 
 So, we will create another Python program to parse the previously generated XML file. The aim of to generate a structured JSON file with only the required information. For example:
 
-[source,json]
-----
+```json
 {
   "title":"car",
   "id":"3184799",
@@ -2886,12 +2780,12 @@ So, we will create another Python program to parse the previously generated XML 
     "voiture"
   ]
 }
-----
+```
 
 The code behind this program contains a lot of parsing logic. The result is not the most beautiful code that I have written and I am not going to present it in this post but if you are curious, the full listing is available in the project repository in https://github.com/julien-sobczak/anki-scripting/blob/master/anki-usecase-enfrequency/5-parse_mytionary.py[GitHub].
 
 
-=== Creating the flashcards
+### Creating the flashcards
 
 Unlike the previous case study on idioms, creating flashcards for vocabulary is most complicated for different reasons:
 
@@ -2903,56 +2797,48 @@ Moreover, which type of notes should we select in Anki? The "Basic (with reverse
 
 All of these points highlight that we cannot write a program to automatically take all the decisions. So, we will create a basic web application to display the definitions, the examples, and a list of candidate images retrieved from Google Images. Each of these elements will be accompanied with several checkboxes to choose the most relevant definitions, examples and select the most memorable picture.
 
-==== The Assistant
+#### The Assistant
 
 The assistant reads the JSON dictionary file created previously, displays its content to the user and save a new annotated JSON file containing the choices made by the user. We will return to this file later.
 
-image::assistant-global.png[]
+<img src="assistant-global.png" />
 
 Here is a screenshot of this application:
 
-image::anki-vocabulary-assistant.png[]
+<img src="anki-vocabulary-assistant.png" />
 
 To launch locally the web application, you need to first retrieve the source and build the archive: (JDK 1.7 > required)
 
-----
-$ git clone https://github.com/julien-sobczak/anki-scripting.git
+```
 $ cd anki-scripting/anki-vocabulary-assistant
 $ mvn clean package
-----
+```
 
 Then, run the following command to start the web application:
 
-----
-$ java \
+```
   -DdeveloperKey=<YOUR_DEVELOPER_KEY> \
   -Dcx=<YOUR_CONTEXT_KEY> \
   -DoutputDir="~/output/" \
   -DdictionaryFile="anki-usecase-enfrequency/resources/mywiktionary.json" \
   -jar target/anki-vocabulary-assistant-0.0.1.jar \
-----
+```
 
-[NOTE]
-.Google CSE API
-====
+<Admonition type="note" className="None" title="Google CSE API">
 The application uses the Google Custom Search API (GSE) to retrieve a list of images related to the selected word, so you need credentials to access the API. Google limits to 100 free searches per day.
 
 Please visit the https://developers.google.com/custom-search/docs/tutorial/introduction[official site] for more information.
-====
+</Admonition>
 
 Open your browser and enter the URL http://localhost:8080. You should have the same output as the previous screenshot.
 
-[CAUTION.content]
-.Requisites
-====
+<Admonition type="caution" className="content" title="Requisites">
 In this part, we will use Spring Boot and the Java language for the backend and AngularJS for the frontend. If these technologies are new to you, do not hesitate to read a Getting Starting on these technologies first. You do not need to be expert in these technologies to follow the code along. The presented code uses only basic features of these frameworks.
-====
+</Admonition>
 
 The entry point is the class `Application`:
 
-[source,java]
-.Application.java
-----
+```java title="Application.java"
 package fr.imlovinit.anki.vocabulary.assistant;
 
 import fr.imlovinit.anki.vocabulary.assistant.configuration.AppConfiguration;
@@ -2969,13 +2855,11 @@ public class Application {
 	}
 
 }
-----
+```
 
 The application defines a unique web controller `ApiController` that loads the full dictionary in-memory at start-up:
 
-[source,java]
-.ApiController.java
-----
+```java title="ApiController.java"
 package fr.imlovinit.anki.vocabulary.assistant.controller;
 
 import fr.imlovinit.anki.vocabulary.assistant.model.Dictionary;
@@ -3003,13 +2887,11 @@ public class ApiController {
 
     // ...
 ]
-----
+```
 
 The class `Dictionary` is a wrapper around the JSON document generated at the end of the previous section:
 
-[source,java]
-.Dictionary.java
-----
+```java title="Dictionary.java"
 package fr.imlovinit.anki.vocabulary.assistant.model;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -3040,13 +2922,11 @@ public class Dictionary {
     }
 
 }
-----
+```
 
 You could access any word from its rank using the method `searchWord`:
 
-[source,java]
-.Dictionary.java
-----
+```java title="Dictionary.java"
 /**
  * Search inside the full JSON dictionary after the given identifier.
  * Only the rank could be used as identifier for now.
@@ -3056,13 +2936,11 @@ public Word searchWord(String identifier) {
       Integer.parseInt(identifier) - 1);
     return new Word(json);
 }
-----
+```
 
 This method is exposed in REST:
 
-[source,java]
-.ApiController
-----
+```java title="ApiController"
 @RestController
 @RequestMapping("/api")
 public class ApiController {
@@ -3079,12 +2957,11 @@ public class ApiController {
 
     // ...
 }
-----
+```
 
-For example, if you want to retrieve the information about the word *daughter* (340), enter the following URL into your browser: http://localhost:8080/api/word/340
+For example, if you want to retrieve the information about the word **daughter** (340), enter the following URL into your browser: http://localhost:8080/api/word/340
 
-[source,json]
-----
+```json
 {
   "id":"45268",
   "title":"daughter"
@@ -3098,13 +2975,11 @@ For example, if you want to retrieve the information about the word *daughter* (
     }
   ]
 }
-----
+```
 
 We could now create an application based on AngularJS 1.x and hosted in the same project for convenience. By default, every resource present under the directory `src/main/resources/public` will be exposed as static resources by Spring Boot. So, let's create the index page:
 
-[source,html]
-.index.html
-----
+```html title="index.html" showLineMarkers:{'1': [3141]}
 <!doctype html>
 <html lang="fr" ng-app="app">
 <head>
@@ -3175,15 +3050,13 @@ We could now create an application based on AngularJS 1.x and hosted in the same
     </div>
 </body>
 </html>
-----
-<1> We add a property `include` to `true` when the user select an element.
+```
+* <Marker number={1} /> We add a property `include` to `true` when the user select an element.
 
 The HTML is self-descriptive. Let's inspect the JavaScript code used to bootstrap the AngularJS application:
 
 
-[source,javascript]
-.app.js
-----
+```javascript title="app.js" showLineMarkers:{'2': [3178], '1': [3187]}
 angular.module('app', [])
 
 .controller('WordController', function($scope, $http, $document) {
@@ -3210,17 +3083,15 @@ angular.module('app', [])
   showWord($scope.rank);
 });
 }]);
-----
-<1> At initialization, we check the URL to determine the word to load before calling the main method `showWord`.
-<2> We emit an HTTP request to retrieve the JSON containing the word information. The result is stored in the model to be accessible by the view.
+```
+* <Marker number={1} /> At initialization, we check the URL to determine the word to load before calling the main method `showWord`.
+* <Marker number={2} /> We emit an HTTP request to retrieve the JSON containing the word information. The result is stored in the model to be accessible by the view.
 
 The user could then check every definition, quotation, sound that interesting him. Once this is done, the user presses the touch 'Enter' to save the current word and trigger the next word loading.
 
 So, let's add the code to listen the key press:
 
-[source,javascript]
-.app.js
-----
+```javascript title="app.js"
 // ...
 .controller('WordController', function($scope, $locale, $http, $document) {
 
@@ -3252,13 +3123,11 @@ So, let's add the code to listen the key press:
   };
 
 })
-----
+```
 
 The code makes an HTTP request to a new service we need to define in our controller `ApiController`:
 
-[source,java]
-.ApiController
-----
+```java title="ApiController" showLineMarkers:{'1': [3261], '2': [3265]}
 @RestController
 @RequestMapping("/api")
 public class ApiController {
@@ -3284,15 +3153,13 @@ public class ApiController {
     }
 
 }
-----
-<1> We parse the input JSON before passing it to the constructor of the class `Word`. Like the class `Dictionary`, this class acts as a Wrapper around the raw JSON document.
-<2> We use the method `save` on this object to persist the selection of the user.
+```
+* <Marker number={1} /> We parse the input JSON before passing it to the constructor of the class `Word`. Like the class `Dictionary`, this class acts as a Wrapper around the raw JSON document.
+* <Marker number={2} /> We use the method `save` on this object to persist the selection of the user.
 
 The main logic is encapsulated inside the class `Word`. Let's see its definition:
 
-[source,java]
-.Word.java
-----
+```java title="Word.java" showLineMarkers:{'1': [3300], '2': [3301]}
 package fr.imlovinit.anki.vocabulary.assistant.model;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -3389,14 +3256,13 @@ public class Word {
    }
 
 }
-----
-<1> We download the sound from Wikipedia locally
-<2> We save the JSON to disk
+```
+* <Marker number={1} /> We download the sound from Wikipedia locally
+* <Marker number={2} /> We save the JSON to disk
 
 In definitive, the assistant application reads the full JSON dictionary, exposes its information through a REST API, allows the user to choose the most pertinent information before saving an annotated JSON document to disk such as the following one:
 
-[source,json]
-----
+```json
 {
   "id" : "472128",
   "title" : "work",
@@ -3432,44 +3298,42 @@ In definitive, the assistant application reads the full JSON dictionary, exposes
     }
   ]
 }
-----
+```
 
 **Why saving and not create the flashcards directly inside the method 'save'?**
 
-The problem is that Anki exposes only its internal API written in Python. If the backend of our application was written in Python too, we could have create the flashcards at the same time. Here, we dump the result to a file that we will need to read by another program written in Python. This is task of the *Importer*.
+The problem is that Anki exposes only its internal API written in Python. If the backend of our application was written in Python too, we could have create the flashcards at the same time. Here, we dump the result to a file that we will need to read by another program written in Python. This is task of the **Importer**.
 
 NOTE: The full source of the application is available https://github.com/julien-sobczak/anki-scripting/tree/master/anki-vocabulary-assistant[here].
 
 
-==== The Importer
+#### The Importer
 
 This aim of this Python script is to convert a collection of JSON documents (one per word) to flashcards. As for the English idioms, we will use a custom note type that we called `Word` that we will defined manually through Anki Desktop. The note type `Word` defines a long list of fields that we will used inside the card templates:
 
-image::vocabulary-note-type-fields.png[]
+<img src="vocabulary-note-type-fields.png" />
 
 Then, we define the templates for the different possible cards.
 
-===== Do you know this word?
+##### Do you know this word?
 
 The `Card 1` displays the English word:
 
-image::vocabulary-note-card1.png[]
+<img src="vocabulary-note-card1.png" />
 
 Where the front template is defined like this:
 
 {% raw %}
 [source,subs="verbatim"]
-----
-{{Word}}
-----
+```
+```
 {% endraw %}
 
 And the back template:
 
 {% raw %}
 [source,subs="verbatim"]
-----
-{{FrontSide}}
+```
 
 <hr id=answer>
 
@@ -3506,36 +3370,34 @@ And the back template:
 <br>
 {{Image}}
 {{/Image}}
-----
+```
 {% endraw %}
 
 Check the https://ankisrs.net/docs/manual.html#conditional-replacement[official Anki manual] to know more about the syntax used in these templates.
 
 
-===== What is it?
+##### What is it?
 
 The `Card 2` displays the picture associated the word:
 
-image::vocabulary-note-card2.png[]
+<img src="vocabulary-note-card2.png" />
 
 Where the front template is defined like this:
 
 {% raw %}
 [source,subs="verbatim"]
-----
-{{#HasImageCard}} // <1>
+```
 {{Image}}
 {{/HasImageCard}}
-----
+```
 {% endraw %}
-<1> We need an additional field to determine if this card is required because some words have a picture but the user only want this picture to be displayed in other cards.
+* <Marker number={1} /> We need an additional field to determine if this card is required because some words have a picture but the user only want this picture to be displayed in other cards.
 
 And the back template:
 
 {% raw %}
 [source,subs="verbatim"]
-----
-{{FrontSide}}
+```
 
 <hr id=answer>
 
@@ -3566,33 +3428,31 @@ And the back template:
 <small>SYN.:</small> {{Synonyms}}
 </div>
 {{/Synonyms}}
-----
+```
 {% endraw %}
 
 
-===== What is the translation?
+##### What is the translation?
 
 The `Card 3` displays the translation of the word:
 
-image::vocabulary-note-card3.png[]
+<img src="vocabulary-note-card3.png" />
 
 Where the front template is defined like this:
 
 {% raw %}
 [source,subs="verbatim"]
-----
-{{#HasTranslationCard}}
+```
 {{Translation}}
 {{/HasTranslationCard}}
-----
+```
 {% endraw %}
 
 And the back template:
 
 {% raw %}
 [source,subs="verbatim"]
-----
-{{FrontSide}}
+```
 
 <hr id=answer>
 
@@ -3613,34 +3473,32 @@ And the back template:
 <br>
 {{Image}}
 {{/Image}}
-----
+```
 {% endraw %}
 
 
-===== Complete this sentence...
+##### Complete this sentence...
 
 The `Card 4`, `Card 5`, and `Card 6` display a sentence with a missing word and the user should find it (the same concept as https://ankisrs.net/docs/manual.html#cloze[Cloze Deletion] in Anki):
 
-image::vocabulary-note-card4.png[]
+<img src="vocabulary-note-card4.png" />
 
 Where the front template is defined like this:
 
 {% raw %}
 [source,subs="verbatim"]
-----
-{{#SampleA}} // <1>
+```
 <small>Complete</small> {{SampleA}}
 {{/SampleA}}
-----
+```
 {% endraw %}
-<1> Replace `SampleA` by `SampleB`, `SampleC`
+* <Marker number={1} /> Replace `SampleA` by `SampleB`, `SampleC`
 
 And the back template:
 
 {% raw %}
 [source,subs="verbatim"]
-----
-{{FrontSide}}
+```
 
 <hr id=answer>
 
@@ -3654,34 +3512,32 @@ And the back template:
 <div class="answer">
 {{AnswerA}} // <1>
 </div>
-----
+```
 {% endraw %}
-<1> Replace `AnswerA` by `AnswerB`, `AnswerC`
+* <Marker number={1} /> Replace `AnswerA` by `AnswerB`, `AnswerC`
 
 
-===== Find the word from its definitions
+##### Find the word from its definitions
 
 The `Card 7` displays a list of definitions:
 
-image::vocabulary-note-card7.png[]
+<img src="vocabulary-note-card7.png" />
 
 Where the front template is defined like this:
 
 {% raw %}
 [source,subs="verbatim"]
-----
-{{#HasDefinitionsCard}}
+```
 {{DefinitionsOnly}}
 {{/HasDefinitionsCard}}
-----
+```
 {% endraw %}
 
 And the back template:
 
 {% raw %}
 [source,subs="verbatim"]
-----
-{{FrontSide}}
+```
 
 <hr id=answer>
 
@@ -3695,13 +3551,12 @@ And the back template:
 <div class="definitions">
 {{DefinitionsWithSamples}}
 </div>
-----
+```
 {% endraw %}
 
 And finally, the CSS used to stylize the cards:
 
-[source,css]
-----
+```css
 .card {
 	font-family: arial;
 	font-size: 20px;
@@ -3740,16 +3595,14 @@ small {
 	color: gray;
 	font-style: italic;
 }
-----
+```
 
 
 What we just did could be done through Anki internal API too but using the application is very easy and this task needs to be done only once. So, everything is ready for us to load the flashcards.
 
 Here is the full listing. We already have seen most of the API in the previous case studies.
 
-[source,python]
-.anki-vocabulary-assistant/scripts/load_word.py
-----
+```python title="anki-vocabulary-assistant/scripts/load_word.py"
 #!/usr/bin/env python
 
 """
@@ -4080,32 +3933,29 @@ if __name__ == '__main__':
 
     # Save the changes to DB
     col.save()
-----
+```
 
 To launch the program, first close our Anki application if running and enter the following command:
 
-----
-$ pwd
+```
 ~/workspace/anki-scripting/anki-vocabulary-assistant
 python scripts/load_word.py \
   --folder save/
   --from 1
   --to 1000
   ~/Documents/Anki/User\ 1/
-----
+```
 
 Relaunch Anki. You should see new cards under the English deck.
 
 Congratulations! We finally comes to the end of this lengthy post. We have seen how the internal API of Anki could be used in various scenarios. This is not complete, however. It remains the most important task -- study all of these newly created flashcards!
 
 
-[NOTE.remember]
-.To remember
-====
+<Admonition type="note" className="remember" title="To remember">
 - Anki is written in Python and do not expose a REST API. We need to interact directly with its internal API.
 - Anki persists the flashcard texts in a SQL database. Media resources are persisted on disk along the database and are referenced directly inside the card text.
 - The Anki underlying model is partially documented. Use this post as a reference to determine the role of each field or property.
 - Creating flashcards manually is the recommended way to start learning but when it comes to creating hundreds or thousand of flashcards, using a small program could be welcome.
 - Creating a flashcard programmatically is relatively easy. The most difficult part is extracting the information you want to add (book, website, ...)
 - Basic programming competency is necessary to get started. The good news is that Python is the most used language in the world to introduce new people to programming. You could find many resource online (MOOC, tutorial, ebook, blog) to get started. https://www.khanacademy.org/[Khan Academy] is a good start.
-====
+</Admonition>
