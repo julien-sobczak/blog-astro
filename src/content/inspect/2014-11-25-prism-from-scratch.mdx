@@ -6,13 +6,10 @@ date: 2014-11-25
 subject: "Prism"
 tags: ['web']
 unofficialTags: ['javascript']
-recommendations: []
 ---
 import Admonition from '../../components/Admonition.astro'
 import Marker from '../../components/Marker.astro'
 import Lead from '../../components/Lead.astro'
-
-:imagesdir: {{ '/posts_resources/2014-11-25-prism-from-scratch/' | relative_url }}
 
 
 <Admonition type="caution" className="license" title="None">
@@ -24,7 +21,7 @@ You are reading a translation of an [old blog post](https://julien-sobczak.githu
 >
 > -- <cite> "Brendan Eich, creator of JavaScript</cite>
 
-Many JavaScript libraries have supported syntactic coloration for a long time. A recent newcomer has become popular and is already used by major websites like Mozilla. This library is Prism and was created by Lea Verou, author of the library [-prefix-free]("{% post_url inspect/2014-11-06-prefix-free-from-scratch %}) and code playbook [Dabblet](http://dabblet.com/). Using Prism, our code is even more beautiful. What is the most surprising about Prims is the size of the codebase: only 400 lines of JavaScript (Google Prettify and SyntaxHighlighter count more than 2000 lines).
+Many JavaScript libraries have supported syntactic coloration for a long time. A recent newcomer has become popular and is already used by major websites like Mozilla. This library is Prism and was created by Lea Verou, author of the library [-prefix-free](/inspect/2014-11-06-prefix-free-from-scratch) and code playbook [Dabblet](http://dabblet.com/). Using Prism, our code is even more beautiful. What is the most surprising about Prims is the size of the codebase: only 400 lines of JavaScript (Google Prettify and SyntaxHighlighter count more than 2000 lines).
 
 How does Prism achieve this tour de force? We'll find out by rewriting Prism from scratch.
 
@@ -238,12 +235,10 @@ pre {
 
 Here is what our code looks like when these styles are applied:
 
-++++
-<iframe src="{{ '/posts_resources/2014-11-25-prism-from-scratch/prism-demo-simple.html' | prepend: site.baseurl }}"
+<iframe src="/posts_resources/2014-11-25-prism-from-scratch/prism-demo-simple.html"
     width="100%" height="185px"
     style="border: none">
 </iframe>
-++++
 
 The last missing piece from our puzzle is still the lexical analyzer.
 
@@ -468,12 +463,10 @@ tokenize : function(text, grammar) {
 
 With this new feature, we can now test our code with more advanced examples:
 
-++++
-<iframe src="{{ '/posts_resources/2014-11-25-prism-from-scratch/prism-demo-advanced.html' | prepend: site.baseurl }}"
+<iframe src="/posts_resources/2014-11-25-prism-from-scratch/prism-demo-advanced.html"
     width="100%" height="600px"
     style="border: none">
 </iframe>
-++++
 
 
 <Admonition type="tip" className="None" title="Quiz: Which token matches this regular expression?">

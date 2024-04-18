@@ -6,16 +6,18 @@ date: 2016-12-26
 subject: "SRS"
 tags: ['tools', 'learning']
 unofficialTags: ['flashcards']
-recommendations: ['2020-12-26-anki-scripting-for-non-programmers', '2018-12-01-10-rules-for-better-flashcards', '2018-12-30-should-i-create-a-flashcard']
+# recommendations:
+# - '2020/12/26/anki-scripting-for-non-programmers'
+# - '2018/12/01/10-rules-for-better-flashcards'
+# - '2018/12/30/should-i-create-a-flashcard'
 ---
 import Admonition from '../../components/Admonition.astro'
 import Marker from '../../components/Marker.astro'
 import Lead from '../../components/Lead.astro'
 
-:imagesdir: {{ '/posts_resources/2016-12-26-anki-scripting/' | relative_url }}
 
 <Admonition type="caution" className="license" title="None">
-There is a newer version of this article, [_Anki Scripting for Non-Programmers_]({% post_url write/2020-12-26-anki-scripting-for-non-programmers %}). This new post is shorter and is a great introduction to the subject. You can come back to this older article if you want more details about Anki and/or learn about some advanced use cases like converting an ebook into flashcards.
+There is a newer version of this article, [_Anki Scripting for Non-Programmers_](/write/2020-12-26-anki-scripting-for-non-programmers). This new post is shorter and is a great introduction to the subject. You can come back to this older article if you want more details about Anki and/or learn about some advanced use cases like converting an ebook into flashcards.
 </Admonition>
 
 ## A look inside the Anki model
@@ -1212,7 +1214,7 @@ The code iterate over the card identifiers and begin by collecting required info
 
 When running, the program generate a list of files inside the folder defined by the constant `OUTPUT_DIRECTORY`. Here is the content of the file `card-1429876617511.html`:
 
-<img src="card-export-HTML.png" />
+<img src="/posts_resources/2016-12-26-anki-scripting/card-export-HTML.png" />
 
 To generate an index page listing all the exported cards, we need to update the previous code to store the list of processed card:
 
@@ -1256,7 +1258,7 @@ index_file.close()
 
 When running the program, a new file `index.html` is generated in the target directory:
 
-<img src="cards-export-HTML.png" />
+<img src="/posts_resources/2016-12-26-anki-scripting/cards-export-HTML.png" />
 
 The code works but there remains a concern to address: the medias. Indeed, cards could reference external resources like images or sounds, which are all stored in a single folder `collection.media` under your profile directory. So, we need to extract there resources too and update the links inside the card text to reflect the new location.
 
@@ -1303,14 +1305,14 @@ When running the program again, a new folder `medias` will be created inside the
 
 If we open the associated card in our browser, we should see this picture displayed correctly:
 
-<img src="card-export-img.png" />
+<img src="/posts_resources/2016-12-26-anki-scripting/card-export-img.png" />
 
 
 Great! We have successfully exported our Anki collection into a standard format but the result does not look good. Let's add a little bit of JavaScript and CSS to make the application looks better.
 
 What we want is a basic single-page application (SPA) that displays our flashcards. A search field will be available at the top of the page to help us filter the cards. Flashcard content will only be displayed when selecting the flashcard title in the list. The following is a draft of this application demo:
 
-<img src="app-export-html.png" />
+<img src="/posts_resources/2016-12-26-anki-scripting/app-export-html.png" />
 
 To add dynamic behavior to our SPA, we will use AngularJS. AngularJS keep our code clean by separating our model from the view and controller (Pattern MVC). To do that, we are going to convert the static HTML list of cards to JSON format:
 
@@ -1456,7 +1458,7 @@ Let's add the "final touch", the CSS:
 The layout is divided in three section: the search bar at the top, the list of flashcards on the left and the currently selected flashcard on the right. We use fixed positioning to keep all sections always present on the screen. The results now looks like:
 
 
-<img src="generated-styled-site.png" />
+<img src="/posts_resources/2016-12-26-anki-scripting/generated-styled-site.png" />
 
 
 This ends our first case study. We have seen how to exploit the Anki API to retrieve our data and export them to another format. In the next case study, we are going to use the Anki API to load a batch of cards, created from a book.
@@ -1713,7 +1715,7 @@ For our task, we only need to know that an ePub is just a ZIP archive containing
 
 The ebook is subject to a copyright, so to avoid any violation, I rewrite a short version by customizing the text. This demonstration ebook is available in the https://github.com/julien-sobczak/anki-scripting/tree/master/anki-usecase-enidioms[repository associated to this post]. To inspect its content, just unzip the archive:
 
-<img src="epub-unzipped.png" />
+<img src="/posts_resources/2016-12-26-anki-scripting/epub-unzipped.png" />
 
 The first file in the archive must be the `mimetype` file. It must be uncompressed so that non-ZIP utilities can read the mimetype. The `mimetype` file must be an ASCII file that contains the string `application/epub+zip`.
 
@@ -1767,7 +1769,7 @@ Apart from `mimetype` and `META-INF/container.xml`, the other files (HTML, CSS a
 
 In the manifest section, we can see all web resources included in this epub. This are these files that interested us, in particular the HTML files. If you open the book with an ebook reader (your device or an application like Calibre), you could see the book content:
 
-<img src="epub-preview.png" />
+<img src="/posts_resources/2016-12-26-anki-scripting/epub-preview.png" />
 
 If you want to know more about the epub format, O'Reilly published whole https://shop.oreilly.com/product/0636920024897.do[books] on the subject.
 
@@ -1985,7 +1987,7 @@ This ends the first section of this post. We have extracted all the relevant tex
 
 Before importing a flashcard, we need to design the card template. By default, Anki includes only simple card types: Basic, Basic (with reversed card). These card types have only two fields: the front text, and the back text. We need something more evolved to be able to includes examples and/or note information. We want our cards to look like the following picture:
 
-<img src="english-card-type.png" />
+<img src="/posts_resources/2016-12-26-anki-scripting/english-card-type.png" />
 
 We have two solutions: either we create the card type manually using the Anki API directly in Python, or create the card type through the GUI to benefit the direct feedback when defining the CSS declarations. We will choose the second solution but implementing the first one is relatively easy using code similar to the code we already wrote.
 
@@ -1993,11 +1995,11 @@ So, run the Anki program, and go to *"Tools > Manage Note Types..."*, click on *
 
 Return to the "Manage Note Types" screen and click on *"Fields..."*. Remove the `Front` and `Back` fields and add four new fields like this:
 
-<img src="note-type-fields.png" />
+<img src="/posts_resources/2016-12-26-anki-scripting/note-type-fields.png" />
 
 Close the dialog and click on *"Cards..."*. Again, we need the update the content to match the following screenshot:
 
-<img src="note-type-card1.png" />
+<img src="/posts_resources/2016-12-26-anki-scripting/note-type-card1.png" />
 
 Here is the full CSS code:
 
@@ -2218,7 +2220,7 @@ To convert the previous HTML file to a CSV file, launch the program using the co
 
 Project Gutenberg is a wonderful place to find famous old roman but we could miss usual words nowadays, so we do the same task with the TV frequency list. This results in two files `40000_frequency_list_gutenberg.csv` and `40000_frequency_list_tv.csv` having most of the words in common but with different rankings. We need to merge the two list.
 
-<img src="assistant-merge-frequency-lists.png" />
+<img src="/posts_resources/2016-12-26-anki-scripting/assistant-merge-frequency-lists.png" />
 
 Here is a small program to produce a unique CSV file containing only two fields: the rank and the word.
 
@@ -2305,7 +2307,7 @@ for word, ranks in frequencies.iteritems():
 
 We still have not finished. If we look again at the output, we notice words sharing the same radical (ex: bill/bills, displease/displeased). These words could not be filtered as before but could only be removed at the end of the program (when we are sure we have found the different syntaxes).
 
-<img src="assistant-filter-words.png" />
+<img src="/posts_resources/2016-12-26-anki-scripting/assistant-filter-words.png" />
 
 So, let's update our program to add the following code just before printing the result:
 
@@ -2362,7 +2364,7 @@ Once downloaded, we extract the tar.gz archive to find a single XML file with a 
 
 The downloaded file contains every dictionary written in the english language (English => English, Spanish => English, ...). To avoid parsing the whole file many times, we need to extract only the relevant information.
 
-<img src="assistant-filter-english.png" />
+<img src="/posts_resources/2016-12-26-anki-scripting/assistant-filter-english.png" />
 
 Here is a preview of its content:
 
@@ -2801,11 +2803,11 @@ All of these points highlight that we cannot write a program to automatically ta
 
 The assistant reads the JSON dictionary file created previously, displays its content to the user and save a new annotated JSON file containing the choices made by the user. We will return to this file later.
 
-<img src="assistant-global.png" />
+<img src="/posts_resources/2016-12-26-anki-scripting/assistant-global.png" />
 
 Here is a screenshot of this application:
 
-<img src="anki-vocabulary-assistant.png" />
+<img src="/posts_resources/2016-12-26-anki-scripting/anki-vocabulary-assistant.png" />
 
 To launch locally the web application, you need to first retrieve the source and build the archive: (JDK 1.7 > required)
 
@@ -3311,7 +3313,7 @@ NOTE: The full source of the application is available https://github.com/julien-
 
 This aim of this Python script is to convert a collection of JSON documents (one per word) to flashcards. As for the English idioms, we will use a custom note type that we called `Word` that we will defined manually through Anki Desktop. The note type `Word` defines a long list of fields that we will used inside the card templates:
 
-<img src="vocabulary-note-type-fields.png" />
+<img src="/posts_resources/2016-12-26-anki-scripting/vocabulary-note-type-fields.png" />
 
 Then, we define the templates for the different possible cards.
 
@@ -3319,7 +3321,7 @@ Then, we define the templates for the different possible cards.
 
 The `Card 1` displays the English word:
 
-<img src="vocabulary-note-card1.png" />
+<img src="/posts_resources/2016-12-26-anki-scripting/vocabulary-note-card1.png" />
 
 Where the front template is defined like this:
 
@@ -3380,7 +3382,7 @@ Check the https://ankisrs.net/docs/manual.html#conditional-replacement[official 
 
 The `Card 2` displays the picture associated the word:
 
-<img src="vocabulary-note-card2.png" />
+<img src="/posts_resources/2016-12-26-anki-scripting/vocabulary-note-card2.png" />
 
 Where the front template is defined like this:
 
@@ -3436,7 +3438,7 @@ And the back template:
 
 The `Card 3` displays the translation of the word:
 
-<img src="vocabulary-note-card3.png" />
+<img src="/posts_resources/2016-12-26-anki-scripting/vocabulary-note-card3.png" />
 
 Where the front template is defined like this:
 
@@ -3481,7 +3483,7 @@ And the back template:
 
 The `Card 4`, `Card 5`, and `Card 6` display a sentence with a missing word and the user should find it (the same concept as https://ankisrs.net/docs/manual.html#cloze[Cloze Deletion] in Anki):
 
-<img src="vocabulary-note-card4.png" />
+<img src="/posts_resources/2016-12-26-anki-scripting/vocabulary-note-card4.png" />
 
 Where the front template is defined like this:
 
@@ -3521,7 +3523,7 @@ And the back template:
 
 The `Card 7` displays a list of definitions:
 
-<img src="vocabulary-note-card7.png" />
+<img src="/posts_resources/2016-12-26-anki-scripting/vocabulary-note-card7.png" />
 
 Where the front template is defined like this:
 

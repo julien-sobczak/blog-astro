@@ -5,17 +5,15 @@ author: "Julien Sobczak"
 date: 2020-02-23
 subject: "Simplicity"
 tags: ['craftsmanship']
-unofficialTags: []
-recommendations: ['2020-06-02-complexity-is-not-complex']
+# recommendations:
+# - 2020/06/02/complexity-is-not-complex
 ---
 import Admonition from '../../components/Admonition.astro'
 import Marker from '../../components/Marker.astro'
 import Lead from '../../components/Lead.astro'
 
-:imagesdir: {{ '/posts_resources/2020-02-23-simplicity-is-not-simple/' | relative_url }}
-
 <Admonition type="caution" className="license" title="None">
-This post is a part of a two-parts series. This first post focuses on simplicity while [the following one]({% post_url write/2020-06-02-complexity-is-not-complex %}) focuses on complexity.
+This post is a part of a two-parts series. This first post focuses on simplicity while [the following one](/write/2020-06-02-complexity-is-not-complex) focuses on complexity.
 </Admonition>
 
 > The purpose of software engineering is to control complexity, not to create it.
@@ -38,8 +36,7 @@ Complicated problems can be hard to solve, but they are addressable with techniq
 
 **Complex problems are not just more complicated problems**. They are inherently different. They involve many unknowns and techniques like divide-and-conquer are no longer applicable because interactions between components are more important than the components themselves. A small variation of the system may result in disproportionate effects (e.g., the Butterfly effect). Nature is the perfect source of inspiration for complex problems with the rich interactions between all living beings. Peace, global warming, and human relationships are good examples of complex problems. A single conflict between two humans can cause a new war (often economical today) and plunge the whole world into jeopardy. The behavior of a minority of Western citizens affects the lives of billions of people on the other side of the planet with the climate crisis. A single revelation concerning a CEO can destroy the confidence of his employees gained over several decades. Complex problems are not easy to solve, and no single action can solve the problem, while one single action can annihilate the system.
 
-To illustrate the differences, we will use a more familiar situation: writing code in your IDE is mostly a complicated problem while designing an application as a team is mostly a complex problem.footnote:[7 Differences between complex and complicated, Sonja Blignaut
-, http://www.morebeyond.co.za/7-differences-between-complex-and-complicated-systems/].
+To illustrate the differences, we will use a more familiar situation: writing code in your IDE is mostly a complicated problem while designing an application as a team is mostly a complex problem.[^1]
 
 ++++
 <style>
@@ -366,7 +363,7 @@ Abstractions hide implementation details behind simple to use interfaces. When w
 
 Here is a small diagram to visualize the refactoring:
 
-<img src="abstractions-step-1-2.png" />
+<img src="/posts_resources/2020-02-23-simplicity-is-not-simple/abstractions-step-1-2.png" />
 
 Using a brute force algorithm is not optimal. We can provide a new implementation based on indexing to get better performance:
 
@@ -387,11 +384,11 @@ Similarly, we can provide a new UI using 3D to visualize the results (why not?).
 
 Here is a small diagram to represent what we did:
 
-<img src="abstractions-step-3.png" />
+<img src="/posts_resources/2020-02-23-simplicity-is-not-simple/abstractions-step-3.png" />
 
 The search and rendering implementations are now more complicated, mainly due to the essential complexity of the problem. But thanks to the interfaces introduced before, the main logic of the search engine remains as simple as before. In practice, we would refactor the complicated code present in `IndexSearch` to introduce new abstractions as we did before:
 
-<img src="abstractions-step-4.png" />
+<img src="/posts_resources/2020-02-23-simplicity-is-not-simple/abstractions-step-4.png" />
 
 By introducing more and more components, and more and more abstractions, each component in isolation stays maintainable using our limited number of chunks in memory.
 
@@ -425,9 +422,9 @@ When facing a decision, choosing the most simple option may seem like a sensible
 
 This problem commonly occurs when principles are interpreted as rules. In fact, **any principle applied blindly as a rule becomes a liability**, a way to remove common sense from the equation. Here are a few examples:
 
-*  _Don't explain bad code in comments_ (principle) can become _Good code is self-documenting_ (rule). That’s wrong. The code tells us how it works, but we still need comments to document APIs, explain decisions, which alternatives were considered, and why the present solution was chosen. Writing good comments is as much an art as writing the code itself.footnote:[Coding Without Comments, Coding Horror, https://blog.codinghorror.com/coding-without-comments/]
+*  _Don't explain bad code in comments_ (principle) can become _Good code is self-documenting_ (rule). That’s wrong. The code tells us how it works, but we still need comments to document APIs, explain decisions, which alternatives were considered, and why the present solution was chosen. Writing good comments is as much an art as writing the code itself.[^2]
 
-* _Don’t Repeat Yourself_ (the DRY principle) can become _No Code Duplication_ (rule). That’s wrong. For example, you must not write your tests like your code. A little duplication in tests is better than complex tests that fail to document how the code works. Furthermore, what may seems like duplication can be a good trade to be able to change requirements later so that two similar code may evolve independently.footnote:[Goodbye, Clean Code, Dan Abramov, https://overreacted.io/goodbye-clean-code/].
+* _Don’t Repeat Yourself_ (the DRY principle) can become _No Code Duplication_ (rule). That’s wrong. For example, you must not write your tests like your code. A little duplication in tests is better than complex tests that fail to document how the code works. Furthermore, what may seems like duplication can be a good trade to be able to change requirements later so that two similar code may evolve independently.[^3]
 
 The problem is our brain loves rules to make sense of the world. It’s a lot harder to accept, “Well, come up with some experiments and see what happens.” But the truth is **thinking is the only way to make things simple**. Therefore, you must work very hard and not succumb to the temptation to see inspiring principles as stupid rules.
 
@@ -469,3 +466,7 @@ I hope you now better understand that complexity is not a problem per se. Not ev
 </Admonition>
 
 
+[^1]: 7 Differences between complex and complicated, Sonja Blignaut
+, http://www.morebeyond.co.za/7-differences-between-complex-and-complicated-systems/
+[^2]: Coding Without Comments, Coding Horror, https://blog.codinghorror.com/coding-without-comments/
+[^3]: Goodbye, Clean Code, Dan Abramov, https://overreacted.io/goodbye-clean-code/

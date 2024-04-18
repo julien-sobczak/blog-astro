@@ -6,13 +6,10 @@ date: 2017-06-25
 subject: "Font Awesome"
 tags: ['frameworks']
 unofficialTags: ['web']
-recommendations: []
 ---
 import Admonition from '../../components/Admonition.astro'
 import Marker from '../../components/Marker.astro'
 import Lead from '../../components/Lead.astro'
-
-:imagesdir: {{ '/posts_resources/2017-06-25-font-awesome/' | relative_url }}
 
 
 https://github.com/FortAwesome/Font-Awesome[Font Awesome] is published under the https://github.com/FortAwesome/Font-Awesome#license[SIL OFL 1.1 license]. The code presented in this post was simplified (completeness, robustness, etc.) and should not be used outside of this context. This post is based on the version 4.7.0 of Font Awesome.
@@ -46,7 +43,7 @@ https://fontawesome.io/[Font Awesome], the iconic font and CSS toolkit, gives us
 
 Here is the output:
 
-<img src="demo-output.png" />
+<img src="/posts_resources/2017-06-25-font-awesome/demo-output.png" />
 
 Having this working example, we will now turn our attention to the inner working of _Font Awesome_ and implement a lightweight implementation of the library.
 
@@ -107,7 +104,7 @@ h1::before  { content: "Chapter "; }
 
 Output:
 
-<img src="css-content-property.png" />
+<img src="/posts_resources/2017-06-25-font-awesome/css-content-property.png" />
 
 
 Let's now check how _Font Awesome_ use this property. Here is the definition of the CSS classes `fa` and `fa-car` used above:
@@ -181,7 +178,7 @@ Having defined the CSS rule, we could easily use it to add icons without using a
 
 Output:
 
-<img src="use-font-FontAwesome.png" />
+<img src="/posts_resources/2017-06-25-font-awesome/use-font-FontAwesome.png" />
 
 If we want to go deeper into _Font Awesome_, we need to go further on the subject of font creation. This is the objective of the next part.
 
@@ -202,11 +199,11 @@ Once installed, launch the application by running the command `$ fontforge`. Whe
 
 The first Unicode numbers correspond to the same character as the ASCII encoding. As mentioned previously, no icons is defined for these characters &mdash; the browser fallbacks to other fonts when a character could not be found in the selected font.
 
-<img src="fontforge-fa-ascii.png" />
+<img src="/posts_resources/2017-06-25-font-awesome/fontforge-fa-ascii.png" />
 
 If we scroll to the bottom of the list, we finally found the _Font Awesome_ icons:
 
-<img src="fontforge-fa-special.png" />
+<img src="/posts_resources/2017-06-25-font-awesome/fontforge-fa-special.png" />
 
 
 ### A new font
@@ -222,20 +219,20 @@ Then,
 +
 * Double-click on the glyph `F000` to open the glyph editor.
 +
-<img src="fontforge-glyph-editor.png" />
+<img src="/posts_resources/2017-06-25-font-awesome/fontforge-glyph-editor.png" />
 * Click `File` > `Import` and select your downloaded picture.
 +
-<img src="fontforge-import-dialog.png" />
+<img src="/posts_resources/2017-06-25-font-awesome/fontforge-import-dialog.png" />
 * Be sure the glyph outline seems all right.
 +
-<img src="fontforge-glyph-haskell.png" />
+<img src="/posts_resources/2017-06-25-font-awesome/fontforge-glyph-haskell.png" />
 * Click `File` > `Close` to close the glyph editor.
 * The imported glyph should appear in the grid.
 +
-<img src="fontforge-my-font.png" />
+<img src="/posts_resources/2017-06-25-font-awesome/fontforge-my-font.png" />
 * Click `File` > `Generate Fonts...` to export our new font.
 +
-<img src="fontforge-generate-dialog.png" />
+<img src="/posts_resources/2017-06-25-font-awesome/fontforge-generate-dialog.png" />
 +
 Note: Be sure to use an output format supported by your browser. On my Debian machine with Google Chrome, I choose the _True Type_ format and named the file `my-font.ttf`. If _FontForge_ warns you about potential errors, try ignoring the warnings.
 * Close _FontForge_.
@@ -280,7 +277,7 @@ Create a new HTML document importing this stylesheet and declaring an element ha
 
 Output:
 
-<img src="demo-mf-output.png" />
+<img src="/posts_resources/2017-06-25-font-awesome/demo-mf-output.png" />
 
 
 ## Customize the icons
@@ -300,7 +297,7 @@ i {
 
 Output:
 
-<img src="demo-mf-color.png" />
+<img src="/posts_resources/2017-06-25-font-awesome/demo-mf-color.png" />
 
 
 ### Larger icons
@@ -350,7 +347,7 @@ We update our HTML document to use these classes:
 
 Output:
 
-<img src="demo-mf-size.png" />
+<img src="/posts_resources/2017-06-25-font-awesome/demo-mf-size.png" />
 
 
 ### Fixed width icons
@@ -378,7 +375,7 @@ To arbitrarily rotate icons with _Font Awesome_, we use the `fa-rotate-*` classe
 
 Output:
 
-<img src="demo-fa-rotation.png" />
+<img src="/posts_resources/2017-06-25-font-awesome/demo-fa-rotation.png" />
 
 Using CSS 3 transformations, this feature is implemented in a few lines of code.
 
@@ -407,7 +404,7 @@ We update the HTML document to exploit the last two sections:
 
 Output:
 
-<img src="demo-mf-rotation.png" />
+<img src="/posts_resources/2017-06-25-font-awesome/demo-mf-rotation.png" />
 
 This ends the part devoted to the icons customization and this post too.
 

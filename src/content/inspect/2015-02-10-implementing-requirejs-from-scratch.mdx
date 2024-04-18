@@ -6,13 +6,10 @@ date: 2015-02-10
 subject: "RequireJS"
 tags: ['web']
 unofficialTags: ['javascript']
-recommendations: []
 ---
 import Admonition from '../../components/Admonition.astro'
 import Marker from '../../components/Marker.astro'
 import Lead from '../../components/Lead.astro'
-
-:imagesdir: {{ '/posts_resources/2015-02-10-implementing-requirejs-from-scratch/' | relative_url }}
 
 
 <Admonition type="caution" className="license" title="None">
@@ -165,7 +162,7 @@ define({
 
 The module is anonymous, without any dependencies, defining a unique function producing the following result when our page is loaded in our browser:
 
-<img src="demo-output.png" />
+<img src="/posts_resources/2015-02-10-implementing-requirejs-from-scratch/demo-output.png" />
 
 Our goal is now to remove the dependency on require.js, and to provide a custom implementation that we will write step by step.
 
@@ -174,7 +171,7 @@ Our goal is now to remove the dependency on require.js, and to provide a custom 
 
 Before jumping headfirst into the code, let's take a look at the HTTP requests sent by RequireJS on our example.
 
-<img src="demo-requests.png" />
+<img src="/posts_resources/2015-02-10-implementing-requirejs-from-scratch/demo-requests.png" />
 
 * `require.js` inspects the attribute `data-main` to determine the first file to load, in our case, `main.js`. A first Ajax request is emitted.
 * `main.js` calls the function `require`. One dependency is declared. The method `require` triggers a second Ajax request to download `util.js`.

@@ -1,0 +1,105 @@
+---
+const { face, valid } = Astro.props;
+---
+
+<div class=`flashcard flashcard-${face} flashcard-${valid ? 'ok' : 'ko'}``>
+  <slot />
+</div>
+
+<style>
+
+.flashcard {
+  position: relative;
+  border: 1px solid black;
+  padding: 30px 30px 50px;
+  width: 80%;
+  margin: 30px auto 38px;
+  font-size: 90%;
+}
+
+.flashcard-front::after {
+  content: "Front";
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: black;
+  color: white;
+  padding: 2px 5px;
+}
+
+.flashcard-back::after {
+  content: "Back";
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: black;
+  color: white;
+  padding: 2px 5px;
+}
+
+.flashcard-ok {
+    box-shadow: 8px 8px green;
+}
+
+.flashcard-ko {
+    box-shadow: 8px 8px red;
+}
+
+.flashcard-ok::before {
+  content: "OK";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  text-align: center;
+  background-color: black;
+  color: green;
+  padding: 2px 5px;
+}
+
+.flashcard-ko::before {
+  content: "KO";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  text-align: center;
+  background-color: black;
+  color: red;
+  padding: 2px 5px;
+}
+
+.flashcard strong {
+  font-weight: 700;
+}
+
+.flashcard .foreign {
+  color: MediumBlue;
+}
+
+.flashcard .flashcard-example {
+  font-style: italic;
+  font-size: 90%;
+  margin: 5px 0 !important;
+}
+
+.flashcard-deck ul {
+  list-style-type: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.flashcard-deck li {
+  border-top: 1px solid black;
+  border-bottom: 1px solid silver;
+  padding: 5px 0;
+}
+
+.flashcard-advantage {
+  display: inline-block;
+  background-color: yellow;
+  font-weight: bold;
+  padding: 0 2px;
+}
+
+</style>

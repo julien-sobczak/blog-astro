@@ -6,13 +6,10 @@ date: 2019-03-10
 subject: "Floating-Point Numbers"
 tags: ['languages', 'computer-science']
 unofficialTags: []
-recommendations: []
 ---
 import Admonition from '../../components/Admonition.astro'
 import Marker from '../../components/Marker.astro'
 import Lead from '../../components/Lead.astro'
-
-:imagesdir: {{ '/posts_resources/2019-03-10-floating-point-numbers-demystified/' | relative_url }}
 
 > Nothing brings fear to my heart more than a floating point number.
 >
@@ -31,9 +28,9 @@ $ python
 >>> 0.1+0.2
 0.3000000000000000**4**
 >>> 1.2-1.0
-0.***19999999999999996***
+0.**19999999999999996**
 >>> 0.1 + 0.1 + 0.1 - 0.3 # 0?
-***5.55111512313e-17***
+**5.55111512313e-17**
 ```
 
 Hmm, that's weird. A bug in Python? No. You get the same result in almost all languages, since most of them follow the same specification (a little bit about that later).
@@ -45,7 +42,7 @@ Let's try the same test in JavaScript, directly from your browser, by simply ent
 
 First, computers are electronic devices, full of components, in particular transistors. The basic operation of a transistor is switching (on and off). In other words, it is 0 or 1. So, computers work with what is called _Binary Number System_ in mathematics, instead of the _Decimal Number System_ we use everyday (1 is represented as `1` in binary, 2 as `10`, 3 as `11`, 4 as `100`, and so on).
 
-<img src="decimal-binary-systems.png" />
+<img src="/posts_resources/2019-03-10-floating-point-numbers-demystified/decimal-binary-systems.png" />
 
 Depending on the base (e.g., 10 or 2), there exist numbers that cannot be represented. For example, 1/3 cannot be represented as a decimal number as there is an infinite number of digits after the floating point (0.33333…). In binary system, 0.1 cannot be represented for the same reason, in the same way that 0.2 cannot neither. Why? Mathematics to our rescue.
 
@@ -57,11 +54,11 @@ To illustrate the problem with a concrete example, consider 0.2 in base 2.
 
 First, how do we build numbers in the decimal system? By composition. Look at this example:
 
-<img src="number-composition.png" />
+<img src="/posts_resources/2019-03-10-floating-point-numbers-demystified/number-composition.png" />
 
 Here are the equivalent numbers on which to compose in base 2:
 
-<img src="binary-composition.png" />
+<img src="/posts_resources/2019-03-10-floating-point-numbers-demystified/binary-composition.png" />
 
 Let's try to represent 25 in binary using the above table. 25 = 16 + 8 + 1 in decimal, so 10000 + 1000 + 1 = 11001 in binary. Easy.
 
@@ -118,7 +115,7 @@ Problem. No significant digits are included... Completely useless too.
 
 Clearly, we need a better solution to satisfy both the astronomer and the chemist, to store large and small floating-point numbers using as few digits as allowed by the machine. The solution is called https://en.wikipedia.org/wiki/Decimal_floating_point[Decimal floating point] where a number is represented by a fixed number of significant digits (the significand) and scaled using an exponent in some fixed base. An example:
 
-<img src="decimal-floating-point.png" />
+<img src="/posts_resources/2019-03-10-floating-point-numbers-demystified/decimal-floating-point.png" />
 
 Let's try the previous examples again using this technique.
 
@@ -263,7 +260,7 @@ Still wrong...
 
 Second, the significand is not a simple binary number, where the rightmost bit is 2^0^, then 2^1^, 2^2^, ... until 2^23^. The significand represents a sum of fractions where the leftmost bit is 2^-1^ (1/2), then 2^-2^ (1/4), 2^-3^ (1/8), ... until 2^-24^. Basically, the floating-point is not on the right, but on the left:
 
-<img src="normalized-number.png" />
+<img src="/posts_resources/2019-03-10-floating-point-numbers-demystified/normalized-number.png" />
 
 The result is a number always between 0 and 1, far different from our previous calculation.
 
@@ -272,7 +269,7 @@ Using our example, the significand represents:
 [subs="quotes"]
 ```
 = 2^**-1**^ + 2^**-4**^ + 2^**-7**^ + ...
-= 1/***2** + 1/**16*** + 1/***128*** + ...
+= 1/**2** + 1/**16** + 1/**128** + ...
 = 0.5707963705062866
 ```
 
@@ -369,11 +366,11 @@ Our dummy 4-bit type can **only** represent the numbers present on this list. **
 
 Here is a diagram to visualize the gaps between these numbers:
 
-<img src="dummy-normalized-numbers.png" />
+<img src="/posts_resources/2019-03-10-floating-point-numbers-demystified/dummy-normalized-numbers.png" />
 
 For standard types such as single or double precision, the pattern is very similar, except there are a lot more numbers. If we add the bit sign, we just need to reflect the diagram to get something like this:
 
-<img src="all-normalized-numbers.png" />
+<img src="/posts_resources/2019-03-10-floating-point-numbers-demystified/all-normalized-numbers.png" />
 
 Gaps are larger and larger when numbers are getting smaller or bigger.
 
@@ -413,7 +410,7 @@ It's exactly what we learned in school about decimals. Move the comma to the lef
 
 The same logic is applied here with binaries. The following figure shows why integers can be safely represented using the normalized representation, using the 4-bit dummy type as the example:
 
-<img src="normal-vs-normalized.png" />
+<img src="/posts_resources/2019-03-10-floating-point-numbers-demystified/normal-vs-normalized.png" />
 
 Normalized or not, we can represent the same numbers when using the same number of bits.
 
@@ -513,7 +510,7 @@ Of course! This increment explains why starting from 16777216, not all integer c
 
 In fact, the gaps are easily predictable and depend only on the exponent value. On the previous example, the gap between two successive numbers will always be 2 as long as the exponent is 24 (or 151 with the exponent bias). When the exponent is increased to 25 (or 152 with the exponent bias), the gap becomes `2^-23^ * 2^25^ = 2^2^ = 4`. The representable numbers are 33554432, 33554436, 33554440, and so on until 67108856, 67108860.
 
-<img src="gaps.png" />
+<img src="/posts_resources/2019-03-10-floating-point-numbers-demystified/gaps.png" />
 
 We observe that the gap increases by the next multiple of 2 each time the exponent is incremented. To better visualise the gap, let's try a bigger exponent to measure how large the gap becomes as numbers are getting bigger. For example, let’s try the exponent 120 (or 247 with the exponent bias):
 
@@ -621,15 +618,15 @@ Here are the first normal numbers (normalized numbers are also called normal num
 [subs="quotes"]
 ```
 + _1.4012985e-45_ (gap)
-= 1.17549***44***90952134e-38
+= 1.17549**44**90952134e-38
 + _1.4012985e-45_ (gap)
-= 1.17549***46***31081980e-38
+= 1.17549**46**31081980e-38
 + _1.4012985e-45_ (gap)
-= 1.17549***47***71211827e-38
+= 1.17549**47**71211827e-38
 + _1.4012985e-45_ (gap)
-= 1.17549***49***11341673e-38
+= 1.17549**49**11341673e-38
 + _1.4012985e-45_ (gap)
-= 1.17549***50***51471520e-38
+= 1.17549**50**51471520e-38
 ...
 ```
 
@@ -656,11 +653,11 @@ These two numbers represent respectively the smallest and largest subnormals num
 
 Indeed, subnormal numbers solve the gap we had on the diagram when we tried to visualize representable numbers:
 
-<img src="normals-subnormals.png" />
+<img src="/posts_resources/2019-03-10-floating-point-numbers-demystified/normals-subnormals.png" />
 
 It is important to realise that subnormal numbers are represented with less precision than normal numbers. This is due to the presence of the leading 0, and thus leading zero bits in the significand no longer function as significant bits of precision. Consequently, the precision is less than that of normalized floating-point numbers.
 
-<img src="subnormals-precision.png" />
+<img src="/posts_resources/2019-03-10-floating-point-numbers-demystified/subnormals-precision.png" />
 
 
 <Admonition type="note" className="remember" title="Key Takeaways">
@@ -751,7 +748,7 @@ Consider the addition of the following two numbers:
 
 [subs="quotes"]
 ```
-0 **10011000** (1) 00000000000000000000001 = 2^-23^ * 2^***25***^ = 2^2^
+0 **10011000** (1) 00000000000000000000001 = 2^-23^ * 2^**25**^ = 2^2^
 ```
 
 The first step requires the smaller exponent to be incremented and the significand shifted right until the exponents match. This means:
@@ -911,9 +908,9 @@ So, all of the following representations are valid `NaN` examples:
 
 [subs="quotes"]
 ```
-1 ***11111111*** 00000000000000000000001
-1 ***11111111*** 10000000000000000000000
-0 ***11111111*** 11111111111111111111111
+1 **11111111** 00000000000000000000001
+1 **11111111** 10000000000000000000000
+0 **11111111** 11111111111111111111111
 ```
 
 In fact, there are a lot a possible representations for ``NaN``s: 2^23-1^ for single precision (23 bits for the significand) if we omit the bit sign. That's a lot of valid combinaisons!
@@ -932,7 +929,7 @@ If the first bit of the trailing significand is `0`, we have a **quiet NaN** (`q
 
 A known technique, called **NaN-boxing**, is implemented by some interpreters like JavaScriptCore, to **pack other types such as pointers (48-bits) or integers (32-bit) inside the space left by NaNs in double precisions** (where the significand represents 52 bits). As a variable can be of any type, the interpreter uses only double precision floating-points to store everything. If it's a floating-point, it uses the usual IEEE 754 representation. If it's another type, it uses the available 51-bits for ``NaN``s to store any value (a pointer address, an integer, etc). If you want to know more about this hack, you can start looking at this https://anniecherkaev.com/the-secret-life-of-nan[great article].
 
-<img src="nan-boxing.png" />
+<img src="/posts_resources/2019-03-10-floating-point-numbers-demystified/nan-boxing.png" />
 </Admonition>
 
 
@@ -958,9 +955,9 @@ By understanding the underlying logic behind the standard, you are now better eq
 
 <Admonition type="note" className="experiment" title="Myths vs Reality">
 * **Myth**: I can use floating-point numbers to represent common numbers like amounts.
-_***Wrong***. Floating-point numbers cannot represent simple numbers such as 0.1 or 0.2._
+_**Wrong**. Floating-point numbers cannot represent simple numbers such as 0.1 or 0.2._
 * **Myth**: I will not have problems if I use double precision (64 bits).
-_***Wrong***. Problems are identical, but less frequent. Gaps are smaller but there are rounding errors too, and numbers such as 0.1 cannot be represented with floating-point numbers, single or double precision._
+_**Wrong**. Problems are identical, but less frequent. Gaps are smaller but there are rounding errors too, and numbers such as 0.1 cannot be represented with floating-point numbers, single or double precision._
 * **Myth**: Floating-point numbers approximation only affects insignificant digits after the floating-point.
-_***Wrong***. Not all integers can be represented. There exists gaps, even for relatively small values like 16,777,217 when using single precision._
+_**Wrong**. Not all integers can be represented. There exists gaps, even for relatively small values like 16,777,217 when using single precision._
 </Admonition>

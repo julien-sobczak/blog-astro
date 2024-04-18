@@ -6,13 +6,10 @@ date: 2021-06-19
 subject: "Unicode"
 tags: []
 unofficialTags: []
-recommendations: []
 ---
 import Admonition from '../../components/Admonition.astro'
 import Marker from '../../components/Marker.astro'
 import Lead from '../../components/Lead.astro'
-
-:imagesdir: {{ '/posts_resources/2021-06-19-unicode-for-curious-developers/' | relative_url }}
 
 
 > Our goal is to make sure that all of the text on computers for every language in the world is represented but we get a lot more attention for emojis than for the fact that you can type Chinese on your phone and have it work with another phone.
@@ -20,7 +17,7 @@ import Lead from '../../components/Lead.astro'
 > -- <cite> Unicode Consortium co-founder and president Mark Davis</cite>
 
 
-<img src="emojis-everywhere.png" />
+<img src="e/posts_resources/2021-06-19-unicode-for-curious-developers/mojis-everywhere.png" />
 
 
 <Lead>
@@ -29,15 +26,15 @@ Unicode is what allows me to say hello in over 100 languages—እው ሰላም 
 
 
 <Admonition type="note" className="None" title="What You Will Learn">
-* ***The Story***
+* **The Story**
   * Why Unicode makes the web possible.
   * Why emojis exist in Unicode.
   * How you can suggest a new emoji.
-* ***The Standard***
+* **The Standard**
   * Why Unicode is not just a character set.
   * How characters are allocated in the codespace.
   * Why UTF-8 is different from Unicode, and why Unicode is different from UTF-8.
-* ***The Implementation***
+* **The Implementation**
   * Why "à" == "à" is false in most languages.
   * Why the pistol emoji is now a toy.
   * How emojis are implemented on your device.
@@ -75,13 +72,12 @@ As often, if you want to have a good overview of a topic, you have to understand
   * xref:sect-implementation-rendering[Rendering]
 * xref:sect-future[The Future]
 
+{/* include::./2021-06-19-unicode-for-curious-developers/the-story.adoc[] FIXME */}
+{/* include::./2021-06-19-unicode-for-curious-developers/the-standard.adoc[] FIXME */}
+{/* include::./2021-06-19-unicode-for-curious-developers/the-implementation.adoc[] FIXME */}
 
-include::./2021-06-19-unicode-for-curious-developers/the-story.adoc[]
-include::./2021-06-19-unicode-for-curious-developers/the-standard.adoc[]
-include::./2021-06-19-unicode-for-curious-developers/the-implementation.adoc[]
 
-
-'''
+---
 
 [[sect-future]]
 ## The Future

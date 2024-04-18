@@ -6,13 +6,11 @@ date: 2017-12-06
 subject: "Flashcards"
 tags: ['learning']
 unofficialTags: ['flashcards']
-recommendations: []
 ---
 import Admonition from '../../components/Admonition.astro'
 import Marker from '../../components/Marker.astro'
 import Lead from '../../components/Lead.astro'
 
-:imagesdir: {{ '/posts_resources/2017-12-06-start-remembering/' | relative_url }}
 
 <Lead>
 I love reading nonfiction books, particularly while commuting. I (try to) start a new book every week -- a new language, a new framework, a new insight. There is so much to learn. But the truth is, after more than 300 books read in the last decade, I forgot (almost) everything.
@@ -44,14 +42,10 @@ Creating associations is something we do constantly. Digits are used to represen
 
 Author ShaoLan Hsueh, with her book _Chineasy_, gives us a formidable illustration of the key roles of associations. This mom of two British born children wanted to help them learn Chinese, one of the oldest written languages, and one of the most difficult to master, especially for Westerners. ShaoLan's method is to transform Chinese characters into charming pictograms that are easy to remember. Here are some examples:
 
-[link=https://www.chineasy.com]
-<img src="person.svg" />
-[link=https://www.chineasy.com]
-<img src="fire.svg" />
-[link=https://www.chineasy.com]
-<img src="woman.svg" />
-[link=https://www.chineasy.com]
-<img src="sun.png" />
+<a href="https://www.chineasy.com"><img src="/posts_resources/2017-12-06-start-remembering/person.svg" /></a>
+<a href="https://www.chineasy.com"><img src="/posts_resources/2017-12-06-start-remembering/fire.svg" /></a>
+<a href="https://www.chineasy.com"><img src="/posts_resources/2017-12-06-start-remembering/woman.svg" /></a>
+<a href="https://www.chineasy.com"><img src="/posts_resources/2017-12-06-start-remembering/sun.png" /></a>
 
 Visualizations are also used by all memory champions, who among their achievements succeed in remembering the order of a shuffled deck of cards in less than 30 seconds. As using pure rote learning is doomed to failure, champions use associations. When you see the ace of diamond, they see Michael Jordan slam dunking a basketball. The two of club is Charlie Chaplin swinging with his cane. The jack of space can be the Joker in Batman laughing insanely. And so on. Memorizing the deck of cards just comes down to imagine a story using these associations. It can be Charlie Chaplin (two of club) laughing insanely (jack of space) before receiving a basketball (as of diamond). This basic technique known as the https://artofmemory.com/wiki/Person-Action-Object_(PAO)_System[PAO system] (Person-Action-Object) is commonly used in major competitions and is very similar to the techniques used in the Ancient Greece by orators to remember their speech.
 
@@ -66,8 +60,7 @@ Visualizations are also used by all memory champions, who among their achievemen
 
 Memorable memories are not immune to decay, and with time, even the more memorable memory could become past memory. The solution is simple. We need to access the information before it disappears. By doing that, you are sending a clear message to your brain: "this is important to me." The following diagram illustrates the retention according the number of times an information is reviewed.
 
-[link=https://en.wikipedia.org/wiki/Forgetting_curve]
-<img src="forgetting-curve-wikipedia.png" />
+<a href="https://en.wikipedia.org/wiki/Forgetting_curve"><img src="/posts_resources/2017-12-06-start-remembering/forgetting-curve-wikipedia.png" /></a>
 
 The numbers are only for illustrative purpose. What is important to notice is that memory decays more and more slowly over the revisions. By reviewing the same information at precise interval, we could fix a memory for a very long time using only as few as 5 to 7 reviews. This is exactly what https://en.wikipedia.org/wiki/Spaced_repetition[Spaced Repetition] is about. This learning technique is commonly applied to retain indefinitely a large number of items in memory. It is, therefore, recommended when learning a new language and you face the problem of vocabulary acquisition. While a paper and a pencil can suffice to apply spaced repetitions, there exist spaced repetition softwares (SRS) to help us store items and review them at the right time. The most popular application and the one I use is Anki.
 
@@ -90,7 +83,7 @@ Here are some of the practices based on the principles presented in this post th
 
 - **I don't read several books on the same subject in a consecutive order**. I intertwine other books to let time for prior knowledge to mature and/or time to practice.
 - **I read books more actively**. I begin by determining which knowledge I'm looking for. I use mindmapping to reflect on connections between facts (mainly when reading self-help books) and I create flashcards when I want something to stay in my memory for a long time (mainly when reading technical books.)
-- **I choose books more deliberately**. I favor books that help me to focus on the Big Picture (i.e. [_Building Microservices_]({% post_url read/2015/2015-03-19-building-microservices %}) before delving into a particular implementation.)
+- **I choose books more deliberately**. I favor books that help me to focus on the Big Picture (i.e. [_Building Microservices_](/read/2015/2015-03-19-building-microservices) before delving into a particular implementation.)
 - **I don't read a reference book if I have not play with the technology first**. Also, I often start by reading a quickstart guide. All of this help me get context that my memory can use to create connections.
 - And above all, **I do not blame my memory for forgetting**. I blame myself.
 </Admonition>

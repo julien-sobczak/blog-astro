@@ -6,14 +6,13 @@ date: 2022-05-30
 subject: "Anki"
 tags: ['learning']
 unofficialTags: ['flashcards']
-recommendations: ['2020-12-26-anki-scripting-for-non-programmers']
+# recommendations:
+# - '2020-12-26-anki-scripting-for-non-programmers'
 ---
 import Admonition from '../../components/Admonition.astro'
 import Marker from '../../components/Marker.astro'
 import Lead from '../../components/Lead.astro'
 
-:imagesdir: {{ '/posts_resources/2022-05-30-anki-srs/' | relative_url }}
-:icons: font
 
 > Humans more easily remember or learn items when they are studied a few times over a long period of time (spaced presentation), rather than studied repeatedly in a short period of time.
 >
@@ -43,7 +42,7 @@ I assume that you have used Anki before. All code examples use the Python langua
 
 The role of any Spaced Repetition System (SRS) algorithm is to determine what the user should review now, or say differently when must happen the next review for every remembered item. **The goal of any implementation is to counteract the effect of the forgetting curve**:
 
-<img src="forgetting-curve.png" />
+<img src="/posts_resources/2022-05-30-anki-srs/forgetting-curve.png" />
 
 As soon as we learn or review a piece of knowledge, the decay begins. SRS algorithms need to determine the optimal interval between two reviews to ensure we haven't completely forgotten it (memory retention = 0%) while trying to limit as much as possible the number of reviews. In practice, most algorithms use 10% for the forgetting index (= 90% of items are remembered correctly) so that we don't have too many items to review again while keeping the number of reviews close to optimal.
 
@@ -54,7 +53,7 @@ The details of the different algorithms differ greatly between systems. We will 
 
 If [Hermann Ebbinghaus](https://en.wikipedia.org/wiki/Hermann_Ebbinghaus) is credited for the initial research behind SRS, the [Leiter System](https://en.wikipedia.org/wiki/Leitner_system) is often quoted as the first algorithm. This system uses a physical box as depicted by the following illustration:
 
-<img src="Leitner-original.png" />
+<img src="/posts_resources/2022-05-30-anki-srs/Leitner-original.png" />
 
 Here is a small Python program implementing the logic behind the original Leitner system:
 
@@ -118,7 +117,7 @@ The original Leitner system cannot really be considered a spaced repetition syst
 
 An alternative method using three boxes where incorrect answers are only moved back to the previous box is often privileged:
 
-<img src="Leitner-modern.png" />
+<img src="/posts_resources/2022-05-30-anki-srs/Leitner-modern.png" />
 
 Here is a program implementing this new logic:
 
@@ -207,7 +206,7 @@ Algorithms are precise instructions to carry out. As we have seen with the Leitn
 
 The [SM-0 algorithm](http://super-memory.com/articles/paper.htm) (aka the paper-and-pencil SuperMemo method) was published in 1985 and relies on [paper books filled with tables](http://super-memory.com/articles/paper.htm).
 
-<img src="sm-0.png" />
+<img src="/posts_resources/2022-05-30-anki-srs/sm-0.png" />
 
 Although the algorithm was designed to be executed manually, we can still capture the logic using code:
 
@@ -314,8 +313,8 @@ if __name__ == "__main__":
 
 The SM-0 algorithm can be challenging in practice for different reasons:
 
-* ***All items on a given page are reviewed at the same time***. For hard-to-remember items (items that require more than 3 reviews on a given day to be recalled), SM-0 recommends duplicating them on a new page in your book. These items will be reviewed more frequently, and some will maybe be duplicated again if still too hard to remember.
-* ***The intervals are determined using an estimation of the average case*** (x1.7) but the ideal intervals depend on the complexity and your familiarity with the subject. You probably need shorter intervals for science subjects like Mathematics for example.
+* **All items on a given page are reviewed at the same time**. For hard-to-remember items (items that require more than 3 reviews on a given day to be recalled), SM-0 recommends duplicating them on a new page in your book. These items will be reviewed more frequently, and some will maybe be duplicated again if still too hard to remember.
+* **The intervals are determined using an estimation of the average case** (x1.7) but the ideal intervals depend on the complexity and your familiarity with the subject. You probably need shorter intervals for science subjects like Mathematics for example.
 * Last but not least, executing the algorithm manually works, but is far from being a smooth learning experience...
 
 Enter the computer.
@@ -325,7 +324,7 @@ Enter the computer.
 
 Unlike physical systems where cards are grouped in the same box/partition/page and are reviewed collectively, digital systems consider each item separately. For example, the SuperMemo algorithm called [SM-2](https://www.supermemo.com/en/archives1990-2015/english/ol/sm2) assigns a specific level of difficulty to every card and determines the appropriate intervals between repetitions using this specific value (called the E-Factor).
 
-<img src="sm-2.png" />
+<img src="/posts_resources/2022-05-30-anki-srs/sm-2.png" />
 
 Now, the same logic but implemented as code:
 
@@ -414,15 +413,15 @@ We will analyze the V2.1 scheduler as it is the version I'm familiar with. We wi
 
 Here is a recall of [Anki terminology](https://docs.ankiweb.net/getting-started.html#key-concepts):
 
-<img src="anki-terminology.png" />
+<img src="/posts_resources/2022-05-30-anki-srs/anki-terminology.png" />
 
 As outlined by the schema, we will focus on the core abstractions (Collection, Note, Card) that affects how the SRS algorithm works. In addition, cards in Anki are scheduled differently according to their state:
 
-<img src="anki-workflow.png" />
+<img src="/posts_resources/2022-05-30-anki-srs/anki-workflow.png" />
 
 Here is an overview of the Anki algorithm:
 
-<img src="anki-srs.png" />
+<img src="/posts_resources/2022-05-30-anki-srs/anki-srs.png" />
 
 The use of separate new/review queues tries to remediate a common complaint with the standard SM-2 algorithm is that repeated failings of a card cause the card to get stuck in "low interval hell" (also known as "ease hell"). [In Anki](https://faqs.ankiweb.net/what-spaced-repetition-algorithm.html#review-cards), the initial acquisition process does not influence the ease factor.
 
@@ -1219,7 +1218,7 @@ class Scheduler:
 * "Easy": the current interval is multiplied by the current ease times the easy bonus (1.3 by default) (+ a bonus if the card was late).
 
 
-***We are done*** 🎉. The complete code is available in the [companion GitHub repository](https://github.com/julien-sobczak/anki-srs-under-the-hood/blob/main/anki/schedv2_minimal_v3.py). A more complete [annotated version](https://github.com/julien-sobczak/anki-srs-under-the-hood/blob/main/anki/schedv2_annotated.py) is also available in the same repository including two additional features described next.
+**We are done** 🎉. The complete code is available in the [companion GitHub repository](https://github.com/julien-sobczak/anki-srs-under-the-hood/blob/main/anki/schedv2_minimal_v3.py). A more complete [annotated version](https://github.com/julien-sobczak/anki-srs-under-the-hood/blob/main/anki/schedv2_annotated.py) is also available in the same repository including two additional features described next.
 
 
 
@@ -1359,7 +1358,7 @@ The successive iterations become more and more elaborate by adding new dimension
 
 What follows is an example of the optimum factors (OF) matrix used in SM-4/SM-5. The matrix ignores the retrievability dimension, which was introduced in SM-6.
 
-<img src="sm-5-matrix.png" />
+<img src="/posts_resources/2022-05-30-anki-srs/sm-5-matrix.png" />
 
 A two-dimensional matrix is easier to represent but the logic is similar with more dimensions. Initially, the matrix was defined based on prior measurements in SuperMemo. After each answer, the grade tells SuperMemo how well the interval "performed." If the grade is low, the interval was too long. If the grade is high, the interval was too short. The entry in the matrix is updated in consequence and matrix smoothing is applied (= if a value increases, a smaller increase can be beneficial to neighbors too).
 
@@ -1384,8 +1383,8 @@ Many applications relying on SRS appeared in popular app stores more or less rec
 
 In my opinion, **Anki is not perfect but there is no need to focus too much on optimizing it**:
 
-* ***Adding more dimensions***? What if you review inadvertently a card, for example when explaining the idea to a coworker. No algorithm can exploit this and postpone the next review. **No algorithm will ever be perfect**.
-* ***Using machine learning***? Applying the lessons from other learners is great for common datasets. For example, if most French users have trouble learning a particular English word, chances are future French users will need shorter intervals too. But what about custom-edited cards about subjects such as science, management, and parenting. What about your interest in any of these subjects. We remember more easily what passionates us. ***Machine learning excels when there are patterns but learning is profoundly a personal, unique experience***.
+* **Adding more dimensions**? What if you review inadvertently a card, for example when explaining the idea to a coworker. No algorithm can exploit this and postpone the next review. **No algorithm will ever be perfect**.
+* **Using machine learning**? Applying the lessons from other learners is great for common datasets. For example, if most French users have trouble learning a particular English word, chances are future French users will need shorter intervals too. But what about custom-edited cards about subjects such as science, management, and parenting. What about your interest in any of these subjects. We remember more easily what passionates us. **Machine learning excels when there are patterns but learning is profoundly a personal, unique experience**.
 
 Therefore, **I think we should focus more on optimizing our practices rather than the tools**. Here are two key practices:
 
@@ -1425,25 +1424,25 @@ One last important thing,
 
 
 
-<!--
+{/*
 
 https://help.supermemo.org/wiki/Glossary
 
-* ***A-Factor*** (absolute factor; AF): number associated with every element in a collection. A-Factor determines how much intervals increase in the learning process. The higher the A-Factor, the faster the intervals increase. A-Factors reflect item difficulty. The higher the A-Factor the easier the item. The most difficult items have A-Factors equal to 1.2. A-Factor is defined as the quotient of the second optimum interval and the first optimum interval used in repetitions.
+* **A-Factor** (absolute factor; AF): number associated with every element in a collection. A-Factor determines how much intervals increase in the learning process. The higher the A-Factor, the faster the intervals increase. A-Factors reflect item difficulty. The higher the A-Factor the easier the item. The most difficult items have A-Factors equal to 1.2. A-Factor is defined as the quotient of the second optimum interval and the first optimum interval used in repetitions.
 
-* ***D-Factor*** decline of O-Factors with successive repetitions can be approximated with a power curve that begins at O-Factor that equals A-Factor. D-Factors are no longer used in SuperMemo Algorithm. When a power regression is used to compute O-Factors on the basis of R-Factors for successive repetitions in a single A-Factor category, the decay constant of the resulting function is called a D-Factor. The larger the D-Factor the faster the decline of O-Factors with each repetition. This means that large D-Factors imply more frequent repetitions. D in D-Factor stands for decay (it is a decay constant of the negative power function).
+* **D-Factor** decline of O-Factors with successive repetitions can be approximated with a power curve that begins at O-Factor that equals A-Factor. D-Factors are no longer used in SuperMemo Algorithm. When a power regression is used to compute O-Factors on the basis of R-Factors for successive repetitions in a single A-Factor category, the decay constant of the resulting function is called a D-Factor. The larger the D-Factor the faster the decline of O-Factors with each repetition. This means that large D-Factors imply more frequent repetitions. D in D-Factor stands for decay (it is a decay constant of the negative power function).
 
-* ***E-Factor*** (easiness factor; EF) is the number related to the difficulty of a given element in early versions of SuperMemo (up to and including SuperMemo 7). New inter-repetition intervals were determined by multiplying the old interval by E-Factor.
+* **E-Factor** (easiness factor; EF) is the number related to the difficulty of a given element in early versions of SuperMemo (up to and including SuperMemo 7). New inter-repetition intervals were determined by multiplying the old interval by E-Factor.
 
-* ***matrix smoothing*** is a mathematical procedure that converts a matrix of numbers into a "smoother version" (e.g. by averaging the neighboring entries). For example, if the row of the matrix is 1, 2, 3, 4, 666, 6, 7, 8, smoothing might convert it to 1, 2, 3, 6, 99, 9, 8.
+* **matrix smoothing** is a mathematical procedure that converts a matrix of numbers into a "smoother version" (e.g. by averaging the neighboring entries). For example, if the row of the matrix is 1, 2, 3, 4, 666, 6, 7, 8, smoothing might convert it to 1, 2, 3, 6, 99, 9, 8.
 
-* ***O-Factor*** (optimum factor; OF) is a number which tells you how much intervals should increase to reach recall of 90%. O-Factors differ for different levels of memory stability and different item difficulty. They are normalized for the forgetting index of 10%. For the first repetition, i.e. there was no prior interval, O-Factor is assumed to be the same as the first interval (as if the prior interval was 1 day). For the first repetition, different O-Factors are computed for a different number of memory lapses. For example: if the O-Factor is 2.5, and the prior interval was 20 days, at repetition time, the new interval should be set to 2.5*20 days, i.e. 50 days.
+* **O-Factor** (optimum factor; OF) is a number which tells you how much intervals should increase to reach recall of 90%. O-Factors differ for different levels of memory stability and different item difficulty. They are normalized for the forgetting index of 10%. For the first repetition, i.e. there was no prior interval, O-Factor is assumed to be the same as the first interval (as if the prior interval was 1 day). For the first repetition, different O-Factors are computed for a different number of memory lapses. For example: if the O-Factor is 2.5, and the prior interval was 20 days, at repetition time, the new interval should be set to 2.5*20 days, i.e. 50 days.
 
-* ***OF matrix*** is athe matrix of O-Factors for different levels of difficulty (expressed as A-Factor) and stability (expressed as repetition category). The OF matrix is used by SuperMemo Algorithms SM-5 through SM-15 in computing optimum intervals in spaced repetition. In the newest algorithms, the role of the 2-dimensional OF matrix is played by the 3-dimensional SInc[] matrix (with the added dimension of retrievability).
+* **OF matrix** is athe matrix of O-Factors for different levels of difficulty (expressed as A-Factor) and stability (expressed as repetition category). The OF matrix is used by SuperMemo Algorithms SM-5 through SM-15 in computing optimum intervals in spaced repetition. In the newest algorithms, the role of the 2-dimensional OF matrix is played by the 3-dimensional SInc[] matrix (with the added dimension of retrievability).
 
-* ***R-Factor*** (retention factor; RF) is the number which says at which U-Factor (i.e. the measure of interval increase) the measured forgetting index (i.e. the measure of forgetting) is approximated to be 10%. This number is unique for different item difficulties and for different repetition categories (i.e. the measure of memory stability). R-Factors can be seen as a vertical green line on forgetting curve graphs in SuperMemo.
+* **R-Factor** (retention factor; RF) is the number which says at which U-Factor (i.e. the measure of interval increase) the measured forgetting index (i.e. the measure of forgetting) is approximated to be 10%. This number is unique for different item difficulties and for different repetition categories (i.e. the measure of memory stability). R-Factors can be seen as a vertical green line on forgetting curve graphs in SuperMemo.
 
-* ***U-Factor*** is the number associated with each memorized element. It equals to the ratio of the current interval and the previously used interval. If the element has not been repeated yet, i.e. the previous interval is not defined, U-Factor equals the first interval. The greater the U-Factor the greater the increase of the interval between repetitions. For items, U-Factors are determined by SuperMemo Algorithm. For topics, U-Factors are determined by A-Factors.
+* **U-Factor** is the number associated with each memorized element. It equals to the ratio of the current interval and the previously used interval. If the element has not been repeated yet, i.e. the previous interval is not defined, U-Factor equals the first interval. The greater the U-Factor the greater the increase of the interval between repetitions. For items, U-Factors are determined by SuperMemo Algorithm. For topics, U-Factors are determined by A-Factors.
 
 -->
 
@@ -1563,4 +1562,4 @@ See `anki/ftl/core/deck-config.ftl`
   * New interval  (default `0.00`)
     * ℹ: The multiplier applied to a review interval when answering `Again`.
 
--->
+*/}

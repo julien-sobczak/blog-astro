@@ -6,13 +6,10 @@ date: 2021-08-10
 subject: "Linux System Calls"
 tags: []
 unofficialTags: []
-recommendations: []
 ---
 import Admonition from '../../components/Admonition.astro'
 import Marker from '../../components/Marker.astro'
 import Lead from '../../components/Lead.astro'
-
-:imagesdir: {{ '/posts_resources/2021-08-10-linux-system-calls-under-the-hood/' | relative_url }}
 
 
 > There are lots of Linux users who don't care how the kernel works, but only want to use it. That is a tribute to how good Linux is.
@@ -82,7 +79,7 @@ Many library functions don’t use system calls (e.g., string-manipulation funct
 
 System calls are implemented by your kernel and are an integral part of Linux. On the contrary, different implementations of the standard C library exist. The most commonly installed is the GNU C library ([glibc](http://www.gnu.org/software/libc/)), and is the one we will cover in this article.
 
-<img src="system-calls.png" />
+<img src="/posts_resources/2021-08-10-linux-system-calls-under-the-hood/system-calls.png" />
 </Admonition>
 
 For example, in C, the PID of your program is accessible using the function `getpid()`:
@@ -695,7 +692,7 @@ __visible noinstr void do_syscall_64(unsigned long nr, struct pt_regs *regs)
 
 After a system call handler returns, the system call entry restores registers, flags and pushes the return address of the user process before exiting with the `sysretq` instruction. Then, the user program continues where it left off. Our long journey in Linux system calls is finished.
 
-<img src="system-call-steps.png" />
+<img src="/posts_resources/2021-08-10-linux-system-calls-under-the-hood/system-call-steps.png" />
 
 
 
@@ -753,7 +750,7 @@ What we have is still a text file with assembly language instructions. It is not
 * `nasm`: The assembler "assembles" the instructions to machine code bytes to create an object file.
 * `ld`: The linker turns this object file into an executable file that the operating system can run. (As we have only one object file, the linker does almost nothing but is a mandatory step.)
 
-<img src="compilation.png" />
+<img src="/posts_resources/2021-08-10-linux-system-calls-under-the-hood/compilation.png" />
 
 Let's create the executable:
 
@@ -1029,7 +1026,7 @@ As Java native methods are implemented in C, the code can reuse existing functio
 
 
 
-'''
+---
 
 
 

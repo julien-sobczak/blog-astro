@@ -6,7 +6,6 @@ date: 2016-08-28
 subject: "Spring Boot"
 tags: ['frameworks']
 unofficialTags: ['java']
-recommendations: []
 ---
 import Admonition from '../../components/Admonition.astro'
 import Marker from '../../components/Marker.astro'
@@ -127,11 +126,13 @@ We now have a fully-functional web application using Spring Boot. We will rewrit
 
 Spring Boot brings a great deal of magic to Spring application development by performing:
 
-- ***Automatic configuration*** — Spring Boot can automatically provide configuration for application functionality common to many Spring applications.
-- ***Starter dependencies*** — You tell Spring Boot what kind of functionality you need, and it will ensure that the libraries needed are added to the build.
+- **Automatic configuration** — Spring Boot can automatically provide configuration for application functionality common to many Spring applications.
+- **Starter dependencies** — You tell Spring Boot what kind of functionality you need, and it will ensure that the libraries needed are added to the build.
 
 
-NOTE: Spring Boot brings other interesting features like the ***Actuator*** (gives you insight into what’s going on inside of the application) and the ***command-line interface*** (lets you write complete applications with no need for a traditional project build). These features are not described in this post but relied heavily on the two main points.
+<Admonition type="note">
+Spring Boot brings other interesting features like the **Actuator** (gives you insight into what’s going on inside of the application) and the **command-line interface** (lets you write complete applications with no need for a traditional project build). These features are not described in this post but relied heavily on the two main points.
+</Admonition>
 
 
 The rest of this article is splitted into 3 parts, each part focusing on a given aspect of the framework:
@@ -1721,7 +1722,7 @@ This mojo asks Maven to inject three dependencies:
 - `finalName`: The name of the generated archive
 - `project`: The instance of `MavenProject`. This object exposes a method to retrieve the list of dependencies of the project calculated by Maven (the same list as the effective pom).
 
-The two first properties determine the archive's filepath to create. In practice, the value will often be the absolute filepath of the target folder and the nane of the <artifactId>-<version>.jar.
+The two first properties determine the archive's filepath to create. In practice, the value will often be the absolute filepath of the target folder and the nane of the `<artifactId>-<version>.jar`.
 
 To be able to retrieve the list of dependencies through the `MavenProject` instance, we need to configure our Mojo using the attribute `requiresDependencyResolution` as follows:
 
@@ -2181,9 +2182,9 @@ The constructor expects two arguments:
 <Admonition type="tip" className="None" title="What you will learn">
 Even the most basic Java program has at least three class loaders:
 
-- The ***bootstrap class loader*** loads the core Java libraries located in the `$JAVA_HOME/jre/lib` directory.
-- The ***extensions class loader*** loads the code in the extensions directories (`$JAVA_HOME/jre/lib/ext` by default). It is implemented by the `sun.misc.Launcher$ExtClassLoader` class.
-- The ***system/application class loader*** loads code found on `java.classpath` by default. It is implemented by the `sun.misc.Launcher$AppClassLoader class`.
+- The **bootstrap class loader** loads the core Java libraries located in the `$JAVA_HOME/jre/lib` directory.
+- The **extensions class loader** loads the code in the extensions directories (`$JAVA_HOME/jre/lib/ext` by default). It is implemented by the `sun.misc.Launcher$ExtClassLoader` class.
+- The **system/application class loader** loads code found on `java.classpath` by default. It is implemented by the `sun.misc.Launcher$AppClassLoader class`.
 
 These class loaders follow a delegation hierarchy, where each one delegates to its parent before attempting to load a class itself. Our custom class loader will act similarly.
 </Admonition>

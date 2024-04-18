@@ -6,7 +6,6 @@ date: 2014-11-06
 subject: "-prefix-free"
 tags: ['web']
 unofficialTags: ['javascript']
-recommendations: []
 ---
 import Admonition from '../../components/Admonition.astro'
 import Marker from '../../components/Marker.astro'
@@ -26,14 +25,12 @@ You are reading a translation of an [old blog post](https://julien-sobczak.githu
 
 Thanks to -prefix-free, you no longer have to write CSS properties for every browser extension. You only need to write CSS standard properties, and your code is still supported by all browsers. It is not surprising that most code playgrounds now provide this essential library. Let's take for example the following pen created initially by [amos](http://codepen.io/amos/).
 
-++++
 <p class="codepen" data-height="265" data-theme-id="light" data-default-tab="css,result" data-user="julien-sobczak" data-slug-hash="cblAm" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="cblAm">
   <span>See the Pen <a href="https://codepen.io/julien-sobczak/pen/cblAm">
   cblAm</a> by Julien Sobczak (<a href="https://codepen.io/julien-sobczak">@julien-sobczak</a>)
   on <a href="https://codepen.io">CodePen</a>.</span>
 </p>
 <script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
-++++
 
 No prefix `-moz` or `-webkit`. Under the hood, -prefix-free adds the prefixed properties dynamically and only if necessary depending on your browser. How does this magic work? We will discover it in this article.
 

@@ -6,18 +6,20 @@ date: 2020-12-26
 subject: "Anki"
 tags: ['tools', 'learning']
 unofficialTags: ['flashcards']
-recommendations: ['2022-05-30-anki-srs', '2018-12-30-should-i-create-a-flashcard', '2018-12-01-10-rules-for-better-flashcards']
+# recommendations:
+# - '2022/05/30/anki-srs'
+# - '2018/12/30/should-i-create-a-flashcard'
+# - '2018/12/01/10-rules-for-better-flashcards'
 ---
 import Admonition from '../../components/Admonition.astro'
 import Marker from '../../components/Marker.astro'
 import Lead from '../../components/Lead.astro'
 
-:imagesdir: {{ '/posts_resources/2020-12-26-anki-scripting-for-non-programmers/' | relative_url }}
 
 ## Anki Scripting for Non-Programmers
 
 <Admonition type="caution" className="license" title="None">
-This post revises an old post that I wrote four years ago, [Anki Scripting]({% post_url write/2016-12-26-anki-scripting %}). My motivation at that time was just to publish my notes mainly for myself. I have not anticipated that so many learners were trying to automate their flashchards creation.
+This post revises an old post that I wrote four years ago, [Anki Scripting](/write/2016-12-26-anki-scripting). My motivation at that time was just to publish my notes mainly for myself. I have not anticipated that so many learners were trying to automate their flashchards creation.
 
 I finished memorizing the thousands of flashcards I created programmatically. I need to create new ones, and I thought revising my old post could be useful.
 </Admonition>
@@ -32,7 +34,7 @@ The code present in this article was tested on MacOS using Python 3.8 and Anki 2
 
 Anki is packaged as a Desktop application for Windows/MacOS/Linux. Additional applications exist for Android and iOS but the core of Anki resides in the desktop version.
 
-<img src="anki-components.png" />
+<img src="/posts_resources/2020-12-26-anki-scripting-for-non-programmers/anki-components.png" />
 
 The Anki source code is available on https://github.com/ankitects/anki[GitHub], the largest code hosting platform used by millions of developers to share their work. The majority of code you use in your daily life, on your computer, tablet, or phone, has home in GitHub.
 
@@ -57,7 +59,7 @@ If you don't want to get your hands dirty in code, **you can safely jump to the 
 
 When using the Desktop application, the Graphical User Interface (GUI) validates your inputs and uses the Anki API (a Python module) to create your cards, which hides the details about the underlying database. In this tutorial, we are going to create a script that, like the Desktop application, will interact with the Anki Python API.
 
-<img src="anki-scripting.png" />
+<img src="/posts_resources/2020-12-26-anki-scripting-for-non-programmers/anki-scripting.png" />
 
 But first, we need to create a safe environment. Writing code means writing bugs. And bugs can make irreversible damages. You don't want to lose your Anki collection, so let's create a sandbox environnement. The trick is to start Anki from your terminal and pass the option `-b` to specify a https://docs.ankiweb.net/#/files?id=startup-options[custom directory]:
 
@@ -124,14 +126,14 @@ $ python3 demo.py
 
 Our Anki collection has been updated. You can reopen Anki from the terminal as before to select your sandbox environment. A new flashcard will be present!
 
-<img src="anki-new-flashcard.png" />
+<img src="/posts_resources/2020-12-26-anki-scripting-for-non-programmers/anki-new-flashcard.png" />
 
 <Admonition type="note" className="None" title="Help! Anki Desktop failed at startup.">
 The Python script uses the Anki Python module installed using the command `pip3`. This command has installed the latest version of the Anki package. This installation is completely independent of the Anki Desktop installation.
 
 If your version of Anki Desktop is outdated, Anki may complain. Indeed, this version may not understand the changes done by a later Anki version. This problem is well known among developers and is called [forward compatibility](https://en.wikipedia.org/wiki/Forward_compatibility). In practice, most programs support backward compatibility (Anki knows how to load a collection created by an older version) but few support forward compatibility (Anki ignores how to load a collection created by a future version).
 
-<img src="anki-compatibility.png" />
+<img src="/posts_resources/2020-12-26-anki-scripting-for-non-programmers/anki-compatibility.png" />
 
 If Anki complain at startup, try to update Anki Desktop to the latest available version so you can read any collection created by any version of Anki.
 </Admonition>
@@ -288,8 +290,8 @@ The CLI expects the YAML file to respect a given format:
 
 There are several strategies to create your input file:
 
-* ***Manually***. Open your favorite text editor, and start writing, copying/pasting text from the Internet, and editing the content.
-* ***Programmatically***. Open your favorite code editor, and write a small program to generate the YAML file. You can use any language, not just Python, even if personally, I love using Python for such scripts.
+* **Manually**. Open your favorite text editor, and start writing, copying/pasting text from the Internet, and editing the content.
+* **Programmatically**. Open your favorite code editor, and write a small program to generate the YAML file. You can use any language, not just Python, even if personally, I love using Python for such scripts.
 
 
 #### Running the CLI
@@ -336,8 +338,8 @@ $ anki-cli-unofficial load --media-dir path/to/medias/ french.yaml french.apkg
 The generation process is summarized in the following video:
 
 {/* image::cli.gif[title=Using the CLI to generate an Anki package] */}
-video::cli.mp4[width=800]
-_([Download the video]({{ '/posts_resources/2020-12-26-anki-scripting-for-non-programmers/cli.mp4' | relative_url }}))_
+<video src="/posts_resources/2020-12-26-anki-scripting-for-non-programmers/cli.mp4" width="800" />
+_([Download the video](/posts_resources/2020-12-26-anki-scripting-for-non-programmers/cli.mp4))_
 
 #### Importing the output file
 
@@ -348,8 +350,8 @@ To import your flashcards, open Anki without option to load your main collection
 Note that when importing an archive, Anki expects the archive to be self-containing. For example, if you have generated flashcards using the note type `Basic`, Anki will recreate a new type `Basic-XXXX` when importing the archive. You may have to do post-processing as illustrated in the following video:
 
 {/* image::import.gif[title=Import the Anki package into your collection] */}
-video::import.mp4[width=800]
-_([Download the video]({{ '/posts_resources/2020-12-26-anki-scripting-for-non-programmers/import.mp4' | relative_url }}))_
+<video src="/posts_resources/2020-12-26-anki-scripting-for-non-programmers/import.mp4" width="800" />
+_([Download the video](/posts_resources/2020-12-26-anki-scripting-for-non-programmers/import.mp4))_
 
 ## Next Step
 

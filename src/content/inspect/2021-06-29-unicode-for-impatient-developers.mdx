@@ -6,7 +6,6 @@ date: 2021-06-29
 subject: "Unicode"
 tags: []
 unofficialTags: []
-recommendations: []
 ---
 import Admonition from '../../components/Admonition.astro'
 import Marker from '../../components/Marker.astro'
@@ -14,7 +13,7 @@ import Lead from '../../components/Lead.astro'
 
 
 <Admonition type="caution" className="license" title="None">
-This post is a shorter version of my previous post [Unicode for Curious Developers Loving Code 😉]({% post_url inspect/2021-06-19-unicode-for-curious-developers %}). My motivation is to persuade you that you must learn more about Unicode and that you should read my other post 😀.
+This post is a shorter version of my previous post [Unicode for Curious Developers Loving Code 😉](/inspect/2021-06-19-unicode-for-curious-developers). My motivation is to persuade you that you must learn more about Unicode and that you should read my other post 😀.
 </Admonition>
 
 
@@ -169,7 +168,7 @@ We have already discussed how accentuated letters can be formed using combining 
 * 🇫🇮 (Finland, `FI`) is defined by the sequence U+1F1EB `Regional Indicator Symbol Letter F` **+** U+1F1EE `Regional Indicator Symbol Letter I`.
 * 🇧🇷(Brazil, `BR`) is defined by the sequence U+1F1E7 `Regional Indicator Symbol Letter B` **+** U+1F1F7 `Regional Indicator Symbol Letter R`.
 
-In Python, string indexing returns the __i__-nth code point in the Unicode sequence. So `"🇫🇷"[0]` returns the `Regional Indicator Symbol Letter F` and `"🇫🇷"[1]` returns the `Regional Indicator Symbol Letter R`. This explains the output (***F**R=**F****I and F****R**=B***R**).
+In Python, string indexing returns the __i__-nth code point in the Unicode sequence. So `"🇫🇷"[0]` returns the `Regional Indicator Symbol Letter F` and `"🇫🇷"[1]` returns the `Regional Indicator Symbol Letter R`. This explains the output (**F**R=**F**I and F**R**=B**R**).
 
 **Combining characters are also used by skin tones**. Unicode defines a code point for every color defined by the [Fitzpatrick scale](https://en.wikipedia.org/wiki/Fitzpatrick_scale): U+1F3FF `Dark skin tone`, U+1F3FE `Medium Dark skin tone`, U+1F3FD `Medium skin tone`, U+1F3FC `Medium Light skin tone`, and U+1F3FB `Light skin tone`. For example:
 
@@ -253,7 +252,7 @@ public class Regex {
 <Admonition type="note" className="experiment" title="To Go Further">
 **This article introduced some pitfalls when working with Unicode**. There is so much more to cover.
 
-If I succeeded in arousing your curiosity, I recommend you to read [Unicode for Curious Developers Loving Code 😉]({% post_url inspect/2021-06-19-unicode-for-curious-developers %}). It will take you less than one hour (that's a lot for a blog post, I know) but compared to the time spent debugging an issue, one hour is a small price to pay to understand what you are doing. **Learning always pays off**.
+If I succeeded in arousing your curiosity, I recommend you to read [Unicode for Curious Developers Loving Code 😉](/inspect/2021-06-19-unicode-for-curious-developers). It will take you less than one hour (that's a lot for a blog post, I know) but compared to the time spent debugging an issue, one hour is a small price to pay to understand what you are doing. **Learning always pays off**.
 </Admonition>
 
 

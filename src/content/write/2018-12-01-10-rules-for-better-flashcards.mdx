@@ -6,115 +6,17 @@ date: 2018-12-01
 subject: "Flashcards"
 tags: ['learning']
 unofficialTags: ['flashcards']
-recommendations: ['2018-12-30-should-i-create-a-flashcard']
+# recommendations:
+# - '2018/12/30/should-i-create-a-flashcard'
 ---
 import Admonition from '../../components/Admonition.astro'
 import Marker from '../../components/Marker.astro'
 import Lead from '../../components/Lead.astro'
+import Flashcard from '../../components/Flashcard.astro'
 
-
-++++
-<style>
-
-.flashcard {
-  position: relative;
-  border: 1px solid black;
-  padding: 30px 30px 50px;
-  width: 80%;
-  margin: 30px auto 38px;
-  font-size: 90%;
-}
-
-.flashcard-front::after {
-  content: "Front";
-  position: absolute;
-  top: 0;
-  right: 0;
-  background-color: black;
-  color: white;
-  padding: 2px 5px;
-}
-
-.flashcard-back::after {
-  content: "Back";
-  position: absolute;
-  top: 0;
-  right: 0;
-  background-color: black;
-  color: white;
-  padding: 2px 5px;
-}
-
-.flashcard-ok {
-    box-shadow: 8px 8px green;
-}
-
-.flashcard-ko {
-    box-shadow: 8px 8px red;
-}
-
-.flashcard-ok::before {
-  content: "OK";
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  text-align: center;
-  background-color: black;
-  color: green;
-  padding: 2px 5px;
-}
-
-.flashcard-ko::before {
-  content: "KO";
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  text-align: center;
-  background-color: black;
-  color: red;
-  padding: 2px 5px;
-}
-
-.flashcard strong {
-  font-weight: 700;
-}
-
-.flashcard .foreign {
-  color: MediumBlue;
-}
-
-.flashcard .flashcard-example {
-  font-style: italic;
-  font-size: 90%;
-  margin: 5px 0 !important;
-}
-
-.flashcard-deck ul {
-  list-style-type: none;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-}
-.flashcard-deck li {
-  border-top: 1px solid black;
-  border-bottom: 1px solid silver;
-  padding: 5px 0;
-}
-
-.flashcard-advantage {
-  display: inline-block;
-  background-color: yellow;
-  font-weight: bold;
-  padding: 0 2px;
-}
-
-</style>
-++++
 
 <Lead>
-I use flashcards a lot. To learn English vocabulary, the grammar, new programming languages, technical jargon, useful commands, and so much more. If I want to retrieve something from memory without going through a Google search, flashcards are my secret weapon since many years. Until now, I created thousands of flashcards manually and even more [programmatically]({% post_url write/2016-12-26-anki-scripting %}). While flashcards are simple to create (just a note with a question on the front and the answer on the back), creating effective flashcards may not be obvious at first. By following the rules present in this article, you will avoid most of the errors I made.
+I use flashcards a lot. To learn English vocabulary, the grammar, new programming languages, technical jargon, useful commands, and so much more. If I want to retrieve something from memory without going through a Google search, flashcards are my secret weapon since many years. Until now, I created thousands of flashcards manually and even more [programmatically](/write/2016-12-26-anki-scripting). While flashcards are simple to create (just a note with a question on the front and the answer on the back), creating effective flashcards may not be obvious at first. By following the rules present in this article, you will avoid most of the errors I made.
 </Lead>
 
 <Admonition type="caution" className="license" title="None">
@@ -128,22 +30,17 @@ Creating flashcards take time, a lot of time. As a consequence, I am often reluc
 
 ### Example
 
-++++
-<div class="flashcard flashcard-front flashcard-ko">
+<Flashcard face="front" valid={false}>
 Which statements compile?
-<ol>
-<li><code>List&lt;?&gt; list = new ArrayList&lt;Dog&gt;();</code></li>
-<li><code>List&lt;? extends Animal&gt; list = new ArrayList&lt;Dog&gt;();</code></li>
-<li><code>List&lt;?&gt; list = new ArrayList&lt;? extends Animal&gt;();</code></li>
-</ol>
-</div>
-++++
 
-++++
-<div class="flashcard flashcard-back flashcard-ko">
+* `List<?> list = new ArrayList<Dog>();`
+* `List<? extends Animal> list = new ArrayList<Dog>();`
+* `List<?> list = new ArrayList<? extends Animal>();`
+</Flashcard>
+
+<Flashcard face="back" valid={false}>
 1, 2. You cannot use wildcard notation (?) when creating the instance but only in variable declaration.
-</div>
-++++
+</Flashcard>
 
 <Admonition type="caution" className="license" title="Note for non-programmers">
 Programs are written in languages that have precise grammar rules, like in English. This flashcard illustrates different syntaxes, some valid and others invalid. A program can only run if the syntax is perfectly valid, unlike English, where someone will understand me even if I make mistakes, probably like in this blog post.
@@ -866,7 +763,7 @@ As said before, creating flashcards is not the most rewarding task. It sucks eve
 
 On the Internet, you will find numerous discussions about using those specialized (and often subscription-based) apps over using generalized applications like Anki. Personally, I tried these applications some years ago. I was using Memrise a lot at first, until I finally choose the centralized approach of using only one application, Anki. The reasons are numerous:
 
-* Learning is too crucial to depend on proprietary applications, which need viable business plans to subsist (a flashcard required several years to be really assimilated, I don't want to reprocess the same cards tomorrow with another application). Using an OSS solution like Anki get you full control of your data. I wrote a [blog post]({% post_url write/2016-12-26-anki-scripting %}) about how to export them in HTML just for the demo. Besides, with Anki, all your data resides on your disk. Ankiweb is used to synchronise them between your different devices (a small inconvenience compared to cloud based products that synchronize everything transparently).
+* Learning is too crucial to depend on proprietary applications, which need viable business plans to subsist (a flashcard required several years to be really assimilated, I don't want to reprocess the same cards tomorrow with another application). Using an OSS solution like Anki get you full control of your data. I wrote a [blog post](/write/2016-12-26-anki-scripting) about how to export them in HTML just for the demo. Besides, with Anki, all your data resides on your disk. Ankiweb is used to synchronise them between your different devices (a small inconvenience compared to cloud based products that synchronize everything transparently).
 
 * As outlined in the rule _Random is better than linear_, you may want to learn the French vocabulary during the same review session as the French grammar. Using specialized apps, you have to switch between different applications. Making an habit is hard enough to not throw to many applications at it. Furthermore, there isn't an existing application for everything you want to learn...
 

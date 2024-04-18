@@ -6,13 +6,11 @@ date: 2016-04-12
 subject: "Spring Integration"
 tags: ['frameworks']
 unofficialTags: ['java']
-recommendations: []
 ---
 import Admonition from '../../components/Admonition.astro'
 import Marker from '../../components/Marker.astro'
 import Lead from '../../components/Lead.astro'
 
-:imagesdir: {{ '/posts_resources/2016-04-12-spring-integration-from-scratch/' | relative_url }}
 
 This post assumes a basic comprehension of the Spring Integration Framework. If you just begin with Spring Integration, you could find the short book **Just Spring Integration** helpful to quickly grasp the core concepts, the different types of channel and their endpoints. Do not hesitate to refer to the official documentation if a term is new to you.
 
@@ -474,7 +472,7 @@ public interface MessageChannel {
 
 What could surprise you is that this interface defines only methods for sending messages. Why? The answer depends on the channel type: `PollableChannel` or `SubscribableChannel` (must not be confused with `PublishSubscribeChannel`). Does the target endpoint should poll to received a message (active endpoint) or does the channel should send the message to the endpoint (passive endpoint). Let's draw a diagram to clarify the class hierarchy:
 
-<img src="channels.png" />
+<img src="/posts_resources/2016-04-12-spring-integration-from-scratch/channels.png" />
 
 For example, when using a `DirectChannel`, I should first subscribe to the channel to be notified automatically when a new message comes. When using a `QueueChannel`, I do not have to subscribe but I should poll regularly (for example, every second) to check if a new message is present. Given the polling interval, there is a latency between the sending and the receiving of a message.
 
@@ -887,11 +885,11 @@ We just have seen how to send and receive messages from a channel. In practice, 
 Unlike `Message` and `MessageChannel` interfaces, there isn't a `MessageEndpoint` interface. There is an `AbstractEndpoint` class but not all endpoints extend this class. Although there is a one-to-one mapping between the EIP patterns and the component names in Spring Integration, each endpoint does not necessarily have a corresponding class. Maybe a class diagram could help us make things clearer.
 
 
-<img src="consumers.png" />
+<img src="/posts_resources/2016-04-12-spring-integration-from-scratch/consumers.png" />
 
 Both consumer types delegates internally to an instance of `MessageHandler`:
 
-<img src="handlers.png" />
+<img src="/posts_resources/2016-04-12-spring-integration-from-scratch/handlers.png" />
 
 
 We will now describe each one of these classes.
@@ -2234,12 +2232,8 @@ We re-run the test. Green. Done.
 <Admonition type="note" className="experiment" title="Try for yourself!">
 There is so much to cover about Spring Integration. Why not try to analyze other features of the framework. Here is some ideas:
 
-- ***Channel Interceptors***
-Try implement your own **Wire-Tap** pattern.
-- ***Unicast vs Multicast***
-Our current `SubscribableChannel` implementations send messages to endpoints. This differs lightly from the official implementations where these channels use two abstraction: `UnicastingDispatcher` for point-to-point and `BroadcastingDispatcher` for publish-subscribe. Why not inspect how these classes works internally (load-balancing and fail-over support).
-- ***Jms Inbound Adapter vs Jms Inbound Gateway***
-One of the least understood point when beginning with Spring Integration but an important one to grasp. Inspect the code and see how the `JmsTemplate` is used to create one-way (Adapter) and two-ways (Gateway) communications.
-- ***Java DSL***
-The https://github.com/spring-projects/spring-integration-java-dsl/wiki/spring-integration-java-dsl-reference[Spring Integration JavaConfig and DSL extension] provides a set of convenient Builders and a fluent API to configure Spring Integration message flows from Spring `@Configuration` classes. Try to reuse our code to offer a similar API instead of the verbose XML configuration.
+- **Channel Interceptors**: Try implement your own **Wire-Tap** pattern.
+- **Unicast vs Multicast**: Our current `SubscribableChannel` implementations send messages to endpoints. This differs lightly from the official implementations where these channels use two abstraction: `UnicastingDispatcher` for point-to-point and `BroadcastingDispatcher` for publish-subscribe. Why not inspect how these classes works internally (load-balancing and fail-over support).
+- **Jms Inbound Adapter vs Jms Inbound Gateway**: One of the least understood point when beginning with Spring Integration but an important one to grasp. Inspect the code and see how the `JmsTemplate` is used to create one-way (Adapter) and two-ways (Gateway) communications.
+- **Java DSL**: The [Spring Integration JavaConfig and DSL extension](https://github.com/spring-projects/spring-integration-java-dsl/wiki/spring-integration-java-dsl-reference) provides a set of convenient Builders and a fluent API to configure Spring Integration message flows from Spring `@Configuration` classes. Try to reuse our code to offer a similar API instead of the verbose XML configuration.
 </Admonition>
