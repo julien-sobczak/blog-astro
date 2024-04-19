@@ -7,9 +7,9 @@ import yaml
 Not supported:
 --------------
 
-* FrontMatter toc: Ex:
+* ✅ FrontMatter toc: Ex:
     toc: true
-* FrontMatter excerpt. Ex:
+* ✅ FrontMatter excerpt. Ex:
     excerpt: >
       Operating systems run different programs at the same time. As these programs are often written by different developers, the operating system guarantees the correct use of resources. One program cannot use all the memory or read data written by another program. Whenever your program wants to execute a privileged action like printing a text on screen, it requests that the kernel perform the action on its behalf. How does it work? This post will show the underlying code executed when you call a Linux system call.
     excerpt_only: true
@@ -19,6 +19,14 @@ Not supported:
   Ex: [#mockito-from-scratch-when]
 * Do not remove ":imagesdir:" directives
 * Do not replace "image:" (only "image::")
+* Special tags. Ex: [.compact]
+* Anchors: Ex: xref:sect-part1
+* Tables
+
+TODO
+----
+
+* [ ] Search for 'link:'
 """
 
 if __name__ == "__main__":
