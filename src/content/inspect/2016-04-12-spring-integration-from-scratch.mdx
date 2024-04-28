@@ -423,28 +423,12 @@ Now that we know how to create a message, let's see how to send them between com
 
 Components exchange messages through what is called a `Channel`. A channel is used to send and/or receive messages. Spring Integration defines many types of channel whose characteristics differ: does the receiver runs in the same thread as the sender (synchronous call), does multiples receivers could consumes a message (point-to-point vs publish-subscribe, does the receiver should wait for new message to arrive (passive endpoint) or does it should poll regularly for new message (active endpoint). To keep this post (relatively) short, we will implement the main ones:
 
-[cols="3*"]
-|===
-|Channel
-|Pattern
-|Mode
-
-|DirectChannel
-|Point-to-Point
-|Synchronous
-
-|QueueChannel
-|Point-to-Point
-|Asynchronous
-
-|PublishSubscribeChannel
-|Publish-subscribe
-|Synchronous
-
-|PublishSubscribeChannel with executor
-|Publish-subscribe
-|Asynchronous
-|===
+| Channel | Pattern | Mode |
+| ------- | ------- | ---- |
+| DirectChannel | Point-to-Point | Synchronous |
+| QueueChannel | Point-to-Point | Asynchronous |
+| PublishSubscribeChannel | Publish-subscribe | Synchronous |
+| PublishSubscribeChannel with executor | Publish-subscribe | Asynchronous |
 
 All of these channels implement the `MessageChannel` interface:
 

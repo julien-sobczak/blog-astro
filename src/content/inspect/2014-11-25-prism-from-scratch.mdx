@@ -6,13 +6,14 @@ date: 2014-11-25
 subject: "Prism"
 tags: ['web']
 unofficialTags: ['javascript']
+done: true
 ---
 import Admonition from '../../components/Admonition.astro'
 import Marker from '../../components/Marker.astro'
 import Lead from '../../components/Lead.astro'
 
 
-<Admonition type="caution" className="license" title="None">
+<Admonition type="caution" className="license">
 You are reading a translation of an [old blog post](https://julien-sobczak.github.io/blog-fr/inspect/2014/11/25/prism-from-scratch.html) published on my previous blog in French.
 </Admonition>
 
@@ -25,21 +26,23 @@ Many JavaScript libraries have supported syntactic coloration for a long time. A
 
 How does Prism achieve this tour de force? We'll find out by rewriting Prism from scratch.
 
+<Admonition type="caution" className="license">
 [Prism](http://prismjs.com/) is published under the [MIT license](http://opensource.org/licenses/MIT). The code presented in this article has been simplified for obvious reasons and must not be used outside this learning context. This article is based on the latest version of Prism at the moment of the publication of this article.
+</Admonition>
 
 
 ## Let's Go!
 
 [The documentation to extend Prism](http://prismjs.com/extending.html) gives us interesting details about the inner working of the library. Let's start by outlining the global structure:
 
-```javascript showLineMarkers:{'1': [37], '2': [57], '3': [61]}
+```javascript {'1': 7} {'2': 27} {'3': 31}
 var Prism = (function() {
 
  var self = {
 
   languages : {}, // Every supported langague is added here
 
-  highlightAll : function() { // <1>
+  highlightAll : function() {
    var elements = document.querySelectorAll('code[class*="language-"]');
 
    for (var i = 0, element; element = elements[i++];) {
@@ -59,11 +62,11 @@ var Prism = (function() {
 
    var code = element.textContent;
 
-   element.innerHTML = self.highlight(code, grammar, language); // <2>
+   element.innerHTML = self.highlight(code, grammar, language);
   },
 
   highlight : function(text, grammar, language) {
-   var tokens = self.tokenize(text, grammar); // <3>
+   var tokens = self.tokenize(text, grammar);
    return self.Token.stringify(tokens, language);
   },
 
@@ -79,9 +82,15 @@ var Prism = (function() {
 
 document.addEventListener('DOMContentLoaded', Prism.highlightAll);
 ```
-* <Marker number={1} /> This is the entry point. We look for all source code present in the document.
-* <Marker number={2} /> We replace the previous content with the stylized one.
-* <Marker number={3} /> We tokenize the source code to colorize it using CSS classes.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>This is the entry point. We look for all source code present in the document.</dd>
+  <dt><Marker number={2} /></dt>
+  <dd>We replace the previous content with the stylized one.</dd>
+  <dt><Marker number={3} /></dt>
+  <dd>We tokenize the source code to colorize it using CSS classes.</dd>
+</dl>
 
 The code is relatively simple to apprehend. We search the tags `<code>` having a CSS class starting with `language-`. We extract their content to split it into tokens as a compiler or interpreter would do. The main difference is that a compiler goes well beyond by creating an [abstract syntaxic tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) as an intermediate representation before generating code in the target language. Here, we don't even try to ensure the code is valid. We are just looking for tokens to surround them with new tags having CSS classes on them.
 
@@ -90,7 +99,7 @@ The code is relatively simple to apprehend. We search the tags `<code>` having a
 
 The function `tokenize` accepts two parameters:
 
-[.compact]
+{/* .compact */}
 * `text`: the content of a tag `<code>`.
 * `grammar`: the definition of the programming language, often defined in different files.
 
@@ -307,46 +316,46 @@ At first, the function may seem obscure but the logic is more simple as it may s
 Let's unwind the algorithm on our example, considering only the token `keyword` defined by the regular expression: `/\b(public|static|class|void)\b/g`:
 
 ```javascript
-strarray = ['public class HelloWorld { … }'];
+strarray = ['public class HelloWorld { ... }'];
 i = 0       +-----------------------------+
 ```
 
-Does `'public class HelloWorld { … }'` matches the regular expression? **Yes**
+Does `'public class HelloWorld { ... }'` matches the regular expression? **Yes**
 
 We replace this element with three new elements:
 
-[.compact]
+{/* .compact */}
 * The string before the match: the string is empty. We have nothing to add.
 * The found lexeme: `public`.
-* The string after the match: `' class HelloWorld { … }'`.
+* The string after the match: `' class HelloWorld { ... }'`.
 
 ```javascript
-strarray = [Token, ' class HelloWorld { … }'];
+strarray = [Token, ' class HelloWorld { ... }'];
 i = 1              +-----------------------+
 ```
 
-Does `' class HelloWorld { … }'` matches the regular expression? **Yes**
+Does `' class HelloWorld { ... }'` matches the regular expression? **Yes**
 
 Similarly, we replace the element with three new elements:
 
-[.compact]
+{/* .compact */}
 * The string before the match: the space character.
 * The found lexeme: `class`.
-* The string after the match: `' HelloWorld { … }'``.
+* The string after the match: `' HelloWorld { ... }'`.
 
 ```javascript
-strarray = [Token, ' ', Token, ' HelloWorld { … }'];
+strarray = [Token, ' ', Token, ' HelloWorld { ... }'];
 i = 2                   +---+
 ```
 
 The element is already a processed token. We continue.
 
 ```javascript
-strarray = [Token, ' ', Token, ' HelloWorld { … }'];
+strarray = [Token, ' ', Token, ' HelloWorld { ... }'];
 i = 3                          +-----------------+
 ```
 
-Does `' HelloWorld { … }'` matches the regular expression? **No**
+Does `' HelloWorld { ... }'` matches the regular expression? **No**
 
 After several more iterations, we finally reach the end of the array, before restarting the same logic with the next token, and so on, until having processed the whole grammar.
 
@@ -364,19 +373,19 @@ Defining tokens using regular expressions is common. The [program LEX](http://en
 
 A first regular expression would be: `[a-z0-9_]+`
 
-**Problem**: This regular expression returns also variables and constants. +
+**Problem**: This regular expression returns also variables and constants.<br/>
 **Solution**: We can use Java conventions to only matches identifiers starting with an uppercase letter, but this solution is probably too restrictive for a library like Prism. The solution implemented by Prims is different. A class name is expected at well-defined places (ex: after the keyword `class`). The idea is to look around the matches. We can do that with regular expressions. But...
 
 <Admonition type="tip" className="None" title="lookbehind + lookahead = lookaround">
 Lookahead and Lookbehind support assertions about what must precede or follow the match. For example:
 
-* `java(?!script)` searches for occurrences of `java` not followed by `script` (`java`, `javafx` but not `javascript`). +
+* `java(?!script)` searches for occurrences of `java` not followed by `script` (`java`, `javafx` but not `javascript`). <br/>
 We talk about **Negative Lookahead**.
-* `java(?=script)` searches for occurrences of `java` followed by `script` (`javascript` but not `java` or `javafx`). +
+* `java(?=script)` searches for occurrences of `java` followed by `script` (`javascript` but not `java` or `javafx`). <br/>
 We talk about **Positive Lookahead**.
-* `(?&lt;!java)script` searches for occurrences of `script` not preceded by `java` (`script`, `postscript` but not `javascript`). +
+* `(?&lt;!java)script` searches for occurrences of `script` not preceded by `java` (`script`, `postscript` but not `javascript`). <br/>
 We talk about **Negative Lookbehind**.
-* `(?&lt;=java)script` searches for occurrences of `script` preceded by `java` (`javascript` but not `postscript`). +
+* `(?&lt;=java)script` searches for occurrences of `script` preceded by `java` (`javascript` but not `postscript`). <br/>
 We talk about **Positive Lookbehind**.
 
 Caution: The regular expression `(?&lt;=java)script` is different from `javascript`. The characters satisfying the lookarounds are not returned in the matching string (the result is `script` for the first regular expression and `javascript` for the second one).
@@ -400,7 +409,7 @@ With this new definition, we are looking for identifiers preceded by one of the 
 
 Here the method `tokenize` with the changed lines highlighted:
 
-```javascript showLineNumbers highlight='10,26..28,31..32'
+```javascript showLineNumbers {10, 26-29, 31-32}
 tokenize : function(text, grammar) {
  var strarr = [ text ];
 
@@ -639,12 +648,12 @@ Prism.languages.java = {
 
 
 <Admonition type="note" className="experiment" title="Try for yourself!">
-* Prism provides hooks to extend the library with plugins. To understand these extension points and how plugins use them, you can check [prism-core.js](https://github.com/LeaVerou/prism/blob/gh-pages/components/prism-core.js) and the directory [plugins](https://github.com/LeaVerou/prism/tree/gh-pages/plugins).
-* Prism supports one language to include other languages (ex: HTML files often contain JavaScript and CSS blocks). The implementation is elegant, requiring only a dozen of lines of code. Check the file [prism-core.js](https://github.com/LeaVerou/prism/blob/gh-pages/components/prism-core.js). Hint: Search for properties `inside` and `rest`.
+  * Prism provides hooks to extend the library with plugins. To understand these extension points and how plugins use them, you can check [prism-core.js](https://github.com/LeaVerou/prism/blob/gh-pages/components/prism-core.js) and the directory [plugins](https://github.com/LeaVerou/prism/tree/gh-pages/plugins).
+  * Prism supports one language to include other languages (ex: HTML files often contain JavaScript and CSS blocks). The implementation is elegant, requiring only a dozen of lines of code. Check the file [prism-core.js](https://github.com/LeaVerou/prism/blob/gh-pages/components/prism-core.js). Hint: Search for properties `inside` and `rest`.
 </Admonition>
 
 <Admonition type="note" className="remember" title="To Remember">
-* **Mastering regular expressions** is a superpower for a developer.
-* **JavaScript does not support lookbehinds**.
-* **Token != Lexeme**.
+  * **Mastering regular expressions** is a superpower for a developer.
+  * **JavaScript does not support lookbehinds**.
+  * **Token != Lexeme**.
 </Admonition>

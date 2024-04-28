@@ -6,25 +6,27 @@ date: 2014-10-06
 subject: "JUnit"
 tags: ['frameworks']
 unofficialTags: ['java']
+done: true
 ---
 import Admonition from '../../components/Admonition.astro'
 import Marker from '../../components/Marker.astro'
 
 <Admonition type="caution">
-You are reading a translation of an [old blog post](https://julien-sobczak.github.io/blog-fr/inspect/2014/10/06/junit-from-scratch-6-octobre-2014-lire.html) published on my previous blog in French.
+    You are reading a translation of an [old blog post](https://julien-sobczak.github.io/blog-fr/inspect/2014/10/06/junit-from-scratch-6-octobre-2014-lire.html) published on my previous blog in French.
 </Admonition>
 
 > Never in the field of software development have so many owed so much to so few lines of code
 >
-> — Gerard Meszaros, author of book _XUnit Test Patterns_
+> — <cite>Gerard Meszaros, author of book _XUnit Test Patterns_</cite>
 
 According to [a study of 2013](http://www.takipiblog.com/we-analyzed-30000-github-projects-here-are-the-top-100-libraries-in-java-js-and-ruby/), JUnit is the most used library in Java (tied with Slf4j). We can trace the roots of the framework to [a paper written by Kent Beck](http://www.xprogramming.com/testfram.htm) in 1989. The Smalltalk version will be published in 1994 by the same author that will be at the origin of the Java version too (with Eric Gamma). If you want to know more about the history of automated testing, I recommend these two excellent articles: [Ten Years Of Test Driven Development](http://c2.com/cgi/wiki?TenYearsOfTestDrivenDevelopment) and [A Brief History of Test Frameworks](http://shebanator.com/2007/08/21/a-brief-history-of-test-frameworks/).
 
 Now, let's check the code. We are going to rewrite a minimal version of JUnit from scratch, trying to stay as close as possible to the original code, even if some compromises will be necessary to keep this article short. The name of classes and methods will follow the same naming as the official JUnit library.
 
 <Admonition type="caution" className="license">
-JUnit is published under the [Eclipse license](https://www.eclipse.org/legal/epl-v10.html). The code presented here has been simplified for obvious reasons and must not be used outside this learning context. This article is based on version 4.11 of JUnit.
+  JUnit is published under the [Eclipse license](https://www.eclipse.org/legal/epl-v10.html). The code presented here has been simplified for obvious reasons and must not be used outside this learning context. This article is based on version 4.11 of JUnit.
 </Admonition>
+
 
 ## A First Example
 
@@ -79,6 +81,7 @@ When run with JUnit, these tests fail on the last test method. The goal is now t
 {/* --------------------------------------------- */}
 {/* -- Let's Go!  ------------------------------- */}
 {/* --------------------------------------------- */}
+
 
 ## Let's Go!
 
@@ -278,9 +281,15 @@ public class Result {
 
 }
 ```
-* <Marker number={1} /> We listen to events triggered by the runner.
-* <Marker number={2} /> We memorize every test execution.
-* <Marker number={3} /> We save every failure.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>We listen to events triggered by the runner.</dd>
+  <dt><Marker number={2} /></dt>
+  <dd>We memorize every test execution.</dd>
+  <dt><Marker number={3} /></dt>
+  <dd>We save every failure.</dd>
+</dl>
 
 
 ### The Heart of JUnit: Runner
@@ -332,9 +341,15 @@ public class OurSimpleClassRunner implements Runner {
 
 }
 ```
-* <Marker number={1} /> We use a utility class to find the test methods to execute.
-* <Marker number={2} /> We notify about the progression after every step.
-* <Marker number={3} /> We create a new instance of our test class before every test method execution (see explanations below).
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>We use a utility class to find the test methods to execute.</dd>
+  <dt><Marker number={2} /></dt>
+  <dd>We notify about the progression after every step.</dd>
+  <dt><Marker number={3} /></dt>
+  <dd>We create a new instance of our test class before every test method execution (see explanations below).</dd>
+</dl>
 
 Let's explain these points a little more.
 
@@ -416,9 +431,9 @@ public class WhyNewInstanceTest {
 With JUnit, both tests are successful, independently of their execution order. A new instance creation of our test class guarantees that every test method works on its list, without being affected by previous tests. This behavior has not been implemented by NUnit, the .Net version of JUnit, probably due to misunderstanding, and now, it's impossible to revert without causing regression in existing test suites.
 
 <Admonition type="note" className="congratulations" title="Congratulations!">
-**Less than 300 lines of code have been necessary to make our tests run again**. The result is identical: we still have the same number of passing tests and only one failing test.
+  **Less than 300 lines of code have been necessary to make our tests run again**. The result is identical: we still have the same number of passing tests and only one failing test.
 
-The complete code source is available [here](https://github.com/julien-sobczak/junit-from-scratch).
+  The complete code source is available [here](https://github.com/julien-sobczak/junit-from-scratch).
 </Admonition>
 
 Here is the final version also supporting the annotations `@Before` and `@After`:
@@ -686,19 +701,19 @@ public class JUnitLite {
 ```
 
 <Admonition type="tip" title="What about IDE support?">
-Let's consider Eclipse and its plugin [Java Development Tools (JDT)](http://www.eclipse.org/jdt/) that implement the JUnit support. This plugin reuses the JUnit library and exploits the extension points supported by the class `RunNotifier`. The plugin implements [a custom listener](http://git.eclipse.org/c/jdt/eclipse.jdt.ui.git/tree/org.eclipse.jdt.junit4.runtime/src/org/eclipse/jdt/internal/junit4/runner/JUnit4TestListener.java) that will still consolidate the test results but also updates the JUnit view in the Eclipse UI.
+  Let's consider Eclipse and its plugin [Java Development Tools (JDT)](http://www.eclipse.org/jdt/) that implement the JUnit support. This plugin reuses the JUnit library and exploits the extension points supported by the class `RunNotifier`. The plugin implements [a custom listener](http://git.eclipse.org/c/jdt/eclipse.jdt.ui.git/tree/org.eclipse.jdt.junit4.runtime/src/org/eclipse/jdt/internal/junit4/runner/JUnit4TestListener.java) that will still consolidate the test results but also updates the JUnit view in the Eclipse UI.
 </Admonition>
 
 <Admonition type="note" className="experiment" title="Try for yourself!">
-We took a few shortcuts in our implementation:
+  We took a few shortcuts in our implementation:
 
-* The determination of the runner to use is more complex than a simple class instanciation. To know more: `org.junit.runner.JUnitCore`, `org.junit.runner.Computer`, `org.junit.runner.Request`.
-* Our Runner implementation doesn't reflect the complexity found in the real runners, which must, for example, support many other annotations such as `@BeforeClass` and `@AfterClass` but also [assumptions](https://github.com/junit-team/junit/wiki/Assumptions-with-assume), [categories](https://github.com/junit-team/junit/wiki/Categories), ... Why not have a look at the JUnit source code to discover how these features have been implemented.
-* The tests can be [run in parallel](https://github.com/junit-team/junit/wiki/Developing-with-fast-tests). The actual implementations of the classes introduced in this article are thread-safe. When some objects could not be made immutable, we have to use concurrency building blocks defined in the package `java.util.concurrent`: `AtomicInteger`, `CopyOnWriteArrayList`, `Executors`, ...
+  * The determination of the runner to use is more complex than a simple class instanciation. To know more: `org.junit.runner.JUnitCore`, `org.junit.runner.Computer`, `org.junit.runner.Request`.
+  * Our Runner implementation doesn't reflect the complexity found in the real runners, which must, for example, support many other annotations such as `@BeforeClass` and `@AfterClass` but also [assumptions](https://github.com/junit-team/junit/wiki/Assumptions-with-assume), [categories](https://github.com/junit-team/junit/wiki/Categories), ... Why not have a look at the JUnit source code to discover how these features have been implemented.
+  * The tests can be [run in parallel](https://github.com/junit-team/junit/wiki/Developing-with-fast-tests). The actual implementations of the classes introduced in this article are thread-safe. When some objects could not be made immutable, we have to use concurrency building blocks defined in the package `java.util.concurrent`: `AtomicInteger`, `CopyOnWriteArrayList`, `Executors`, ...
 </Admonition>
 
 <Admonition type="note" className="remember" title="To Remember">
-* Only **a few hundred lines of code can have a major impact** in the software development landscape.
-* The **design** of well-defined abstractions (`Result`, `Failure`, `Description`) ensures the code is **simple to grasp** and extend.
-* The **use of design patterns** brings a lot of **flexibility** required for the library to be used in many contexts.
+  * Only **a few hundred lines of code can have a major impact** in the software development landscape.
+  * The **design** of well-defined abstractions (`Result`, `Failure`, `Description`) ensures the code is **simple to grasp** and extend.
+  * The **use of design patterns** brings a lot of **flexibility** required for the library to be used in many contexts.
 </Admonition>

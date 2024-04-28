@@ -12,7 +12,7 @@ import Marker from '../../components/Marker.astro'
 import Lead from '../../components/Lead.astro'
 
 
-<Admonition type="caution" className="license" title="None">
+<Admonition type="caution" className="license">
 You are reading a translation of an [old blog post](https://julien-sobczak.github.io/blog-fr/inspect/2015/03/03/revealjs-revealed.html) published on my previous blog in French.
 </Admonition>
 
@@ -158,9 +158,15 @@ var Reveal;
 
 })();
 ```
-* <Marker number={1} /> We predefine main CSS selectors to retrieve all slides or just the horizontal and vertical ones. These constants will be reused several times during the next steps.
-* <Marker number={2} /> We define two variables `indexh` and `indexv` to represent our current position inside the presentation, like a slide number.
-* <Marker number={3} /> We end by requesting the display of the first slide (i.e., the first horizontal and vertical slide). For the moment, everything remains to be implemented in this method.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>We predefine main CSS selectors to retrieve all slides or just the horizontal and vertical ones. These constants will be reused several times during the next steps.</dd>
+  <dt><Marker number={2} /></dt>
+  <dd>We define two variables `indexh` and `indexv` to represent our current position inside the presentation, like a slide number.</dd>
+  <dt><Marker number={3} /></dt>
+  <dd>We end by requesting the display of the first slide (i.e., the first horizontal and vertical slide). For the moment, everything remains to be implemented in this method.</dd>
+</dl>
 
 Before going further, we need to define a basic CSS stylesheet; otherwise, the browser will display all slides at once.
 
@@ -190,7 +196,7 @@ html, body {
 
 The page now looks like this:
 
-<img src="/posts_resources/2015-03-03-revealjs-revealed/layout.png" />
+<img src="/posts_resources/2015-03-03-revealjs-revealed/layout.png" width="90" />
 
 The parent tag with the CSS class `.reveal` (called `wrapper` in the code) is positioned to use all available space on the screen. This allows slides inside this wrapper to occupy the screen. Note that the relative position will be useful to position slides using absolute values when defining CSS animations.
 
@@ -328,7 +334,11 @@ function layout() {
 
 }
 ```
-* <Marker number={1} /> We compare the default size for a slide (960x700) with the effective screen size. We obtain the ratio to apply to scale the slide to match the full screen.
+
+<dl className="markers">
+  <dt>Marker number={1} /></dt>
+  <dd>We compare the default size for a slide (960x700) with the effective screen size. We obtain the ratio to apply to scale the slide to match the full screen.</dd>
+</dl>
 
 Let's modify the method `slide` to use this new method:
 
@@ -438,7 +448,11 @@ function navigateRight() { slide( indexh + 1 );         } // <1>
 function navigateUp()    { slide( indexh, indexv - 1 ); } // <1>
 function navigateDown()  { slide( indexh, indexv + 1 ); } // <1>
 ```
-* <Marker number={1} /> We use the two variables `indexh` and `indexv` to determine our current position, before calling the method `slide` to move in the right direction.
+
+<dl className="markers">
+  <dt>Marker number={1} /></dt>
+  <dd>We use the two variables `indexh` and `indexv` to determine our current position, before calling the method `slide` to move in the right direction.</dd>
+</dl>
 
 The navigation is now operational but the code does not block the user from moving beyond the last slide. Using CSS selectors, we will determine the maximum number of slides and compare with our current position to determine if the move is possible:
 
@@ -553,8 +567,13 @@ Here are the CSS declarations to support this effect:
 .reveal .slides > section > section.future {
   transform: translate(0, 150%); } // <2>
 ```
-* <Marker number={1} /> We configure the animation to start slowly.
-* <Marker number={2} /> We rely on the function [`translate`](https://developer.mozilla.org/fr/docs/Web/CSS/transform#translate). Using a large percent, we are sure the slide will completely exit the screen.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>We configure the animation to start slowly.</dd>
+  <dt><Marker number={2} /></dt>
+  <dd>We rely on the function [`translate`](https://developer.mozilla.org/fr/docs/Web/CSS/transform#translate). Using a large percent, we are sure the slide will completely exit the screen.</dd>
+</dl>
 
 An immersion in 3D to finish? Let's finish with the `concave` effect.
 
@@ -667,8 +686,11 @@ function initialize() {
 
 }
 ```
-* <Marker number={1} /> The method `slide` is wrapped inside a new method `readURL`. If no hash is present, we simply display the first slide as before.
 
+<dl className="markers">
+  <dt>Marker number={1} /></dt>
+  <dd>The method `slide` is wrapped inside a new method `readURL`. If no hash is present, we simply display the first slide as before.</dd>
+</dl>
 
 <Admonition type="note" className="congratulations" title="Congratulations!">
 **Congratulations, you have written a minimal and operational version of Reveal.js in less than 200 lines of JavaScript code, with just 100 lines of CSS code**. The example presentation is available [here](/posts_resources/2015-03-03-revealjs-revealed/example.html), just like the [complete source code](https://github.com/julien-sobczak/reveal-from-scratch).
@@ -707,10 +729,20 @@ The UMD pattern makes possible to interoperate with existing loaders. As often i
 
 }));
 ```
-* <Marker number={1} /> Functions are the only possible scope in JavaScript. This is why we use an immediate function to not pollute the global namespace uselessly.
-* <Marker number={2} /> We test for a method `define` having a property `amd` to determine if RequireJS is available. Reveal.js declares itself as an anonymous module without any dependency.
-* <Marker number={3} /> Like for AMD, we test for an object `exports`. Reveals declares itself like any other Node module.
-* <Marker number={4} /> As before, our module is defined as a global variable, or more precisely a property of the object `window`.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>Functions are the only possible scope in JavaScript. This is why we use an immediate function to not pollute the global namespace uselessly.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>We test for a method `define` having a property `amd` to determine if RequireJS is available. Reveal.js declares itself as an anonymous module without any dependency.</dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>Like for AMD, we test for an object `exports`. Reveals declares itself like any other Node module.</dd>
+
+  <dt><Marker number={4} /></dt>
+  <dd>As before, our module is defined as a global variable, or more precisely a property of the object `window`.</dd>
+</dl>
 
 <Admonition type="note" className="remember" title="To Remember">
 * **Only a few hundred of lines of code are enough to make PowerPoint a remembering of the past**. (PowerPoint totals [millions of lines de code](http://blogs.msdn.com/b/macmojo/archive/2006/11/03/it-s-all-in-the-numbers.aspx).)

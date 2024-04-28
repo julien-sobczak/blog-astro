@@ -16,7 +16,7 @@ import Marker from '../../components/Marker.astro'
 import Lead from '../../components/Lead.astro'
 
 
-<Admonition type="caution" className="license" title="None">
+<Admonition type="caution" className="license">
 There is a newer version of this article, [_Anki Scripting for Non-Programmers_](/write/2020-12-26-anki-scripting-for-non-programmers). This new post is shorter and is a great introduction to the subject. You can come back to this older article if you want more details about Anki and/or learn about some advanced use cases like converting an ebook into flashcards.
 </Admonition>
 
@@ -167,7 +167,7 @@ We will start from this description and complete where information is missing.
 - You should see a dialog like this:
 </Admonition>
 
-<img src="sqlitebrowser-anki2-collection.png" />
+<img src="sqlitebrowser-anki2-collection.png" width="750" />
 
 What follows is the complete annotated schema. You could safely skim this part and use it as a reference. Note: the model in Python files is rarely documented.
 
@@ -1099,9 +1099,17 @@ for cid in col.findNotes("tag:English"): # <3>
     front =  note.fields[0] # "Front" is the first field of these cards
     print(front)
 ```
-* <Marker number={1} /> We need to add the Anki project in our path
-* <Marker number={2} /> We use the default installation folder of Anki on Linux. Please update the variable `PROFILE_HOME` to match your configuration.
-* <Marker number={3} /> We filter the cards to only keep the card concerning the `English` language. Use `tag:*` to select all of your cards.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>We need to add the Anki project in our path</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>We use the default installation folder of Anki on Linux. Please update the variable `PROFILE_HOME` to match your configuration.</dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>We filter the cards to only keep the card concerning the `English` language. Use `tag:*` to select all of your cards.</dd>
+</dl>
 
 When running the script, you will see the "Front" field of each card displayed to the console:
 
@@ -2126,11 +2134,23 @@ def bulk_loading_anki(idioms):
     # Save the changes to DB
     col.save() # <5>
 ```
-* <Marker number={1} /> Load the collection from the local disk.
-* <Marker number={2} /> The code reflects the Anki terminology (note, card, field, deck, tag, etc). If some term are unclear to you, check the official documentation.
-* <Marker number={3} /> CSS classes defined in the note type could be used to stylize our cards. Unlike the desktop application, HTML is not escaped.
-* <Marker number={4} /> The order of the fields should follow the same order as defined in the GUI.
-* <Marker number={5} /> Without the explicit call to the `save` method, the flashcards would not be saved to disk. Indeed, the Anki application schedules a task every 5 minutes to call this method.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>Load the collection from the local disk.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>The code reflects the Anki terminology (note, card, field, deck, tag, etc). If some term are unclear to you, check the official documentation.</dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>CSS classes defined in the note type could be used to stylize our cards. Unlike the desktop application, HTML is not escaped.</dd>
+
+  <dt><Marker number={4} /></dt>
+  <dd>The order of the fields should follow the same order as defined in the GUI.</dd>
+
+  <dt><Marker number={5} /></dt>
+  <dd>Without the explicit call to the `save` method, the flashcards would not be saved to disk. Indeed, the Anki application schedules a task every 5 minutes to call this method.</dd>
+</dl>
 
 The function `highlight_qualifier` used in the previous code is defined like this:
 
@@ -2689,14 +2709,24 @@ from the keyboard device.
 * {{sense|computing}} {{l|nl|toetsenbord}}
 ```
 {% endraw %}
-* <Marker number={1} /> A wiktionary entry contains the text of multiple dictionaries (English-English, English-Dutch). Only the English-English dictionary is relevant when learning the English language.
-* <Marker number={2} /> A given word could be used as a noun, a verb, etc. We need to extract the definition for each type while keeping note of the type.
-* <Marker number={3} /> Label syntax such as {% raw %}{{t+|fr|clavier|m}}{% endraw %} is used exhaustively inside the wiki text. Most of the content is present inside these labels but the syntax is not easily parseable.
-* <Marker number={4} /> There are many translation blocks. Often, the first one is the only translation we are interested.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>A wiktionary entry contains the text of multiple dictionaries (English-English, English-Dutch). Only the English-English dictionary is relevant when learning the English language.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>A given word could be used as a noun, a verb, etc. We need to extract the definition for each type while keeping note of the type.</dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>Label syntax such as {% raw %}{{t+|fr|clavier|m}}{% endraw %} is used exhaustively inside the wiki text. Most of the content is present inside these labels but the syntax is not easily parseable.</dd>
+
+  <dt><Marker number={4} /></dt>
+  <dd>There are many translation blocks. Often, the first one is the only translation we are interested.</dd>
+</dl>
 
 On this example, the definitions are easily parseable but not all the words are so simple in practice. Consider the word 'car':
 
-image:wiktionary-car.png[width="750"]
+<img src="/posts_resources/2016-12-26-anki-scripting/wiktionary-car.png" width="750" />
 
 Here the same content as x-wiki:
 
@@ -2720,8 +2750,14 @@ unit in a [[railroad]] train.
 #: ''The conductor coupled the '''cars''' to the locomotive.''
 ```
 {% endraw %}
-* <Marker number={1} /> Quotes could be on a line starting with `#:`, be surrounded with `''`
-* <Marker number={2} /> While other quotes could be on a line containing a label with the attribute `passage` containing the quote text.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>Quotes could be on a line starting with `#:`, be surrounded with `''`</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>While other quotes could be on a line containing a label with the attribute `passage` containing the quote text.</dd>
+</dl>
 
 This is only one example of subtlety among many others. Wiktionary syntax is full of surprise but also full of interesting content.
 
@@ -3053,7 +3089,11 @@ We could now create an application based on AngularJS 1.x and hosted in the same
 </body>
 </html>
 ```
-* <Marker number={1} /> We add a property `include` to `true` when the user select an element.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>We add a property `include` to `true` when the user select an element.</dd>
+</dl>
 
 The HTML is self-descriptive. Let's inspect the JavaScript code used to bootstrap the AngularJS application:
 
@@ -3086,8 +3126,13 @@ angular.module('app', [])
 });
 }]);
 ```
-* <Marker number={1} /> At initialization, we check the URL to determine the word to load before calling the main method `showWord`.
-* <Marker number={2} /> We emit an HTTP request to retrieve the JSON containing the word information. The result is stored in the model to be accessible by the view.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>At initialization, we check the URL to determine the word to load before calling the main method `showWord`.</dd>
+  <dt><Marker number={2} /></dt>
+  <dd>We emit an HTTP request to retrieve the JSON containing the word information. The result is stored in the model to be accessible by the view.</dd>
+</dl>
 
 The user could then check every definition, quotation, sound that interesting him. Once this is done, the user presses the touch 'Enter' to save the current word and trigger the next word loading.
 
@@ -3156,8 +3201,13 @@ public class ApiController {
 
 }
 ```
-* <Marker number={1} /> We parse the input JSON before passing it to the constructor of the class `Word`. Like the class `Dictionary`, this class acts as a Wrapper around the raw JSON document.
-* <Marker number={2} /> We use the method `save` on this object to persist the selection of the user.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>We parse the input JSON before passing it to the constructor of the class `Word`. Like the class `Dictionary`, this class acts as a Wrapper around the raw JSON document.</dd>
+  <dt><Marker number={2} /></dt>
+  <dd>We use the method `save` on this object to persist the selection of the user.</dd>
+</dl>
 
 The main logic is encapsulated inside the class `Word`. Let's see its definition:
 
@@ -3259,8 +3309,13 @@ public class Word {
 
 }
 ```
-* <Marker number={1} /> We download the sound from Wikipedia locally
-* <Marker number={2} /> We save the JSON to disk
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>We download the sound from Wikipedia locally</dd>
+  <dt><Marker number={2} /></dt>
+  <dd>We save the JSON to disk</dd>
+</dl>
 
 In definitive, the assistant application reads the full JSON dictionary, exposes its information through a REST API, allows the user to choose the most pertinent information before saving an annotated JSON document to disk such as the following one:
 
@@ -3393,7 +3448,11 @@ Where the front template is defined like this:
 {{/HasImageCard}}
 ```
 {% endraw %}
-* <Marker number={1} /> We need an additional field to determine if this card is required because some words have a picture but the user only want this picture to be displayed in other cards.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>We need an additional field to determine if this card is required because some words have a picture but the user only want this picture to be displayed in other cards.</dd>
+</dl>
 
 And the back template:
 
@@ -3494,7 +3553,11 @@ Where the front template is defined like this:
 {{/SampleA}}
 ```
 {% endraw %}
-* <Marker number={1} /> Replace `SampleA` by `SampleB`, `SampleC`
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>Replace `SampleA` by `SampleB`, `SampleC`</dd>
+</dl>
 
 And the back template:
 
@@ -3516,8 +3579,11 @@ And the back template:
 </div>
 ```
 {% endraw %}
-* <Marker number={1} /> Replace `AnswerA` by `AnswerB`, `AnswerC`
 
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>Replace `AnswerA` by `AnswerB`, `AnswerC`</dd>
+</dl>
 
 ##### Find the word from its definitions
 

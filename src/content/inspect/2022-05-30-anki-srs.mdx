@@ -45,7 +45,7 @@ I assume that you have used Anki before. All code examples use the Python langua
 
 The role of any Spaced Repetition System (SRS) algorithm is to determine what the user should review now, or say differently when must happen the next review for every remembered item. **The goal of any implementation is to counteract the effect of the forgetting curve**:
 
-<img src="/posts_resources/2022-05-30-anki-srs/forgetting-curve.png" />
+<a href="/posts_resources/2022-05-30-anki-srs/forgetting-curve.png"><img src="/posts_resources/2022-05-30-anki-srs/forgetting-curve.png" width="750" /></a>
 
 As soon as we learn or review a piece of knowledge, the decay begins. SRS algorithms need to determine the optimal interval between two reviews to ensure we haven't completely forgotten it (memory retention = 0%) while trying to limit as much as possible the number of reviews. In practice, most algorithms use 10% for the forgetting index (= 90% of items are remembered correctly) so that we don't have too many items to review again while keeping the number of reviews close to optimal.
 
@@ -56,7 +56,7 @@ The details of the different algorithms differ greatly between systems. We will 
 
 If [Hermann Ebbinghaus](https://en.wikipedia.org/wiki/Hermann_Ebbinghaus) is credited for the initial research behind SRS, the [Leiter System](https://en.wikipedia.org/wiki/Leitner_system) is often quoted as the first algorithm. This system uses a physical box as depicted by the following illustration:
 
-<img src="/posts_resources/2022-05-30-anki-srs/Leitner-original.png" />
+<a href="/posts_resources/2022-05-30-anki-srs/Leitner-original.png"><img src="/posts_resources/2022-05-30-anki-srs/Leitner-original.png" width="500" /></a>
 
 Here is a small Python program implementing the logic behind the original Leitner system:
 
@@ -120,7 +120,7 @@ The original Leitner system cannot really be considered a spaced repetition syst
 
 An alternative method using three boxes where incorrect answers are only moved back to the previous box is often privileged:
 
-<img src="/posts_resources/2022-05-30-anki-srs/Leitner-modern.png" />
+<a href="/posts_resources/2022-05-30-anki-srs/Leitner-modern.png"><img src="/posts_resources/2022-05-30-anki-srs/Leitner-modern.png" width="700" /></a>
 
 Here is a program implementing this new logic:
 
@@ -209,7 +209,7 @@ Algorithms are precise instructions to carry out. As we have seen with the Leitn
 
 The [SM-0 algorithm](http://super-memory.com/articles/paper.htm) (aka the paper-and-pencil SuperMemo method) was published in 1985 and relies on [paper books filled with tables](http://super-memory.com/articles/paper.htm).
 
-<img src="/posts_resources/2022-05-30-anki-srs/sm-0.png" />
+<a href="/posts_resources/2022-05-30-anki-srs/sm-0.png"><img src="/posts_resources/2022-05-30-anki-srs/sm-0.png" width="800" /></a>
 
 Although the algorithm was designed to be executed manually, we can still capture the logic using code:
 
@@ -312,7 +312,11 @@ if __name__ == "__main__":
             print(f"Reviewing page {page} on {day}")
             DATABOOK[page].review()
 ```
-* <Marker number={1} /> The grade of the answer does not influence the next interval. Difficult items are reviewed again the same day but the next intervals are fixed and determined with a factor 1.7 when creating the page.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The grade of the answer does not influence the next interval. Difficult items are reviewed again the same day but the next intervals are fixed and determined with a factor 1.7 when creating the page.</dd>
+</dl>
 
 The SM-0 algorithm can be challenging in practice for different reasons:
 
@@ -327,7 +331,7 @@ Enter the computer.
 
 Unlike physical systems where cards are grouped in the same box/partition/page and are reviewed collectively, digital systems consider each item separately. For example, the SuperMemo algorithm called [SM-2](https://www.supermemo.com/en/archives1990-2015/english/ol/sm2) assigns a specific level of difficulty to every card and determines the appropriate intervals between repetitions using this specific value (called the E-Factor).
 
-<img src="/posts_resources/2022-05-30-anki-srs/sm-2.png" />
+<a href="/posts_resources/2022-05-30-anki-srs/sm-2.png"><img src="/posts_resources/2022-05-30-anki-srs/sm-2.png" width="800" /></a>
 
 Now, the same logic but implemented as code:
 
@@ -392,10 +396,20 @@ if __name__ == "__main__":
             if not item.review(day, q): # <4>
                 items_to_review.put(item)
 ```
-* <Marker number={1} /> The E-Factor never goes down lower than 1.3. SuperMemo found out that items having lower E-Factors were repeated annoyingly often when the root cause was usually their formulation and not the review process. We will see how Anki manages such cards later. These items must often be reformulated to conform to the [minimum information principle](https://supermemo.guru/wiki/Minimum_information_principle).
-* <Marker number={2} /> The E-Factor is always initialized to the same difficulty value. It will decrease for bad grades and increase for good grades.
-* <Marker number={3} /> Unlike SM-0, the grades (= item difficulty) influence the factor used to determine the next interval.
-* <Marker number={4} /> Like SM-0, difficult items are reviewed again the same day.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The E-Factor never goes down lower than 1.3. SuperMemo found out that items having lower E-Factors were repeated annoyingly often when the root cause was usually their formulation and not the review process. We will see how Anki manages such cards later. These items must often be reformulated to conform to the [minimum information principle](https://supermemo.guru/wiki/Minimum_information_principle).</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>The E-Factor is always initialized to the same difficulty value. It will decrease for bad grades and increase for good grades.</dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>Unlike SM-0, the grades (= item difficulty) influence the factor used to determine the next interval.</dd>
+
+  <dt><Marker number={4} /></dt>
+  <dd>Like SM-0, difficult items are reviewed again the same day.</dd>
+</dl>
 
 The SM-2 algorithm, while relatively basic, remains popular even today as you will discover in the rest of this article.
 
@@ -416,15 +430,15 @@ We will analyze the V2.1 scheduler as it is the version I'm familiar with. We wi
 
 Here is a recall of [Anki terminology](https://docs.ankiweb.net/getting-started.html#key-concepts):
 
-<img src="/posts_resources/2022-05-30-anki-srs/anki-terminology.png" />
+<a href="/posts_resources/2022-05-30-anki-srs/anki-terminology.png"><img src="/posts_resources/2022-05-30-anki-srs/anki-terminology.png" width="750" /></a>
 
 As outlined by the schema, we will focus on the core abstractions (Collection, Note, Card) that affects how the SRS algorithm works. In addition, cards in Anki are scheduled differently according to their state:
 
-<img src="/posts_resources/2022-05-30-anki-srs/anki-workflow.png" />
+<a href="/posts_resources/2022-05-30-anki-srs/anki-workflow.png"><img src="/posts_resources/2022-05-30-anki-srs/anki-workflow.png" width="700" /></a>
 
 Here is an overview of the Anki algorithm:
 
-<img src="/posts_resources/2022-05-30-anki-srs/anki-srs.png" />
+<a href="/posts_resources/2022-05-30-anki-srs/anki-srs.png"><img src="/posts_resources/2022-05-30-anki-srs/anki-srs.png" width="750" /></a>
 
 The use of separate new/review queues tries to remediate a common complaint with the standard SM-2 algorithm is that repeated failings of a card cause the card to get stuck in "low interval hell" (also known as "ease hell"). [In Anki](https://faqs.ankiweb.net/what-spaced-repetition-algorithm.html#review-cards), the initial acquisition process does not influence the ease factor.
 
@@ -471,35 +485,51 @@ deckConf = {
     },
 }
 ```
-* <Marker number={1} /> If there is no more card to review now but the next card in learning is in less than `collapseTime` seconds, show it now. +
-  * `collapseTime`: Tells Anki how to behave when there is nothing left to study in the current deck but cards in learning. +
-    _Setting_: `Preferences` > `Basic` > `Learn ahead limit` * 60 (default: `20` minutes)
-* <Marker number={2} /> The settings differ based on the queue where a card belongs. For example, when learning (`new`) cards, the delay is increased by graduating steps whereas the delay is multiplied by a given factor for review (`rev`) cards. The meaning of individual settings will become clearer when we will detail the logic. +
-  * `new.delays`: The list of successive delays between the learning steps of the new cards. The first delay will be used when you press the `Again` button on a new card. The `Good` button will advance to the next step. Once all steps have been passed, the card will become a review card and will appear on a different day. +
-    _Setting_: `Preferences` > `New Cards` > `Learning steps` (Default: `1m 10m`)
-  * `new.ints`: The list of delays according to the button pressed while leaving the learning mode after pressing "Good" or "Easy." +
-    _Setting_: `Preferences` > `New Cards` > `Graduating interval`/`Easy interval` (Default: `1` and `4`)
-  * `new.initialFactor`: The ease multiplier new cards start with. By default, the `Good` button on a newly-learned card will delay the next review by 2.5x the previous delay. +
-    _Setting_: `Preferences` > `Advanced` > `Starting ease` (Default: `2.50`),
-  * `new.perDay`: The maximum number of new cards to introduce in a day, if new cards are available. +
-    _Setting_: `Preferences` > `Daily Limits` > `New cards/day` (Default: `20`)
-  * `rev.perDay`: The maximum number of review cards to show in a day, if cards are ready for review. +
-    _Setting_: `Preferences` > `Daily Limits` > `Maximum reviews/day` (Default: `50`)
-  * `rev.ease4`: An extra multiplier that is applied to a review card's interval when you rate it `Easy`. +
-    _Setting_: `Preferences` > `Advanced` > `Easy bonus` (Default: `1.30`)
-  * `rev.maxIvl`: The maximum number of days a review card will wait. When reviews have reached the limit, `Hard`, `Good` and `Easy` will all give the same delay. +
-    _Setting_: `Preferences` > `Advanced` > `Maximum interval` (Default: `36500`)
-  * `rev.hardFactor`: The multiplier applied to a review interval when answering `Hard`. +
-    _Setting_: `Preferences` > `Advanced` > `Hard interval` (Default: `1.20`)
-* <Marker number={3} /> When you forget a review card, it is said to have "lapsed", and the card must be relearnt. The default behavior for lapsed reviews is to reset the interval (`minInt`) to 1 (i.e. make it due tomorrow) and put it in the learning queue for a refresher (`delays`) in 10 minutes. +
-  * `lapse.delays`: The list of successive delays between the learning steps of lapsed cards. By default, pressing the `Again` button on a review card will show it again 10 minutes later. +
-    _Setting_: `Preferences` > `Lapses` > `Relearning steps` (Default: `10m`)
-  * `lapse.minInt`: The minimum interval given to a review card after answering `Again`. +
-    _Setting_: `Preferences` > `Lapses` > `Minimum interval` (Default: `1`)
-  * `lapse.mult`: The multiplier applied to a review interval when answering `Again`. +
-    _Setting_: `Preferences` > `Advanced` > `New interval` (Default: `0`)
-  * `lapse.leechFails`: The number of times `Again` needs to be pressed on a review card before it is marked as a leech. +
-    _Setting_: `Preferences` > `Lapses` > Leech threshold (Default: `8`)
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>
+    If there is no more card to review now but the next card in learning is in less than `collapseTime` seconds, show it now.
+
+    * `collapseTime`: Tells Anki how to behave when there is nothing left to study in the current deck but cards in learning. +
+      _Setting_: `Preferences` > `Basic` > `Learn ahead limit` * 60 (default: `20` minutes)
+  </dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>
+    The settings differ based on the queue where a card belongs. For example, when learning (`new`) cards, the delay is increased by graduating steps whereas the delay is multiplied by a given factor for review (`rev`) cards. The meaning of individual settings will become clearer when we will detail the logic.
+
+    * `new.delays`: The list of successive delays between the learning steps of the new cards. The first delay will be used when you press the `Again` button on a new card. The `Good` button will advance to the next step. Once all steps have been passed, the card will become a review card and will appear on a different day. +
+      _Setting_: `Preferences` > `New Cards` > `Learning steps` (Default: `1m 10m`)
+    * `new.ints`: The list of delays according to the button pressed while leaving the learning mode after pressing "Good" or "Easy." +
+      _Setting_: `Preferences` > `New Cards` > `Graduating interval`/`Easy interval` (Default: `1` and `4`)
+    * `new.initialFactor`: The ease multiplier new cards start with. By default, the `Good` button on a newly-learned card will delay the next review by 2.5x the previous delay. +
+      _Setting_: `Preferences` > `Advanced` > `Starting ease` (Default: `2.50`),
+    * `new.perDay`: The maximum number of new cards to introduce in a day, if new cards are available. +
+      _Setting_: `Preferences` > `Daily Limits` > `New cards/day` (Default: `20`)
+    * `rev.perDay`: The maximum number of review cards to show in a day, if cards are ready for review. +
+      _Setting_: `Preferences` > `Daily Limits` > `Maximum reviews/day` (Default: `50`)
+    * `rev.ease4`: An extra multiplier that is applied to a review card's interval when you rate it `Easy`. +
+      _Setting_: `Preferences` > `Advanced` > `Easy bonus` (Default: `1.30`)
+    * `rev.maxIvl`: The maximum number of days a review card will wait. When reviews have reached the limit, `Hard`, `Good` and `Easy` will all give the same delay. +
+      _Setting_: `Preferences` > `Advanced` > `Maximum interval` (Default: `36500`)
+    * `rev.hardFactor`: The multiplier applied to a review interval when answering `Hard`. +
+      _Setting_: `Preferences` > `Advanced` > `Hard interval` (Default: `1.20`)
+  </dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>
+    When you forget a review card, it is said to have "lapsed", and the card must be relearnt. The default behavior for lapsed reviews is to reset the interval (`minInt`) to 1 (i.e. make it due tomorrow) and put it in the learning queue for a refresher (`delays`) in 10 minutes.
+
+    * `lapse.delays`: The list of successive delays between the learning steps of lapsed cards. By default, pressing the `Again` button on a review card will show it again 10 minutes later. +
+      _Setting_: `Preferences` > `Lapses` > `Relearning steps` (Default: `10m`)
+    * `lapse.minInt`: The minimum interval given to a review card after answering `Again`. +
+      _Setting_: `Preferences` > `Lapses` > `Minimum interval` (Default: `1`)
+    * `lapse.mult`: The multiplier applied to a review interval when answering `Again`. +
+      _Setting_: `Preferences` > `Advanced` > `New interval` (Default: `0`)
+    * `lapse.leechFails`: The number of times `Again` needs to be pressed on a review card before it is marked as a leech. +
+      _Setting_: `Preferences` > `Lapses` > Leech threshold (Default: `8`)
+  </dd>
+</dl>
 
 
 ### Part 2: Model
@@ -569,8 +599,14 @@ class Card:
         # - rev => integer day, relative to the collection's creation time
         self.due = self.id
 ```
-* <Marker number={1} /> The `Scheduler` implementation will be the main topic of the remaining of this section.
-* <Marker number={2} /> The identifiers are initialized using a helper function `intId()` which uses the current time and ensures two successive calls return different values. Here is the definition:
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The `Scheduler` implementation will be the main topic of the remaining of this section.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>The identifiers are initialized using a helper function `intId()` which uses the current time and ensures two successive calls return different values. Here is the definition:</dd>
+</dl>
 
 ```python
 import time
@@ -613,8 +649,12 @@ class Scheduler:
         self._lrnCutoff = 0 # <3>
         self.reset()
 ```
-* <Marker number={1} /> The attribute `today` represents the number of days since the collection creation. It is used when searching for review cards where the attribute `due` represents the number of days relative to it. The value is initialized like this:
-+
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>
+The attribute `today` represents the number of days since the collection creation. It is used when searching for review cards where the attribute `due` represents the number of days relative to it. The value is initialized like this:
+
 ```python
 class Scheduler:
 
@@ -623,8 +663,12 @@ class Scheduler:
         return int((time.time() - time.mktime(startDate.timetuple())) // 86400)
         # Note: 86400s = 1d
 ```
-* <Marker number={2} /> The attribute `dayCutoff` represents the timestamp of the beginning of the next day. Anki allows customizing at which hour a day ends. Here, we simply use midnight:
-+
+  </dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>
+The attribute `dayCutoff` represents the timestamp of the beginning of the next day. Anki allows customizing at which hour a day ends. Here, we simply use midnight:
+
 ```python
 class Scheduler:
 
@@ -636,8 +680,12 @@ class Scheduler:
         stamp = int(time.mktime(date.timetuple()))
         return stamp
 ```
-* <Marker number={3} /> The attribute `_lrnCutoff` is related to the setting `collapseTime` (also called the learn ahead limit). The method `_updateLrnCutoff()` is used to initialize it and update it:
-+
+  </dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>
+The attribute `_lrnCutoff` is related to the setting `collapseTime` (also called the learn ahead limit). The method `_updateLrnCutoff()` is used to initialize it and update it:
+
 ```python
 class Scheduler:
 
@@ -648,7 +696,8 @@ class Scheduler:
             return True
         return False
 ```
-
+  </dd>
+</dl>
 
 ### Part 3: Queues Management
 
@@ -733,12 +782,23 @@ class Scheduler:
             return True
 
 ```
-* <Marker number={1} /> By default, the queues are empty. Anki defers their filling until a card is retrieved.
-* <Marker number={2} /> The method `_updateNewCardRatio()` determines the frequency for new cards (only when new cards are spread among other cards). For example, if there are 50 review cards and 10 new cards, the ratio will be 5 so that a new card is returned after every 5 review cards. The attribute `reps` present in `Scheduler` keeps the current number of reviewed cards for the current study session and will be useful when using the ratio `_newCardModulus` to determine if the next card must be a new card or a review card.
-* <Marker number={3} /> Anki searches for all cards in the queue `0` (= `new`) and sorts them by their due date before returning the first N cards based on the current daily limit.
-* <Marker number={4} /> Anki searches for all cards in the queue `1` (= `lrn`) that are due and sorts them by timestamp as the id is initialized from the creation timestamp
-* <Marker number={5} /> Anki searches for all cards in the queue `2` (= `rev`) that are due and sorts them by the due date before returning the first N shuffled cards based on the current daily limit.
 
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>By default, the queues are empty. Anki defers their filling until a card is retrieved.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>The method `_updateNewCardRatio()` determines the frequency for new cards (only when new cards are spread among other cards). For example, if there are 50 review cards and 10 new cards, the ratio will be 5 so that a new card is returned after every 5 review cards. The attribute `reps` present in `Scheduler` keeps the current number of reviewed cards for the current study session and will be useful when using the ratio `_newCardModulus` to determine if the next card must be a new card or a review card.</dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>Anki searches for all cards in the queue `0` (= `new`) and sorts them by their due date before returning the first N cards based on the current daily limit.</dd>
+
+  <dt><Marker number={4} /></dt>
+  <dd>Anki searches for all cards in the queue `1` (= `lrn`) that are due and sorts them by timestamp as the id is initialized from the creation timestamp</dd>
+
+  <dt><Marker number={5} /></dt>
+  <dd>Anki searches for all cards in the queue `2` (= `rev`) that are due and sorts them by the due date before returning the first N shuffled cards based on the current daily limit.</dd>
+</dl>
 
 The logic to initialize the queues is ready but will be executed in the next step when retrieving a card to study.
 
@@ -822,16 +882,24 @@ class Scheduler:
         if self._fillRev(): # <2>
             return self._revQueue.pop()
 ```
-* <Marker number={1} /> By default, Anki shows cards in a well-defined order:
-+
-. New cards when `newSpread == NEW_CARDS_FIRST`
-. Learning cards that are due
-. New cards when `newSpread == NEW_CARDS_DISTRIBUTE` (default)
-. Review cards
-. New cards when `newSpread == NEW_CARDS_LAST`
-* <Marker number={2} /> The methods `_fillXXX()` return `True` when a queue is not empty, in which case, we simply have to pop an element from it.
 
-The queues are now initialized when retrieving the first card in each of them. This works great for the current session but when a new day begins, Anki must reinitialize the queues because other cards may have reached their due date.
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>
+    By default, Anki shows cards in a well-defined order:
+
+    * New cards when `newSpread == NEW_CARDS_FIRST`
+    * Learning cards that are due
+    * New cards when `newSpread == NEW_CARDS_DISTRIBUTE` (default)
+    * Review cards
+    * New cards when `newSpread == NEW_CARDS_LAST`
+  </dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>
+  The methods `_fillXXX()` return `True` when a queue is not empty, in which case, we simply have to pop an element from it.
+
+  The queues are now initialized when retrieving the first card in each of them. This works great for the current session but when a new day begins, Anki must reinitialize the queues because other cards may have reached their due date.
 
 ```python showLineNumbers highlight='4,9-14,16-19,22' showLineMarkers:{'1': [848], '2': [866]}
 class Scheduler:
@@ -862,9 +930,18 @@ class Scheduler:
             return card
 
 ```
-* <Marker number={1} /> The method `_updateCutoff()` is called every time the queues are reset (= once a day). When this happens, it means a new day began and therefore the day limit must be refreshed too.
-* <Marker number={2} /> The method `_checkDay()` is called every time we retrieve a new card to study. This way, if we have passed the current day, the queue will be reset before returning the next card.
+  </dd>
 
+  <dt><Marker number={1} /></dt>
+  <dd>
+    The method `_updateCutoff()` is called every time the queues are reset (= once a day). When this happens, it means a new day began and therefore the day limit must be refreshed too.
+  </dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>
+    The method `_checkDay()` is called every time we retrieve a new card to study. This way, if we have passed the current day, the queue will be reset before returning the next card.
+  </dd>
+</dl>
 
 
 ### Part 5: Card Updating
@@ -923,9 +1000,17 @@ class Scheduler:
             ok = i
         return ok+1
 ```
-* <Marker number={1} /> Anki simply updates the attribute `queue` to move a card to a different queue. When the destination queue will be reset (ex: for tomorrow's session), the card will be automatically inserted into it.
-* <Marker number={2} /> The attribute `type` is similar to the attribute `queue` (they share the same values `0`, `1`, and `2`). In practice, the attributes `queue` and `type` may differ for example after a lapse. When pressing "Again," on a review card, the card will be moved back to the learning back (`queue = 1`) but the type will be unchanged (`type = 2`) to remember the card was previously a review card. This will be useful when graduating the card back to the review queue after relearning.
-* <Marker number={3} /> The attribute `left` is particular. The numeric format keeps two pieces of information: how many times the card will be reviewed today, and how many steps before graduation. The methods `_startingLeft` and `_leftToday` implement this logic. You can safely ignore the details.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>Anki simply updates the attribute `queue` to move a card to a different queue. When the destination queue will be reset (ex: for tomorrow's session), the card will be automatically inserted into it.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>The attribute `type` is similar to the attribute `queue` (they share the same values `0`, `1`, and `2`). In practice, the attributes `queue` and `type` may differ for example after a lapse. When pressing "Again," on a review card, the card will be moved back to the learning back (`queue = 1`) but the type will be unchanged (`type = 2`) to remember the card was previously a review card. This will be useful when graduating the card back to the review queue after relearning.</dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>The attribute `left` is particular. The numeric format keeps two pieces of information: how many times the card will be reviewed today, and how many steps before graduation. The methods `_startingLeft` and `_leftToday` implement this logic. You can safely ignore the details.</dd>
+</dl>
 
 
 So, when answering a new card, the card is automatically promoted to the learning queue.
@@ -960,7 +1045,11 @@ class Scheduler:
         else:
             return self.col.deckConf["new"]
 ```
-* <Marker number={1} /> The settings differ according to if the card comes from the review or new queue. For example, the steps are different after a lapse than when learning a new card for the first time.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The settings differ according to if the card comes from the review or new queue. For example, the steps are different after a lapse than when learning a new card for the first time.</dd>
+</dl>
 
 We will detail what happens depending on which button was pressed when answering the card.
 
@@ -1006,10 +1095,20 @@ class Scheduler:
         delay = conf['delays'][-left]
         return delay*60
 ```
-* <Marker number={1} /> We restore the attribute `left` as if the card were new.
-* <Marker number={2} /> We process lapses differently. By default, we reset the attribute `ivl` to `1` (next review in one day).
-* <Marker number={3} /> The card due date is determined by adding the next step to the current date. The card remains in the learning queue (`1`).
-* <Marker number={4} /> The method `_delayForGrade()` is a helper method to get the next step interval. The method extracts the number of remaining steps from the attribute `left` (Ex: `1002` => 2 remaining steps) and uses the setting `delay` to find the matching delay (Ex: `1m 10m 1d` => next study in `10m`).
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>We restore the attribute `left` as if the card were new.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>We process lapses differently. By default, we reset the attribute `ivl` to `1` (next review in one day).</dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>The card due date is determined by adding the next step to the current date. The card remains in the learning queue (`1`).</dd>
+
+  <dt><Marker number={4} /></dt>
+  <dd>The method `_delayForGrade()` is a helper method to get the next step interval. The method extracts the number of remaining steps from the attribute `left` (Ex: `1002` => 2 remaining steps) and uses the setting `delay` to find the matching delay (Ex: `1m 10m 1d` => next study in `10m`).</dd>
+</dl>
 
 
 #### After pressing "Hard"...
@@ -1034,7 +1133,11 @@ class Scheduler:
         avg = (delay1+max(delay1, delay2))//2
         return avg
 ```
-* <Marker number={1} /> We reuse the method `_rescheduleLrnCard()` introduced just before to update the card's due date.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>We reuse the method `_rescheduleLrnCard()` introduced just before to update the card's due date.</dd>
+</dl>
 
 
 #### After pressing "Good"...
@@ -1083,9 +1186,17 @@ class Scheduler:
             ideal = conf['ints'][1]
         return ideal
 ```
-* <Marker number={1} /> When a lapse is graduated, we add the previous interval to the current date to determine the due date.
-* <Marker number={2} /> When a new card is graduated, we initialize the two key attributes relative to the SRS algorithm: the ease factor and the interval. These fields will be necessary to determine the next due date for review cards.
-* <Marker number={3} /> When graduating a new card, the initial interval will be different if we are completed all steps ("Good") or if we have pressed ("Easy") to immediately graduate the card (1 vs 4 days by default).
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>When a lapse is graduated, we add the previous interval to the current date to determine the due date.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>When a new card is graduated, we initialize the two key attributes relative to the SRS algorithm: the ease factor and the interval. These fields will be necessary to determine the next due date for review cards.</dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>When graduating a new card, the initial interval will be different if we are completed all steps ("Good") or if we have pressed ("Easy") to immediately graduate the card (1 vs 4 days by default).</dd>
+</dl>
 
 _Case 2_: If there are remaining steps:
 
@@ -1099,7 +1210,12 @@ class Scheduler:
 
         self._rescheduleLrnCard(card, conf)
 ```
-* <Marker number={1} /> The attribute `left` is updated to decrement the number of remaining steps and to recalculate the number of studies until the next day.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The attribute `left` is updated to decrement the number of remaining steps and to recalculate the number of studies until the next day.</dd>
+</dl>
+
 
 #### After pressing "Easy"...
 
@@ -1157,9 +1273,17 @@ class Scheduler:
             card.queue = -1
             return True
 ```
-* <Marker number={1} /> The number of lapses for this card is increased.
-* <Marker number={2} /> The ease factor is reduced by 0.2 (but no lower than 1.3 as recommended by SM-2).
-* <Marker number={3} /> If the number of lapses reaches the value of the setting `leechFails`, the card is marked as a leech. A tag is added to the note and the card is moved to the queue `-1` (= suspended). The card will therefore be ignored when filling the different queue as no method `_fillXXX()` considers cards in the queue `-1`.
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The number of lapses for this card is increased.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>The ease factor is reduced by 0.2 (but no lower than 1.3 as recommended by SM-2).</dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>If the number of lapses reaches the value of the setting `leechFails`, the card is marked as a leech. A tag is added to the note and the card is moved to the queue `-1` (= suspended). The card will therefore be ignored when filling the different queue as no method `_fillXXX()` considers cards in the queue `-1`.</dd>
+</dl>
+
 
 #### After pressing "Hard," "Good," "Easy"...
 
@@ -1213,12 +1337,22 @@ class Scheduler:
         ivl = min(ivl, conf['maxIvl'])
         return int(ivl)
 ```
-* <Marker number={1} /> The attribute `ivl` determines the next due date (we add it to the current date to determine the value of the attribute `due`).
-* <Marker number={2} /> The ease factor is changed by removing 0.15 for "Hard" cards or by adding 0.15 for "Easy" cards. The ease factor is left unchanged for "Good" cards. Only their intervals will be changed to increase the period between studies.
-* <Marker number={3} /> The method `_nextRevIvl()` determine the next interval:
-* "Hard": the current interval is multiplied by the value of the hard interval (1.2 by default).
-* "Good": the current interval is multiplied by the current ease (+ a bonus if the card was late).
-* "Easy": the current interval is multiplied by the current ease times the easy bonus (1.3 by default) (+ a bonus if the card was late).
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The attribute `ivl` determines the next due date (we add it to the current date to determine the value of the attribute `due`).</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>The ease factor is changed by removing 0.15 for "Hard" cards or by adding 0.15 for "Easy" cards. The ease factor is left unchanged for "Good" cards. Only their intervals will be changed to increase the period between studies.</dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>
+    The method `_nextRevIvl()` determine the next interval:
+
+    * "Hard": the current interval is multiplied by the value of the hard interval (1.2 by default).
+    * "Good": the current interval is multiplied by the current ease (+ a bonus if the card was late).
+    * "Easy": the current interval is multiplied by the current ease times the easy bonus (1.3 by default) (+ a bonus if the card was late).
+  </dd>
+</dl>
 
 
 **We are done** 🎉. The complete code is available in the [companion GitHub repository](https://github.com/julien-sobczak/anki-srs-under-the-hood/blob/main/anki/schedv2_minimal_v3.py). A more complete [annotated version](https://github.com/julien-sobczak/anki-srs-under-the-hood/blob/main/anki/schedv2_annotated.py) is also available in the same repository including two additional features described next.
@@ -1288,13 +1422,22 @@ def _getCard(self):
     # collapse or finish
     return self._getLrnCard(collapse=True)
 ```
-* <Marker number={1} /> The previous queue is split into two queues:
-* `_lrnQueue` (`queue == 1`) = sub-day learning queue
-* `_lrnDayQueue` (`queue == 3`) = day learning queue
 
-* <Marker number={2} /> Learning cards are rescheduled in the sub-day queue `1` when the next review is planned before the end of the day review session. The due date is the number of seconds until the next review. Otherwise, the card is rescheduled in the day learning queue `3` and the delay is the number of days until the next review.
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>
+    The previous queue is split into two queues:
 
-* <Marker number={3} /> Sub-day learning cards are prioritized first to be sure to review them as close as their delay in seconds. Day learning cards are reviewed last since their delay in days tolerates more flexibility (reviewing them the next day is not as bad as for sub-day learning cards).
+    * `_lrnQueue` (`queue == 1`) = sub-day learning queue
+    * `_lrnDayQueue` (`queue == 3`) = day learning queue
+  </dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>Learning cards are rescheduled in the sub-day queue `1` when the next review is planned before the end of the day review session. The due date is the number of seconds until the next review. Otherwise, the card is rescheduled in the day learning queue `3` and the delay is the number of days until the next review.</dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>Sub-day learning cards are prioritized first to be sure to review them as close as their delay in seconds. Day learning cards are reviewed last since their delay in days tolerates more flexibility (reviewing them the next day is not as bad as for sub-day learning cards).</dd>
+</dl>
 
 
 ### Bonus: Fuzzing
@@ -1323,13 +1466,21 @@ def _fuzzIvlRange(self, ivl):
     fuzz = max(fuzz, 1)
     return [ivl-fuzz, ivl+fuzz]
 ```
-* <Marker number={1} /> The function `_fuzzedIvl()` is only called for intervals greater than one day. For sub-day learning cards introduced in the previous point, fuzzing is also applied up to 5 minutes:
-+
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>
+    The function `_fuzzedIvl()` is only called for intervals greater than one day. For sub-day learning cards introduced in the previous point, fuzzing is also applied up to 5 minutes:
+
 ```python
 maxExtrax = min(300, int(delay*0.25))
 fuzz = random.randrange(0, maxExtra)
 ```
-* <Marker number={2} /> The fuzz factor is reduced but the fuzzing increases as intervals become larger.
+  </dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>The fuzz factor is reduced but the fuzzing increases as intervals become larger.</dd>
+</dl>
 
 
 
@@ -1361,7 +1512,7 @@ The successive iterations become more and more elaborate by adding new dimension
 
 What follows is an example of the optimum factors (OF) matrix used in SM-4/SM-5. The matrix ignores the retrievability dimension, which was introduced in SM-6.
 
-<img src="/posts_resources/2022-05-30-anki-srs/sm-5-matrix.png" />
+<a href="/posts_resources/2022-05-30-anki-srs/sm-5-matrix.png"><img src="/posts_resources/2022-05-30-anki-srs/sm-5-matrix.png" width="700" /></a>
 
 A two-dimensional matrix is easier to represent but the logic is similar with more dimensions. Initially, the matrix was defined based on prior measurements in SuperMemo. After each answer, the grade tells SuperMemo how well the interval "performed." If the grade is low, the interval was too long. If the grade is high, the interval was too short. The entry in the matrix is updated in consequence and matrix smoothing is applied (= if a value increases, a smaller increase can be beneficial to neighbors too).
 
@@ -1369,7 +1520,7 @@ The two-component model of long-term memory still represents the foundation of S
 
 
 <Admonition type="note" className="None" title={`"New" Applications`}>
-Many applications relying on SRS appeared in popular app stores more or less recently: [Quizlet](https://quizlet.com/), [Memrise](https://www.memrise.com/), [Duolingo](https://www.duolingo.com/), [LingoDeer](https://www.lingodeer.com/), [Brainscape](https://www.brainscape.com/), [Lingvist](https://lingvist.com/), [Chegg](https://chegg.com), [RemNote](https://www.remnote.com/), [Mochi](https://mochi.cards/), [Memcode](https://www.memcode.com/), ...
+  Many applications relying on SRS appeared in popular app stores more or less recently: [Quizlet](https://quizlet.com/), [Memrise](https://www.memrise.com/), [Duolingo](https://www.duolingo.com/), [LingoDeer](https://www.lingodeer.com/), [Brainscape](https://www.brainscape.com/), [Lingvist](https://lingvist.com/), [Chegg](https://chegg.com), [RemNote](https://www.remnote.com/), [Mochi](https://mochi.cards/), [Memcode](https://www.memcode.com/), ...
 
 * [__Mochi__'s algorithm](https://mochi.cards/docs/#spaced-repetition) is very simple. The card interval is doubled after each correct answer, and cut in half otherwise.
 
@@ -1403,16 +1554,16 @@ One last important thing,
 
 
 <Admonition type="note" className="remember" title="To Remember">
-* **A Spaced Repetition System (SRS) counteracts the effect of the forgetting curve**. Memory decay is inevitable but can be influenced.
-* **SRS systems can be implemented with or without a computer**. The Leitner system remains popular.
-* *SRS systems often target a retention close to 90%* (= 10% of cards are wrongly answered).
-* **SuperMemo** introduced the first **SRS algorithm running on a computer** (SM-2).
-* **SM-2 continues to be used by most applications** including Anki, despite having been abandoned in SuperMemo three decades ago.
-* **Anki makes the SM-2 highly configurable** and uses different queues to manage cards differently based on if they are new, in learning, or simply in review.
-* **Most algorithms use the item difficulty** (known as the ease factor) to determine optimal intervals. SuperMemo goes well beyond and also uses memory stability and memory retrievability.
-* **Recent SRS applications rely on machine learning** to exploit the specificities of the learning materials (ex: English words with irregular syntax) and to use the information collected from their massive dataset of users to tune their algorithm. SuperMemo never chose this approach.
-* **The perfect SRS algorithm will never exist**. No algorithm can determine if you are passionate about a subject, or if you review by chance the content of a card at work during a discussion with a coworker (in which case an "ideal" algorithm must postpone the next review).
-* **Creating great flashcards and making reviewing them a habit have probably a far bigger impact** than any improvement in the SRS algorithm you use.
+  * **A Spaced Repetition System (SRS) counteracts the effect of the forgetting curve**. Memory decay is inevitable but can be influenced.
+  * **SRS systems can be implemented with or without a computer**. The Leitner system remains popular.
+  * *SRS systems often target a retention close to 90%* (= 10% of cards are wrongly answered).
+  * **SuperMemo** introduced the first **SRS algorithm running on a computer** (SM-2).
+  * **SM-2 continues to be used by most applications** including Anki, despite having been abandoned in SuperMemo three decades ago.
+  * **Anki makes the SM-2 highly configurable** and uses different queues to manage cards differently based on if they are new, in learning, or simply in review.
+  * **Most algorithms use the item difficulty** (known as the ease factor) to determine optimal intervals. SuperMemo goes well beyond and also uses memory stability and memory retrievability.
+  * **Recent SRS applications rely on machine learning** to exploit the specificities of the learning materials (ex: English words with irregular syntax) and to use the information collected from their massive dataset of users to tune their algorithm. SuperMemo never chose this approach.
+  * **The perfect SRS algorithm will never exist**. No algorithm can determine if you are passionate about a subject, or if you review by chance the content of a card at work during a discussion with a coworker (in which case an "ideal" algorithm must postpone the next review).
+  * **Creating great flashcards and making reviewing them a habit have probably a far bigger impact** than any improvement in the SRS algorithm you use.
 </Admonition>
 
 

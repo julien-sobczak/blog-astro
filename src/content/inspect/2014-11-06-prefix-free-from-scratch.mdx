@@ -4,24 +4,24 @@ title: "Implementing -prefix-free from Scratch"
 author: "Julien Sobczak"
 date: 2014-11-06
 subject: "-prefix-free"
-tags: ['web']
-unofficialTags: ['javascript']
+tags: ["web"]
+unofficialTags: ["javascript"]
+done: true
 ---
 import Admonition from '../../components/Admonition.astro'
 import Marker from '../../components/Marker.astro'
 import Lead from '../../components/Lead.astro'
 
 
-
-<Admonition type="caution" className="license" title="None">
-You are reading a translation of an [old blog post](https://julien-sobczak.github.io/blog-fr/inspect/2014/11/06/prefix-free-from-scratch.html) published on my previous blog in French.
+<Admonition type="caution" className="license">
+  You are reading a translation of an [old blog post](https://julien-sobczak.github.io/blog-fr/inspect/2014/11/06/prefix-free-from-scratch.html) published on my previous blog in French.
 </Admonition>
-
 
 
 > [-prefix-free is] fantastic, top-notch work! Thank you for creating and sharing it.
 >
 > -- <cite>Eric Meyer</cite>
+
 
 Thanks to -prefix-free, you no longer have to write CSS properties for every browser extension. You only need to write CSS standard properties, and your code is still supported by all browsers. It is not surprising that most code playgrounds now provide this essential library. Let's take for example the following pen created initially by [amos](http://codepen.io/amos/).
 
@@ -34,7 +34,10 @@ Thanks to -prefix-free, you no longer have to write CSS properties for every bro
 
 No prefix `-moz` or `-webkit`. Under the hood, -prefix-free adds the prefixed properties dynamically and only if necessary depending on your browser. How does this magic work? We will discover it in this article.
 
-[-prefix-free](http://leaverou.github.io/prefixfree/) is brought to us by Lea Verou and is available on [Github](https://github.com/LeaVerou/prefixfree). The code presented in this article has been simplified for obvious reasons and must not be used outside this learning context. This article is based on the last version at the moment of the publication of this article.
+<Admonition type="caution" className="license">
+  [-prefix-free](http://leaverou.github.io/prefixfree/) is brought to us by Lea Verou and is available on [Github](https://github.com/LeaVerou/prefixfree). The code presented in this article has been simplified for obvious reasons and must not be used outside this learning context. This article is based on the last version at the moment of the publication of this article.
+</Admonition>
+
 
 ## A First Example
 
@@ -70,7 +73,7 @@ And:
 
 If we inspect the source code inside our browser, on observe small differences:
 
-```html showLineNumbers highlight='8..13' showLineMarkers:{'1': [78]}
+```html showLineNumbers {'1':8-13}
 <!-- demo.html (using Firefox 3.6) -->
 <!doctype html>
 <html class="-moz-">
@@ -78,7 +81,7 @@ If we inspect the source code inside our browser, on observe small differences:
     <meta charset="utf-8">
     <title>Démo PrefixFree</title>
 
-    <style media="" data-href="demo.css"> // <1>
+    <style media="" data-href="demo.css">
       h1 {
         background: orange;
         -moz-border-radius: 10px;
@@ -94,7 +97,11 @@ If we inspect the source code inside our browser, on observe small differences:
   </body>
 </html>
 ```
-* <Marker number={1} /> The stylesheet has disappeared and has been replaced by an inline stylesheet. The content is identical with one exception: the use of the prefix `-moz` for the still unsupported property `border-radius`.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The stylesheet has disappeared and has been replaced by an inline stylesheet. The content is identical with one exception: the use of the prefix `-moz` for the still unsupported property `border-radius`.</dd>
+</dl>
 
 
 ## Let's Go!
@@ -104,7 +111,9 @@ If we inspect the source code inside our browser, on observe small differences:
 * StyleFix is a framework to apply corrections on a CSS stylesheet.
 * PrefixFree relies on it to configure a custom corrector that replace unsupported CSS properties using the prefixed properties instead.
 
-We are using the property `border-radius` for illustration purposes in this article. This property is available (with the `-moz` prefix) since the [version 2 of Firefox](http://caniuse.com/#search=border-radius). The following examples have been tested using Firefox 3.6.
+<Admonition type="caution" className="license">
+  We are using the property `border-radius` for illustration purposes in this article. This property is available (with the `-moz` prefix) since the [version 2 of Firefox](http://caniuse.com/#search=border-radius). The following examples have been tested using Firefox 3.6.
+</Admonition>
 
 
 ## StyleFix
@@ -167,8 +176,8 @@ var self = window.StyleFix = {
 document.addEventListener('DOMContentLoaded', StyleFix.process, false);
 ```
 
-<Admonition type="tip" className="None" title="Zoom on `querySelectorAll`">
-The small subtlety of this code comes from the method [`querySelectorAll`](https://developer.mozilla.org/en-US/docs/Web/API/Document.querySelectorAll) that returns an object [`NodeList`](https://developer.mozilla.org/en-US/docs/Web/API/NodeList). This object supports a property `length` and can be traversed using a `for` loop, except that we cannot use the common method [`forEach`](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Array/forEach). Why? `NodeList` is not an array and we need to use a small hack like `[].forEach.call(...)` to fix that (see [the `NodeList` documentation](https://developer.mozilla.org/en-US/docs/Web/API/NodeList)).
+<Admonition type="tip" className="None" title="Zoom on <code>querySelectorAll</code>">
+  The small subtlety of this code comes from the method [`querySelectorAll`](https://developer.mozilla.org/en-US/docs/Web/API/Document.querySelectorAll) that returns an object [`NodeList`](https://developer.mozilla.org/en-US/docs/Web/API/NodeList). This object supports a property `length` and can be traversed using a `for` loop, except that we cannot use the common method [`forEach`](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Array/forEach). Why? `NodeList` is not an array and we need to use a small hack like `[].forEach.call(...)` to fix that (see [the `NodeList` documentation](https://developer.mozilla.org/en-US/docs/Web/API/NodeList)).
 </Admonition>
 
 We have finished with the object `StyleFix`. Here is the final implementation:
@@ -217,28 +226,31 @@ StyleFix.register(function(css, raw, element) {
 
 If we omit many implementation concerns, we can start with a first operational, minimal version:
 
-```javascript showLineMarkers:{'1': [229], '2': [230], '3': [233]}
+```javascript {'1': 2} {'2': 3} {'3': 6}
 StyleFix.register(function(css, raw, element) {
- var prefix = '-moz-', // <1>
-     properties = ['border-radius']; // <2>
+ var prefix = '-moz-',
+     properties = ['border-radius'];
 
  for (var i = 0; i < properties.length; i++) {
-  var regex = RegExp(properties[i], 'gi'); // <3>
+  var regex = RegExp(properties[i], 'gi');
   css = css.replace(regex, prefix + properties[i]);
  }
 
  return css;
 });
 ```
-* <Marker number={1} /> We focus on Firefox 3.6 for now.
-* <Marker number={2} /> We consider only the property `border-radius`.
-* <Marker number={3} /> We search for every property to replace.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt><dd>We focus on Firefox 3.6 for now.</dd>
+  <dt><Marker number={2} /></dt><dd>We consider only the property `border-radius`.</dd>
+  <dt><Marker number={3} /></dt><dd>We search for every property to replace.</dd>
+</dl>
 
 The code reuses the object `StyleFix` to register a custom fixer. This fixer replaces unsupported CSS properties with their equivalent. The regular expression allows making a global replacement. In JavaScript, the method [replace](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/String/replace) only replaces the first occurrence (a flag can be defined as the third argument but is currently not supported by the V8 engine).
 
 If we want to run our code on new code, we still have to solve two remaining issues:
 
-[.compact]
+{/* .compact */}
 * How to **detect the browser prefix** to use?
 * How to **identify the properties** to replace?
 
@@ -246,13 +258,13 @@ Let's start with the first question.
 
 Several solutions are possible. We may use [Modernizr](http://modernizr.com/) but -prefix-free use an even simpler solution. The code creates a new HTML element in the DOM and inspects the attribute `style` represented in JavaScript by the object [`CSSStyleDeclaration`](https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration). This object lists the values of all CSS properties supported by the browser. So, we just have to memorize the list of all properties starting with `-` to determine the prefix and answer the second question by the same token.
 
-```javascript showLineMarkers:{'1': [263]}
+```javascript {'1': 6}
 var prefix = undefined,
   properties = [],
   dummy = document.createElement('div').style;
 
 for (var property in dummy) {
- property = deCamelCase(property); // <1>
+ property = deCamelCase(property);
 
  if (property.charAt(0) === '-') {
   properties.push(property);
@@ -263,7 +275,11 @@ for (var property in dummy) {
 
 self.prefix = '-' + prefix + '-';
 ```
-* <Marker number={1} /> This line is necessary to find the name of the property as present in CSS. Indeed, in JavaScript, the CSS properties as defined as properties in the object [`CSSStyleDeclaration`](https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration), and thus must conform to the rules of the JavaScript language (`-` is not allowed in an identifier).
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>This line is necessary to find the name of the property as present in CSS. Indeed, in JavaScript, the CSS properties as defined as properties in the object [`CSSStyleDeclaration`](https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration), and thus must conform to the rules of the JavaScript language (`-` is not allowed in an identifier).</dd>
+</dl>
 
 We defined two utility functions to convert from one notation to the other:
 
@@ -377,17 +393,17 @@ Our rewrite of PrefixFree is now complete:
 
 
 <Admonition type="note" className="congratulations" title="Congratulations!">
-We have finished the coverage of -prefix-free. **Less than 100 lines of code have been necessary to recreate a basic implementation**. The complete source code is available [here](https://github.com/julien-sobczak/prefixfree-from-scratch).
+  We have finished the coverage of -prefix-free. **Less than 100 lines of code have been necessary to recreate a basic implementation**. The complete source code is available [here](https://github.com/julien-sobczak/prefixfree-from-scratch).
 </Admonition>
 
 <Admonition type="note" className="experiment" title="Try for yourself!">
-* Try to support the tags `<link>` and CSS properties defined using the HTML attributes `style`. Hint: Retrieve the content of external stylesheets in AJAX. What are the limitations?
-* Try to support CSS changes done in JavaScript after the initial loading of the page. Hint: Listen events `DOMAttrModified` and `DOMNodeInserted` (see the plugin `prefixfree.dynamic-dom.js`).
-* Try to support `@rules` and `keyframe`. Hint: Use more advanced regular expressions.
+  * Try to support the tags `<link>` and CSS properties defined using the HTML attributes `style`. Hint: Retrieve the content of external stylesheets in AJAX. What are the limitations?
+  * Try to support CSS changes done in JavaScript after the initial loading of the page. Hint: Listen events `DOMAttrModified` and `DOMNodeInserted` (see the plugin `prefixfree.dynamic-dom.js`).
+  * Try to support `@rules` and `keyframe`. Hint: Use more advanced regular expressions.
 </Admonition>
 
 <Admonition type="note" className="remember" title="To Remember">
-* StyleFix/PrefixFree is a great example of the approach **divide-and-conquer**.
-* `querySelectorAll` returns an object of type `NodeList`, which is different from `Array`.
-* The object `CSSStyleDeclaration` can be used to list all CSS properties supported by a browser.
+  * StyleFix/PrefixFree is a great example of the approach **divide-and-conquer**.
+  * `querySelectorAll` returns an object of type `NodeList`, which is different from `Array`.
+  * The object `CSSStyleDeclaration` can be used to list all CSS properties supported by a browser.
 </Admonition>

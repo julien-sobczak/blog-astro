@@ -20,7 +20,7 @@ import Lead from '../../components/Lead.astro'
 
 ## Anki Scripting for Non-Programmers
 
-<Admonition type="caution" className="license" title="None">
+<Admonition type="caution" className="license">
 This post revises an old post that I wrote four years ago, [Anki Scripting](/write/2016-12-26-anki-scripting). My motivation at that time was just to publish my notes mainly for myself. I have not anticipated that so many learners were trying to automate their flashchards creation.
 
 I finished memorizing the thousands of flashcards I created programmatically. I need to create new ones, and I thought revising my old post could be useful.
@@ -113,12 +113,26 @@ col.add_note(note, deck['id'])
 # 4. Save changes <6>
 col.save()
 ```
-* <Marker number={1} /> This code references the Python module that we installed with the previous command `pip3`.
-* <Marker number={2} /> This code determines the Anki directory to use. For this test, we use the path to our sandbox environnement. Make sure the path you specify really exists and use an absolute path (not a path like `./AnkiTest`).
-* <Marker number={3} /> This code is equivalent to opening the Anki application.
-* <Marker number={4} /> This code is equivalent to clicking on a deck on the main screen. This way, when we will create new flashcards, they will belong to this deck.
-* <Marker number={5} /> This code has the same effect as clicking on the button "Add" and fill in the form.
-* <Marker number={6} /> This code has the same effect as exiting the Anki application.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>This code references the Python module that we installed with the previous command `pip3`.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>This code determines the Anki directory to use. For this test, we use the path to our sandbox environnement. Make sure the path you specify really exists and use an absolute path (not a path like `./AnkiTest`).</dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>This code is equivalent to opening the Anki application.</dd>
+
+  <dt><Marker number={4} /></dt>
+  <dd>This code is equivalent to clicking on a deck on the main screen. This way, when we will create new flashcards, they will belong to this deck.</dd>
+
+  <dt><Marker number={5} /></dt>
+  <dd>This code has the same effect as clicking on the button "Add" and fill in the form.</dd>
+
+  <dt><Marker number={6} /></dt>
+  <dd>This code has the same effect as exiting the Anki application.</dd>
+</dl>
 
 Then, run the script:
 
@@ -183,8 +197,14 @@ for current_note in notes: # <2>
 # 4. Save changes
 col.save()
 ```
-* <Marker number={1} /> Create a variable containing all the notes to create.
-* <Marker number={2} /> Iterate over this variable and create the notes as before.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>Create a variable containing all the notes to create.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>Iterate over this variable and create the notes as before.</dd>
+</dl>
 
 Run the script:
 
@@ -325,8 +345,13 @@ $ anki-cli-unofficial load french.yaml french.apkg
         open /Applications/Anki.app --args -b /var/folders/tmpn8rl4l2w # <1>
 👉 Anki Archive is available here: ./french.apkg # <2>
 ```
-* <Marker number={1} /> The CLI displays a valid command to run locally if you want to inspect the sandbox directory using the Anki Desktop application. This is a good way to validate that your flashcards have correctly been generated.
-* <Marker number={2} /> The CLI displays the location of the Anki archive file containing your flashcards. This is the file to import in your collection when running Anki without option.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The CLI displays a valid command to run locally if you want to inspect the sandbox directory using the Anki Desktop application. This is a good way to validate that your flashcards have correctly been generated.</dd>
+  <dt><Marker number={2} /></dt>
+  <dd>The CLI displays the location of the Anki archive file containing your flashcards. This is the file to import in your collection when running Anki without option.</dd>
+</dl>
 
 We also notice based on the command output that the CLI tries to load the media files referenced in our input file. By default, the CLI expects the file to be present in the current directory. You can specifiy a different directory using the option `--media-dir`:
 
@@ -339,7 +364,7 @@ $ anki-cli-unofficial load --media-dir path/to/medias/ french.yaml french.apkg
 
 The generation process is summarized in the following video:
 
-{/* image::cli.gif[title=Using the CLI to generate an Anki package] */}
+{/* cli.gif[title=Using the CLI to generate an Anki package] */}
 <video src="/posts_resources/2020-12-26-anki-scripting-for-non-programmers/cli.mp4" width="800" />
 _([Download the video](/posts_resources/2020-12-26-anki-scripting-for-non-programmers/cli.mp4))_
 
@@ -351,7 +376,7 @@ To import your flashcards, open Anki without option to load your main collection
 
 Note that when importing an archive, Anki expects the archive to be self-containing. For example, if you have generated flashcards using the note type `Basic`, Anki will recreate a new type `Basic-XXXX` when importing the archive. You may have to do post-processing as illustrated in the following video:
 
-{/* image::import.gif[title=Import the Anki package into your collection] */}
+{/* import.gif[title=Import the Anki package into your collection] */}
 <video src="/posts_resources/2020-12-26-anki-scripting-for-non-programmers/import.mp4" width="800" />
 _([Download the video](/posts_resources/2020-12-26-anki-scripting-for-non-programmers/import.mp4))_
 

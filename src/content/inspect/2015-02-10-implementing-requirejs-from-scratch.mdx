@@ -12,7 +12,7 @@ import Marker from '../../components/Marker.astro'
 import Lead from '../../components/Lead.astro'
 
 
-<Admonition type="caution" className="license" title="None">
+<Admonition type="caution" className="license">
 You are reading a translation of an [old blog post](https://julien-sobczak.github.io/blog-fr/inspect/2015/02/10/implementing-requirejs-from-scratch.html) published on my previous blog in French.
 </Admonition>
 
@@ -41,7 +41,7 @@ Using RequireJS, we will write scoped modules, without polluting the global name
 
 AMD defines two main methods:
 
-[.compact]
+{/* .compact */}
 * `define` to define a new module.
 * `require` to define and load dependencies.
 
@@ -199,9 +199,13 @@ We start by modifying the example file:
         <h1>My Sample Project</h1>
 </html>
 ```
-* <Marker number={1} /> We import jQuery, not indispensable but convenient to reuse some utility functions.
-* <Marker number={2} /> We replace the library RequireJS with a new file `require.lite.js` that we will be the subject of this article.
 
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>We import jQuery, not indispensable but convenient to reuse some utility functions.</dd>
+  <dt><Marker number={2} /></dt>
+  <dd>We replace the library RequireJS with a new file `require.lite.js` that we will be the subject of this article.</dd>
+</dl>
 
 Here is the skeleton of the file `require.lite.js`:
 
@@ -283,10 +287,17 @@ function Module(id) {
     this.url = baseUrl + this.id + '.js';
 };
 ```
-* <Marker number={1} /> `depExports` will contain the arguments that will be passed to the instantiation callback of this module. After the loading of a dependency, we save the value in this array.
-* <Marker number={2} /> The instantiation callback must execute only when all its dependencies have been loaded. Using this counter, we know the number of dependencies that are still not completely loaded.
-* <Marker number={3} /> It is important to assign an id even for simple files containing a simple call to `require`. If this file is referenced several times, it will be loaded only once.
-* <Marker number={4} /> We implement the pattern Observer. Other modules can register to watch the progression. In practice, we are going to use it only to know when a module has been defined. (RequireJS generates a lot more events internally that are not useful for our basic example). What follows are two utility methods used to support this use case.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>`depExports` will contain the arguments that will be passed to the instantiation callback of this module. After the loading of a dependency, we save the value in this array.</dd>
+  <dt><Marker number={2} /></dt>
+  <dd>The instantiation callback must execute only when all its dependencies have been loaded. Using this counter, we know the number of dependencies that are still not completely loaded.</dd>
+  <dt><Marker number={3} /></dt>
+  <dd>It is important to assign an id even for simple files containing a simple call to `require`. If this file is referenced several times, it will be loaded only once.</dd>
+  <dt><Marker number={4} /></dt>
+  <dd>We implement the pattern Observer. Other modules can register to watch the progression. In practice, we are going to use it only to know when a module has been defined. (RequireJS generates a lot more events internally that are not useful for our basic example). What follows are two utility methods used to support this use case.</dd>
+</dl>
 
 ```javascript
 Module.prototype = {
@@ -376,11 +387,19 @@ Module.prototype = {
 
 }
 ```
-* <Marker number={1} /> As for the method `init`, we memorize that the module has been activated. It prevents the module from being initialized twice.
-* <Marker number={2} /> We load dependencies transitively. We can enable the module before all its dependencies have been enabled first. We iterate over them, and if the dependency is new  (this is the motivation behind the variable `registry`), we instantiate its `Module`, before trying its activation (recursive method).
-* <Marker number={3} /> The property `depCount` is incremented to indicate that we are waiting for the loading of this module.
-* <Marker number={4} /> We register to decrement this variable when the module has been defined.
-* <Marker number={5} /> There are two calls to the method `check`: at the end of our own activation, and for each dependency definition. Here is the code of this method `check`:
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>As for the method `init`, we memorize that the module has been activated. It prevents the module from being initialized twice.</dd>
+  <dt><Marker number={2} /></dt>
+  <dd>We load dependencies transitively. We can enable the module before all its dependencies have been enabled first. We iterate over them, and if the dependency is new  (this is the motivation behind the variable `registry`), we instantiate its `Module`, before trying its activation (recursive method).</dd>
+  <dt><Marker number={3} /></dt>
+  <dd>The property `depCount` is incremented to indicate that we are waiting for the loading of this module.</dd>
+  <dt><Marker number={4} /></dt>
+  <dd>We register to decrement this variable when the module has been defined.</dd>
+  <dt><Marker number={5} /></dt>
+  <dd>There are two calls to the method `check`: at the end of our own activation, and for each dependency definition. Here is the code of this method `check`:</dd>
+</dl>
 
 ```javascript
 Module.prototype = {
@@ -516,9 +535,15 @@ define = function (id, deps, factory) {
     defQueue.push([id, deps, factory]); // <3>
 };
 ```
-* <Marker number={1} /> Not a string in first argument, we know this is an anonymous module, we shift the arguments in consequence.
-* <Marker number={2} /> Not an array, we know that the module has no dependency. We shift the arguments again.
-* <Marker number={3} /> Variables contains now the right value.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>Not a string in first argument, we know this is an anonymous module, we shift the arguments in consequence.</dd>
+  <dt><Marker number={2} /></dt>
+  <dd>Not an array, we know that the module has no dependency. We shift the arguments again.</dd>
+  <dt><Marker number={3} /></dt>
+  <dd>Variables contains now the right value.</dd>
+</dl>
 
 We modify the method loading a script to declare a new callback. This function will be executed just after the method `define`, the perfect moment to reread previously saved information and to end the module instantiation.
 
@@ -578,19 +603,24 @@ function completeLoad(id) {
     }
 };
 ```
-* <Marker number={1} /> We trigger the callback on the event `load`.
-* <Marker number={2} /> We traverse saved values until finding our module.
-* <Marker number={3} /> We complete the module initialization.
 
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>We trigger the callback on the event `load`.</dd>
+  <dt><Marker number={2} /></dt>
+  <dd>We traverse saved values until finding our module.</dd>
+  <dt><Marker number={3} /></dt>
+  <dd>We complete the module initialization.</dd>
+</dl>
 
 
 <Admonition type="note" className="congratulations" title="Congratulations!">
-Congratulations, **our minimal rewrite of RequireJS is now complete**. **Less than 300 lines have been required to make our example works again**. The complete source code is available [here](https://github.com/julien-sobczak/requirejs-from-scratch).
+  Congratulations, **our minimal rewrite of RequireJS is now complete**. **Less than 300 lines have been required to make our example works again**. The complete source code is available [here](https://github.com/julien-sobczak/requirejs-from-scratch).
 </Admonition>
 
 <Admonition type="note" className="remember" title="To Remember">
-* We can load a JavaScript file dynamically using a new tag `script`, using `head.appendChild()`.
-* RequireJS is a good example of a concept called *“Programming into a language”* compared to *“Programming in a language”* ([Code Complete](https://www.goodreads.com/book/show/4845.Code_Complete), Steve McConnell): _“Programmers who program “in” a language limit their thoughts to constructs that the language directly supports. … Programmers who program “into” a language first decide what thoughts they want to express, and then determine how to express those thoughts using the tools provided by their specific language.”_
+  * We can load a JavaScript file dynamically using a new tag `script`, using `head.appendChild()`.
+  * RequireJS is a good example of a concept called *“Programming into a language”* compared to *“Programming in a language”* ([Code Complete](https://www.goodreads.com/book/show/4845.Code_Complete), Steve McConnell): _“Programmers who program “in” a language limit their thoughts to constructs that the language directly supports. … Programmers who program “into” a language first decide what thoughts they want to express, and then determine how to express those thoughts using the tools provided by their specific language.”_
 </Admonition>
 
 <Admonition type="note" className="experiment" title="Try for yourself!">
@@ -598,7 +628,7 @@ Congratulations, **our minimal rewrite of RequireJS is now complete**. **Less th
 * The modules RequireJS do not pollute the global namespace so that we can [load several versions of the same library](http://requirejs.org/docs/api.html#multiversion). _Hint_: RequireJS supports several contexts.
 * RequireJS offers also an [optimizer](http://requirejs.org/docs/optimization.html), the aim of which is to group several modules, and minify them together, etc., to reduce the number of Ajax requests. How does it work?
 * RequireJS supports the syntax defined by CommonJS using [a simplified wrapper](http://requirejs.org/docs/commonjs.html) to get this result:
-+
+
 ```javascript
 define(function(require, exports, module) {
     var a = require('a'),
@@ -607,6 +637,6 @@ define(function(require, exports, module) {
     return function () {};
 }));
 ```
-+
+
 How does dependency injection work without the array of dependencies in arguments? _Hint_: [`Function.prototype.toString()`](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Function/toString).
 </Admonition>

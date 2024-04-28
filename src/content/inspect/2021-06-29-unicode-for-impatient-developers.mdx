@@ -12,7 +12,7 @@ import Marker from '../../components/Marker.astro'
 import Lead from '../../components/Lead.astro'
 
 
-<Admonition type="caution" className="license" title="None">
+<Admonition type="caution" className="license">
 This post is a shorter version of my previous post [Unicode for Curious Developers Loving Code 😉](/inspect/2021-06-19-unicode-for-curious-developers). My motivation is to persuade you that you must learn more about Unicode and that you should read my other post 😀.
 </Admonition>
 
@@ -246,7 +246,11 @@ public class Regex {
     }
 }
 ```
-* <Marker number={1} /> We replaced the ASCII-only class `\w` with the Unicode-compatible class `\p{L}`.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>We replaced the ASCII-only class `\w` with the Unicode-compatible class `\p{L}`.</dd>
+</dl>
 
 
 <Admonition type="note" className="experiment" title="To Go Further">

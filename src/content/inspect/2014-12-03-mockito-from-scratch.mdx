@@ -6,15 +6,15 @@ date: 2014-12-03
 subject: "Mockito"
 tags: ['frameworks']
 unofficialTags: ['java']
+done: true
 ---
 import Admonition from '../../components/Admonition.astro'
 import Marker from '../../components/Marker.astro'
 import Lead from '../../components/Lead.astro'
 
 
-
-<Admonition type="caution" className="license" title="None">
-You are reading a translation of an [old blog post](https://julien-sobczak.github.io/blog-fr/inspect/2014/12/03/mockito-from-scratch.html) published on my previous blog in French.
+<Admonition type="caution" className="license">
+  You are reading a translation of an [old blog post](https://julien-sobczak.github.io/blog-fr/inspect/2014/12/03/mockito-from-scratch.html) published on my previous blog in French.
 </Admonition>
 
 
@@ -22,11 +22,14 @@ You are reading a translation of an [old blog post](https://julien-sobczak.githu
 >
 > -- <cite>Dan North, creator of BDD</cite>
 
+
 <Lead>
-The elegant syntax of Mockito probably explains its huge success in the Java ecosystem. How Mockito manages to keep our tests readable? What the code looks like behind this API? Let's find it out.
+  The elegant syntax of Mockito probably explains its huge success in the Java ecosystem. How Mockito manages to keep our tests readable? What the code looks like behind this API? Let's find it out.
 </Lead>
 
-[Mockito](https://github.com/mockito/mockito) is published under [MIT license](http://opensource.org/licenses/MIT). The code presented in this article has been simplified for obvious reasons and must not be used outside this learning context. This article is based on the last version of Mockito (1.10.14) at the publication time.
+<Admonition type="caution" className="license">
+  [Mockito](https://github.com/mockito/mockito) is published under [MIT license](http://opensource.org/licenses/MIT). The code presented in this article has been simplified for obvious reasons and must not be used outside this learning context. This article is based on the last version of Mockito (1.10.14) at the publication time.
+</Admonition>
 
 
 ## A First Example
@@ -63,7 +66,7 @@ public class RegistryCacheDecorator implements Registry
 
 How to test this class to ensure the registry has not been called twice for the same argument? We need a Test Double for that, in particular, a mock. (See [this post by Martin Fowler to understand the differences between the types of Test Double](http://martinfowler.com/articles/mocksArentStubs.html)).
 
-```java showLineMarkers:{'1': [71], '2': [79], '3': [86]}
+```java {'1':11} {'2':19} {'3':26}
 import static org.mockito.Mockito.*;
 
 public class RegistryCacheDecoratorUnitTest
@@ -74,7 +77,7 @@ public class RegistryCacheDecoratorUnitTest
 
     @Before
     public void before() {
-        registry = mock(Registry.class); // <1>
+        registry = mock(Registry.class);
 
         decorator = new RegistryCacheDecorator(registry);
     }
@@ -82,20 +85,26 @@ public class RegistryCacheDecoratorUnitTest
     @Test
     public void registryShouldOnlyBeCalledOnceForTheSameName() {
         // Given
-        when(registry.lookup(anyString())).thenReturn(new BasicDataSource()); // <2>
+        when(registry.lookup(anyString())).thenReturn(new BasicDataSource());
 
         // When
         decorator.lookup("datasource");
         decorator.lookup("datasource");
 
         // Then
-        verify(registry, times(1)).lookup("datasource"); // <3>
+        verify(registry, times(1)).lookup("datasource");
     }
 }
 ```
-* <Marker number={1} /> We instantiate a new mock for each test.
-* <Marker number={2} /> We configure this mock to associate an instance of `DataSource` with the name `"dataSource"`.
-* <Marker number={3} /> We check that the registry has been called once with this name.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>We instantiate a new mock for each test.</dd>
+  <dt><Marker number={2} /></dt>
+  <dd>We configure this mock to associate an instance of `DataSource` with the name `"dataSource"`.</dd>
+  <dt><Marker number={3} /></dt>
+  <dd>We check that the registry has been called once with this name.</dd>
+</dl>
 
 When running the class, the test succeeds. **The goal is now to remove all Mockito import statements and to rewrite the minimal code to make the test successful again**. We will try to match as much as possible the original code of Mockito, when naming classes, when writing algorithms, etc., even if some compromises will be necessary to keep this post relatively short.
 
@@ -134,8 +143,8 @@ public interface OngoingStubbing<T>
 
 You can ignore this interface for now. It will be introduced later.
 
-[#mockito-from-scratch-mock]
-## `mock`
+
+## <a name="mockito-from-scratch-mock"></a>`mock`
 
 Creating a mock means creating a proxy, an object that looks like the actual instance but whose behavior is preprogrammed. Since Java 1.3, we can use [Dynamic Proxies](http://www.oracle.com/technetwork/java/generic-listener2-138155.html) to create dynamically a new class but only from an interface. This restriction is often problematic in practice, and most projects like Spring, Hibernate, or Mockito use a different library that manipulates the bytecode. The most famous library is [cglib](https://github.com/cglib/cglib). This library works by extending the class, a more flexible approach (the class must just not be declared `final`).
 
@@ -246,15 +255,16 @@ public class CglibMockMaker implements MockMaker {
 
 Don't panic if you do not understand everything. The code is not as complex as it may seem. Let's go through the code step by step.
 
-[start=1]
-* We start by creating an instance of [`Enhancer`](http://cglib.sourceforge.net/apidocs/net/sf/cglib/proxy/Enhancer.html), the main class in cglib, responsible for creating new classes dynamically.
+<ol start="1">
+  <li>
+    We start by creating an instance of [`Enhancer`](http://cglib.sourceforge.net/apidocs/net/sf/cglib/proxy/Enhancer.html), the main class in cglib, responsible for creating new classes dynamically.
 
 ```java
 Enhancer enhancer = new Enhancer();
 ```
-
-[start=2]
-* We then describe what our mock must look like:
+  </li>
+  <li>
+    We then describe what our mock must look like:
 
 ```java
 enhancer.setUseFactory(true);
@@ -263,21 +273,25 @@ enhancer.setCallbackTypes(new Class[]{MethodInterceptor.class});
 ```
 
 The most important line is the second one, where we specify the class of our mock. To understand the first line, you need to know that all classes generated by cglib implement by default the interface `Factory`. This interface allows, for example, to switch the callback. The method `setUseFactory` allows to disable this feature, but we are simply setting the default value and is therefore useless. The last line defines the kind of callback we are going to use. Several ones are available such as `FixedValue` to return the same value for every method call. The most flexible callback is `MethodInterceptor` that gives us full control of all call metadata to determine the result.
+  </li>
 
-[start=3]
-* We create the `Class` object that will be used to instantiate our mock.
+  <li>
+    We create the `Class` object that will be used to instantiate our mock.
 
 ```java
 return enhancer.createClass();
 ```
+  </li>
 
-[start=4]
-* We call the method `newInstance` to create a new instance from the object `Class` we got just before:
+  <li>
+    We call the method `newInstance` to create a new instance from the object `Class` we got just before:
 
 ```java
 Class<T> cls = ...:
 return cls.newInstance();
 ```
+  </li>
+</ol>
 
 This method requires a default constructor. This restriction may cause problems in some cases.
 
@@ -354,8 +368,8 @@ The trend is clearly no. Major frameworks like [Hibernate](http://relation.to/16
 To know more about CGlib, I recommend [this excellent article](http://java.dzone.com/articles/cglib-missing-manual) to fix the missing official documentation.
 
 
-[#mockito-from-scratch-when]
-## `when`
+
+## <a name="mockito-from-scratch-when"></a>`when`
 
 Even if we are done with low-level bytecode manipulation, the following sections are not necessarily more straightforward. The Mockito API is simple to use but not necessarily to write.
 
@@ -494,7 +508,7 @@ public class Matchers
 
 Before moving to the last section, we need to introduce the class `InvocationMatcher` that we will encounter many times. This class associates an instance of `Invocation` (a method call) with the list of used matchers. Even if we receive the arguments in the object `Invocation`, the matchers are not present as attested by the previous code (`anyString` returns for example an empty string). Here is the code of this class:
 
-```java showLineMarkers:{'1': [533]}
+```java {'1': 16}
 public class InvocationMatcher {
 
     private final Invocation invocation;
@@ -510,7 +524,7 @@ public class InvocationMatcher {
     }
 
     public static List<Matcher> argumentsToMatchers(Object[] arguments) {
-        List<Matcher> matchers = new ArrayList<Matcher>(arguments.length); // <1>
+        List<Matcher> matchers = new ArrayList<Matcher>(arguments.length);
         for (Object arg : arguments) {
             matchers.add(new Equals(arg));
         }
@@ -553,23 +567,27 @@ public class InvocationMatcher {
 
 }
 ```
-* <Marker number={1} /> When calling a method on a mock (when using `when` or `verify`), Mockito requires only literal values/variables, or only matchers. Under the hood, Mockito makes sure to only work with matchers. This is the role of the method `argumentsToMatchers`.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>When calling a method on a mock (when using `when` or `verify`), Mockito requires only literal values/variables, or only matchers. Under the hood, Mockito makes sure to only work with matchers. This is the role of the method `argumentsToMatchers`.</dd>
+</dl>
 
 We still have a few classes to introduce like the class `InvocationContainer`. Unlike `MockingProgress`, shared between all mocks and all tests, every mock gets its own instance of `InvocationContainer`. This class keeps track of all stubbed invocations, which are all invocations using `when` to program the mock but also all invocations during the test execution that will be very useful to check assertions (`verify`).
 
-```java showLineMarkers:{'1': [586], '2': [587], '3': [589], '4': [593]}
+```java {'1':4-5} {'2':6} {'3':7-8} {'4':12}
 public class InvocationContainer
 {
 
     private final Map<InvocationMatcher, Answer> stubbed =
-      new HashMap<InvocationMatcher, Answer>(); // <1>
-    private InvocationMatcher invocationForStubbing; // <2>
+      new HashMap<InvocationMatcher, Answer>();
+    private InvocationMatcher invocationForStubbing;
     private LinkedList<Invocation> registeredInvocations =
-      new LinkedList<Invocation>(); // <3>
+      new LinkedList<Invocation>();
 
     public void setInvocationForPotentialStubbing(
       InvocationMatcher invocationMatcher) {
-        registeredInvocations.add(invocationMatcher.getInvocation()); // <4>
+        registeredInvocations.add(invocationMatcher.getInvocation());
         invocationForStubbing = invocationMatcher;
     }
 
@@ -597,10 +615,17 @@ public class InvocationContainer
 
 }
 ```
-* <Marker number={1} /> `stubbed` contains all method calls recorded using `when`.
-* <Marker number={2} /> `invocationForStubbing` contains the current method call. We ignore for now the context (`when`, normal call, or `verify`).
-* <Marker number={3} /> `registeredInvocations` contains all the effective method calls (calls happening outside a call to `when` or `verify`).
-* <Marker number={4} /> This method is called every time we call a method on the mock. It can happen when exercising the mock or at the end of a test when calling `verify`. In the first case, the method `addAnwser` will be called just after (by the method `thenReturn` for example) to allow us to record this invocation in the list of stubbed invocations. For the second case, it is our only chance to take note of the call as there would not later method call like `thenReturn` to confirm the invocation context. Therefore, we add the invocation to the list of effective invocations, and we will remove it if a method like `addAnswer` is called just after.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>`stubbed` contains all method calls recorded using `when`.</dd>
+  <dt><Marker number={2} /></dt>
+  <dd>`invocationForStubbing` contains the current method call. We ignore for now the context (`when`, normal call, or `verify`).</dd>
+  <dt><Marker number={3} /></dt>
+  <dd>`registeredInvocations` contains all the effective method calls (calls happening outside a call to `when` or `verify`).</dd>
+  <dt><Marker number={4} /></dt>
+  <dd>This method is called every time we call a method on the mock. It can happen when exercising the mock or at the end of a test when calling `verify`. In the first case, the method `addAnwser` will be called just after (by the method `thenReturn` for example) to allow us to record this invocation in the list of stubbed invocations. For the second case, it is our only chance to take note of the call as there would not later method call like `thenReturn` to confirm the invocation context. Therefore, we add the invocation to the list of effective invocations, and we will remove it if a method like `addAnswer` is called just after.</dd>
+</dl>
 
 The answers are represented by the interface `Answer`. They may describe a return value (`thenReturn`), an exception to propagate (`thenThrow`), etc.
 
@@ -667,7 +692,7 @@ public static class OngoingStubbing<T>
 
 This second section is almost complete. We just need to assemble the different classes in `MockHandler`, the interceptor called on every method execution on our mock:
 
-```java showLineMarkers:{'1': [702], '2': [707], '3': [712], '4': [723]}
+```java {'1':8} {'2':13} {'3':17-18} {'4':29}
 public class MockHandlerImpl<T> implements MockHandler
 {
 
@@ -675,17 +700,17 @@ public class MockHandlerImpl<T> implements MockHandler
     private InvocationContainer invocationContainer;
 
     public MockHandlerImpl() {
-        this.invocationContainer = new InvocationContainer(); // <1>
+        this.invocationContainer = new InvocationContainer();
     }
 
     public Object handle(Invocation invocation) throws Throwable {
 
-        List<Matcher> lastMatchers = mockingProgress.pullMatchers(); // <2>
+        List<Matcher> lastMatchers = mockingProgress.pullMatchers();
         InvocationMatcher invocationWithMatchers =
           new InvocationMatcher(invocation, lastMatchers);
 
         invocationContainer.setInvocationForPotentialStubbing(
-          invocationWithMatchers); // <3>
+          invocationWithMatchers);
         OngoingStubbing<T> ongoingStubbing =
           new OngoingStubbing<T>(invocationContainer);
         mockingProgress.reportOngoingStubbing(ongoingStubbing);
@@ -696,16 +721,19 @@ public class MockHandlerImpl<T> implements MockHandler
         if (answer == null) { // when?
             return null;
         } else { // called by the test
-            return answer.answer(invocation); // <4>
+            return answer.answer(invocation);
         }
     }
 
 }
 ```
-* <Marker number={1} /> Each `MockHandler` is associated with an instance of a mock. It's the best place to create the instance of `InvocationContainer`.
-* <Marker number={2} /> We dequeue all matchers to create an instance of `InvocationMatcher`.
-* <Marker number={3} /> We record a possible stubbing (will be confirmed later, or not).
-* <Marker number={4} /> If an answer has already been programmed, we simply return it.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt><dd>Each `MockHandler` is associated with an instance of a mock. It's the best place to create the instance of `InvocationContainer`.</dd>
+  <dt><Marker number={2} /></dt><dd>We dequeue all matchers to create an instance of `InvocationMatcher`.</dd>
+  <dt><Marker number={3} /></dt><dd>We record a possible stubbing (will be confirmed later, or not).</dd>
+  <dt><Marker number={4} /></dt><dd>If an answer has already been programmed, we simply return it.</dd>
+</dl>
 
 We must not forget to update our initial implementation of the method `when`:
 
@@ -723,8 +751,7 @@ public class Mockito
 ```
 
 
-[#mockito-from-scratch-verify]
-## `verify`
+## <a name="mockito-from-scratch-verify"></a>`verify`
 
 Compared to the previous section, this last one will be far less challenging.
 
@@ -844,7 +871,7 @@ public class MockingProgress
 
 The last change occurs in `MockHandler` where the main logic resides:
 
-```java highlight='13,19..23'
+```java {13,19-23}
 public static class MockHandlerImpl<T> implements MockHandler
 {
 
@@ -894,7 +921,7 @@ public static class MockHandlerImpl<T> implements MockHandler
 
 
 <Admonition type="note" className="congratulations" title="Congratulations!">
-Congratulations, you have just written **a minimal but operational version of Mockito in less than 500 lines**. The complete source code is available [here](https://github.com/julien-sobczak/mockito-from-scratch).
+  Congratulations, you have just written **a minimal but operational version of Mockito in less than 500 lines**. The complete source code is available [here](https://github.com/julien-sobczak/mockito-from-scratch).
 </Admonition>
 
 

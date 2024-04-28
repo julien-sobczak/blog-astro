@@ -45,7 +45,7 @@ I assume you have already installed many Linux packages. A basic comprehension o
 
 ## Table of Contents
 
-* [How to create an archive manually](#xref:sect-part1).
+* [How to create an archive manually](#sect-part1).
   * What you need to know about [the Debian package format](#wynk-debian-package-format), [the `dpkg` command](#wynk-dpkg), [the DEB822 format](#wynk-deb822).
   * The command [`dpkg --build`](#cmd-dpkg-build).
   * [The implementation in Go](#sect-part1-go).
@@ -249,8 +249,14 @@ vagrant# tree /vagrant/debian/
     `-- bin
         `-- hello
 ```
-* <Marker number={1} /> The first version of our package `hello` contains only the binary `hello` built previously and a DEB822 file `control` with the package metadata.
-* <Marker number={2} /> We also append basic maintainer scripts that displays a message in the console so that we will know when the installation process runs them.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The first version of our package `hello` contains only the binary `hello` built previously and a DEB822 file `control` with the package metadata.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>We also append basic maintainer scripts that displays a message in the console so that we will know when the installation process runs them.</dd>
+</dl>
 
 
 <Admonition type="note" title="What You Need to Know About the DEB822 Format">
@@ -279,7 +285,11 @@ We will use the command `dpkg --build` to build our package:
 $ apt install fakeroot # install the fakeroot command
 $ fakeroot dpkg --build debian hello_1.1-1_amd64.deb
 ```
-* <Marker number={1} /> This command builds a Debian package, which as outlined before, consists in building an `ar` archive containing two `tar` archives: the content of our directory `DEBIAN/` in `control.tar.gz` and the other files in `data.tar.gz`. We use the `fakeroot` command to make sure files inside the archive are created with the user `root`.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>This command builds a Debian package, which as outlined before, consists in building an `ar` archive containing two `tar` archives: the content of our directory `DEBIAN/` in `control.tar.gz` and the other files in `data.tar.gz`. We use the `fakeroot` command to make sure files inside the archive are created with the user `root`.</dd>
+</dl>
 
 We can also reproduce its working [using standard Bash commands](https://unix.stackexchange.com/questions/30303/how-to-create-a-deb-file-manually):
 
@@ -292,7 +302,11 @@ $ cd debian/DEBIAN/ && tar czf ../../control.tar.gz * && cd ../..
 $ fakeroot ar r hello_1.1-1_amd64.deb debian-binary control.tar.gz data.tar.gz
 ar: creating hello_1.1-1_amd64.deb
 ```
-* <Marker number={1} /> The package will fail most linter checks. Indeed, we ignored many of the best practices that higher-level commands ensure but we will still be able to install this package on our server.
+
+<dl className="markers">
+  <dt>Marker number={1} /></dt>
+  <dd>The package will fail most linter checks. Indeed, we ignored many of the best practices that higher-level commands ensure but we will still be able to install this package on our server.</dd>
+</dl>
 
 Now is the time to look at the code. Dpkg is written in C, and the function executed by the command `dpkg --build` is the [function `do_build` in `./dpkg-deb/build.c`](https://github.com/guillemj/dpkg/blob/1.20.7/dpkg-deb/build.c#L552-L728).
 
@@ -385,14 +399,29 @@ do_build(const char *const *argv)
   return 0;
 }
 ```
-* <Marker number={1} /> The variable `dir` is the local directory containing the package files to build. The variable `dest` is the optional filename for the final package file and `debar` is the final name as determined by the function `gen_dest_pathname`, which determines a default name if the argument is missing.
-* <Marker number={2} /> The function `dpkg_ar_create` creates the archive file named after the variable `debar`.
-* <Marker number={3} /> The function `dpkg_ar_put_magic` defines the magic number `!<arch>\n` telling Linux the file is of type `ar`.
-* <Marker number={4} /> The function `dpkg_ar_member_put_mem` appends the file `debian-binary` with the content of the variable `deb_magic`.
-* <Marker number={5} /> The function `dpkg_ar_member_put_file` appends the file `control.tar` with the content of a temporary file.
-* <Marker number={6} /> Same as above for `data.tar`.
-* <Marker number={7} /> The function `dpkg_ar_close` is part of the housecleaning logic and simply closes the file descriptor.
 
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The variable `dir` is the local directory containing the package files to build. The variable `dest` is the optional filename for the final package file and `debar` is the final name as determined by the function `gen_dest_pathname`, which determines a default name if the argument is missing.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>The function `dpkg_ar_create` creates the archive file named after the variable `debar`.</dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>The function `dpkg_ar_put_magic` defines the magic number `!<arch>\n` telling Linux the file is of type `ar`.</dd>
+
+  <dt><Marker number={4} /></dt>
+  <dd>The function `dpkg_ar_member_put_mem` appends the file `debian-binary` with the content of the variable `deb_magic`.</dd>
+
+  <dt><Marker number={5} /></dt>
+  <dd>The function `dpkg_ar_member_put_file` appends the file `control.tar` with the content of a temporary file.</dd>
+
+  <dt><Marker number={6} /></dt>
+  <dd>Same as above for `data.tar`.</dd>
+
+  <dt><Marker number={7} /></dt>
+  <dd>The function `dpkg_ar_close` is part of the housecleaning logic and simply closes the file descriptor.</dd>
+</dl>
 
 ### <a name="sect-part1-go"></a> Case Study
 
@@ -582,8 +611,14 @@ archivefiles(const char *const *argv)
   return 0;
 }
 ```
-* <Marker number={1} /> The main function iterates over all packages to install and delegates to the function `process_archive` for the unpacking.
-* <Marker number={2} /> The function `process_queue` configures all packages that have been unpacked in the previous step. We will explain the differences between these two steps.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The main function iterates over all packages to install and delegates to the function `process_archive` for the unpacking.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>The function `process_queue` configures all packages that have been unpacked in the previous step. We will explain the differences between these two steps.</dd>
+</dl>
 
 Let's go!
 
@@ -604,8 +639,14 @@ void process_archive(const char *filename) {
   …
 }
 ```
-* <Marker number={1} /> Create a temporary directory (commonly `/var/lib/dpkg/tmp.ci/`).
-* <Marker number={2} /> Run the command `dpkg --control` to extract the `DEBIAN/` directory into it.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>Create a temporary directory (commonly `/var/lib/dpkg/tmp.ci/`).</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>Run the command `dpkg --control` to extract the `DEBIAN/` directory into it.</dd>
+</dl>
 
 Then, the code parses the `control` file to initialize the struct `pkginfo`, which is the main structure to represent a package. (You can check the const `fieldinfos` in `parse.c` to find the mapping between the file and the struct.) Here is a minimal version of this structure with the most important fields annotated:
 
@@ -634,11 +675,23 @@ struct pkginfo {
   bool status_dirty;
 }
 ```
-* <Marker number={1} /> The enum `want` determines the expected action for this package, like `PKG_WANT_INSTALL` for installation, or `PKG_WANT_PURGE` for the removal of the package and its configuration files.
-* <Marker number={2} /> The `eflag` is initialized if the parser finds an error in the control file (ex: missing field), and also later during the installation process.
-* <Marker number={3} /> The `installed` and `available` fields contain most of the information present in the `control` files concerning a possible installed version of the package and the new version to install.
-* <Marker number={4} /> Some fields like `files` are initialized later by other functions like  `db-fsys-files.c#ensure_packagefiles_available`, which reads the file `/var/lib/dpkg/list/hello.list` to populate this field.
-* <Marker number={5} /> The `status_dirty` flag is set when the current status of the package changes, for example from `PKG_STAT_UNPACKED` to `PKG_STAT_INSTALLED`.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The enum `want` determines the expected action for this package, like `PKG_WANT_INSTALL` for installation, or `PKG_WANT_PURGE` for the removal of the package and its configuration files.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>The `eflag` is initialized if the parser finds an error in the control file (ex: missing field), and also later during the installation process.</dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>The `installed` and `available` fields contain most of the information present in the `control` files concerning a possible installed version of the package and the new version to install.</dd>
+
+  <dt><Marker number={4} /></dt>
+  <dd>Some fields like `files` are initialized later by other functions like  `db-fsys-files.c#ensure_packagefiles_available`, which reads the file `/var/lib/dpkg/list/hello.list` to populate this field.</dd>
+
+  <dt><Marker number={5} /></dt>
+  <dd>The `status_dirty` flag is set when the current status of the package changes, for example from `PKG_STAT_UNPACKED` to `PKG_STAT_INSTALLED`.</dd>
+</dl>
 
 And now, the function responsible to create this struct:
 
@@ -650,7 +703,11 @@ void process_archive(const char *filename) {
   …
 }
 ```
-* <Marker number={1} /> The function `parsedb` simply reads a file in [Debian RFC822 format](https://man7.org/linux/man-pages/man5/deb822.5.html), the format we used to write the `control` file.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The function `parsedb` simply reads a file in [Debian RFC822 format](https://man7.org/linux/man-pages/man5/deb822.5.html), the format we used to write the `control` file.</dd>
+</dl>
 
 
 2. **If another version of the same package was installed before the new installation, execute `prerm` script of the old package.**
@@ -682,9 +739,17 @@ void process_archive(const char *filename) {
   …
 }
 ```
-* <Marker number={1} /> The status read during parsing is reused to determine if the package is already installed.
-* <Marker number={2} /> Update the package status to keep trace that the package has been partially installed. The status will be changed several times during the installation. The function `modstatdb_note` persists the new state to disk.
-* <Marker number={3} /> `maintscript_fallback` and `maintscript_installed` delegates to `maintscript_exec` defined in the same file `src/script.c`. This function runs the script in a fork process and aborts if the return code is greater than 0. Differences between the various calls are explained in the next step.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The status read during parsing is reused to determine if the package is already installed.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>Update the package status to keep trace that the package has been partially installed. The status will be changed several times during the installation. The function `modstatdb_note` persists the new state to disk.</dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>`maintscript_fallback` and `maintscript_installed` delegates to `maintscript_exec` defined in the same file `src/script.c`. This function runs the script in a fork process and aborts if the return code is greater than 0. Differences between the various calls are explained in the next step.</dd>
+</dl>
 
 
 3. **Run `preinst` script, if provided by the package.**
@@ -717,7 +782,11 @@ void process_archive(const char *filename) {
   …
 }
 ```
-* <Marker number={1} /> The function `maintscript_new` is a variadic function whose latest arguments are passed to the maintainer script to provide context. For example, the `preinst` maintainer script can be called using one of these formats: `preinst install`, `preinst install <old-version>`, or `preinst upgrade <old-version>`. This allows the package developer to take different actions based on the current state of the package.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The function `maintscript_new` is a variadic function whose latest arguments are passed to the maintainer script to provide context. For example, the `preinst` maintainer script can be called using one of these formats: `preinst install`, `preinst install <old-version>`, or `preinst upgrade <old-version>`. This allows the package developer to take different actions based on the current state of the package.</dd>
+</dl>
 
 
 4. **Unpack the new files, and at the same time back up the old files, so that if something goes wrong, they can be restored.**
@@ -908,10 +977,20 @@ void process_archive(const char *filename) {
   ...
 }
 ```
-* <Marker number={1} /> Edit the file `/var/lib/dpkg/info/hello.list`.
-* <Marker number={2} /> Copy all files under `DEBIAN/` into `/var/lib/dpkg/info/` by prefixing them with the package name `hello.`.
-* <Marker number={3} /> Edit the file `/var/lib/dpkg/info/hello.md5sums`.
-* <Marker number={4} /> Update the field `Status` in `/var/lib/dpkg/status` for the package `hello` to set the value `install ok unpacked`.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>Edit the file `/var/lib/dpkg/info/hello.list`.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>Copy all files under `DEBIAN/` into `/var/lib/dpkg/info/` by prefixing them with the package name `hello.`.</dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>Edit the file `/var/lib/dpkg/info/hello.md5sums`.</dd>
+
+  <dt><Marker number={4} /></dt>
+  <dd>Update the field `Status` in `/var/lib/dpkg/status` for the package `hello` to set the value `install ok unpacked`.</dd>
+</dl>
 
 We are getting close to the end of the function `process_archive`. The last instruction is `enqueue_package(pkg)`. This function simply push a new package waiting to be configured in a queue. Since the `dpkg` command can be executed with several packages to install, the queue ensures all packages have been unpacked before proceeding to their final configuration.
 
@@ -937,7 +1016,11 @@ archivefiles(const char *const *argv)
   return 0;
 }
 ```
-* <Marker number={1} /> We are here.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>We are here.</dd>
+</dl>
 
 What follows is the data structure representing the queue:
 
@@ -992,8 +1075,14 @@ enum dependtry {
 enum dependtry dependtry = DEPEND_TRY_NORMAL;
 int sincenothing = 0;
 ```
-* <Marker number={1} /> The global variable containing the packages to configure.
-* <Marker number={2} /> These variables control the algorithm that decides which package must be configured first, which must be postponed, and when to abort the installation completely.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The global variable containing the packages to configure.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>These variables control the algorithm that decides which package must be configured first, which must be postponed, and when to abort the installation completely.</dd>
+</dl>
 
 Finally, the logic to empty the queue present in the function `process_queue`:
 
@@ -1046,7 +1135,11 @@ void process_queue(void) {
               queue.length);
 }
 ```
-* <Marker number={1} /> The function `deferred_configure` is the main function doing the configuration and is the subject of the next step.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The function `deferred_configure` is the main function doing the configuration and is the subject of the next step.</dd>
+</dl>
 
 
 6. **Configure the package.**
@@ -1120,10 +1213,20 @@ deferred_configure(struct pkginfo *pkg)
 	post_postinst_tasks(pkg, PKG_STAT_INSTALLED);
 }
 ```
-* <Marker number={1} /> In case of a missing dependency, the installation will abort only at this step, after the unpacking of the package files.
-* <Marker number={2} /> The function `deferred_configure_conffile` renames the conffiles still ending with the suffix `.dpkg-new` created during the unpacking. This function also shows the confirmation prompt.
-* <Marker number={3} /> Run the `postinst` maintainer script.
-* <Marker number={4} /> Change the status to `PKG_STAT_INSTALLED` and force the update in the `status` database file.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>In case of a missing dependency, the installation will abort only at this step, after the unpacking of the package files.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>The function `deferred_configure_conffile` renames the conffiles still ending with the suffix `.dpkg-new` created during the unpacking. This function also shows the confirmation prompt.</dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>Run the `postinst` maintainer script.</dd>
+
+  <dt><Marker number={4} /></dt>
+  <dd>Change the status to `PKG_STAT_INSTALLED` and force the update in the `status` database file.</dd>
+</dl>
 
 The installation of our package is now completed. We can check the package has been installed by running the `hello` command:
 
@@ -1705,7 +1808,7 @@ APT makes software available to the user by doing the dirty work of downloading 
 <Admonition type="note" title="What You Need to Know About APT Configuration Files">
 <a name="wynk-apt-configuration-files"></a>APT configuration resides under `/etc/apt/`, which contains the following files:
 
-* `apt.conf` and `apt.conf.d/`: The main configuration files where hundred of options are available (xref:wynk-apt-configuration-options[more about them soon]). The command `apt-config dump` can be used to view all available options with their default values:
+* `apt.conf` and `apt.conf.d/`: The main configuration files where hundred of options are available ([more about them soon](#wynk-apt-configuration-options)). The command `apt-config dump` can be used to view all available options with their default values:
 +
 ```sh
 $ apt-config dump
@@ -1725,7 +1828,7 @@ Dir::Etc::trusted "trusted.gpg";
 Dir::Etc::trustedparts "trusted.gpg.d";
 ...
 ```
-* `sources.list` and `sources.list.d/`: lists of repositories (xref:wynk-repositories[more about them soon]). Here are the default repositories on my Debian server:
+* `sources.list` and `sources.list.d/`: lists of repositories ([more about them soon](#wynk-repositories)). Here are the default repositories on my Debian server:
 +
 ```sh
 $ cat /etc/apt/sources.list
@@ -2042,7 +2145,11 @@ bool pkgSourceList::ReadMainList()
    return good;
 }
 ```
-* <Marker number={1} /> The `Read*` methods parse the sources files. We omit the parsing code for brievity but both parsers pushes a new instance of `debReleaseIndex` in the `SrcList`.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The `Read*` methods parse the sources files. We omit the parsing code for brievity but both parsers pushes a new instance of `debReleaseIndex` in the `SrcList`.</dd>
+</dl>
 
 
 2. **Fetch index files from each repository (`InRelease`, `Packages`, ...).**
@@ -2052,7 +2159,11 @@ bool pkgSourceList::ReadMainList()
 AcqTextStatus Stat(std::cout, ScreenWidth,_config->FindI("quiet",0));
 ListUpdate(Stat, *List);
 ```
-* <Marker number={1} /> `AcqTextStatus` is used to report progress of the files downloading.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>`AcqTextStatus` is used to report progress of the files downloading.</dd>
+</dl>
 
 
 <Admonition type="note" title="What You Need to Know About Repositories">
@@ -2255,11 +2366,20 @@ bool ListUpdate(pkgAcquireStatus &Stat,
    return AcquireUpdate(Fetcher, PulseInterval, true);
 }
 ```
-* <Marker number={1} /> The class `pkgAcquire` is the main component of the Acquire subsystem. APT is responsible to retrieve the packages from various sources, mainly remote repositories through HTTP and the Acquire system is responsible to fetch all `Item` required by APT in the most efficient way. It uses for example a pool of workers to speed up the downloading and is able to test for xref:wynk-apt-diffs[diffs files] before downloading full index files.
-* <Marker number={2} /> Most APT commands tries to acquire a lock to prevent two processes using the lib APT to run at the same time. The lock file is `/var/lib/apt/lists/lock` but other lock files exists for example to update the APT cache.
-* <Marker number={3} /> The method `GetIndexes()` creates new items to download `InRelease` files using the Acquire system.
-* <Marker number={4} /> The function `AcquireUpdate()` collects the results from the `Fetcher` and update the cache.
 
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The class `pkgAcquire` is the main component of the Acquire subsystem. APT is responsible to retrieve the packages from various sources, mainly remote repositories through HTTP and the Acquire system is responsible to fetch all `Item` required by APT in the most efficient way. It uses for example a pool of workers to speed up the downloading and is able to test for [diffs files](#wynk-apt-diffs) before downloading full index files.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>Most APT commands tries to acquire a lock to prevent two processes using the lib APT to run at the same time. The lock file is `/var/lib/apt/lists/lock` but other lock files exists for example to update the APT cache.</dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>The method `GetIndexes()` creates new items to download `InRelease` files using the Acquire system.</dd>
+
+  <dt><Marker number={4} /></dt>
+  <dd>The function `AcquireUpdate()` collects the results from the `Fetcher` and update the cache.</dd>
+</dl>
 
 
 <Admonition type="note" title="What You Need to Know About APT Diffs">
@@ -2477,9 +2597,17 @@ bool pkgCacheGenerator::MakeStatusCache(pkgSourceList &List,OpProgress *Progress
    return true;
 }
 ```
-* <Marker number={1} /> The cache is stored in `/var/cache/apt/pkgcache.bin` and `/var/cache/apt/srcpkgcache.bin`. There are binary files that are loaded in memory.
-* <Marker number={2} /> The method `CheckValidity` loads each cache file in memory and checks that they are up-to-date, by verifying that every required index files for every source exists.
-* <Marker number={3} /> If both cache files are correct, we can returns immediately. Otherwise, we need to rebuild from scratch the ones that are not fine.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The cache is stored in `/var/cache/apt/pkgcache.bin` and `/var/cache/apt/srcpkgcache.bin`. There are binary files that are loaded in memory.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>The method `CheckValidity` loads each cache file in memory and checks that they are up-to-date, by verifying that every required index files for every source exists.</dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>If both cache files are correct, we can returns immediately. Otherwise, we need to rebuild from scratch the ones that are not fine.</dd>
+</dl>
 
 
 <Admonition type="note" title="What You Need to Know About APT Cache Files">
@@ -2781,9 +2909,17 @@ if (_config->FindB("APT::Cmd::Show-Update-Stats", false) == true)
       ioprintf(c1out, msg, upgradable);
 }
 ```
-* <Marker number={1} /> The operator `[]` is overloaded in `pkgDepCache` to return `PkgState[I->ID]`, which is a struct `StateCache` containing the current installed and candidate versions.
-* <Marker number={2} /> The method `Upgradable()` reads the state to determine if a new candidate version is available and increments a counter.
-* <Marker number={3} /> The macro `P_` is defined by `define P_(msg,plural,n) (n == 1 ? msg : plural)`.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The operator `[]` is overloaded in `pkgDepCache` to return `PkgState[I->ID]`, which is a struct `StateCache` containing the current installed and candidate versions.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>The method `Upgradable()` reads the state to determine if a new candidate version is available and increments a counter.</dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>The macro `P_` is defined by `define P_(msg,plural,n) (n == 1 ? msg : plural)`.</dd>
+</dl>
 
 That's all for the command `apt update`. We will now cover other APT commands, reusing the knowledge we built about the APT cache.
 
@@ -2825,9 +2961,17 @@ bool DoList(CommandLine &Cmd)
    return true;
 }
 ```
-* <Marker number={1} /> The function `CacheFile.GetPkgCache()` delegates to the method `BuildCaches()` we covered in the previous section about `apt update`. This method is responsible to build the APT cache.
-* <Marker number={2} /> Concrete values will be replaced in the function `ListSingleVersion` by replacing `${Package}`, `${Origin}`, … by their real values.
-* <Marker number={3} /> The real implementation uses the type `LocalitySortedVersionSet` which is a list ordering packages based on their names in the `Translation` files of the user locale.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The function `CacheFile.GetPkgCache()` delegates to the method `BuildCaches()` we covered in the previous section about `apt update`. This method is responsible to build the APT cache.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>Concrete values will be replaced in the function `ListSingleVersion` by replacing `${Package}`, `${Origin}`, … by their real values.</dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>The real implementation uses the type `LocalitySortedVersionSet` which is a list ordering packages based on their names in the `Translation` files of the user locale.</dd>
+</dl>
 
 Like for the `apt update` command, the code is simply using the information present in the APT cache. In this case, it happens in the function `GetVersionSet`:
 
@@ -2864,9 +3008,17 @@ bool GetVersionSet(pkgCacheFile &CacheFile,
    return true;
 }
 ```
-* <Marker number={1} /> The command `apt list --installed` searches for installed packages.
-* <Marker number={2} /> The command `apt list --upgradable` searches for installed packages that can be upgraded.
-* <Marker number={3} /> The command `apt list --all-versions` searches for all packages in the APT cache.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The command `apt list --installed` searches for installed packages.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>The command `apt list --upgradable` searches for installed packages that can be upgraded.</dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>The command `apt list --all-versions` searches for all packages in the APT cache.</dd>
+</dl>
 
 The packages are then formatted in the function `ListSingleVersion()`:
 
@@ -2933,9 +3085,17 @@ void ListSingleVersion(pkgCacheFile &CacheFile, pkgRecords &records,        /*{{
    out << output;
 }
 ```
-* <Marker number={1} /> The function ignores which fields are present in the output format and thus will try to replace all of them. If a field is missing, the replacement will do nothing.
-* <Marker number={2} /> The code uses the state information present in `depPkgCache` to determine if the package is installed, or upgradable, and so on.
-* <Marker number={3} /> The code ensures no remaining braces are left.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The function ignores which fields are present in the output format and thus will try to replace all of them. If a field is missing, the replacement will do nothing.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>The code uses the state information present in `depPkgCache` to determine if the package is installed, or upgradable, and so on.</dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>The code ensures no remaining braces are left.</dd>
+</dl>
 
 We will close the APT section by covering the most useful command.
 
@@ -3030,7 +3190,11 @@ bool DoInstall(CommandLine &CmdL)
    return result;
 }
 ```
-* <Marker number={1} /> The package problem resolver is launched during step 2 and can add new packages to install to satisfy dependencies. Therefore, the number of packages to install can be different from the number of packages specified in the command line.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The package problem resolver is launched during step 2 and can add new packages to install to satisfy dependencies. Therefore, the number of packages to install can be different from the number of packages specified in the command line.</dd>
+</dl>
 
 
 1. **Load the APT cache**
@@ -3112,9 +3276,17 @@ bool DoCacheManipulationFromCommandLine(CommandLine &CmdL, CacheFile &Cache,
    return true;
 }
 ```
-* <Marker number={1} /> Add one to `CmdL.FileList` to skip the `install` command name.
-* <Marker number={2} /> Mark this package version to be installed.
-* <Marker number={3} /> Ensure the resolver fixed the broken packages before continuing the installation.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>Add one to `CmdL.FileList` to skip the `install` command name.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>Mark this package version to be installed.</dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>Ensure the resolver fixed the broken packages before continuing the installation.</dd>
+</dl>
 
 
 3. **Ask confirmation for additional packages to install**
@@ -3298,12 +3470,26 @@ bool InstallPackages(CacheFile &Cache, bool ShwKept, bool Ask)
    return true;
 }
 ```
-* <Marker number={1} /> APT acquires a lock using the [`fcntl()` system call](https://man7.org/linux/man-pages/man2/fcntl.2.html) which is used to manipulate file descriptors. When called using the flag `F_SETLK`, the call returns -1 if the lock is already held by another process.
-* <Marker number={2} /> APT supports multiple package managers but the default is the `dpkg` command. APT uses the class `debSystem` and the associated `pkgDPkgPM` to interact with the `dpkg` command.
-* <Marker number={3} /> The Acquire subsystem is reused to download the archives. Internally, the code keeps for every item to retrieve two fields `FileSize` and `PartialSize`, which are the size of the object to fetch and how much was already fetched. The methods `Fetcher.FetchNeeded()` and `Fetcher.FetchPartial()` iterates over the items to determine the total values.
-* <Marker number={4} /> APT asks for confirmation before proceeding to the installation, except if you use options like `apt -y install`.
-* <Marker number={5} /> Unlock Dpkg lock `/var/lib/dpkg/lock` to make sure the `dpkg` command can use it.
-* <Marker number={6} /> The package manager reads the `/var/lib/dpkg/status` to found out the packages that were removed because none of their files was referenced by another package.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>APT acquires a lock using the [`fcntl()` system call](https://man7.org/linux/man-pages/man2/fcntl.2.html) which is used to manipulate file descriptors. When called using the flag `F_SETLK`, the call returns -1 if the lock is already held by another process.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>APT supports multiple package managers but the default is the `dpkg` command. APT uses the class `debSystem` and the associated `pkgDPkgPM` to interact with the `dpkg` command.</dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>The Acquire subsystem is reused to download the archives. Internally, the code keeps for every item to retrieve two fields `FileSize` and `PartialSize`, which are the size of the object to fetch and how much was already fetched. The methods `Fetcher.FetchNeeded()` and `Fetcher.FetchPartial()` iterates over the items to determine the total values.</dd>
+
+  <dt><Marker number={4} /></dt>
+  <dd>APT asks for confirmation before proceeding to the installation, except if you use options like `apt -y install`.</dd>
+
+  <dt><Marker number={5} /></dt>
+  <dd>Unlock Dpkg lock `/var/lib/dpkg/lock` to make sure the `dpkg` command can use it.</dd>
+
+  <dt><Marker number={6} /></dt>
+  <dd>The package manager reads the `/var/lib/dpkg/status` to found out the packages that were removed because none of their files was referenced by another package.</dd>
+</dl>
 
 The installation logic is implemented by the class `pkgDPkgPM`.
 
@@ -3362,9 +3548,17 @@ class pkgDPkgPM : public pkgPackageManager
    APT_HIDDEN static bool ExpandPendingCalls(std::vector<Item> &List, pkgDepCache &Cache);
 };
 ```
-* <Marker number={1} /> The package manager keeps a list of actions to perform.
-* <Marker number={2} /> The method `Install` simply appends a new item in `List` of type `Install`.
-* <Marker number={3} /> The method `Go` reads the list of actions and execute them.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The package manager keeps a list of actions to perform.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>The method `Install` simply appends a new item in `List` of type `Install`.</dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>The method `Go` reads the list of actions and execute them.</dd>
+</dl>
 
 The only remaining code is the `dpkg` command execution:
 
@@ -3467,7 +3661,11 @@ bool pkgDPkgPM::Go(APT::Progress::PackageManager *progress)
    }
 }
 ```
-* <Marker number={1} /> The code is a classic example of Linux programming. The code uses the system calls `fork()`, `exec()`, and `wait()` to delegate to the command `dpkg`.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The code is a classic example of Linux programming. The code uses the system calls `fork()`, `exec()`, and `wait()` to delegate to the command `dpkg`.</dd>
+</dl>
 
 After the `dpkg` command has run, the APT cache will still have to be updated as the state of some packages has been updated. There is nothing really new and we can stop our inspection of the APT code.
 
@@ -3504,15 +3702,25 @@ vagrant# cat /vagrant/hello/3.1-1/usr/bin/hello
 #!/bin/bash
 echo "hello world" | /usr/games/cowsay
 ```
-* <Marker number={1} /> Declare a required dependency available in the standard Debian repository.
-* <Marker number={2} /> Use the binary installed by this dependency.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>Declare a required dependency available in the standard Debian repository.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>Use the binary installed by this dependency.</dd>
+</dl>
 
 To build the new package:
 
 ```sh {"1": 1}
 vagrant# $ dpkg --build 3.1-1 hello_3.1-1_amd64.deb
 ```
-* <Marker number={1} /> We use the command `dpkg` but we could also have used our Go version created in the first part.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>We use the command `dpkg` but we could also have used our Go version created in the first part.</dd>
+</dl>
 
 Example of installation using APT:
 
@@ -4608,6 +4816,8 @@ In this article, we have glimpsed at some of the challenges that a package manag
 
 We wrote basic versions from scratch using only a few hundreds of lines of Go code. The biggest obstacle was that the commands `dpkg` and `apt` are interactive and try do too much to avoid to rely on the user to fix problems, which explains why the sum of the two programs represents approximatively 100,000 lines of C and C++ code.
 
-If you are managing a large pool of servers like a datacenter, reimplementing your own package manager can be interesting. For example, you could centralize all local databases to ensure that all machines share the same state, or you can take corrective actions like excluding a server from the pool when an upgrade ends in a bad state. Google provides a great example of application. They decided to implement their own package management system. “Any package change is guaranteed to succeed, or the machine is rolled back completely to the previous state. If the rollback fails, the machine is sent through our repairs process for reinstallation and potential hardware replacement. This approach allows us to eliminate much of the complexity of the package states.”footnote:[Building Secure and Reliable Systems, O'Reilly, Chapter 9 - Design for Recovery, Footnote 18]. The decision was surely not obvious, but the benefits are for sure obvious.
+If you are managing a large pool of servers like a datacenter, reimplementing your own package manager can be interesting. For example, you could centralize all local databases to ensure that all machines share the same state, or you can take corrective actions like excluding a server from the pool when an upgrade ends in a bad state. Google provides a great example of application. They decided to implement their own package management system. “Any package change is guaranteed to succeed, or the machine is rolled back completely to the previous state. If the rollback fails, the machine is sent through our repairs process for reinstallation and potential hardware replacement. This approach allows us to eliminate much of the complexity of the package states.”[^1] The decision was surely not obvious, but the benefits are for sure obvious.
 
 Implementing a package manager from scratch can be intimidating, but as we have seen in this article, the reality is not so bad, especially if we consider the long list of features that Apt supports that are not useful when managing a large number of homogenous machines in an automated way.
+
+[^1]: Building Secure and Reliable Systems, O'Reilly, Chapter 9 - Design for Recovery, Footnote 18

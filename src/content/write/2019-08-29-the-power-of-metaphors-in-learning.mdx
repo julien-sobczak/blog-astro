@@ -228,7 +228,7 @@ Send packet CA->Netherlands->CA ...... 150,000,000 ns = 150 ms
 
 His online tool favors comprehension as he uses little colored squares to make easier to visualize the difference in magnitude between the different values:
 
-<img src="/posts_resources/2019-08-29-the-power-of-metaphors-in-learning/latency-numbers-every-programmer-should-know_colored-squares.png" />
+<img src="/posts_resources/2019-08-29-the-power-of-metaphors-in-learning/latency-numbers-every-programmer-should-know_colored-squares.png" width="700" class="center" />
 
 Even if that's a lot better than the monospace font used by Jeff Dean in his presentation (and reused in this article), this is far from optimal or sufficient for a human brain to remember. Our brain was not devised to retain this kind of information (I doubt it would have been helpful to escape our predators), and the evolution of species requires far more than 200,000 years spent on Earth for such radical changes. Therefore, we need a more effective approach, and guess what, we will use metaphors for that!
 
@@ -275,7 +275,7 @@ Round trip without two regions (150,000,000 ns) ...
 
 The same information visually depicted:
 
-<img src="/posts_resources/2019-08-29-the-power-of-metaphors-in-learning/latency-numbers-every-programmer-should-know_simpsons.png" />
+<a href="/posts_resources/2019-07-31-the-power-of-metaphors-in-learning/latency-numbers-every-programmer-should-know_simpsons.png"><img src="/posts_resources/2019-08-29-the-power-of-metaphors-in-learning/latency-numbers-every-programmer-should-know_simpsons.png" title="The Simpsons Metaphor Infographic" width="650" class="center" /></a>
 
 
 
@@ -313,7 +313,7 @@ Round trip without two regions (150,000,000 ns) ...
 
 The same information visually depicted:
 
-<img src="/posts_resources/2019-08-29-the-power-of-metaphors-in-learning/latency-numbers-every-programmer-should-know_weighting-without-hints.png" />
+<a href="/posts_resources/2019-07-31-the-power-of-metaphors-in-learning/latency-numbers-every-programmer-should-know_weighting-without-hints.png"><img src="/posts_resources/2019-08-29-the-power-of-metaphors-in-learning/latency-numbers-every-programmer-should-know_weighting-without-hints.png" title="The Weight Metaphor Infographic" width="650" class="center" /></a>
 
 These analogies (the Simpsons and the weight ones) only help us grasp the orders of magnitude between the different operations. They do nothing to help us remember which operation corresponds to which analogy. If I ask you what represents the human skeleton, it’s not easy at first to recall it corresponds to a L2 cache reference. But if I say you the human skeleton was hidden in a grave, and something that is hidden (cached) corresponds to a cache reference, it becomes easier to recall the analogy. That the power of association, the ultimate memory trick. For example:
 
@@ -332,7 +332,7 @@ _Imagine_ ... the **Space Shuttle** positioning to land on the ISS
 _Imagine_ ... unloading containers on the back of the **whales**
 _Imagine_ ... doing a Transatlantic **cruise** over the Panama channel
 
-<img src="/posts_resources/2019-08-29-the-power-of-metaphors-in-learning/latency-numbers-every-programmer-should-know_weighting-with-hints.png" />
+<a href="/posts_resources/2019-07-31-the-power-of-metaphors-in-learning/latency-numbers-every-programmer-should-know_weighting-with-hints.png"><img src="/posts_resources/2019-08-29-the-power-of-metaphors-in-learning/latency-numbers-every-programmer-should-know_weighting-with-hints.png" title="The Weight Metaphor Infographic (updated)" width="650" class="center" /></a>
 
 Let's try to see how it works in practice. Someone asks you for the performance difference between a disk seek compared to a RAM access. How do you proceed? First, you remember that the base unit is the kilogram. The RAM access makes you think of this giant person to whom you asked for his name. A huge person weights around 100 kilograms. Then, when thinking about the disk seek, you remember the Space Shuttle trying to land on the International Space Station. A Space Shuttle weighs a few thousands of tons (crazy numbers like that are generally easy to remember). So, using your mental calculation aptitude (2,000,000 / 100), you determine a disk seek is 20,000 times slower than a memory access.
 

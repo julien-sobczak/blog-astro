@@ -1017,16 +1017,13 @@ figure {
   }
 }
 
-.quoteblock {
-  margin: 40px 80px;
-}
-.quoteblock blockquote {
-    margin: 0;
+blockquote {
+    margin: 40px 80px;
     padding: 0;
     border: 0;
     font-family: "Noto Serif","DejaVu Serif","Serif",serif;
 }
-.quoteblock blockquote, .quoteblock blockquote p {
+blockquote, blockquote p {
     color: rgba(0,0,0,0.9);
     font-size: 1.15rem;
     line-height: 1.75;
@@ -1035,10 +1032,10 @@ figure {
     font-style: italic;
     text-align: justify;
 }
-.quoteblock blockquote p {
+blockquote p {
   margin: 0;
 }
-.quoteblock blockquote::before {
+blockquote::before {
     content: "\201c";
     float: left;
     font-size: 2.75em;
@@ -1048,19 +1045,9 @@ figure {
     color: var(--color-base);
     text-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
-.quoteblock .attribution, .verseblock .attribution {
-    font-size: .9375em;
-    line-height: 1.45;
-    font-style: italic;
-}
-.quoteblock .attribution {
-    margin-top: 0.5em;
-    margin-right: 0.5ex;
-    text-align: right;
-}
-.quoteblock .attribution cite, .verseblock .attribution cite {
-    display: block;
-    letter-spacing: -0.05em;
+blockquote cite {
+    font-size: 90%;
+    font-style: normal;
     color: rgba(0,0,0,0.6);
 }
 
@@ -1188,6 +1175,20 @@ article {
   text-align: center;
 }
 
+
+dl.markers {
+  display: grid;
+  grid-template-columns: 3.5em 1fr;
+}
+dl.markers dt {
+  margin-top: 0.5em;
+  padding-left: 1em;
+}
+dl.markers dd {
+  margin-left: 0;
+  margin-top: 0.5em;
+  font-size: 90%;
+}
 
 /* Callout */
 

@@ -13,20 +13,14 @@ Not supported:
     excerpt: >
       Operating systems run different programs at the same time. As these programs are often written by different developers, the operating system guarantees the correct use of resources. One program cannot use all the memory or read data written by another program. Whenever your program wants to execute a privileged action like printing a text on screen, it requests that the kernel perform the action on its behalf. How does it work? This post will show the underlying code executed when you call a Linux system call.
     excerpt_only: true
-* Subdirectories (APT and Unicode blog posts)
+* ✅ Subdirectories (APT and Unicode blog posts)
 * Code blocks highlight/line markers generated are not valid with Code-Expressive
-* Anchors are not supported:
   Ex: [#mockito-from-scratch-when]
-* Do not remove ":imagesdir:" directives
-* Do not replace "image:" (only "image::")
-* Special tags. Ex: [.compact]
-* Anchors: Ex: xref:sect-part1
-* Tables
-
-TODO
-----
-
-* [ ] Search for 'link:'
+* ✅ Do not remove ":imagesdir:" directives
+* ✅ Do not replace "image:" (only "image::")
+* ✅ Anchors: Ex: xref:sect-part1
+* ✅ Tables
+* ✅ Special tags. Ex: [.compact]
 """
 
 if __name__ == "__main__":
@@ -292,7 +286,7 @@ recommendations: {frontMatter['recommendations'] if 'recommendations' in frontMa
                 if link_width:
                   mdxBody += f' width="{link_width}"'
                 if link_align and link_align == "center":
-                  mdxBody += f' class="center"' # FIXME check for class
+                  mdxBody += f' class="center"'
                 mdxBody += f' />'
                 if link_link:
                   mdxBody += f'</a>'

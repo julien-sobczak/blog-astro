@@ -12,7 +12,7 @@ import Admonition from '../../components/Admonition.astro'
 import Marker from '../../components/Marker.astro'
 import Lead from '../../components/Lead.astro'
 
-<Admonition type="caution" className="license" title="None">
+<Admonition type="caution" className="license">
 This post is a part of a two-parts series. This first post focuses on simplicity while [the following one](/write/2020-06-02-complexity-is-not-complex) focuses on complexity.
 </Admonition>
 
@@ -363,7 +363,7 @@ Abstractions hide implementation details behind simple to use interfaces. When w
 
 Here is a small diagram to visualize the refactoring:
 
-<img src="/posts_resources/2020-02-23-simplicity-is-not-simple/abstractions-step-1-2.png" />
+<img src="/posts_resources/2020-02-23-simplicity-is-not-simple/abstractions-step-1-2.png" width="600" class="center" />
 
 Using a brute force algorithm is not optimal. We can provide a new implementation based on indexing to get better performance:
 
@@ -384,11 +384,11 @@ Similarly, we can provide a new UI using 3D to visualize the results (why not?).
 
 Here is a small diagram to represent what we did:
 
-<img src="/posts_resources/2020-02-23-simplicity-is-not-simple/abstractions-step-3.png" />
+<img src="/posts_resources/2020-02-23-simplicity-is-not-simple/abstractions-step-3.png" width="300" class="center" />
 
 The search and rendering implementations are now more complicated, mainly due to the essential complexity of the problem. But thanks to the interfaces introduced before, the main logic of the search engine remains as simple as before. In practice, we would refactor the complicated code present in `IndexSearch` to introduce new abstractions as we did before:
 
-<img src="/posts_resources/2020-02-23-simplicity-is-not-simple/abstractions-step-4.png" />
+<img src="/posts_resources/2020-02-23-simplicity-is-not-simple/abstractions-step-4.png" width="375" class="center" />
 
 By introducing more and more components, and more and more abstractions, each component in isolation stays maintainable using our limited number of chunks in memory.
 

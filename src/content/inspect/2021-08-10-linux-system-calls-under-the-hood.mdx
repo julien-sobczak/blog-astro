@@ -81,7 +81,7 @@ Many library functions don’t use system calls (e.g., string-manipulation funct
 
 System calls are implemented by your kernel and are an integral part of Linux. On the contrary, different implementations of the standard C library exist. The most commonly installed is the GNU C library ([glibc](http://www.gnu.org/software/libc/)), and is the one we will cover in this article.
 
-<img src="/posts_resources/2021-08-10-linux-system-calls-under-the-hood/system-calls.png" />
+<img src="/posts_resources/2021-08-10-linux-system-calls-under-the-hood/system-calls.png" title="System calls are the border between your application and the Linux kernel" width="500" />
 </Admonition>
 
 For example, in C, the PID of your program is accessible using the function `getpid()`:
@@ -99,7 +99,11 @@ int main(void)
     return 0;
 }
 ```
-* <Marker number={1} /> The `getpid()` library function is defined in `unistd.h` and returns the PID of the current process using the `getpid` system call.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The `getpid()` library function is defined in `unistd.h` and returns the PID of the current process using the `getpid` system call.</dd>
+</dl>
 
 Retrieving the PID of the current process is one of the most basic system calls. It simply returns the value stored in memory inside a data structure maintained by the kernel. It takes no arguments. It always succeeds. But calling `getpid()` is not like calling any other function.
 
@@ -141,8 +145,14 @@ int main(void)
 	return 0;
 }
 ```
-* <Marker number={1} /> We defined a basic function returning an integer literal. Retrieving the PID of a process doesn't interact with a hardware device. Simply returning this integer is relatively close to reading this value from a data structure kept in memory.
-* <Marker number={2} /> We call the two functions 1,000,000 times and measure how long it takes.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>We defined a basic function returning an integer literal. Retrieving the PID of a process doesn't interact with a hardware device. Simply returning this integer is relatively close to reading this value from a data structure kept in memory.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>We call the two functions 1,000,000 times and measure how long it takes.</dd>
+</dl>
 
 Here are the results on my laptop using Ubuntu 20.04 in a virtual server:
 
@@ -436,16 +446,28 @@ libc_hidden_def (__getpid)
 weak_alias (__getpid, getpid)
 libc_hidden_def (getpid)
 ```
-* <Marker number={1} /> The function `__getpid()` is implemented as a C function.
-* <Marker number={2} /> The code checks for the `pid` in the thread-local memory area to determine if the function has already been called.
-* <Marker number={3} /> If the cache is empty, the code delegates to `really_getpid()` that checks the cache again before calling the macro `INTERNAL_SYSCALL` we have just covered before.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The function `__getpid()` is implemented as a C function.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>The code checks for the `pid` in the thread-local memory area to determine if the function has already been called.</dd>
+
+  <dt><Marker number={3} /></dt>
+  <dd>If the cache is empty, the code delegates to `really_getpid()` that checks the cache again before calling the macro `INTERNAL_SYSCALL` we have just covered before.</dd>
+</dl>
 
 Of course, When a file like `getpid.c` is present, the script `make-syscalls.sh` does not override it:
 
 .sysd-syscalls
 ```
 ```
-* <Marker number={1} /> No rule is generated.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>No rule is generated.</dd>
+</dl>
 
 The code will simply be compiled with the rest of the glibc source code, reusing the same macros as the current implementation, which means the code always ends up with the `syscall` instruction to give control to the kernel.
 
@@ -491,7 +513,11 @@ SYSCALL_DEFINE0(getpid)
 	return task_tgid_vnr(current); // <1>
 }
 ```
-* <Marker number={1} /> The code uses the `current` pointer representing the current task, which is issuing the syscall. The PID is then extracted from this struct. We will not cover it further.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The code uses the `current` pointer representing the current task, which is issuing the syscall. The PID is then extracted from this struct. We will not cover it further.</dd>
+</dl>
 
 This entry point also needs a corresponding function prototype in the reference file `include/linux/syscalls.h`. This prototype is marked as `asmlinkage` to match the way that system calls are invoked:
 
@@ -522,7 +548,11 @@ But some architectures (e.g. x86) have their own architecture-specific system ca
 39	common	getpid			sys_getpid // <1>
 ...
 ```
-* <Marker number={1} /> We find again the number 39 representing the `getpid` system call on `amd64`.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>We find again the number 39 representing the `getpid` system call on `amd64`.</dd>
+</dl>
 
 That's pretty much all the steps required when [adding a new system call in Linux](https://www.kernel.org/doc/html/v4.12/process/adding-syscalls.html).
 
@@ -573,9 +603,14 @@ void syscall_init(void)
   ...
 }
 ```
-* <Marker number={1} /> `MSR_*` are [Model-specific Register](https://en.wikipedia.org/wiki/Model-specific_register) and can only be written by the privileged CPU instruction `wrmsr`. This first line is low-level code to ensure that we return to user code with the related privilege.
-* <Marker number={2} /> `entry_SYSCALL_64` is the system call entry. We store the address of this function.
 
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>`MSR_*` are [Model-specific Register](https://en.wikipedia.org/wiki/Model-specific_register) and can only be written by the privileged CPU instruction `wrmsr`. This first line is low-level code to ensure that we return to user code with the related privilege.</dd>
+
+  <dt><Marker number={2} /></dt>
+  <dd>`entry_SYSCALL_64` is the system call entry. We store the address of this function.</dd>
+</dl>
 
 Now that the system call entry is ready, we are ready too to see what happens when the `syscall` instruction is called, but first, we still have to introduce the system call table.
 
@@ -592,8 +627,13 @@ asmlinkage const sys_call_ptr_t sys_call_table[__NR_syscall_max+1] = {
   #include <asm/syscalls_64.h> // <2>
 };
 ```
-* <Marker number={1} /> All elements point initially to the `sys_ni_syscall` function, which is a fallback function simply returning `-ENOSYS` (`Function not implemented`).
-* <Marker number={2} /> The header file `asm/syscalls_64.h` is generated dynamically from the list of system calls on your system and overrides the default handler for all defined system calls.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>All elements point initially to the `sys_ni_syscall` function, which is a fallback function simply returning `-ENOSYS` (`Function not implemented`).</dd>
+  <dt><Marker number={2} /></dt>
+  <dd>The header file `asm/syscalls_64.h` is generated dynamically from the list of system calls on your system and overrides the default handler for all defined system calls.</dd>
+</dl>
 
 This `asm/syscalls_64.h` file is generated by the script `arch/x86/entry/syscalls/syscalltbl.sh` and the result looks like:
 
@@ -688,13 +728,21 @@ __visible noinstr void do_syscall_64(unsigned long nr, struct pt_regs *regs)
 	syscall_exit_to_user_mode(regs);
 }
 ```
-* <Marker number={1} /> Check the system call number is valid. The value of `NR_syscalls` is determined at compile time.
-* <Marker number={2} /> Clamp the index within `[0..NR_syscalls]`.
-* <Marker number={3} /> Execute the function present in the system call table with the specified number.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>Check the system call number is valid. The value of `NR_syscalls` is determined at compile time.</dd
+
+  <dt><Marker number={2} /></dt>
+  <dd>Clamp the index within `[0..NR_syscalls]`.</dd
+
+  <dt><Marker number={3} /></dt>
+  <dd>Execute the function present in the system call table with the specified number.</dd
+</dl>
 
 After a system call handler returns, the system call entry restores registers, flags and pushes the return address of the user process before exiting with the `sysretq` instruction. Then, the user program continues where it left off. Our long journey in Linux system calls is finished.
 
-<img src="/posts_resources/2021-08-10-linux-system-calls-under-the-hood/system-call-steps.png" />
+<img src="/posts_resources/2021-08-10-linux-system-calls-under-the-hood/system-call-steps.png" title="Steps when executing a system call" width="650" />
 
 
 
@@ -752,7 +800,7 @@ What we have is still a text file with assembly language instructions. It is not
 * `nasm`: The assembler "assembles" the instructions to machine code bytes to create an object file.
 * `ld`: The linker turns this object file into an executable file that the operating system can run. (As we have only one object file, the linker does almost nothing but is a mandatory step.)
 
-<img src="/posts_resources/2021-08-10-linux-system-calls-under-the-hood/compilation.png" />
+<img src="/posts_resources/2021-08-10-linux-system-calls-under-the-hood/compilation.png" width="600" />
 
 Let's create the executable:
 
@@ -792,7 +840,11 @@ Local exec file:
 	Entry point: 0x401000 // <1>
 	0x0000000000401000 - 0x0000000000401010 is .text
 ```
-* <Marker number={1} /> We retrieve the initial address `0x401000` as reported previously by the command `objdump`.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>We retrieve the initial address `0x401000` as reported previously by the command `objdump`.</dd>
+</dl>
 
 Let's add a breakpoint to stop after the system call execution:
 
@@ -951,7 +1003,11 @@ Since Java 9, the process API can be used to get the current process ID.
 ```java showLineMarkers:{'1': [1039]}
 long pid = ProcessHandle.current().pid(); // <1>
 ```
-* <Marker number={1} /> We grab a handle to the current process and then query the PID.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>We grab a handle to the current process and then query the PID.</dd>
+</dl>
 
 This method is implemented in the type [`ProcessHandlerImpl`](https://github.com/openjdk/jdk/blob/jdk-16+36/src/java.base/share/classes/java/lang/ProcessHandleImpl.java) like this:
 
@@ -1020,16 +1076,17 @@ Java_java_lang_ProcessHandleImpl_getCurrentPid0(JNIEnv *env, jclass clazz) {
     return (jlong) pid;
 }
 ```
-* <Marker number={1} /> The [function `getpid()`](https://linux.die.net/man/3/getpid) is defined by glibc.
+
+<dl className="markers">
+  <dt><Marker number={1} /></dt>
+  <dd>The [function `getpid()`](https://linux.die.net/man/3/getpid) is defined by glibc.</dd>
+</dl>
 
 As Java native methods are implemented in C, the code can reuse existing function libraries supported by glibc that we have already covered. We are back to square one. It's time to close this blog post.
 
 
 
-
-
 ---
-
 
 
 
