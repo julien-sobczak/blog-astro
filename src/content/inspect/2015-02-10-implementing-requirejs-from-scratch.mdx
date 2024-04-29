@@ -6,6 +6,7 @@ date: 2015-02-10
 subject: "RequireJS"
 tags: ['web']
 unofficialTags: ['javascript']
+done: true
 ---
 import Admonition from '../../components/Admonition.astro'
 import Marker from '../../components/Marker.astro'
@@ -13,7 +14,7 @@ import Lead from '../../components/Lead.astro'
 
 
 <Admonition type="caution" className="license">
-You are reading a translation of an [old blog post](https://julien-sobczak.github.io/blog-fr/inspect/2015/02/10/implementing-requirejs-from-scratch.html) published on my previous blog in French.
+  You are reading a translation of an [old blog post](https://julien-sobczak.github.io/blog-fr/inspect/2015/02/10/implementing-requirejs-from-scratch.html) published on my previous blog in French.
 </Admonition>
 
 
@@ -21,20 +22,19 @@ You are reading a translation of an [old blog post](https://julien-sobczak.githu
 >
 > -- <cite>Addy Osmani, creator de Yeoman</cite>
 
+
 <Lead>
 The benefits of a modular design are obvious. Sadly, before the version ECMAScript 6, JavaScript provided no support to define modules. This was before AMD.
-</Lead>
 
-<Lead>
 AMD (Asynchronous Module Definition) defines a format to define modules in JavaScript. Several script loaders already implement this standard. The most popular is [RequireJS](http://requirejs.org/).
-</Lead>
 
-<Lead>
 Using RequireJS, we will write scoped modules, without polluting the global namespace, with the additional benefit to declare explicitly module dependencies. From an implementation viewpoint, RequireJS is an extension of the [pattern Module](http://www.adequatelygood.com/JavaScript-Module-Pattern-In-Depth.html), widely implemented in JavaScript.
 </Lead>
 
 
-[RequireJS](http://requirejs.org/) is published under the new [BSD license](http://en.wikisource.org/wiki/BSD_License) and [MIT](http://opensource.org/licenses/MIT). The code presented in this article has been simplified for obvious reasons and must not be used outside this learning context. This article is based on the latest version of RequireJS (2.1.16) at the moment of publication.
+<Admonition type="caution" className="license">
+  [RequireJS](http://requirejs.org/) is published under the new [BSD license](http://en.wikisource.org/wiki/BSD_License) and [MIT](http://opensource.org/licenses/MIT). The code presented in this article has been simplified for obvious reasons and must not be used outside this learning context. This article is based on the latest version of RequireJS (2.1.16) at the moment of publication.
+</Admonition>
 
 
 ## Getting Started with Modules
@@ -79,6 +79,7 @@ define(
 
 `require` is most often used to define the entry point (the first file loaded by RequireJS) or inside the definition of a module as follows:
 
+
 ```javascript
 define(function() {
     // Example inspired of http://addyosmani.com/writing-modular-js/
@@ -97,9 +98,9 @@ define(function() {
 });
 ```
 
-
-We will not go further in the presentation of RequireJS/AMD. *Read the [official API documentation](http://requirejs.org/docs/api.html) for more details.*
-
+<Admonition type="tip">
+  We will not go further in the presentation of RequireJS/AMD. *Read the [official API documentation](http://requirejs.org/docs/api.html) for more details.*
+</Admonition>
 
 ## A First Example
 
@@ -162,7 +163,7 @@ define({
 
 The module is anonymous, without any dependencies, defining a unique function producing the following result when our page is loaded in our browser:
 
-<img src="/posts_resources/2015-02-10-implementing-requirejs-from-scratch/demo-output.png" />
+<img src="/posts_resources/2015-02-10-implementing-requirejs-from-scratch/demo-output.png" className="center" />
 
 Our goal is now to remove the dependency on require.js, and to provide a custom implementation that we will write step by step.
 
@@ -171,7 +172,7 @@ Our goal is now to remove the dependency on require.js, and to provide a custom 
 
 Before jumping headfirst into the code, let's take a look at the HTTP requests sent by RequireJS on our example.
 
-<img src="/posts_resources/2015-02-10-implementing-requirejs-from-scratch/demo-requests.png" />
+<img src="/posts_resources/2015-02-10-implementing-requirejs-from-scratch/demo-requests.png" className="center" />
 
 * `require.js` inspects the attribute `data-main` to determine the first file to load, in our case, `main.js`. A first Ajax request is emitted.
 * `main.js` calls the function `require`. One dependency is declared. The method `require` triggers a second Ajax request to download `util.js`.
@@ -184,7 +185,7 @@ Before jumping headfirst into the code, let's take a look at the HTTP requests s
 
 We start by modifying the example file:
 
-```html showLineMarkers:{'1': [194], '2': [195]}
+```html {'1':8} {'2':9}
 <!DOCTYPE html>
 <html>
     <head>
@@ -192,11 +193,12 @@ We start by modifying the example file:
 
         <meta charset="utf-8">
 
-        <script src="scripts/jquery-2.1.3.js"></script> // <1>
-        <script data-main="scripts/main" src="scripts/require.lite.js"></script> // <2>
+        <script src="scripts/jquery-2.1.3.js"></script>
+        <script data-main="scripts/main" src="scripts/require.lite.js"></script>
     </head>
     <body>
         <h1>My Sample Project</h1>
+    </body>
 </html>
 ```
 
@@ -265,24 +267,23 @@ We split the attribute value to extract the dirname (`baseUrl`) from the basenam
 
 RequireJS relies heavily on the object `Module` whose constructor is defined like this:
 
-{% comment %} 7,8,12-14,16 {% endcomment %}
-```javascript showLineMarkers:{'1': [274], '2': [276], '3': [279], '4': [283]}
+```javascript {'1':7} {'2':8-9} {'3':12} {'4':16}
 var requireCounter = 0;
 
 function Module(id) {
     this.id = id;
 
     this.depIds = [];     // Module dependencies
-    this.depExports = []; // Dependencies values <1>
+    this.depExports = []; // Dependencies values
     this.depCount = 0;    // Counter representing the number of dependencies
-                          // still pending <2>
+                          // still pending
 
     // No id => it's a call to the function require => we generate a new id
-    if (!this.id) { // <3>
+    if (!this.id) {
         this.id = '_@r' + (requireCounter += 1);
     }
 
-    this.events = {}; // event => [listeners] <4>
+    this.events = {}; // event => [listeners]
 
     this.url = baseUrl + this.id + '.js';
 };
@@ -326,7 +327,7 @@ Module.prototype = {
 
 The object `Module` exists but nothing happens. It's only when the method `init` is called that the magic happens, and precisely during the execution of the method  `enable`.
 
-```javascript showLineMarkers:{'1': [351], '2': [355], '3': [362], '4': [364], '5': [378]}
+```javascript {'1':29} {'2':33} {'3':40} {'4':42} {'5':56}
 Module.prototype = {
 
     /*
@@ -514,7 +515,7 @@ We arrive in the method `define`, but we ignore the name of the module. So how c
 
 The solution implemented by RequireJS is to memorize the arguments of every execution of the method `define` (in a queue, as several modules can be loaded simultaneously):
 
-```javascript showLineMarkers:{'1': [515], '2': [523], '3': [528]}
+```javascript {'1':5} {'2':13} {'3':18}
 var defQueue = [];
 
 define = function (id, deps, factory) {
@@ -547,7 +548,7 @@ define = function (id, deps, factory) {
 
 We modify the method loading a script to declare a new callback. This function will be executed just after the method `define`, the perfect moment to reread previously saved information and to end the module instantiation.
 
-```javascript showLineMarkers:{'1': [554], '2': [577], '3': [588]}
+```javascript {'1':16} {'2':39} {'3':50}
 /**
  * Do the request to load a module for the browser case.
  * Make this a separate function to allow other environments
@@ -620,7 +621,7 @@ function completeLoad(id) {
 
 <Admonition type="note" className="remember" title="To Remember">
   * We can load a JavaScript file dynamically using a new tag `script`, using `head.appendChild()`.
-  * RequireJS is a good example of a concept called *“Programming into a language”* compared to *“Programming in a language”* ([Code Complete](https://www.goodreads.com/book/show/4845.Code_Complete), Steve McConnell): _“Programmers who program “in” a language limit their thoughts to constructs that the language directly supports. … Programmers who program “into” a language first decide what thoughts they want to express, and then determine how to express those thoughts using the tools provided by their specific language.”_
+  * RequireJS is a good example of a concept called **“Programming into a language”** compared to **“Programming in a language”** ([Code Complete](https://www.goodreads.com/book/show/4845.Code_Complete), Steve McConnell): _“Programmers who program “in” a language limit their thoughts to constructs that the language directly supports. … Programmers who program “into” a language first decide what thoughts they want to express, and then determine how to express those thoughts using the tools provided by their specific language.”_
 </Admonition>
 
 <Admonition type="note" className="experiment" title="Try for yourself!">

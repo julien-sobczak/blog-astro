@@ -49,6 +49,8 @@ body {
 
 /* Utility class on images in MDX document */
 .center {
+  display: flex;
+  justify-content: center;
   margin-left: auto;
   margin-right: auto;
 }
@@ -96,7 +98,7 @@ hr.star-primary {
 p {
   margin: 1.5em 0;
 }
-.lead p {
+.lead {
   font-style: italic;
   font-size: 1.1em;
 }
@@ -157,22 +159,22 @@ button, html input[type=button], input[type=reset], input[type=submit] {
 }
 @media (min-width: 768px) { /* --screen-small-min */
   .container {
-    width: calc(var(--screen-small-min) - 20px);
+    width: 747px; /* calc(var(--screen-small-min) - 20px) */
   }
 }
 @media (min-width: 992px) { /* --screen-medium-min */
   .container {
-    width: calc(var(--screen-medium-min) - 25px);
+    width: 967px; /* calc(var(--screen-medium-min) - 25px) */
   }
 }
 @media (min-width: 1200px) { /* --screen-large-min */
   .container {
-    width: calc(var(--screen-large-min) - 30px);
+    width: 1170px; /* calc(var(--screen-large-min) - 30px) */
   }
 }
 @media (min-width: 1600px) { /* --screen-xlarge-min */
   .container {
-    width: calc(var(--screen-xlarge-min) - 35px);
+    width: 1565px; /* calc(var(--screen-xlarge-min) - 35px) */
   }
 }
 
@@ -830,7 +832,7 @@ footer img.footer-me {
   }
 }
 
-@media (max-width: 767px) { /* --screen-small-max */
+@media (min-width: 767px) { /* --screen-small-max */
   #page-post article {
     max-width: 800px;
     font-size: 1em;
@@ -855,7 +857,8 @@ footer img.footer-me {
 }
 
 #page-post p.headline {
-  @extend .manuscript;
+  font-family: var(--font-manuscript);
+  font-size: 1.2em;
   text-align: center;
   font-size: 1.4em;
 }
