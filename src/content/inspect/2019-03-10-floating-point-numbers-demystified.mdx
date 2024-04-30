@@ -23,14 +23,14 @@ In this post, I tried to debunk common myths about floating-point numbers by exp
 
 Let's get started by running a few instructions using the Python interpreter:
 
-```shell
+```ansi
 $ python
 >>> 0.1+0.2
-0.3000000000000000**4**
+0.3000000000000000[1m4[0m
 >>> 1.2-1.0
-0.**19999999999999996**
+0.[1m19999999999999996[0m
 >>> 0.1 + 0.1 + 0.1 - 0.3 # 0?
-**5.55111512313e-17**
+[1m5.55111512313e-17[0m
 ```
 
 Hmm, that's weird. A bug in Python? No. You get the same result in almost all languages, since most of them follow the same specification (a little bit about that later).
@@ -119,28 +119,28 @@ Clearly, we need a better solution to satisfy both the astronomer and the chemis
 
 Let's try the previous examples again using this technique.
 
-The number &pi; (`314159 * 10^-5^`):
+The number &pi; (<code>314159 * 10<sup>-5</sup></code>):
 
-[subs="quotes"]
 ```
+  Sign.  | exp.
 +----------------+ size limit
 | 314159 |    -5 |
 +----------------+
 ```
 
-Distance to Mars (`546244 * 10^8^`):
+Distance to Mars (<code>546244 * 10<sup>8</sup></code>):
 
-[subs="quotes"]
 ```
+  Sign.  | exp.
 +----------------+ size limit
 | 546244 |     8 |
 +----------------+
 ```
 
-Mass of a neutron (`1675 * 10^-27^`):
+Mass of a neutron (<code>1675 * 10<sup>-27</sup></code>):
 
-[subs="quotes"]
 ```
+  Sign.  | exp.
 +----------------+ size limit
 |   1675 |   -27 |
 +----------------+
@@ -153,7 +153,7 @@ There is, however, a new question to answer. If we have, for example, 32 bits to
 There isn't a clear answer. If we allocate more bits for the significand, we get increased precision. If we allocate more bits for the exponent, we may store larger and smaller number. There is, however, a commonly accepted solution, known as the IEEE Standard 754.
 
 <Admonition type="note" className="None" title="Why a standard?">
-We need to turn the clock back to understand the motivations. Floating-point binary numbers were beginning to be used in the mid 50s. *At that time, each manufacturer was deciding the number of bits and the format used by the floating-point unit (FPU)*, the piece of hardware responsible for making operations on floating-point numbers very fast. It was working, except if you decide to move your program to another machine, hence with a different way of representing floating numbers. The results were different (different rounding, different precision errors).
+We need to turn the clock back to understand the motivations. Floating-point binary numbers were beginning to be used in the mid 50s. **At that time, each manufacturer was deciding the number of bits and the format used by the floating-point unit (FPU)**, the piece of hardware responsible for making operations on floating-point numbers very fast. It was working, except if you decide to move your program to another machine, hence with a different way of representing floating numbers. The results were different (different rounding, different precision errors).
 
 By mid 1980s, a committee was formed to standardize everything around floating-point numbers: How are they stored? How to manage exceptions such as division by 0? etc. This standard was adopted in 1985 by all computer manufacturers so that programs were portable among computers, since every floating-point arithmetic unit was implementing the standard. This explains why we were able to reproduce our initial example using different programming languages. **The standard brings portability, reproducibility, and predictability**.
 </Admonition>
@@ -167,7 +167,7 @@ The IEEE 754 standard provides not just one format, but different formats, such 
 | Extended precision | 1 | 15 | 64 | 80 |
 
 <Admonition type="note" className="None" title="Significand or Mantissa?">
-In American English, the usage of the term _mantissa_ remains common in computing and among computer scientists. However, **the term _significand_ is encouraged by the IEEE floating-point standard** and by some professionals such as Donald Knuth to **avoid confusion** with the pre-existing use of mantissa for the fractional part of a logarithm. We will use the term _significand_ in this article.
+  In American English, the usage of the term _mantissa_ remains common in computing and among computer scientists. However, **the term _significand_ is encouraged by the IEEE floating-point standard** and by some professionals such as Donald Knuth to **avoid confusion** with the pre-existing use of mantissa for the fractional part of a logarithm. We will use the term _significand_ in this article.
 </Admonition>
 
 
@@ -199,6 +199,7 @@ So, `01000000010010010000111111011011` is the final answer. Great, welcome to th
 Using the previous IEEE 754 table, we can decompose the answer:
 
 ```
+ sign  exponent   significand
  +---+----------+-------------------------+
  | 0 | 10000000 | 10010010000111111011011 |
  +---+----------+-------------------------+
@@ -207,10 +208,10 @@ Using the previous IEEE 754 table, we can decompose the answer:
 Where:
 
 * The sign `0` means the number is positive.
-* The exponent is `10000000` (`2^8^`) (128 in decimal).
+* The exponent is `10000000` (<code>2<sup>8</sup></code>) (128 in decimal).
 * The significand is `10010010000111111011011` (4788187 in decimal).
 
-If we apply the formula `(±) significand * 2^exponent^`, we get:
+If we apply the formula <code>(±) significand * 2<sup>exponent</sup></code>, we get:
 
 ```python
 $ python
@@ -240,7 +241,7 @@ Still wrong...
 
 ### Normalized Numbers
 
-Second, the significand is not a simple binary number, where the rightmost bit is 2^0^, then 2^1^, 2^2^, ... until 2^23^. The significand represents a sum of fractions where the leftmost bit is 2^-1^ (1/2), then 2^-2^ (1/4), 2^-3^ (1/8), ... until 2^-24^. Basically, the floating-point is not on the right, but on the left:
+Second, the significand is not a simple binary number, where the rightmost bit is 2<sup>0</sup>, then 2<sup>1</sup>, 2<sup>2</sup>, ... until 2<sup>23</sup>. The significand represents a sum of fractions where the leftmost bit is 2<sup>-1</sup> (1/2), then 2<sup>-2</sup> (1/4), 2<sup>-3</sup> (1/8), ... until 2<sup>-24</sup>. Basically, the floating-point is not on the right, but on the left:
 
 <img src="/posts_resources/2019-03-10-floating-point-numbers-demystified/normalized-number.png" width="500" />
 
@@ -248,12 +249,12 @@ The result is a number always between 0 and 1, far different from our previous c
 
 Using our example, the significand represents:
 
-[subs="quotes"]
-```
-= 2^**-1**^ + 2^**-4**^ + 2^**-7**^ + ...
-= 1/**2** + 1/**16** + 1/**128** + ...
+<pre><code>
+<strong>1</strong>00<strong>1</strong>00<strong>1</strong>0000<strong>111111</strong>0<strong>11</strong>0<strong>11</strong>
+= 2<sup><strong>-1</strong></sup> + 2<sup><strong>-4</strong></sup> + 2<sup><strong>-7</strong></sup> + ...
+= 1/<strong>2</strong> + 1/<strong>16</strong> + 1/<strong>128</strong> + ...
 = 0.5707963705062866
-```
+</code></pre>
 
 The complete calculation using Python:
 
@@ -269,7 +270,7 @@ $ python
 
 Still wrong, but closer! There is one last detail to discuss, the **hidden bit**.
 
-In practice, any binary floating-point numbers can be represented as `1.ffffff x 2^exponent^` by adjusting the exponent. This representation is called the _normalized representation_, and you probably have used this technique in school with the decimal system. We learned that 0.050 × 10^3^ is equivalent to 0.5000 × 10^2^, 5.000 × 10^1^, and so on. When applying the same technique to binary numbers, the first bits is always `1` (except for edge cases like 0 or Infinity, more about that later in this article). With the IEEE standard 754, we must omit the initial `1` when storing the significand. This optimization gets us better precision (e.g., the saved bit is reused to represent `2^-23^` in single precision).
+In practice, any binary floating-point numbers can be represented as <code>1.ffffff x 2<sup>exponent</sup></code> by adjusting the exponent. This representation is called the _normalized representation_, and you probably have used this technique in school with the decimal system. We learned that 0.050 × 10<sup>3</sup> is equivalent to 0.5000 × 10<sup>2</sup>, 5.000 × 10<sup>1</sup>, and so on. When applying the same technique to binary numbers, the first bits is always `1` (except for edge cases like 0 or Infinity, more about that later in this article). With the IEEE standard 754, we must omit the initial <code>1</code> when storing the significand. This optimization gets us better precision (e.g., the saved bit is reused to represent <code>2<sup>-23</sup></code> in single precision).
 
 Finally, to fix our calculation, we just need to add 1 to the significand we evaluated previously (thus, the significant is now always between 1 and 2, except for some edge cases):
 
@@ -323,26 +324,26 @@ It's not a bug. The good news is we have already seen everything we need to know
 
 To illustrate the problem, we will use a dummy 4-bit floating-point type (2-bit exponent, 2-bit significand). We omit the sign bit for simplicity, but we will use the same optimizations as described by the IEEE standard 754: a hidden 1-bit and the offset bias exponent (only -1 to subtract in this case). The following list presents **all** the representable numbers and their decimal representations.
 
-[subs="quotes"]
-```
+<pre><code>
+exponent significand binary        decimal
 
-      00 00          1.0  * 2^-1^     0.5
-      00 01          1.25 * 2^-1^     0.625
-      00 10          1.5  * 2^-1^     0.75
-      00 11          1.75 * 2^-1^     0.875
-      01 00          1.0  * 2^0^      1.0
-      01 01          1.25 * 2^0^      1.25
-      01 10          1.5  * 2^0^      1.5
-      01 11          1.75 * 2^0^      1.75
-      10 00          1.0  * 2^1^      2.0
-      10 01          1.25 * 2^1^      2.5
-      10 10          1.5  * 2^1^      3.0
-      10 11          1.75 * 2^1^      3.5
-      11 00          1.0  * 2^2^      4.0
-      11 01          1.25 * 2^2^      5.0
-      11 10          1.5  * 2^2^      6.0
-      11 11          1.75 * 2^2^      7.0
-```
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00 00          1.0  * 2<sup>-1</sup>     0.5
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00 01          1.25 * 2<sup>-1</sup>     0.625
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00 10          1.5  * 2<sup>-1</sup>     0.75
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00 11          1.75 * 2<sup>-1</sup>     0.875
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;01 00          1.0  * 2<sup>0</sup>      1.0
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;01 01          1.25 * 2<sup>0</sup>      1.25
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;01 10          1.5  * 2<sup>0</sup>      1.5
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;01 11          1.75 * 2<sup>0</sup>      1.75
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10 00          1.0  * 2<sup>1</sup>      2.0
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10 01          1.25 * 2<sup>1</sup>      2.5
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10 10          1.5  * 2<sup>1</sup>      3.0
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10 11          1.75 * 2<sup>1</sup>      3.5
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11 00          1.0  * 2<sup>2</sup>      4.0
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11 01          1.25 * 2<sup>2</sup>      5.0
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11 10          1.5  * 2<sup>2</sup>      6.0
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11 11          1.75 * 2<sup>2</sup>      7.0
+</code></pre>
 
 Our dummy 4-bit type can **only** represent the numbers present on this list. **Any other number should be rounded to the closest number present on this list**. Consequently, it's really easy to get the kind of weird behavior highlighted previously. For example, `4.0 - 4.2 == 0` will print `True` because the closest number for `4.2` is `4`.
 
@@ -363,9 +364,10 @@ Let's try to understand the logic behind these gaps.
 
 In our Go example, `16777217.0` was not selected randomly. It's the first integer than cannot be represented accurately. There is no magic. Let's go deeper and understand how we could have found it ourselves.
 
-A _n_-bits number can represent 2^n^ different values. For example, with 2 bits, you can represent 2^2^ values: `00`, `01`, `10`, and `11`. The significand contains 23 bits (+1 hidden bit), and thus, can represent `2^24^` different numbers:
+A _n_-bits number can represent 2<sup>n</sup> different values. For example, with 2 bits, you can represent 2<sup>2</sup> values: `00`, `01`, `10`, and `11`. The significand contains 23 bits (+1 hidden bit), and thus, can represent <code>2<sup>24</sup></code> different numbers:
 
 ```
+0000 0000 0000 0000 0000 0000 = 0
 0000 0000 0000 0000 0000 0001 = 1
 0000 0000 0000 0000 0000 0010 = 2
 0000 0000 0000 0000 0000 0011 = 3
@@ -378,12 +380,12 @@ A _n_-bits number can represent 2^n^ different values. For example, with 2 bits,
 
 With the IEEE 754 format, we have seen that the significand should be normalized, so that the first bit is 1 in order to save a bit. So, in reality, we have:
 
-[subs="quotes"]
 ```
-   = 0000 0000 0000 0000 0101 0100 x 2^-1^
-   = 0000 0000 0000 0000 1010 1000 x 2^-2^
-   = 0000 0000 0000 0001 0101 0000 x 2^-3^
-   = 1010 1000 0000 0000 0000 0000 x 2^-24^
+42 = 0000 0000 0000 0000 0010 1010 x 2^0
+   = 0000 0000 0000 0000 0101 0100 x 2^-1
+   = 0000 0000 0000 0000 1010 1000 x 2^-2
+   = 0000 0000 0000 0001 0101 0000 x 2^-3
+   = 1010 1000 0000 0000 0000 0000 x 2^-24
       ----------------------------
            23-bits significand
 ```
@@ -396,11 +398,12 @@ The same logic is applied here with binaries. The following figure shows why int
 
 Normalized or not, we can represent the same numbers when using the same number of bits.
 
-If we apply this same logic for the single precision format (32 bits), we would find that all integers ranging from −2^24^ to +2^24^ may be safely represented in IEEE 754 (24 bits for the significand). Note that this is only true for integers, not decimals, because if you remember the beginning of this article, 0.1 cannot be represented.
+If we apply this same logic for the single precision format (32 bits), we would find that all integers ranging from −2<sup>24</sup> to +2<sup>24</sup> may be safely represented in IEEE 754 (24 bits for the significand). Note that this is only true for integers, not decimals, because if you remember the beginning of this article, 0.1 cannot be represented.
 
 Here are the previous examples normalized:
 
 ```
+               23-bits significand
              -----------------------
 1        = 1|00000000000000000000000 with exponent = 0
 2        = 1|00000000000000000000000 with exponent = 1
@@ -419,20 +422,21 @@ What about `16777216` and `16777217`?
 If we look more closely, their binary representation consist of 25 bits:
 
 ```
+1000000000000000000000000
 1000000000000000000000001
 ```
 
-25 bits for 24 bits available... We have a problem. But why `16777216` is correctly represented and 16777217 is not?
+25 bits for 24 bits available... We have a problem. But why `16777216` is correctly represented and `16777217` is not?
 
-Let’s begin with 16777216:
+Let’s begin with `16777216`:
 
-[subs="quotes"]
 ```
-= 1000000000000000000000000. x 2^0^
-= 100000000000000000000000.0 x 2^1^
-= 10000000000000000000000.00 x 2^2^
+  1000000000000000000000000
+= 1000000000000000000000000. x 2^0
+= 100000000000000000000000.0 x 2^1
+= 10000000000000000000000.00 x 2^2
 ...
-= 1.000000000000000000000000 x 2^24^
+= 1.000000000000000000000000 x 2^24
     -----------------------
       23-bits significand
 ```
@@ -440,6 +444,7 @@ Let’s begin with 16777216:
 This gives us:
 
 ```
+0 10010111 00000000000000000000000
 ```
 
 Where:
@@ -452,13 +457,13 @@ No meaningless digits was lost, so `16777216` is accurately represented.
 
 Let’s try the same operation with `16777217`:
 
-[subs="quotes"]
 ```
-= 1000000000000000000000001. x 2^0^
-= 100000000000000000000000.1 x 2^1^
-= 10000000000000000000000.01 x 2^2^
+  1000000000000000000000001
+= 1000000000000000000000001. x 2^0
+= 100000000000000000000000.1 x 2^1
+= 10000000000000000000000.01 x 2^2
 ...
-= 1.000000000000000000000001 x 2^24^
+= 1.000000000000000000000001 x 2^24
     -----------------------X
       23-bits significand
 ```
@@ -466,42 +471,43 @@ Let’s try the same operation with `16777217`:
 In IEEE 754 format:
 
 ```
+0 10010111 00000000000000000000000
 ```
 
 The same representation as `16777216`... There is no way to fit a 25-bits number in a 24-bits space if the 25th bit is important.
 
 _What is the gap?_
 
-The smallest difference between two numbers is obtained by switching the last bit (`2^-23^`) in the significand like this:
+The smallest difference between two numbers is obtained by switching the last bit (<code>2<sup>-23</sup></code>) in the significand like this:
 
-[subs="quotes"]
-```
-0 10010111 0000000000000000000000**1**
+```ansi
+0 10010111 0000000000000000000000[1m0[0m
+0 10010111 0000000000000000000000[1m1[0m
 ```
 
 _Which increment represents this change?_
 
-[subs="quotes"]
 ```
-= 2^-23+24^
-= 2^1^
+  2^-23 (the last bit) * 2^24 (the exponent)
+= 2^(-23+24)
+= 2^1
 = 2
 ```
 
 Of course! This increment explains why starting from 16777216, not all integer can be safely represented. Indeed, the next integer is 16777218, then 16777220, 16777222, and so on.
 
-In fact, the gaps are easily predictable and depend only on the exponent value. On the previous example, the gap between two successive numbers will always be 2 as long as the exponent is 24 (or 151 with the exponent bias). When the exponent is increased to 25 (or 152 with the exponent bias), the gap becomes `2^-23^ * 2^25^ = 2^2^ = 4`. The representable numbers are 33554432, 33554436, 33554440, and so on until 67108856, 67108860.
+In fact, the gaps are easily predictable and depend only on the exponent value. On the previous example, the gap between two successive numbers will always be 2 as long as the exponent is 24 (or 151 with the exponent bias). When the exponent is increased to 25 (or 152 with the exponent bias), the gap becomes <code>2<sup>-23</sup> * 2<sup>25</sup> = 2<sup>2</sup> = 4</code>. The representable numbers are 33554432, 33554436, 33554440, and so on until 67108856, 67108860.
 
 <img src="/posts_resources/2019-03-10-floating-point-numbers-demystified/gaps.png" width="700" />
 
 We observe that the gap increases by the next multiple of 2 each time the exponent is incremented. To better visualise the gap, let's try a bigger exponent to measure how large the gap becomes as numbers are getting bigger. For example, let’s try the exponent 120 (or 247 with the exponent bias):
 
-[subs="quotes"]
 ```
+0 11110111 00000000000000000000001
 
-Gap = 2^-23^ * 2^120^
-    = 2^-23+120^
-    = 2^97^
+Gap = 2^-23 * 2^120
+    = 2^(-23+120)
+    = 2^97
     = 1.5845632502852868e+29
     = 158456325028528680000000000000
 ```
@@ -532,10 +538,10 @@ The program prints `Equals` ([_Try it by yourself_](https://play.golang.org/p/Ys
 
 Before closing this section, we can apply what we learned with single precision and try to predict the first unrepresentable number in double precision. (Hint: the significand uses 52 bits over the 64 bits available for double precision instead of the 23 bits in single precision.)
 
-Answer: If `2^24^ + 1` is the first integer unrepresentable in single precision, `2^53^ + 1` should be the first integer not representable in double precision:
+Answer: If <code>2<sup>24</sup> + 1</code> is the first integer unrepresentable in single precision, <code>2<sup>53</sup> + 1</code> should be the first integer not representable in double precision:
 
-[subs="quotes"]
 ```
+2^53 + 1 = 9,007,199,254,740,993
 ```
 
 The proof in code, using Python, where floating numbers only use the double precision format:
@@ -556,7 +562,7 @@ We've learned that floating-point types don't just define a range of representab
 
 ### Zero
 
-Before moving on arithmetic, there is still a question we didn't address. We say there is always a hidden bit whose value is 1 in the significand, or say differently, that we should add 1 to the significand (since `1 x 2^0^ = 1 x 1 = 1`). But how do we represent `0`?
+Before moving on arithmetic, there is still a question we didn't address. We say there is always a hidden bit whose value is 1 in the significand, or say differently, that we should add 1 to the significand (since <code>1 x 2<sup>0</sup> = 1 x 1 = 1</code>). But how do we represent `0`?
 
 The trick used by IEEE 754 standard is to define 0 like this:
 
@@ -567,6 +573,7 @@ The trick used by IEEE 754 standard is to define 0 like this:
 So, when we have these numbers in single precision:
 
 ```
+0 00000000 00000000000000000000000
 1 00000000 00000000000000000000000
 ```
 
@@ -577,57 +584,57 @@ We know they should be interpresent as zero and we have to ignore the hidden bit
 
 Let's try to find the smallest normalized number in single precision. We know that exponent can't be only 0 because it's reserved for zero, so, we have:
 
-[subs="quotes"]
 ```
+0 0000000[1m1[0m 00000000000000000000000
 ```
 
 This number corresponds to:
 
-[subs="quotes"]
 ```
+1 x 2^(1-127) = 2^-126 = 1.1754944e-38
 ```
 
 The next representable number is:
 
-[subs="quotes"]
 ```
+0 00000001 0000000000000000000000[1m1[0m
 ```
 
-The gap of between these two numbers is equivalent to `2^-23^ * 2^-126^ = 2^-149^ = 1.4012985e-45`.
+The gap of between these two numbers is equivalent to <code>2<sup>-23</sup> * 2<sup>-126</sup> = 2<sup>-149</sup> = 1.4012985e-45</code>.
 
 Here are the first normal numbers (normalized numbers are also called normal numbers):
 
-[subs="quotes"]
-```
+```ansi
+  1.17549[1m43[0m50822286e-38
 + _1.4012985e-45_ (gap)
-= 1.17549**44**90952134e-38
+= 1.17549[1m44[0m90952134e-38
 + _1.4012985e-45_ (gap)
-= 1.17549**46**31081980e-38
+= 1.17549[1m46[0m31081980e-38
 + _1.4012985e-45_ (gap)
-= 1.17549**47**71211827e-38
+= 1.17549[1m47[0m71211827e-38
 + _1.4012985e-45_ (gap)
-= 1.17549**49**11341673e-38
+= 1.17549[1m49[0m11341673e-38
 + _1.4012985e-45_ (gap)
-= 1.17549**50**51471520e-38
+= 1.17549[1m50[0m51471520e-38
 ...
 ```
 
 It's not obvious but there is a huge chasm between zero and these first normal numbers. It's not really easy to visualise it because we are talking about really small numbers, but if the distance between zero and the first normal number represents the distance Paris-New York, the distance between each successive normal number is only two feet. To fill this gap, IEEE 754 was revised to include subnormal (or denormal) numbers. The principle is simple, if the exponent is 0, the hidden bit is 0. For example:
 
-[subs="quotes"]
 ```
-= (0 + 2^-23^) x 2^-126^
-= 2^-23^ x 2^-126^
-= 2^149^
+0 00000000 00000000000000000000001
+= (0 + 2^-23) x 2^-126
+= 2^-23 x 2^-126
+= 2^149
 = 1.401298464324817e-45
 # This is the same gap as normal numbers with the same exponent
 ```
 
 Or,
 
-[subs="quotes"]
 ```
-= (2^-1^ + 2^-2^ + ... + 2^-23^) x 2^-126^
+0 00000000 11111111111111111111111
+= (2^-1 + 2^-2 + ... + 2^-23) x 2^-126
 = 1.1754942106924411e-38
 ```
 
@@ -659,6 +666,7 @@ Until now, we've only talk about floating-point numbers. We didn't even try to a
 We will reuse the first example of this article:
 
 ```
+$ python
 >>> 0.1+0.2
 0.30000000000000004
 ```
@@ -666,10 +674,11 @@ We will reuse the first example of this article:
 These numbers are represented like this in IEEE 754:
 
 ```
+0.1 = 0 01111011 10011001100110011001101
 0.2 = 0 01111100 10011001100110011001101
 ```
 
-Floating-point addition (or subtraction) is analogous to addition (or subtraction) using scientific notation. For example, to add `3.3 x 10^0^` to `9.985 x 10^2^`:
+Floating-point addition (or subtraction) is analogous to addition (or subtraction) using scientific notation. For example, to add `3.3 x 10^0^` to `9.985 x 10^2^`: FIXME
 
 * Shift the decimal point of the smaller number to the left until the exponents are equal (`2.5 x 10^0^` becomes `0.025 x 10^2^`).
 * Add the numbers using integer addition (`0.033 + 9.985 = 10.018 x 10^2^`).

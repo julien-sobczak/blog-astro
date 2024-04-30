@@ -93,7 +93,7 @@ Computers are not as convenient as papyrus for hieroglyphs. Computers deal with 
 
 The earlier character encodings were limited and did not cover characters for all the world’s languages. They even didn't cover all the symbols in common use in English... The fact is there are so many writing systems that classifying them is already a challenge. Chinese uses roughly 50,000 characters representing meanings (日 for "sun"), Japanese uses approximately 100 characters representing whole syllables (た for "ta"), and Greek uses 34 characters representing sounds (α and β for "alpha" and "beta", the two first letters which serve as the etymology of the word "alphabet"). In addition, if we consider the limited space of the first computers, we can understand why **the main problem was not how to support all languages but how to save bytes**.[^1]
 
-ASCII was the first widely used encoding and used only seven bytes, enough to represent 128 unique characters (2^7^ = 128):
+ASCII was the first widely used encoding and used only seven bytes, enough to represent 128 unique characters (2<sup>7</sup> = 128):
 
 <img src="/posts_resources/2021-06-19-unicode-for-curious-developers/ascii-charset.png" title="ASCII character set" width="600" />
 
@@ -335,9 +335,9 @@ Decoding follows the inverse logic:
 The remaining characters are called _surrogates_ and are encoded as pairs of 16-bit code units whose values are disjunct from the code units used for the single code unit representations, thus maintaining non-overlap for all code point representations in UTF-16.
 
 <Admonition type="note" className="None" title="Understanding the maximum number of code points in Unicode">
-Not breaking already encoded texts in UCS-2 (known as Unicode at that time) was the biggest challenge to extend the initial number of Unicode characters (2^16^ = 65536 characters).
+Not breaking already encoded texts in UCS-2 (known as Unicode at that time) was the biggest challenge to extend the initial number of Unicode characters (2<sup>16</sup> = 65536 characters).
 
-The solution (now called UTF-16) is to rely on two unused ranges 0xD800..0xDBFF and 0xDC00–0xDFFF (each one representing 1024 code points). If we concatenate these two ranges, it means we can represent 1024 * 1024 = 1,048,576 new characters, in addition to the 63488 original code points (2^16^ - 2048, the number of unique code points that fits 2 bytes minus the ranges previously unused).
+The solution (now called UTF-16) is to rely on two unused ranges 0xD800..0xDBFF and 0xDC00–0xDFFF (each one representing 1024 code points). If we concatenate these two ranges, it means we can represent 1024 * 1024 = 1,048,576 new characters, in addition to the 63488 original code points (2<sup>16</sup> - 2048, the number of unique code points that fits 2 bytes minus the ranges previously unused).
 
 <img src="/posts_resources/2021-06-19-unicode-for-curious-developers/unicode-codespace-size-limit.png" title="Unicode surrogate codes" width="600" />
 
@@ -347,7 +347,7 @@ So, in UTF-16, the representation for all initial characters does not change. Bu
 0xDFFF = 0b1101111111111111 (110111 =  low surrogate prefix)
 ```
 
-Every new code point is represented in UTF-16 by two 16-bytes words—the high surrogate followed by the low surrogate—each one uses one of the two ranges. Note that six bits are reserved for the prefix of the ranges. Therefore, if a byte starts with `110110`, we know we have a high surrogate that is followed by a low surrogate starting with `110111`, and inversely. It means we have 20 representative bits to represent the new characters (2^20^ = 1,048,576).
+Every new code point is represented in UTF-16 by two 16-bytes words—the high surrogate followed by the low surrogate—each one uses one of the two ranges. Note that six bits are reserved for the prefix of the ranges. Therefore, if a byte starts with `110110`, we know we have a high surrogate that is followed by a low surrogate starting with `110111`, and inversely. It means we have 20 representative bits to represent the new characters (2<sup>20</sup> = 1,048,576).
 
 <img src="/posts_resources/2021-06-19-unicode-for-curious-developers/surrogate-pair-decoding.png" title="Decoding surrogate pairs in UTF-16" width="600" />
 
@@ -2409,7 +2409,7 @@ The scope of Unicode is wider than simply assigning code points to characters. U
 
 
 [^1]: The motivation for ASCII to save bytes was not really new. The problem occurred with the publication of the first books. [Gutenberg used 250 characters to produce in 1455 the 42-line Bible](http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.41.9729), the first printed book. Then, character sets became smaller and smaller in successive fonts, to reduce the costs of cutting, founding, composing, and distributing type.
-[^2]: In the document _Unicode 88_, the authors estimate the total number of characters to be less than 2^14^ = 16,384, based on the union of all newspapers and magazines printed in the world in 1988.
+[^2]: In the document _Unicode 88_, the authors estimate the total number of characters to be less than 2<sup>14</sup> = 16,384, based on the union of all newspapers and magazines printed in the world in 1988.
 [^3]: Nowadays, a byte is always considered to be 8 bits but first computers did use different sizes for a byte, which was based on the size of information it needed to hold.
 [^4]: Yat was created recently with the ambitious [goal to create a new censorship resistant internet identity system](https://thedefiant.io/emoji-based-username-project-yat-wants-to-become-universal-internet-identity-system/) using a personalized string of emojis as your universal username.
 [^5]: Unicode includes [more than 10,000 characters that compromise the design principles behind the Standard](https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=IWS-Chapter04b), like unification or dynamic composition.

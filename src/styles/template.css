@@ -843,7 +843,7 @@ footer img.footer-me {
     table {
       border: 1px solid gray;
 
-      tr, td {
+      th, td {
         padding: 0.5625em 0.625em;
         line-height: 1.6;
       }
