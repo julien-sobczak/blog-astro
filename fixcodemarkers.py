@@ -29,20 +29,22 @@ if __name__ == "__main__":
         elif last_start_codeblock:
           r = re.search(r'<(\d+)>\s*$', line)
           if r:
-            number = r1.group(1)
-            line_number = i + 1
-            code_markers += f" {'{number}: {line_number}'}"
+            number = r.group(1)
+            line_number = i - last_start_codeblock + 1 - 1 # +1 because lines are 1-based and -1 because we ignore the ``` line
+            code_markers += " {" + f"'{number}':{line_number}" + "}"
           elif line.startswith("```"):
             old_line = mdx_lines[last_start_codeblock]
-            new_line = old_line[:old_line.index("showLineMarkers")+len("showLineMarkers")] + code_markers
-            print(f"{old_line}t{new_line}\n")
+            new_line = old_line[:old_line.index("showLineMarkers")] + code_markers.strip()
+            # print(f"{old_line}{new_line}\n")
+            mdx_lines[last_start_codeblock] = new_line + "\n"
+
             last_start_codeblock = None
             code_markers = ""
 
         i += 1
 
         # Write back the MDX file
-        # with open(mdx_file, 'w') as f:
-        #  f.write("".join(mdx_lines))
+        with open(mdx_file, 'w') as f:
+          f.write("".join(mdx_lines))
 
 

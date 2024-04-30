@@ -111,7 +111,7 @@ Reveal.js is far more powerful than what this simple presentation suggests. The 
 
 The initialization of Reveal starts with the method `Reveal.initialize()`. Here is the skeleton of our implementation defined in a file `reveal.lite.js`:
 
-```javascript showLineMarkers:{'1': [116], '2': [121, 122], '3': [134]}
+```javascript {'1':7} {'2':12} {'2':13} {'3':25}
 var Reveal;
 
 (function() {
@@ -304,7 +304,7 @@ You have probably noticed on the Reveal.js demo, the size of the presentation (i
 
 How can the content of the slides be adapted to the screen size? How to reduce/enlarge the font size, images, and videos shown? The solution is elegant, using CSS animations like the [function `scale()`](https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function#scale%28%29). The calculations are grouped inside the method `layout`:
 
-```javascript showLineMarkers:{'1': [326]}
+```javascript {'1':23}
 /**
  * Applies JavaScript-controlled layout rules to the presentation.
  */
@@ -425,7 +425,7 @@ function addEventListeners() {
 The handler uses standard codes to determine the direction to follow in the presentation:
 
 
-```javascript showLineMarkers:{'1': [443, 444, 445, 446]}
+```javascript {'1':19} {'1':20} {'1':21} {'1':22}
 /**
  * Handler for the document level 'keydown' event.
  */
@@ -552,7 +552,7 @@ When using this effect, the previous slide disappears on the left while the next
 
 Here are the CSS declarations to support this effect:
 
-```css showLineMarkers:{'1': [553], '2': [556, 559, 562, 565]}
+```css {'1':2} {'2':5} {'2':8} {'2':11} {'2':14}
 .reveal.slide section {
   transition: all 800ms ease-in-out; } // <1>
 
@@ -670,7 +670,7 @@ function readURL() {
 
 Using the hash has many advantages. It also allows the user to bookmark a given slide. This requires a slight modification to read the hash during initialization:
 
-```javascript showLineMarkers:{'1': [683]}
+```javascript {'1':13}
 /**
  * Starts up the presentation.
  */
@@ -706,7 +706,7 @@ Reveal.js, like many existing libraries, started by exposing a single global var
 
 The UMD pattern makes possible to interoperate with existing loaders. As often in JavaScript, we inspect the objects present in the global namespace to detect the environment. Here is a preview of the code:
 
-```javascript showLineMarkers:{'1': [707], '2': [710], '3': [716], '4': [719]}
+```javascript {'1':1} {'2':4} {'3':10} {'4':13}
 (function( root, factory ) { // <1>
     if( typeof define === 'function' && define.amd ) {
         // AMD. Register as an anonymous module.

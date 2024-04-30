@@ -214,7 +214,7 @@ The [SM-0 algorithm](http://super-memory.com/articles/paper.htm) (aka the paper-
 
 Although the algorithm was designed to be executed manually, we can still capture the logic using code:
 
-```python showLineMarkers:{'1': [268]}
+```python {'1':57}
 import random
 from datetime import date, timedelta
 from queue import Queue
@@ -336,7 +336,7 @@ Unlike physical systems where cards are grouped in the same box/partition/page a
 
 Now, the same logic but implemented as code:
 
-```python showLineMarkers:{'1': [345], '2': [352], '3': [358], '4': [388]}
+```python {'1':15} {'2':22} {'3':28} {'4':58}
 import random
 from datetime import date, timedelta
 from queue import Queue
@@ -448,7 +448,7 @@ The use of separate new/review queues tries to remediate a common complaint with
 
 Unlike previous systems, Anki is highly configurable. Not all settings affect the SRS algorithm. Here are the default setting values used by Anki that will be used:
 
-```python showLineMarkers:{'1': [447], '2': [452, 458], '3': [464]}
+```python {'1':13} {'2':18} {'2':24} {'3':30}
 
 # Whether new cards should be mixed with reviews, or shown first or last
 NEW_CARDS_DISTRIBUTE = 0
@@ -538,7 +538,7 @@ deckConf = {
 Let's begin with the model. Anki stores cards in an SQLite database. In this tutorial, we will mimic the same model but we will store the cards directly in memory inside the collection object. We will also ignore decks completely as they mostly allow reviewing different cards using different settings or at different times but don't profoundly change how Anki works.
 
 
-```python showLineMarkers:{'1': [519], '2': [527, 537]}
+```python {'1':10} {'2':18} {'2':28}
 class Collection:
 
     def __init__(self, id=None):
@@ -630,7 +630,7 @@ The `Scheduler` is the largest class that will be covered. A scheduler in Anki i
 * `getCard()`: Returns the next card to review
 * `answerCard(card, ease)`: Updates the card after an answer (`ease`: `0` for "Again", `1` for "Hard", `2` for "Good", and `3` for "Easy")
 
-```python showLineMarkers:{'1': [610], '2': [612], '3': [614]}
+```python {'1':13} {'2':15} {'3':17}
 class Scheduler:
 
     def __init__(self, col):
@@ -704,7 +704,7 @@ class Scheduler:
 
 The method `reset()` present in the last line of the `Scheduler`'s constructor initializes the queues managed by Anki:
 
-```python showLineMarkers:{'1': [674, 707, 723], '2': [675], '3': [682], '4': [714], '5': [730]}
+```python {'1':12} {'2':13} {'3':20} {'1':45} {'4':52} {'1':61} {'5':68}
 class Scheduler:
 
     def reset(self):
@@ -819,7 +819,7 @@ class Scheduler:
 
 This method delegates to `_getCard()` and simply increases the counter of studied cards except when the study session is completed.
 
-```python showLineMarkers:{'1': [771], '2': [803, 822, 829]}
+```python {'1':3} {'2':35} {'2':54} {'2':61}
 class Scheduler:
 
     def _getCard(self): # <1>
@@ -902,7 +902,7 @@ class Scheduler:
 
   The queues are now initialized when retrieving the first card in each of them. This works great for the current session but when a new day begins, Anki must reinitialize the queues because other cards may have reached their due date.
 
-```python showLineNumbers highlight='4,9-14,16-19,22' showLineMarkers:{'1': [848], '2': [866]}
+```python showLineNumbers highlight='4,9-14,16-19,22' {'1':4} {'2':22}
 class Scheduler:
 
     def reset(self):
@@ -972,7 +972,7 @@ We will detail each case separately.
 
 ### Part 5.1: Answering New Cards
 
-```python showLineMarkers:{'1': [912], '2': [913], '3': [915]}
+```python {'1':5} {'2':6} {'3':8}
 class Scheduler:
 
     def _answerNewCard(self, card, ease):
@@ -1018,7 +1018,7 @@ So, when answering a new card, the card is automatically promoted to the learnin
 
 ### Part 5.2: Answering Learning Cards
 
-```python showLineMarkers:{'1': [950]}
+```python {'1':4}
 class Scheduler:
 
     def _answerLrnCard(self, card, ease):
@@ -1063,7 +1063,7 @@ self._moveToFirstStep(card, conf)
 
 The card is moved back to the first step:
 
-```python showLineMarkers:{'1': [993], '2': [997], '3': [999], '4': [1017]}
+```python {'1':4} {'2':8} {'3':10} {'4':28}
 class Scheduler:
 
     def _moveToFirstStep(self, card, conf):
@@ -1120,7 +1120,7 @@ self._repeatStep(card, conf)
 
 The current card step is repeated. This means the attribute `left` is unchanged. We still have the same number of remaining steps before graduation. The difference is that the card will be rescheduled in a delay slightly longer than the previous one. We average the last and next delays (Ex: `1m 10m 20m` and we are at the step 2 => repeat in `15m`).
 
-```python showLineMarkers:{'1': [1043]}
+```python {'1':5}
 class Scheduler:
 
     def _repeatStep(self, card, conf):
@@ -1155,7 +1155,7 @@ The decision depends on if there are remaining steps or not:
 
 _Case 1_: If we have finished the last step, the card is graduated to the learning queue:
 
-```python showLineMarkers:{'1': [1078], '2': [1080], '3': [1095]}
+```python {'1':7} {'2':9} {'3':24}
 class Scheduler:
 
     def _rescheduleAsRev(self, card, conf, early):
@@ -1201,7 +1201,7 @@ class Scheduler:
 
 _Case 2_: If there are remaining steps:
 
-```python showLineMarkers:{'1': [1116]}
+```python {'1':6}
 class Scheduler:
 
     def _moveToNextStep(self, card, conf):
@@ -1241,7 +1241,7 @@ class Scheduler:
 
 #### After pressing "Again"...
 
-```python showLineMarkers:{'1': [1154], '2': [1155], '3': [1157], '4': [1161], '5': [1164]}
+```python {'1':6} {'2':7} {'3':9} {'4':13} {'5':16}
 class Scheduler:
 
     def _rescheduleLapse(self, card):
@@ -1290,7 +1290,7 @@ class Scheduler:
 
 The card will be rescheduled in an "ideal" number of days. In practice, most cards reside in the learning queue, and the "Again" button is pressed rarely. This means the core logic of the Anki SRS algorithm is determined by the following methods.
 
-```python showLineMarkers:{'1': [1195], '2': [1198], '3': [1207]}
+```python {'1':5} {'2':8} {'3':17}
 class Scheduler:
 
     def _rescheduleRev(self, card, ease):
@@ -1366,7 +1366,7 @@ class Scheduler:
 
 In the implementation, the code splits the learning queue into two distinct queues: sub-day learning and day learning.
 
-```python showLineMarkers:{'1': [1262], '2': [1273], '3': [1286, 1302]}
+```python {'1':5} {'2':16} {'3':29} {'3':45}
 # ...
 
 def _resetLrn(self):
@@ -1447,7 +1447,7 @@ When you select an ease button on a review card, [Anki also applies a small amou
 
 Here is the code:
 
-```python showLineMarkers:{'1': [1331], '2': [1340, 1342, 1344]}
+```python {'1':1} {'2':10} {'2':12} {'2':14}
 def _fuzzedIvl(self, ivl): # <1>
     min, max = self._fuzzIvlRange(ivl)
     return random.randint(min, max)

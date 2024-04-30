@@ -84,7 +84,7 @@ If the previous command ends with the error `command not found`, it means Python
 
 We now create a file `demo.py` in the current directory containing the following script. This script creates a single flashcard.
 
-```python showLineMarkers:{'1': [84], '2': [86], '3': [90], '4': [93], '5': [102], '6': [108]}
+```python {'1':3} {'2':5} {'3':9} {'4':12} {'5':21} {'6':27}
 import os
 
 from anki.storage import Collection # <1>
@@ -157,7 +157,7 @@ If Anki complain at startup, try to update Anki Desktop to the latest available 
 
 Great! We created a single flashcard. Using basic Python syntax, it is possible to extend the script to create a lot of flashcards. Here is a different version using a global array containing the flashcards to create:
 
-```python showLineMarkers:{'1': [150], '2': [176]}
+```python {'1':6} {'2':32}
 # batch.py
 import os
 
@@ -333,7 +333,7 @@ The option `--anki-dir` can be used to specify your main Anki directory (and thu
 
 The command outputs useful informations:
 
-```shell showLineMarkers:{'1': [335], '2': [336]}
+```shell {'1':10} {'2':11}
 $ anki-cli-unofficial load french.yaml french.apkg
 
 📂 Opening Anki collection...

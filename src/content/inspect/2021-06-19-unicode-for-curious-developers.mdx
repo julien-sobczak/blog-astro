@@ -631,7 +631,7 @@ We better understand why UTF-8 is preferred for writing code. The same motivatio
 
 Before Java 9, [`String`](https://github.com/openjdk/jdk/blob/jdk8-b120/jdk/src/share/classes/java/lang/String.java) were represented internally as an array of char:
 
-```java title="java/lang/String.java" showLineMarkers:{'1': [701], '2': [707], '3': [714]}
+```java title="java/lang/String.java" {'1':5} {'2':11} {'3':18}
 public final class String
     implements java.io.Serializable, Comparable<String>, CharSequence {
 
@@ -669,7 +669,7 @@ Since, Java adopted [compacts strings](https://openjdk.java.net/jeps/254). A str
 
 The [current `String` implementation](https://github.com/openjdk/jdk/blob/jdk-16+36/src/java.base/share/classes/java/lang/String.java) was changed to use an array of bytes instead:
 
-```java title="java/lang/String.java" showLineMarkers:{'1': [739], '2': [748], '3': [755], '4': [760]}
+```java title="java/lang/String.java" {'1':9} {'2':18} {'3':25} {'4':30}
 public final class String
     implements java.io.Serializable, Comparable<String>, CharSequence,
                Constable, ConstantDesc {
@@ -727,7 +727,7 @@ public final class String
 
 The motivation for compact strings is to reduce the memory footprint when working with ASCII characters only. It can be confirmed easily using a minimalist benchmark:
 
-```java showLineMarkers:{'1': [803], '2': [814]}
+```java {'1':24} {'2':35}
 import java.util.ArrayList;
 import java.util.List;
 
@@ -862,7 +862,7 @@ Iterating over strings using this syntax does not work so well. We get bytes, no
 
 To solve this, Go introduces the data type `rune` (a synonym of code point that is defined as a `int32`). If we convert the string to a slice of `rune`, we get a different result:
 
-```go showLineMarkers:{'1': [915]}
+```go {'1':1}
 s := []rune("Hey 🤚!") // <1>
 
 fmt.Printf("len=%d\n", len(s))
@@ -1131,7 +1131,7 @@ int _PyUnicode_IsUppercase(Py_UCS4 ch)
 The code relies on a global structure initialized using the Unicode Character Database. The script `Tools/unicode/makeunicodedata.py` converts Unicode database files (e.g., `UnicodeData.txt`) to `Modules/unicodedata_db.h`,
 `Modules/unicodename_db.h`, and `Objects/unicodetype_db.h`.
 
-```python title="Tools/unicode/makeunicodedata.py" showLineMarkers:{'1': [1200], '2': [1203]}
+```python title="Tools/unicode/makeunicodedata.py" {'1':1} {'2':4}
 def makeunicodetype(unicode, trace): # <1>
     ...
 
@@ -1218,7 +1218,7 @@ public final class Character {
 
 [`java.lang.CharacterData`](https://github.com/openjdk/jdk/blob/jdk-16%2B36/src/java.base/share/classes/java/lang/CharacterData.java) is an abstract class:
 
-```java title="src/java.base/share/classes/java/lang/CharacterData.java" showLineMarkers:{'1': [1296]}
+```java title="src/java.base/share/classes/java/lang/CharacterData.java" {'1':10}
 package java.lang;
 
 abstract class CharacterData {
@@ -1348,7 +1348,7 @@ Like Python, we observe various optimizations but the overall idea is similar--w
 
 The Go implementation is really close to previous languages. Go strings are implemented in Go by the file [`src/strings/strings.go`](https://github.com/golang/go/blob/go1.16.5/src/strings/strings.go), which declares the function `ToUpper()`:
 
-```go title="src/strings/strings.go" showLineMarkers:{'1': [1420], '2': [1436], '3': [1442]}
+```go title="src/strings/strings.go" {'1':6} {'2':22} {'3':28}
 // ToUpper returns s with all Unicode letters mapped to their upper case.
 func ToUpper(s string) string {
 	isASCII, hasLower := true, false
@@ -1426,7 +1426,7 @@ type CaseRange struct {
 
 For example:
 
-```go title="src/unicode/tables.go" showLineMarkers:{'1': [1491], '2': [1492]}
+```go title="src/unicode/tables.go" {'1':2} {'2':3}
 var _CaseRanges = []CaseRange{
 	{0x0041, 0x005A, d{0, 32, 0}},    // <1>
 	{0x0061, 0x007A, d{-32, 0, -32}}, // <2>
@@ -1444,7 +1444,7 @@ var _CaseRanges = []CaseRange{
 
 This variable is then used by the function `to`, which is called by higher-level functions such as `ToUpper`, `ToLower`:
 
-```go title="src/unicode/letter.go" showLineMarkers:{'1': [1506], '2': [1513, 1533], '3': [1531]}
+```go title="src/unicode/letter.go" {'1':3} {'2':10} {'3':28} {'2':30}
 // to maps the rune using the specified case mapping.
 // It additionally reports whether caseRange contained a mapping for r.
 func to(_case int, r rune, caseRange []CaseRange) (mappedRune rune, foundMapping bool) { // <1>
@@ -1624,7 +1624,7 @@ print("Hello 👋")
 
 The Python interpreter outputs:
 
-```shell showLineMarkers:{'1': [1686]}
+```shell {'1':2}
 $ python3 output.py | hexdump
 0000000 48 65 6c 6c 6f 20 f0 9f 91 8b 0a // <1>
 ```

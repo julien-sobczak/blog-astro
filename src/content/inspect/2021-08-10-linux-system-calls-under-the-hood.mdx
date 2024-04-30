@@ -87,7 +87,7 @@ System calls are implemented by your kernel and are an integral part of Linux. O
 
 For example, in C, the PID of your program is accessible using the function `getpid()`:
 
-```c title="getpid.c" showLineMarkers:{'1': [95]}
+```c title="getpid.c" {'1':8}
 #include <stdio.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -110,7 +110,7 @@ Retrieving the PID of the current process is one of the most basic system calls.
 
 Here is a minimal benchmark illustrating this difference:
 
-```c title="benchmark.c" showLineMarkers:{'1': [114], '2': [126, 133], '3': [134]}
+```c title="benchmark.c" {'1':6} {'2':18} {'2':25} {'3':26}
 #include <stdio.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -406,7 +406,7 @@ To sum up, when we are calling the `getpid()` library function, the alias `__get
 
 In practice, not all system calls can be generated like this. A prior version of the `getpid()` library function used a cache to limit system calls since the PID of a process never changes. This cache was removed by [this commit](https://repo.or.cz/glibc.git/commit/c579f48edba88380635ab98cb612030e3ed8691e), but if we move back in Git history, we can have a look at [a different technique](https://sourceware.org/glibc/wiki/SyscallWrappers) used by glibc to implement library functions.
 
-```c title="/sysdeps/unix/sysv/linux/getpid.c" showLineMarkers:{'1': [449], '2': [451], '3': [453]}
+```c title="/sysdeps/unix/sysv/linux/getpid.c" {'1':29} {'2':31} {'3':33}
 #include <unistd.h>
 #include <tls.h>
 #include <sysdep.h>
@@ -499,7 +499,7 @@ The main entry point for the `getpid` system call is called `sys_getpid()`, but 
 
 Here is the definition of the `getpid` system call :
 
-```c title="kernel/sys.c" showLineMarkers:{'1': [517]}
+```c title="kernel/sys.c" {'1':12}
 /**
  * sys_getpid - return the thread group id of the current process
  *
@@ -596,7 +596,7 @@ For an implementation viewpoint:
 
 The kernel starts when the function `start_kernel` defined in `init/main.c` is called. This function installs various interrupt handlers using the function `trap_init`, which called `cpu_init`, which called `syscall_init`. Let's look at the implementation of this last function (for `amd64`):
 
-```c title="arch/x86/kernel/cpu/common.c" showLineMarkers:{'1': [607], '2': [608]}
+```c title="arch/x86/kernel/cpu/common.c" {'1':3} {'2':4}
 void syscall_init(void)
 {
 	wrmsr(MSR_STAR, 0, (__USER32_CS << 16) | __KERNEL_CS); // <1>
@@ -622,7 +622,7 @@ Any system call will trigger the execution of the system call entry we have just
 
 This table is represented by the `sys_call_table` array in the Linux kernel:
 
-```c title="arch/x86/entry/syscall_64.c" showLineMarkers:{'1': [629], '2': [630]}
+```c title="arch/x86/entry/syscall_64.c" {'1':2} {'2':3}
 asmlinkage const sys_call_ptr_t sys_call_table[__NR_syscall_max+1] = {
 	[0 ... __NR_syscall_max] = &__x64_sys_ni_syscall, // <1>
   #include <asm/syscalls_64.h> // <2>
@@ -717,7 +717,7 @@ The line that interests us is the system call execution:
 
 Where the function `do_syscall_64` is defined like this:
 
-```c title="arch/x86/entry/common.c" showLineMarkers:{'1': [731], '2': [732], '3': [733]}
+```c title="arch/x86/entry/common.c" {'1':5} {'2':6} {'3':7}
 __visible noinstr void do_syscall_64(unsigned long nr, struct pt_regs *regs)
 {
 	nr = syscall_enter_from_user_mode(regs, nr);
@@ -1001,7 +1001,7 @@ That's all. You have reviewed the standard Go code to execute a system call on L
 
 Since Java 9, the process API can be used to get the current process ID.
 
-```java showLineMarkers:{'1': [1039]}
+```java {'1':1}
 long pid = ProcessHandle.current().pid(); // <1>
 ```
 
@@ -1056,7 +1056,7 @@ final class ProcessHandleImpl implements ProcessHandle {
 
 The code delegates to the `native` function `getCurrentPid0` implemented in C in [`ProcessHandleImpl_unix.c`](https://github.com/openjdk/jdk/blob/jdk-16+36/src/java.base/unix/native/libjava/ProcessHandleImpl_unix.c):
 
-```c title="src/java.base/unix/native/libjava/ProcessHandleImpl_unix.c" showLineMarkers:{'1': [1110]}
+```c title="src/java.base/unix/native/libjava/ProcessHandleImpl_unix.c" {'1':17}
 #include "jni.h"
 #include "jni_util.h"
 #include "java_lang_ProcessHandleImpl.h"

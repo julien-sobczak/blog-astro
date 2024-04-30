@@ -1080,7 +1080,7 @@ So, to install Anki dependencies, everything we need to do is run the Pip instal
 
 We could now create our first script. Add a new file at the root of the project:
 
-```python title="listcards.py" showLineMarkers:{'1': [1127], '2': [1131], '3': [1138]}
+```python title="listcards.py" {'1':4} {'2':8} {'3':15}
 import sys, os
 
 # Load Anki library
@@ -2066,7 +2066,7 @@ bulk_loading_anki(idioms)
 
 The function `bulk_loading_anki` iterate over the idioms, and create a new note for each of them. Before that, we need to retrieve our new note type `Idiom` to define it as the default (like we do when we use Anki through the UI). We also need to retrieve the deck in which to create the notes (`English` in our example but any deck would works too). Here is the code:
 
-```python showLineMarkers:{'1': [2133], '2': [2134], '3': [2172], '4': [2177], '5': [2196]}
+```python {'1':4} {'2':5} {'3':43} {'4':48} {'5':67}
 def bulk_loading_anki(idioms):
 
     # Load the anki collection
@@ -3018,7 +3018,7 @@ For example, if you want to retrieve the information about the word **daughter**
 
 We could now create an application based on AngularJS 1.x and hosted in the same project for convenience. By default, every resource present under the directory `src/main/resources/public` will be exposed as static resources by Spring Boot. So, let's create the index page:
 
-```html title="index.html" showLineMarkers:{'1': [3141]}
+```html title="index.html" {'1':52}
 <!doctype html>
 <html lang="fr" ng-app="app">
 <head>
@@ -3099,7 +3099,7 @@ We could now create an application based on AngularJS 1.x and hosted in the same
 The HTML is self-descriptive. Let's inspect the JavaScript code used to bootstrap the AngularJS application:
 
 
-```javascript title="app.js" showLineMarkers:{'2': [3178], '1': [3187]}
+```javascript title="app.js" {'2':10} {'1':19}
 angular.module('app', [])
 
 .controller('WordController', function($scope, $http, $document) {
@@ -3175,7 +3175,7 @@ So, let's add the code to listen the key press:
 
 The code makes an HTTP request to a new service we need to define in our controller `ApiController`:
 
-```java title="ApiController" showLineMarkers:{'1': [3261], '2': [3265]}
+```java title="ApiController" {'1':18} {'2':22}
 @RestController
 @RequestMapping("/api")
 public class ApiController {
@@ -3212,7 +3212,7 @@ public class ApiController {
 
 The main logic is encapsulated inside the class `Word`. Let's see its definition:
 
-```java title="Word.java" showLineMarkers:{'1': [3300], '2': [3301]}
+```java title="Word.java" {'1':23} {'2':24}
 package fr.imlovinit.anki.vocabulary.assistant.model;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
