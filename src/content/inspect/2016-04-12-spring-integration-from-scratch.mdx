@@ -13,15 +13,18 @@ import Marker from '../../components/Marker.astro'
 import Lead from '../../components/Lead.astro'
 
 
+<Admonition type="note" title="Note for the novice Spring Integration user">
 This post assumes a basic comprehension of the Spring Integration Framework. If you just begin with Spring Integration, you could find the short book **Just Spring Integration** helpful to quickly grasp the core concepts, the different types of channel and their endpoints. Do not hesitate to refer to the official documentation if a term is new to you.
+</Admonition>
 
-
-https://github.com/spring-projects/spring-integration/tree/v4.2.5.RELEASE[Spring Integration] is published under the https://opensource.org/licenses/Apache-2.0[licence Apache, Version 2.0]. The code presented in this post was simplified (robustness, performance, validation, etc) and should not be used outside of this context. This post is based on the version 4.2.5.RELEASE of Spring Integration.
+<Admonition type="caution" className="license">
+  [Spring Integration](https://github.com/spring-projects/spring-integration/tree/v4.2.5.RELEASE) is published under the [licence Apache, Version 2.0](https://opensource.org/licenses/Apache-2.0). The code presented in this post was simplified (robustness, performance, validation, etc) and should not be used outside of this context. This post is based on the version 4.2.5.RELEASE of Spring Integration.
+</Admonition>
 
 
 ## A basic example
 
-To illustrate the inner working of Spring Integration, we will use the following basic example. This example is inspired from the official https://pivotal.io/academy[Spring Enterprise Training] and highlights common misunderstandings (message immutability, the Proxy Gateway, the different types of channel, the right use of gateway and service activator to keep our code free from dependencies on the Spring Integration API, ...)
+To illustrate the inner working of Spring Integration, we will use the following basic example. This example is inspired from the official [Spring Enterprise Training](https://pivotal.io/academy) and highlights common misunderstandings (message immutability, the Proxy Gateway, the different types of channel, the right use of gateway and service activator to keep our code free from dependencies on the Spring Integration API, ...)
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -134,6 +137,7 @@ We inject the Gateway implementation provided by Spring Integration in our test 
 When run, the test displays a message similar to the following in the console:
 
 ```
+Received confirmation e393b760-5d97-42e3-9974-b504907b9e00 for order
 of product 1484
 ```
 
@@ -148,8 +152,9 @@ We will not go further with our use of Spring Integration. Instead, we remove co
 <!-- </dependency> -->
 ```
 
-NOTE: Only the `spring-integration-core` artifact was commented. We will continue to use the other Spring Core project (`spring-beans` and `spring-context`).
-
+<Admonition type="note">
+  Only the `spring-integration-core` artifact was commented. We will continue to use the other Spring Core project (`spring-beans` and `spring-context`).
+</Admonition>
 
 
 ## Core Abstractions
@@ -990,7 +995,7 @@ This class demonstrates common multithreading idioms, not really required for ou
 The **volatile** keyword tells the JVM that the variable will be updated by multiple threads and guarantees that reads and writes would be made directly to main memory, instead of registers or local processor cache. Since Java 5, **volatile** reads and writes establish a happens-before relationship, much like acquiring and releasing a mutex (like a **synchronized** block), a guarantee for **double-checked locking** pattern to work in Java (more on this subject later). **volatile** variables are typically used for indicating that an important lifecycle
 event (such as initialization or shutdown) has occurred (as in our example).
 
-Check the https://www.ibm.com/developerworks/library/j-jtp03304/[excellent article] of Brian Goetz to know more about the **volatile** keyword.
+Check the [excellent article](https://www.ibm.com/developerworks/library/j-jtp03304/) of Brian Goetz to know more about the **volatile** keyword.
 
 **volatile** variables are great for initializing flags but does not prevent multiple threads from executing the `start()` method simultaneously, we have to resort on locking. In Java, we could declare our method as `synchronized` to declare an intrinsic lock or use an explicit lock, represented by the `java.util.concurrent.Lock` interface. `ReentrantLock` is the most widely used implementation and acts similarly as the `synchronized` keyword. In the previous code, we could have use `synchronized` methods instead of explicit locking as the whole method is guarded by the lock. In practice, not all the method should be protected and using an explicit lock is often a good performance optimization.
 </Admonition>
@@ -1687,7 +1692,7 @@ Clearly, this code lacks expressiveness and we understand why Spring Integration
 
 Almost every Spring module comes with its own namespace to facilitate the configuration of common beans. Spring Integration is no exception (Spring Integration defines more than 30 namespaces, one for each supported technology!).
 
-The implementation of a http://docs.spring.io/spring/docs/4.2.x/spring-framework-reference/html/xml-custom.html[custom namespace] is well documented in the official Spring Core documentation.
+The implementation of a [custom namespace](http://docs.spring.io/spring/docs/4.2.x/spring-framework-reference/html/xml-custom.html) is well documented in the official Spring Core documentation.
 
 Creating new XML configuration extensions can be done by following these (relatively) simple steps:
 
@@ -1855,7 +1860,7 @@ public class PointToPointChannelParser extends AbstractBeanDefinitionParser {
 }
 ```
 
-This example handle the element <channel>. In this simple case, this is all that we need to do. We check if the `queue` subelement is present to determine if we need to create a `DirectChannel` or a `QueueChannel`.
+This example handle the element `<channel>`. In this simple case, this is all that we need to do. We check if the `queue` subelement is present to determine if we need to create a `DirectChannel` or a `QueueChannel`.
 
 Let's inspect the `<service-activator>` element:
 
@@ -2079,7 +2084,7 @@ public class ConsumerEndpointFactoryBean implements SmartLifecycle, ... {
 }
 ```
 
-We will not describe the remaining channels and endpoints. The code is very similar to the code presented here. (You could check the full source code https://github.com/julien-sobczak/spring-integration-from-scratch[here]).
+We will not describe the remaining channels and endpoints. The code is very similar to the code presented here. (You could check the full source code [here](https://github.com/julien-sobczak/spring-integration-from-scratch)).
 
 
 ### Registering the handler and the schema
@@ -2126,7 +2131,7 @@ http://my.springframework.org/schema/integration
 http://my.springframework.org/schema/integration/my-spring-integration-1.0.xsd"
 ```
 
-The previous file reveals how this is implemented. The `spring.schemas` file contains a definition for the two versions. In practice, https://github.com/spring-projects/spring-framework/blob/v4.2.5.RELEASE/spring-beans/src/main/resources/META-INF/spring.schemas[this file] contains all previously versions too!
+The previous file reveals how this is implemented. The `spring.schemas` file contains a definition for the two versions. In practice, [this file](https://github.com/spring-projects/spring-framework/blob/v4.2.5.RELEASE/spring-beans/src/main/resources/META-INF/spring.schemas) contains all previously versions too!
 
 ```properties
 http\://www.springframework.org/schema/beans/spring-beans-2.0.xsd=\
@@ -2203,7 +2208,7 @@ We re-run the test. Green. Done.
 
 
 <Admonition type="note" className="congratulations" title="Congratulations!">
-**The implementation of our own Spring Integration framework is finished.** We now have a basic but working solution implementing core components of the framework. The full code source of this post is available on https://github.com/julien-sobczak/spring-integration-from-scratch[GitHub].
+**The implementation of our own Spring Integration framework is finished.** We now have a basic but working solution implementing core components of the framework. The full code source of this post is available on [GitHub](https://github.com/julien-sobczak/spring-integration-from-scratch).
 </Admonition>
 
 <Admonition type="note" className="remember" title="To remember">

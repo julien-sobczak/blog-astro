@@ -39,7 +39,7 @@ Anki is packaged as a Desktop application for Windows/MacOS/Linux. Additional ap
 
 <img src="/posts_resources/2020-12-26-anki-scripting-for-non-programmers/anki-components.png" />
 
-The Anki source code is available on https://github.com/ankitects/anki[GitHub], the largest code hosting platform used by millions of developers to share their work. The majority of code you use in your daily life, on your computer, tablet, or phone, has home in GitHub.
+The Anki source code is available on [GitHub](https://github.com/ankitects/anki), the largest code hosting platform used by millions of developers to share their work. The majority of code you use in your daily life, on your computer, tablet, or phone, has home in GitHub.
 
 <Admonition type="note" className="None" title="Python, the programming language">
 Anki is written in Python (at least at the time of writing), which is great because **Python is the main programming language to initiate new coders**. Python syntax is intuitive and excels for small programs like we are going to write in this article. If you are curious about programming, starting with Python is a great choice. Learning Python is not just useful for interacting with Anki. *Learning Python is a fun way to get starting with programming.*
@@ -64,7 +64,7 @@ When using the Desktop application, the Graphical User Interface (GUI) validates
 
 <img src="/posts_resources/2020-12-26-anki-scripting-for-non-programmers/anki-scripting.png" />
 
-But first, we need to create a safe environment. Writing code means writing bugs. And bugs can make irreversible damages. You don't want to lose your Anki collection, so let's create a sandbox environnement. The trick is to start Anki from your terminal and pass the option `-b` to specify a https://docs.ankiweb.net/#/files?id=startup-options[custom directory]:
+But first, we need to create a safe environment. Writing code means writing bugs. And bugs can make irreversible damages. You don't want to lose your Anki collection, so let's create a sandbox environnement. The trick is to start Anki from your terminal and pass the option `-b` to specify a [custom directory](https://docs.ankiweb.net/#/files?id=startup-options):
 
 * On Windows: `"C:\Program Files\Anki\anki.exe" -b "%PWD%/AnkiTest"`
 * On MacOS: `open /Applications/Anki.app --args -b $PWD/AnkiTest`

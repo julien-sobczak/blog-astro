@@ -28,7 +28,7 @@ import Lead from '../../components/Lead.astro'
 
 ## Prerequisites
 
-We will follow the https://spring.io/guides/gs/spring-boot/[official Getting Started Guide "Building an Application with Spring Boot"] and explain the inner working of the framework by recoding its main features. The resulting code has no vocation to be use outside of this post. Let's go!
+We will follow the [official Getting Started Guide "Building an Application with Spring Boot"](https://spring.io/guides/gs/spring-boot/) and explain the inner working of the framework by recoding its main features. The resulting code has no vocation to be use outside of this post. Let's go!
 
 NOTE: If you are just beginning with Spring Boot, take the time (around 15 minutes) to try the Getting Starting Guide before continuing.
 
@@ -149,7 +149,7 @@ According to your interest, you could safely jump from one part to another one.
 ## Part 1: Creating your Spring Boot Application
 
 
-We all have lost a considerable time trying to understand why a dependency class could not be found, or trying to make two unrelated projects work together although they need two incompatible versions of the same library. Using Maven exclusions helps but it is not a satisfactory solution. These dependency issues are known under the term https://en.wikipedia.org/wiki/Dependency_hell[Dependency Hell] to reflect the frustration of many software developers.
+We all have lost a considerable time trying to understand why a dependency class could not be found, or trying to make two unrelated projects work together although they need two incompatible versions of the same library. Using Maven exclusions helps but it is not a satisfactory solution. These dependency issues are known under the term [Dependency Hell](https://en.wikipedia.org/wiki/Dependency_hell) to reflect the frustration of many software developers.
 
 
 Even the most simple Java program needs many dependencies. Here is the list of dependencies for the Getting Started example:
@@ -293,7 +293,7 @@ We should analyze each of these components to understand what they are doing exa
 </parent>
 ```
 
-This https://github.com/spring-projects/spring-boot/tree/v1.3.3.RELEASE/spring-boot-starters/spring-boot-starter-parent[project] is a Maven project of type pom. The only file present is the `pom.xml`. Here is a simplified version:
+This [project](https://github.com/spring-projects/spring-boot/tree/v1.3.3.RELEASE/spring-boot-starters/spring-boot-starter-parent) is a Maven project of type pom. The only file present is the `pom.xml`. Here is a simplified version:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -356,7 +356,7 @@ This pom is mainly used to declare the version of the Spring Framework and the v
 </parent>
 ```
 
-The project `spring-boot-dependencies` is also a project of type pom. This project aims to centralize all of the http://docs.spring.io/spring-boot/docs/1.3.3.RELEASE/reference/html/appendix-dependency-versions.html[dependency versions that are provided by Spring Boot]. This represents more than 400 dependencies (and more than 2000 lines of code!). Here is a shortened version, adapted for our **Hello World** project:
+The project `spring-boot-dependencies` is also a project of type pom. This project aims to centralize all of the [dependency versions that are provided by Spring Boot](http://docs.spring.io/spring-boot/docs/1.3.3.RELEASE/reference/html/appendix-dependency-versions.html). This represents more than 400 dependencies (and more than 2000 lines of code!). Here is a shortened version, adapted for our **Hello World** project:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -440,7 +440,7 @@ http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 </project>
 ```
 
-These dependencies are declared in the `<dependencyManagement>` and `<pluginManagement>` sections, so no dependency is directly inherited when using this parent POM. This only save you from specifying the version when declaring a dependency in a `<dependencies>` section, a good start to solve the https://en.wikipedia.org/wiki/Dependency_hell[dependency hell].
+These dependencies are declared in the `<dependencyManagement>` and `<pluginManagement>` sections, so no dependency is directly inherited when using this parent POM. This only save you from specifying the version when declaring a dependency in a `<dependencies>` section, a good start to solve the [dependency hell](https://en.wikipedia.org/wiki/Dependency_hell).
 
 
 Now that we know how the version of dependencies is determined, we should find who is behind these dependencies. Given the output of the previous Maven dependency tree, we know the starters are responsible from these dependencies. But what is a exactly a Starter?
@@ -618,7 +618,7 @@ How could we do to reduce this configuration to nothing?
 
 The first step is to define reusable `Configuration` classes that could be easily imported inside our application.
 
-If we look inside the source of the module https://github.com/spring-projects/spring-boot/tree/v1.3.3.RELEASE/spring-boot-autoconfigure[Spring Boot Autoconfigure], we find one packages for each Spring modules (batch, mvc, integration, ...) or supported technology (flyway, hazelcast, cassandra, ...) containing dozens of these `Configuration` classes. The content is very similar to the class we previously wrote:
+If we look inside the source of the module [Spring Boot Autoconfigure](https://github.com/spring-projects/spring-boot/tree/v1.3.3.RELEASE/spring-boot-autoconfigure), we find one packages for each Spring modules (batch, mvc, integration, ...) or supported technology (flyway, hazelcast, cassandra, ...) containing dozens of these `Configuration` classes. The content is very similar to the class we previously wrote:
 
 ```java
 package org.springframework.boot.autoconfigure.web;
@@ -707,7 +707,7 @@ o.s.boot.autoconfigure.web.WebMvcAutoConfiguration, \
 
 The file lists the configuration classes under the EnableAutoConfiguration key.
 
-We still have not finished to cover Spring Boot but you already know how create your http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-developing-auto-configuration.html#boot-features-custom-starter[own starter]. Just create a `Configuration` class and provide a spring.factories file to make your class a candidate to autoloading. That's all!
+We still have not finished to cover Spring Boot but you already know how create your [own starter](http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-developing-auto-configuration.html#boot-features-custom-starter). Just create a `Configuration` class and provide a spring.factories file to make your class a candidate to autoloading. That's all!
 
 
 The class `EnableAutoConfigurationImportSelector` searches across the classpath and loads theses files and registers the classes in the application context. This class implements `ImportSelector` to be used with the `@Import`.
@@ -1735,7 +1735,7 @@ To be able to retrieve the list of dependencies through the `MavenProject` insta
 
 The `requiresDependencyResolution` flags indicates this Mojo needs the dependencies in the specified class path to be resolved before it can execute. With this attribute, we can now use the `getArtifacts()` method on `MavenProject` to collect the list of dependencies to include in the lib folder. This is the role of the method `getLibrary()`. The `Library` class is a simple POJO defined by Spring Boot that contains a `File` and its name. Then, we create an instance of `Repackager` by passing it the target file name and the dependencies list.
 
-Before showing the code of this `Repackager` class, you probably notice the wrapper `JarWriter` around the `java.util.jar` package. The aim of class present in the source of Spring Boot is to hide the low-level I/O manipulation code required to create a valid https://en.wikipedia.org/wiki/Zip_(file_format)[Zip Archive]. Here is the API of this class:
+Before showing the code of this `Repackager` class, you probably notice the wrapper `JarWriter` around the `java.util.jar` package. The aim of class present in the source of Spring Boot is to hide the low-level I/O manipulation code required to create a valid [Zip Archive](https://en.wikipedia.org/wiki/Zip_(file_format)). Here is the API of this class:
 
 
 ```java
@@ -1782,7 +1782,7 @@ public class JarWriter {
 }
 ```
 
-If you are interested, have a look at the https://github.com/spring-projects/spring-boot/blob/v1.3.3.RELEASE/spring-boot-tools/spring-boot-loader-tools/src/main/java/org/springframework/boot/loader/tools/JarWriter.java[source].
+If you are interested, have a look at the [source](https://github.com/spring-projects/spring-boot/blob/v1.3.3.RELEASE/spring-boot-tools/spring-boot-loader-tools/src/main/java/org/springframework/boot/loader/tools/JarWriter.java).
 
 The missing piece is still the `Repackager class`, but with the `JarWriter` utility class, its implementation follows naturally. The repackager's constructor accepts the standard JAR file created by Maven. By default, the jar produced by the repackager have the same file path, so we need to check first and rename the original file to be able to create the final jar archive. Once the file is created, we add the manifest by calling the method `writeManifest()` on `JarWriter`, then the original jar content with the method `writeEntries()` before iterating over the libraries returned by Maven and calling the method `writeNestedLibrary()` for each of them. Here is the implementation:
 
@@ -1874,7 +1874,7 @@ public class HelloWorld {
 }
 ```
 
-First, we need to compile this class to generate the bytecode. ASM provides a class `asm.ClassReader` that takes the compiled class as input. We could then register visitors (see pattern https://en.wikipedia.org/wiki/Visitor_pattern[Visitor]) that will be called during the class analysis. Visitors should extends the class `asm.ClassVisitor` and override the methods that interest them (ex: `visitMethod` to be notified on each method declaration found in the class). Here is an example using ASM to list the attributes and methods of a class:
+First, we need to compile this class to generate the bytecode. ASM provides a class `asm.ClassReader` that takes the compiled class as input. We could then register visitors (see pattern [Visitor](https://en.wikipedia.org/wiki/Visitor_pattern)) that will be called during the class analysis. Visitors should extends the class `asm.ClassVisitor` and override the methods that interest them (ex: `visitMethod` to be notified on each method declaration found in the class). Here is an example using ASM to list the attributes and methods of a class:
 
 ```java
 InputStream sourceCode = new FileInputStream(
@@ -2058,7 +2058,7 @@ Error: A JNI error has occurred, please check your installation and try again
 Exception in thread "main"
 ```
 
-We get an `NoClassDefFoundError` on `org.springframework.context.ApplicationContext`. Why? This class is present in the archive `spring-context-4.2.5.RELEASE.jar` under the lib folder. The problem is that the java command only load the files of type .class and do not search in the eventual jars included in the archive. This explains why the Maven Shade Plugin unzips the dependencies before creating the final archive. In this way, the java command find all the classes to load. So, how does Spring Boot do to load our dependencies? The answer is the module https://github.com/spring-projects/spring-boot/tree/v1.3.3.RELEASE/spring-boot-tools/spring-boot-loader[Spring Boot Loader] and its class `JarLauncher` (The class that was marked as the `Main-Class` in the `MANIFEST.mf`).
+We get an `NoClassDefFoundError` on `org.springframework.context.ApplicationContext`. Why? This class is present in the archive `spring-context-4.2.5.RELEASE.jar` under the lib folder. The problem is that the java command only load the files of type .class and do not search in the eventual jars included in the archive. This explains why the Maven Shade Plugin unzips the dependencies before creating the final archive. In this way, the java command find all the classes to load. So, how does Spring Boot do to load our dependencies? The answer is the module [Spring Boot Loader](https://github.com/spring-projects/spring-boot/tree/v1.3.3.RELEASE/spring-boot-tools/spring-boot-loader) and its class `JarLauncher` (The class that was marked as the `Main-Class` in the `MANIFEST.mf`).
 
 
 ### Spring Boot Loader
@@ -2110,7 +2110,7 @@ The `JarLauncher` contains a `main` method that simply create an instance of `Ja
 
 #### The Archive
 
-Spring Boot Loader create its own abstraction, extending https://docs.oracle.com/javase/7/docs/api/java/util/jar/JarFile.html[java.util.jar.JarFile] to offer additional functionalities like adding or retrieved a nested archive inside the JAR.
+Spring Boot Loader create its own abstraction, extending [java.util.jar.JarFile](https://docs.oracle.com/javase/7/docs/api/java/util/jar/JarFile.html) to offer additional functionalities like adding or retrieved a nested archive inside the JAR.
 
 The implementation of the class `JarFileArchive` is pointless to understand Spring Boot. Here is its API:
 

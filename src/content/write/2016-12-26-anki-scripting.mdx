@@ -140,7 +140,7 @@ Client/server SQL database engines strive to implement a shared repository of en
 
 So, SQLite does not compete with client/server databases. SQLite competes with `fopen()` and is particularly well adapted in these situations: as the datastore for an embedded devices, as an application file format (such as Anki), or as the main storage for a medium website or just as a file archive.
 
-Refer to the https://www.sqlite.org/[official documentation] for more information.
+Refer to the [official documentation](https://www.sqlite.org/) for more information.
 </Admonition>
 
 
@@ -1020,7 +1020,7 @@ Anki is an open-source solution, published on GitHub. The code source is accessi
 - Insert data directly in the SQLite database used by Anki
 - Write a Python program using the internal API of Anki
 
-This post will concentrate on the second option. The first option could be implemented based on the information published in the first part but is not the optimal solution (high coupling, necessity to specify all fields when most of them are irrelevant). This solution was already partially https://decks.wikia.com/wiki/Anki_APKG_format_documentation[documented online]. The Python solution is more powerful. You could use a Python module to read a PDF or an Epub and generate the associated flashcards. You could use the Google Images API to retrieve funny pictures to integrate in our flashcards. The only limit is our imagination.
+This post will concentrate on the second option. The first option could be implemented based on the information published in the first part but is not the optimal solution (high coupling, necessity to specify all fields when most of them are irrelevant). This solution was already partially [documented online](https://decks.wikia.com/wiki/Anki_APKG_format_documentation). The Python solution is more powerful. You could use a Python module to read a PDF or an Epub and generate the associated flashcards. You could use the Google Images API to retrieve funny pictures to integrate in our flashcards. The only limit is our imagination.
 
 
 ### Python Scripting
@@ -1052,7 +1052,7 @@ $ ls
 anki
 ```
 
-Then, we need to download Anki dependencies. In this post, we will use https://pypi.python.org/pypi/pip[Pip], the classic tool for installing Python packages. To avoid polluting existing Python projects you could have in local, we will use https://virtualenv.pypa.io/en/stable/[virtualenv]. The recommended way to do that in Python is to use virtualenv to isolate our project from other projects, so two projects could depend on conflicting versions of the same dependency. To install virtualenv globally, run the following command:
+Then, we need to download Anki dependencies. In this post, we will use [Pip](https://pypi.python.org/pypi/pip), the classic tool for installing Python packages. To avoid polluting existing Python projects you could have in local, we will use [virtualenv](https://virtualenv.pypa.io/en/stable/). The recommended way to do that in Python is to use virtualenv to isolate our project from other projects, so two projects could depend on conflicting versions of the same dependency. To install virtualenv globally, run the following command:
 
 ```
 ```
@@ -1701,7 +1701,7 @@ index_file.close()
 
 ## Case Study: Convert an EPUB to Flashcards
 
-_Let's me present you the context. We just bought a new https://www.amazon.fr/Harraps-Expressions-anglaises-Collectif/dp/2818704480[book to learn the common English expressions]. This book contains around 4000 expressions. If we consider it takes two minutes to create a flashcard, more than 100 hours will be required to overcome this daunting task. So, what can we do? One solution is to script the creation of the flashcards and this is exactly what we are going to do here._
+_Let's me present you the context. We just bought a new [book to learn the common English expressions](https://www.amazon.fr/Harraps-Expressions-anglaises-Collectif/dp/2818704480). This book contains around 4000 expressions. If we consider it takes two minutes to create a flashcard, more than 100 hours will be required to overcome this daunting task. So, what can we do? One solution is to script the creation of the flashcards and this is exactly what we are going to do here._
 
 This post will be divided in two sections. In the first part of this post, we are going to create a small program to read an Epub file in Python. In the second part, we will extend this program to insert the content directly into our Anki collection.
 
@@ -1716,7 +1716,7 @@ The book is available in ePub format. The term is short for _electronic publicat
 
 For our task, we only need to know that an ePub is just a ZIP archive containing a website written in HTML5, including HTML files, images, CSS stylesheets, and other assets like video.
 
-The ebook is subject to a copyright, so to avoid any violation, I rewrite a short version by customizing the text. This demonstration ebook is available in the https://github.com/julien-sobczak/anki-scripting/tree/master/anki-usecase-enidioms[repository associated to this post]. To inspect its content, just unzip the archive:
+The ebook is subject to a copyright, so to avoid any violation, I rewrite a short version by customizing the text. This demonstration ebook is available in the [repository associated to this post](https://github.com/julien-sobczak/anki-scripting/tree/master/anki-usecase-enidioms). To inspect its content, just unzip the archive:
 
 <img src="/posts_resources/2016-12-26-anki-scripting/epub-unzipped.png" />
 
@@ -1774,7 +1774,7 @@ In the manifest section, we can see all web resources included in this epub. Thi
 
 <img src="/posts_resources/2016-12-26-anki-scripting/epub-preview.png" />
 
-If you want to know more about the epub format, O'Reilly published whole https://shop.oreilly.com/product/0636920024897.do[books] on the subject.
+If you want to know more about the epub format, O'Reilly published whole [books](https://shop.oreilly.com/product/0636920024897.do) on the subject.
 
 Let's see how the HTML looks like. The `Page_1.html` page contains only a picture with the cover of the book. We could ignore it. The next page `Page_2.html` is an example of page we need to parse to extract the English expressions. Here is an extract of this file:
 
@@ -2202,7 +2202,7 @@ Wikipedia currently offers multiple frequency lists based on different sources: 
 </table>
 ```
 
-NOTE: Like your browser, most HTML parsers are very tolerant concerning HTML syntax. We don't need to create a perfectly valid HTML document to be able to parse it. We will continue to use the Python language, and its most popular HTML parser https://www.crummy.com/software/BeautifulSoup/bs4/doc/[BeautifulSoup].
+NOTE: Like your browser, most HTML parsers are very tolerant concerning HTML syntax. We don't need to create a perfectly valid HTML document to be able to parse it. We will continue to use the Python language, and its most popular HTML parser [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/).
 
 Here is a basic program to parse this HTML file and generate a csv file:
 
@@ -2370,7 +2370,7 @@ When learning a new language, it is better to left out completely your tongue la
 
 #### Reading the data
 
-Wiktionary, like other Wikimedia projects, offers a https://en.wiktionary.org/w/api.php[REST API] to retrieve a single page. The API is still in active development. Another option is to exploit the https://dumps.wikimedia.org/[generated dumps]. Indeed, Wikimedia hosts numerous dumps of its database (useful for example in natural language processing tasks or for reseach project). The one that interest us is the https://dumps.wikimedia.org/enwiktionary/[enwiktionary dump], in particular the first archive described as "Articles, templates, media/file descriptions, and primary meta-pages".
+Wiktionary, like other Wikimedia projects, offers a [REST API](https://en.wiktionary.org/w/api.php) to retrieve a single page. The API is still in active development. Another option is to exploit the [generated dumps](https://dumps.wikimedia.org/). Indeed, Wikimedia hosts numerous dumps of its database (useful for example in natural language processing tasks or for reseach project). The one that interest us is the [enwiktionary dump](https://dumps.wikimedia.org/enwiktionary/), in particular the first archive described as "Articles, templates, media/file descriptions, and primary meta-pages".
 
 Once downloaded, we extract the tar.gz archive to find a single XML file with a size of 4,5 GB!
 
@@ -2617,7 +2617,7 @@ This file could quickly be parsed (10s on my local machine). The next step is to
 
 #### Parsing the x-wiki text to generate a JSON file
 
-The `<text>` tag contains a x-wiki document whose main syntax is defined https://platform.xwiki.org/xwiki/bin/view/Main/XWikiSyntax[here]. Wikipedia add a lot of semantic above this syntax through the use of numerous labels. I didn't find a document that describes the Wiktionary syntax, so we need to revert to reverse engineering.
+The `<text>` tag contains a x-wiki document whose main syntax is defined [here](https://platform.xwiki.org/xwiki/bin/view/Main/XWikiSyntax). Wikipedia add a lot of semantic above this syntax through the use of numerous labels. I didn't find a document that describes the Wiktionary syntax, so we need to revert to reverse engineering.
 
 Here is an shortened example of a x-wiki document (about the word `keyboard`):
 
@@ -2807,7 +2807,7 @@ So, we will create another Python program to parse the previously generated XML 
 }
 ```
 
-The code behind this program contains a lot of parsing logic. The result is not the most beautiful code that I have written and I am not going to present it in this post but if you are curious, the full listing is available in the project repository in https://github.com/julien-sobczak/anki-scripting/blob/master/anki-usecase-enfrequency/5-parse_mytionary.py[GitHub].
+The code behind this program contains a lot of parsing logic. The result is not the most beautiful code that I have written and I am not going to present it in this post but if you are curious, the full listing is available in the project repository in [GitHub](https://github.com/julien-sobczak/anki-scripting/blob/master/anki-usecase-enfrequency/5-parse_mytionary.py).
 
 
 ### Creating the flashcards
@@ -2852,7 +2852,7 @@ Then, run the following command to start the web application:
 <Admonition type="note" className="None" title="Google CSE API">
 The application uses the Google Custom Search API (GSE) to retrieve a list of images related to the selected word, so you need credentials to access the API. Google limits to 100 free searches per day.
 
-Please visit the https://developers.google.com/custom-search/docs/tutorial/introduction[official site] for more information.
+Please visit the [official site](https://developers.google.com/custom-search/docs/tutorial/introduction) for more information.
 </Admonition>
 
 Open your browser and enter the URL http://localhost:8080. You should have the same output as the previous screenshot.
@@ -3348,7 +3348,7 @@ In definitive, the assistant application reads the full JSON dictionary, exposes
 
 The problem is that Anki exposes only its internal API written in Python. If the backend of our application was written in Python too, we could have create the flashcards at the same time. Here, we dump the result to a file that we will need to read by another program written in Python. This is task of the **Importer**.
 
-NOTE: The full source of the application is available https://github.com/julien-sobczak/anki-scripting/tree/master/anki-vocabulary-assistant[here].
+NOTE: The full source of the application is available [here](https://github.com/julien-sobczak/anki-scripting/tree/master/anki-vocabulary-assistant).
 
 
 #### The Importer
@@ -3414,7 +3414,7 @@ And the back template:
 {{/Image}}
 ```
 
-Check the https://ankisrs.net/docs/manual.html#conditional-replacement[official Anki manual] to know more about the syntax used in these templates.
+Check the [official Anki manual](https://ankisrs.net/docs/manual.html#conditional-replacement) to know more about the syntax used in these templates.
 
 
 ##### What is it?
@@ -3516,7 +3516,7 @@ And the back template:
 
 ##### Complete this sentence...
 
-The `Card 4`, `Card 5`, and `Card 6` display a sentence with a missing word and the user should find it (the same concept as https://ankisrs.net/docs/manual.html#cloze[Cloze Deletion] in Anki):
+The `Card 4`, `Card 5`, and `Card 6` display a sentence with a missing word and the user should find it (the same concept as [Cloze Deletion](https://ankisrs.net/docs/manual.html#cloze) in Anki):
 
 <img src="/posts_resources/2016-12-26-anki-scripting/vocabulary-note-card4.png" />
 
@@ -3993,5 +3993,5 @@ Congratulations! We finally comes to the end of this lengthy post. We have seen 
 - The Anki underlying model is partially documented. Use this post as a reference to determine the role of each field or property.
 - Creating flashcards manually is the recommended way to start learning but when it comes to creating hundreds or thousand of flashcards, using a small program could be welcome.
 - Creating a flashcard programmatically is relatively easy. The most difficult part is extracting the information you want to add (book, website, ...)
-- Basic programming competency is necessary to get started. The good news is that Python is the most used language in the world to introduce new people to programming. You could find many resource online (MOOC, tutorial, ebook, blog) to get started. https://www.khanacademy.org/[Khan Academy] is a good start.
+- Basic programming competency is necessary to get started. The good news is that Python is the most used language in the world to introduce new people to programming. You could find many resource online (MOOC, tutorial, ebook, blog) to get started. [Khan Academy](https://www.khanacademy.org/) is a good start.
 </Admonition>

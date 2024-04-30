@@ -6,7 +6,7 @@ date: 2015-03-03
 subject: "Reveal.js"
 tags: ['web']
 unofficialTags: ['javascript']
-done: false
+done: true
 ---
 import Admonition from '../../components/Admonition.astro'
 import Marker from '../../components/Marker.astro'
@@ -14,16 +14,18 @@ import Lead from '../../components/Lead.astro'
 
 
 <Admonition type="caution" className="license">
-You are reading a translation of an [old blog post](https://julien-sobczak.github.io/blog-fr/inspect/2015/03/03/revealjs-revealed.html) published on my previous blog in French.
+  You are reading a translation of an [old blog post](https://julien-sobczak.github.io/blog-fr/inspect/2015/03/03/revealjs-revealed.html) published on my previous blog in French.
 </Admonition>
 
 
 <Lead>
-No more boring slides with [Reveal.js](http://lab.hakim.se/reveal-js/#/). How does this library based on HTML5 and CSS3 technologies challenge the existence of PowerPoint? We will find out by rewriting from scratch a minimal version.
+  No more boring slides with [Reveal.js](http://lab.hakim.se/reveal-js/#/). How does this library based on HTML5 and CSS3 technologies challenge the existence of PowerPoint? We will find out by rewriting from scratch a minimal version.
 </Lead>
 
 
-[Reveal.js](https://github.com/hakimel/reveal.js/) is published under an [OpenSource license](https://github.com/hakimel/reveal.js/blob/master/LICENSE). The code presented in this article has been simplified for obvious reasons and must not be used outside this learning context. This article is based on the latest version at the moment of publication.
+<Admonition type="caution" className="license">
+  [Reveal.js](https://github.com/hakimel/reveal.js/) is published under an [OpenSource license](https://github.com/hakimel/reveal.js/blob/master/LICENSE). The code presented in this article has been simplified for obvious reasons and must not be used outside this learning context. This article is based on the latest version at the moment of publication.
+</Admonition>
 
 
 ## A First Example
@@ -111,7 +113,7 @@ Reveal.js is far more powerful than what this simple presentation suggests. The 
 
 The initialization of Reveal starts with the method `Reveal.initialize()`. Here is the skeleton of our implementation defined in a file `reveal.lite.js`:
 
-```javascript {'1':7} {'2':12} {'2':13} {'3':25}
+```javascript {'1':7} {'2':12-13} {'3':25}
 var Reveal;
 
 (function() {
@@ -197,7 +199,7 @@ html, body {
 
 The page now looks like this:
 
-<img src="/posts_resources/2015-03-03-revealjs-revealed/layout.png" width="90" />
+<img src="/posts_resources/2015-03-03-revealjs-revealed/layout.png" width="90%" />
 
 The parent tag with the CSS class `.reveal` (called `wrapper` in the code) is positioned to use all available space on the screen. This allows slides inside this wrapper to occupy the screen. Note that the relative position will be useful to position slides using absolute values when defining CSS animations.
 
@@ -222,7 +224,6 @@ function slide( h, v ) {
     indexv = updateSlides( VERTICAL_SLIDES_SELECTOR, v === undefined ? indexv : v );
 
     layout();
-
 }
 ```
 
@@ -291,7 +292,7 @@ This is the first method with a lot of implementation details. The code logic is
 
 The value returned by this method `updateSlides` is the new index used to adjust the previous variables `indexh` and `indexv` in the method `slide`.
 
-<Admonition type="tip" className="None" title="Zoom on `element.classList`">
+<Admonition type="tip" className="None" title="Zoom on <code>element.classList</code>">
 Supported by modern browsers, [the property `classList`](https://developer.mozilla.org/fr/docs/Web/API/Element/classList) defined in the [’object `Element`](https://developer.mozilla.org/fr/docs/Web/API/Element) offers the same convenience as the jQuery API. We no longer need to parse the [attribute `className`](https://developer.mozilla.org/fr/docs/Web/API/Element/className) to add or remove CSS classes, as the interface [`DOMTokenList`](https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList) defines methods like `add`, `remove`, `toggle`, ...
 </Admonition>
 
@@ -343,7 +344,7 @@ function layout() {
 
 Let's modify the method `slide` to use this new method:
 
-```javascript showLineNumbers highlight='7'
+```javascript {7}
 function slide( h, v ) {
 
     // Activate and transition to the new slide
@@ -356,7 +357,7 @@ function slide( h, v ) {
 
 The result is immediately more satisfactory. The slides resize to match the window size, except if you are trying to resize the browser window. This is easy to fix by reusing the method `layout` and listening for this event:
 
-```javascript showLineNumbers highlight='8'
+```javascript {8}
 function initialize() {
 
     // Cache references to elements
@@ -382,7 +383,7 @@ function onWindowResize( event ) {
 
 For now, only the first slide is displayed. Using the directional keys, we will allow the user to change the current slide. We start by listening for events of type `keydown`. We also take the opportunity to refactor the method `initialize`:
 
-```javascript showLineNumbers highlight='34'
+```javascript {34}
 /**
  * Starts up the presentation.
  */
@@ -425,7 +426,7 @@ function addEventListeners() {
 The handler uses standard codes to determine the direction to follow in the presentation:
 
 
-```javascript {'1':19} {'1':20} {'1':21} {'1':22}
+```javascript {'1':19-22}
 /**
  * Handler for the document level 'keydown' event.
  */
@@ -444,20 +445,20 @@ function onDocumentKeyDown( event ) {
 
 }
 
-function navigateLeft()  { slide( indexh - 1 );         } // <1>
-function navigateRight() { slide( indexh + 1 );         } // <1>
-function navigateUp()    { slide( indexh, indexv - 1 ); } // <1>
-function navigateDown()  { slide( indexh, indexv + 1 ); } // <1>
+function navigateLeft()  { slide( indexh - 1 );         }
+function navigateRight() { slide( indexh + 1 );         }
+function navigateUp()    { slide( indexh, indexv - 1 ); }
+function navigateDown()  { slide( indexh, indexv + 1 ); }
 ```
 
 <dl className="markers">
-  <dt>Marker number={1} /></dt>
+  <dt><Marker number={1} /></dt>
   <dd>We use the two variables `indexh` and `indexv` to determine our current position, before calling the method `slide` to move in the right direction.</dd>
 </dl>
 
 The navigation is now operational but the code does not block the user from moving beyond the last slide. Using CSS selectors, we will determine the maximum number of slides and compare with our current position to determine if the move is possible:
 
-```javascript showLineNumbers highlight='24,32,40,48'
+```javascript {24,32,40,48}
 /**
  * Determine what available routes there are for navigation.
  *
@@ -552,7 +553,7 @@ When using this effect, the previous slide disappears on the left while the next
 
 Here are the CSS declarations to support this effect:
 
-```css {'1':2} {'2':5} {'2':8} {'2':11} {'2':14}
+```css {'1':2} {'2':5,8,11,14}
 .reveal.slide section {
   transition: all 800ms ease-in-out; } // <1>
 
@@ -612,7 +613,7 @@ The CSS declarations is slightly more advanced but only a few lines are required
 ```
 
 
-<Admonition type="tip" className="None" title="Zoom on function `cubier-bezier`">
+<Admonition type="tip" className="None" title="Zoom on function <code>cubier-bezier</code>">
 The CSS property `transition` supports what is called a [timing function](https://developer.mozilla.org/fr/docs/Web/CSS/timing-function) (or easing function). Several functions are predefined (`linear`, `ease-in`, …). Using the function `cubic-bezier`, we can define new custom functions using, as its name suggests, a [Bezier curve](http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier), well-known to users of Adobe Illustrator. Bezier curves are not adapted in every context but they are very flexible and easy to use.
 
 The website [cubic-bezier.com](http://lea.verou.me/2011/09/a-better-tool-for-cubic-bezier-easing/) allows you to [create visually your curve](http://cubic-bezier.com/#.26,.86,.44,.98) and generates the corresponding CSS code. This site is the work of Lea Verou, to whom we also owe the projects [-prefix-free](/inspect/2014-11-06-prefix-free-from-scratch) and [prism](/inspect/2014-11-25-prism-from-scratch).
@@ -634,7 +635,7 @@ The solution relies on the URL fragment (the optional hash value following the c
 
 In JavaScript, we need to listen for changes using the event `hashchange`, and extract the value to delegates to the method `slide` to move to the destination:
 
-```javascript showLineNumbers highlight='6,28'
+```javascript {6,28}
 /**
  * Binds all event listeners.
  */
@@ -689,7 +690,7 @@ function initialize() {
 ```
 
 <dl className="markers">
-  <dt>Marker number={1} /></dt>
+  <dt><Marker number={1} /></dt>
   <dd>The method `slide` is wrapped inside a new method `readURL`. If no hash is present, we simply display the first slide as before.</dd>
 </dl>
 

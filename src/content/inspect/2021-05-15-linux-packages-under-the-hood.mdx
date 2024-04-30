@@ -138,7 +138,7 @@ $ apt install packaging-tutorial
 # Check /usr/share/doc/packaging-tutorial/packaging-tutorial.pdf
 ```
 
-<Admonition type="note" title="What You Need to Know About the Command `dpkg`">
+<Admonition type="note" title="What You Need to Know About the Command <code>dpkg</code>">
 <a name="wynk-dpkg"></a>The project Dpkg started in 1994, at the same time the Debian package format was created, and thus the command `dpkg` works only with `.deb` binary archives. You must provide the archive as the command does not know how to retrieve it by itself. The command manages a database stored under `/var/lib/dpkg` to keep note of everything that is installed on the server, which is essential to determine what to clean when you remove a package.
 
 Note that the command `dpkg --build` redirects to the command `dpkg-deb --build` and the command `dpkg --list` redirects to the command `dpkg-query --list`. The code of these commands is present in the same repository in `./dpkg-deb/` and `./src/querycmd.c` respectively.
@@ -1789,7 +1789,7 @@ bash: /usr/bin/hello: No such file or directory
 
 The main reason to use `apt` is for the dependency management support. This command understands that in order to install a given package, other packages may need to be installed too, and `apt` can download and install them. In practice, `dpkg` is called a package manager and `apt` is called a frontend package manager.
 
-<Admonition type="note" title="What You Need to Know About `apt`, `apt-get`, `aptitude`">
+<Admonition type="note" title="What You Need to Know About <code>apt</code>, <code>apt-get</code>, <code>aptitude</code>">
 <a name="wynk-apt-get-aptitude"></a>APT is a vast project started in 1997 organized around a core library. The command `apt-get` was the first frontend developed within the project, and `apt` is the second command provided by APT, which overcomes some design mistakes of `apt-get`, for example,  `apt` refuses to install dependencies that were not installed beforehand during an upgrade. Under the hood, both tools are built on top of the core library and are thus very close.
 
 External projects like `aptitude` have been developed later to support new features like auto-removing of packages when they are no longer required, but most of these features are now available in `apt` too.
@@ -1978,7 +1978,7 @@ if (_config->FindB("pkgCacheFile::Generate", true) == false) {}
 int const Limit = _config->FindI("Acquire::QueueHost::Limit",DEFAULT_HOST_LIMIT)
 ----
 
-_Further documentation_: link:https://www.commandlinux.com/man-page/man5/apt.conf.5.html[man page]
+_Further documentation_: link:[man page](https://www.commandlinux.com/man-page/man5/apt.conf.5.html)
 ```
 
 
@@ -2417,7 +2417,7 @@ if (Cache.BuildCaches(false) == false)
    return false;
 ```
 
-<Admonition type="note" title="What You Need to Know About `/var/cache/apt/`">
+<Admonition type="note" title="What You Need to Know About <code>/var/cache/apt/</code>">
 <a name="wynk-dir-apt-cache"></a>This directory stores the latest version of the APT cache, used to speed up the execution of most commands:
 
 ```sh
@@ -2450,7 +2450,7 @@ APT is highly configurable and there are several options to clean the cache regu
 </Admonition>
 
 
-<Admonition type="note" title="What You Need to Know About `/var/lib/apt/`">
+<Admonition type="note" title="What You Need to Know About <code>/var/lib/apt/</code>">
 <a name="wynk-dir-apt-lib"></a>This directory stores the current state of APT, that is which packages have been installed, what is the latest version of retrieved index files used when updating the cache, etc.
 
 ```sh

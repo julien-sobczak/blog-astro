@@ -75,7 +75,7 @@ Is that the only problem with floating-point numbers? Of course, not!
 
 Computers are physical devices, with hardware limitations. Our disk and memory are limited, and thus, even the biggest machine will never be able to store the largest number (integer or floating-point number).
 
-Moreover, the processor acts as the computer brain. It supports a specific list of https://en.wikipedia.org/wiki/Instruction_set_architecture[instructions] (e.g., `ADD`, `DIVIDE`, `LOAD`), which operates on fixed length operands (e.g., 32 bits, 64 bits). What this means is you can ask your processor to add two numbers as long as these numbers does not exceed a predefined size limit. If you want to add larger numbers, you have to use software code, but this considerably slows down the process. So, in practice, programming languages often add abstractions for large numbers, but for performance and implementation concerns, the basic types follows these underlying restrictions imposed by the computer hardware.
+Moreover, the processor acts as the computer brain. It supports a specific list of [instructions](https://en.wikipedia.org/wiki/Instruction_set_architecture) (e.g., `ADD`, `DIVIDE`, `LOAD`), which operates on fixed length operands (e.g., 32 bits, 64 bits). What this means is you can ask your processor to add two numbers as long as these numbers does not exceed a predefined size limit. If you want to add larger numbers, you have to use software code, but this considerably slows down the process. So, in practice, programming languages often add abstractions for large numbers, but for performance and implementation concerns, the basic types follows these underlying restrictions imposed by the computer hardware.
 
 What it means for floating-point numbers to be limited in size?
 
@@ -113,7 +113,7 @@ Here is the approximate mass of a neutron in grams (1.675 * 10^-24^ g):
 
 Problem. No significant digits are included... Completely useless too.
 
-Clearly, we need a better solution to satisfy both the astronomer and the chemist, to store large and small floating-point numbers using as few digits as allowed by the machine. The solution is called https://en.wikipedia.org/wiki/Decimal_floating_point[Decimal floating point] where a number is represented by a fixed number of significant digits (the significand) and scaled using an exponent in some fixed base. An example:
+Clearly, we need a better solution to satisfy both the astronomer and the chemist, to store large and small floating-point numbers using as few digits as allowed by the machine. The solution is called [Decimal floating point](https://en.wikipedia.org/wiki/Decimal_floating_point) where a number is represented by a fixed number of significant digits (the significand) and scaled using an exponent in some fixed base. An example:
 
 <img src="/posts_resources/2019-03-10-floating-point-numbers-demystified/decimal-floating-point.png" width="450" />
 
@@ -192,7 +192,7 @@ func main() {
 }
 ```
 
-(https://play.golang.org/p/ioznRYQVpWO[_Try it by yourself_])
+([_Try it by yourself_](https://play.golang.org/p/ioznRYQVpWO))
 
 So, `01000000010010010000111111011011` is the final answer. Great, welcome to the binary system again!
 
@@ -225,7 +225,7 @@ Even if we don't know the number &pi; by heart, it's definitely wrong. To explai
 
 First, the standard defines an exponent bias (127 for single precision) that is added to the real exponent value. That means we need to subtract this value (128 - 127 = 1 on the previous example) to get the real exponent value.
 
-The https://en.wikipedia.org/wiki/Exponent_bias[exponent bias] is just an optimization when comparing exponents in hardware. To understand the motivations, the exponent can be positive or negative to represent both tiny and huge values, but the usual representation for signed values in computers is to add a leading bit for the sign (0 and 1 for positive and negative values). This leading bit would make the comparison harder. So, by shifting the value by 127, all values become positive (0 now means -127, 1 means -126, … 128 means 1, 255 means 128). You may safely forget the details, but remember to subtract the bias!
+The [exponent bias](https://en.wikipedia.org/wiki/Exponent_bias) is just an optimization when comparing exponents in hardware. To understand the motivations, the exponent can be positive or negative to represent both tiny and huge values, but the usual representation for signed values in computers is to add a leading bit for the sign (0 and 1 for positive and negative values). This leading bit would make the comparison harder. So, by shifting the value by 127, all values become positive (0 now means -127, 1 means -126, … 128 means 1, 255 means 128). You may safely forget the details, but remember to subtract the bias!
 
 Let's try to revise our previous calculation:
 
@@ -311,7 +311,7 @@ func main() {
 }
 ```
 
-When running this program (https://play.golang.org/p/$$_$$XL4UB8jYxu[_Try it by yourself_]):
+When running this program ([_Try it by yourself_](https://play.golang.org/p/$$_$$XL4UB8jYxu)):
 
 ```
 ```
@@ -526,7 +526,7 @@ func main() {
 }
 ```
 
-The program prints `Equals` (https://play.golang.org/p/YsW2u9zrmjM[_Try it by yourself_]).
+The program prints `Equals` ([_Try it by yourself_](https://play.golang.org/p/YsW2u9zrmjM)).
 
 ##### Bonus
 
@@ -909,7 +909,7 @@ If the first bit of the trailing significand is `0`, we have a **quiet NaN** (`q
 <Admonition type="note" className="None" title="Why so many representations for NaNs?">
 **The quiet/signaling distinction imposes only two representations** (`1 11111111 00000000000000000000001` and `1 11111111 10000000000000000000000` are sufficient). The standard doesn't explicit what can be done with all of these additional representations. These remaining bits are called the payload and can be use to provide context about the origin of the error. But this isn't the only known use.
 
-A known technique, called **NaN-boxing**, is implemented by some interpreters like JavaScriptCore, to **pack other types such as pointers (48-bits) or integers (32-bit) inside the space left by NaNs in double precisions** (where the significand represents 52 bits). As a variable can be of any type, the interpreter uses only double precision floating-points to store everything. If it's a floating-point, it uses the usual IEEE 754 representation. If it's another type, it uses the available 51-bits for ``NaN``s to store any value (a pointer address, an integer, etc). If you want to know more about this hack, you can start looking at this https://anniecherkaev.com/the-secret-life-of-nan[great article].
+A known technique, called **NaN-boxing**, is implemented by some interpreters like JavaScriptCore, to **pack other types such as pointers (48-bits) or integers (32-bit) inside the space left by NaNs in double precisions** (where the significand represents 52 bits). As a variable can be of any type, the interpreter uses only double precision floating-points to store everything. If it's a floating-point, it uses the usual IEEE 754 representation. If it's another type, it uses the available 51-bits for ``NaN``s to store any value (a pointer address, an integer, etc). If you want to know more about this hack, you can start looking at this [great article](https://anniecherkaev.com/the-secret-life-of-nan).
 
 <img src="/posts_resources/2019-03-10-floating-point-numbers-demystified/nan-boxing.png" title="NaN-Boxing" width="650" />
 </Admonition>
@@ -922,7 +922,7 @@ We have also learned that **floating-point arithmetic may result in exceptions**
 </Admonition>
 
 
-When I started writing this article, I was not prepared to go so far on the subject. We covered a large scope of the standard. If you decide to pore over it, you will see we have introduced almost every detail. We didn't talk about the hardware implementation, or how software uses the processor instructions, but they are very low-level details, and they aren't part of the standard anyway. I think we should stop here, and digest everything we have learned. If you want to know more about the subject, you may try this https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html[detailled article], or why not read a https://www.springer.com/us/book/9780817647056[full book] on the subject!
+When I started writing this article, I was not prepared to go so far on the subject. We covered a large scope of the standard. If you decide to pore over it, you will see we have introduced almost every detail. We didn't talk about the hardware implementation, or how software uses the processor instructions, but they are very low-level details, and they aren't part of the standard anyway. I think we should stop here, and digest everything we have learned. If you want to know more about the subject, you may try this [detailled article](https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html), or why not read a [full book](https://www.springer.com/us/book/9780817647056) on the subject!
 
 
 ## Conclusion

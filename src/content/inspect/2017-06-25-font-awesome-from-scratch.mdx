@@ -13,12 +13,12 @@ import Marker from '../../components/Marker.astro'
 import Lead from '../../components/Lead.astro'
 
 
-https://github.com/FortAwesome/Font-Awesome[Font Awesome] is published under the https://github.com/FortAwesome/Font-Awesome#license[SIL OFL 1.1 license]. The code presented in this post was simplified (completeness, robustness, etc.) and should not be used outside of this context. This post is based on the version 4.7.0 of Font Awesome.
+[Font Awesome](https://github.com/FortAwesome/Font-Awesome) is published under the [SIL OFL 1.1 license](https://github.com/FortAwesome/Font-Awesome#license). The code presented in this post was simplified (completeness, robustness, etc.) and should not be used outside of this context. This post is based on the version 4.7.0 of Font Awesome.
 
 
 ## A basic example
 
-https://fontawesome.io/[Font Awesome], the iconic font and CSS toolkit, gives us icons that can be easily customized — size, color, drop shadow — with the sole power of CSS. No JavaScript is required and icons scale smoothly on any devices. Here is a small HTML document that uses the main features to display of list of transportation icons:
+[Font Awesome](https://fontawesome.io/), the iconic font and CSS toolkit, gives us icons that can be easily customized — size, color, drop shadow — with the sole power of CSS. No JavaScript is required and icons scale smoothly on any devices. Here is a small HTML document that uses the main features to display of list of transportation icons:
 
 ```html {'1':6} {'2':10}
 <!doctype html>
@@ -59,7 +59,7 @@ Having this working example, we will now turn our attention to the inner working
 ## A first look under the hood
 
 
-As the name might suggest, _Font Awesome_ is nothing more than a new font. But unlike other fonts, _Font Awesome_ does not bother to design a new face for the letter '`A`' or other common characters and exploit a subtlety of the https://unicode-table.com/en/[Unicode Character Table] to add new symbols:
+As the name might suggest, _Font Awesome_ is nothing more than a new font. But unlike other fonts, _Font Awesome_ does not bother to design a new face for the letter '`A`' or other common characters and exploit a subtlety of the [Unicode Character Table](https://unicode-table.com/en/) to add new symbols:
 
 > In Unicode, the Private Use Areas (PUA) are three ranges of code points (U+E000–U+F8FF in the BMP, and in planes 15 and 16) that, by definition, will not be assigned characters by the Unicode Consortium. The code points in these areas cannot be considered as standardized characters in Unicode itself. They are intentionally left undefined so that third parties may define their own characters without conflicting with Unicode Consortium assignments.
 >
@@ -82,7 +82,7 @@ i.fa-car {
 
 But there are many disadvantages to this solution. First, each icon requires a new file to download. CSS sprites could be used to avoid that. Second, bitmap images (jpeg, png, etc.) are not scalable. If we need to include the same picture with different sizes, we need several different files. This workaround, however, lengthen the load time of the page. _Font Awesome_ solve these problems with an elegant solution based on the CSS `content` property.
 
-The https://developer.mozilla.org/en-US/docs/Web/CSS/content[`content` CSS property] is used with the `::before` and `::after` pseudo-elements to generate content in an element. This could be a raw text, an url, a quote character, or even an incremental counter. Here is an example from the Mozilla documentation:
+The [`content` CSS property](https://developer.mozilla.org/en-US/docs/Web/CSS/content) is used with the `::before` and `::after` pseudo-elements to generate content in an element. This could be a raw text, an url, a quote character, or even an incremental counter. Here is an example from the Mozilla documentation:
 
 ```html
 <h1>5</h1>
@@ -158,7 +158,7 @@ As mentioned previously the character `f1b9` is present in the special range res
 
 
 <Admonition type="caution" className="license" title="EOT, TTF, WOFF, SVG, WOFF2...">
-Despite the huge variety of formats, there isn’t a single one that works in all browsers. This is why _Font-Awesome_ have to make use of multiple font formats. If you want to know more, the blog post https://creativemarket.com/blog/the-missing-guide-to-font-formats["The Missing Guide to Font Formats"] gives a brief overview of the origin and objectives of each format.
+Despite the huge variety of formats, there isn’t a single one that works in all browsers. This is why _Font-Awesome_ have to make use of multiple font formats. If you want to know more, the blog post ["The Missing Guide to Font Formats"](https://creativemarket.com/blog/the-missing-guide-to-font-formats) gives a brief overview of the origin and objectives of each format.
 </Admonition>
 
 
@@ -193,7 +193,7 @@ If we want to go deeper into _Font Awesome_, we need to go further on the subjec
 
 ### Basics
 
-To begin, we will open the provided font with the same tool used by the team _Font Awesome_, http://fontforge.github.io/[FontForge]. To install, check the http://fontforge.github.io/en-US/downloads/gnulinux-dl/[official documentation]. On Ubuntu/Debian, run the following commands:
+To begin, we will open the provided font with the same tool used by the team _Font Awesome_, [FontForge](http://fontforge.github.io/). To install, check the [official documentation](http://fontforge.github.io/en-US/downloads/gnulinux-dl/). On Ubuntu/Debian, run the following commands:
 
 ```
 sudo add-apt-repository ppa:fontforge/fontforge;
@@ -214,7 +214,7 @@ If we scroll to the bottom of the list, we finally found the _Font Awesome_ icon
 
 ### A new font
 
-Designing a new type is visually complex as well as highly technical. Even if it is easier to begin making type when using free tools like _FontForge_, the tasks remains challenging. Just have a look at the extensive http://designwithfontforge.com/en-US/index.html[_FontForge_ documentation] to make your own opinion.  In this blog post, we will use a shortcoming. _FontForge_ lets users who may be more comfortable designing their glyph outlines in some other vector design program (Illustrator, FreeHand, Inkscape, etc.), import them directly into _FontForge_. We are even taking it a step further: we will directly import a SVG file downloaded from the Internet. So, open your browser, go to Google Images, and enter `filetype:svg <some keywords>`. Download a picture of your choice. I choose the logo of the Haskell language <img src="/posts_resources/2017-06-25-font-awesome/haskell.svg" width="20" height="30" />.
+Designing a new type is visually complex as well as highly technical. Even if it is easier to begin making type when using free tools like _FontForge_, the tasks remains challenging. Just have a look at the extensive [_FontForge_ documentation](http://designwithfontforge.com/en-US/index.html) to make your own opinion.  In this blog post, we will use a shortcoming. _FontForge_ lets users who may be more comfortable designing their glyph outlines in some other vector design program (Illustrator, FreeHand, Inkscape, etc.), import them directly into _FontForge_. We are even taking it a step further: we will directly import a SVG file downloaded from the Internet. So, open your browser, go to Google Images, and enter `filetype:svg <some keywords>`. Download a picture of your choice. I choose the logo of the Haskell language <img src="/posts_resources/2017-06-25-font-awesome/haskell.svg" width="20" height="30" />.
 
 Then,
 
