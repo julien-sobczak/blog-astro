@@ -344,7 +344,6 @@ Whose definition follows:
 
 - Field `models` contains the JSON representation of a ModelManager (`anki/models.py`):
 
-{% raw %}
 ```json
 {
    "1355577990691": {
@@ -442,7 +441,6 @@ Whose definition follows:
    }
 }
 ```
-{% endraw %}
 
 Whose definition follows:
 
@@ -1348,7 +1346,6 @@ cards[cid] = {
 
 We could now redesign our HTML template to integrate the new layout:
 
-{% raw %}
 ```python
 html = """<!doctype html>
 <html lang="fr" ng-app="ankiApp">
@@ -1392,7 +1389,6 @@ angular.module('ankiApp', [])
 </body>
 </html>""" % (card_list)
 ```
-{% endraw %}
 
 We iterate over the JSON array containing the cards we just created. When the user clicks on a card title, the method `select` defined in the controller is called. This method stores the selected card in the model. AngularJS refreshes our page and the iframe is updated with the content of the selected flashcard. Last thing to notice, we only display the flashcards matching the query entered by the user in the search field.
 
@@ -1474,7 +1470,6 @@ This ends our first case study. We have seen how to exploit the Anki API to retr
 
 Here is the full listing of the code:
 
-{% raw %}
 ```python
 import sys, os, codecs, re, shutil
 sys.path.append("..")
@@ -1701,7 +1696,6 @@ index_file = codecs.open(os.path.join(OUTPUT_DIRECTORY, index_filename), \
 index_file.write(html)
 index_file.close()
 ```
-{% endraw %}
 
 
 
@@ -2389,7 +2383,6 @@ The downloaded file contains every dictionary written in the english language (E
 
 Here is a preview of its content:
 
-{% raw %}
 ```xml
 <mediawiki xmlns="http://www.mediawiki.org/xml/export-0.10/"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -2457,7 +2450,6 @@ is labelled &quot;fat '''free'''&quot;, meaning it contains no fat]]
 <!-- Million of pages... -->
 </mediawiki>
 ```
-{% endraw %}
 
 When parsing such a large file, we should be careful and not load the full file in memory. A solution is to use a SAX Parser. But unlike a DOM parser, it is not possible to simply traverse the XML document to extract the relevant information. SAX Parsers are event-driven. We need to listen to each new tag, each character text, and so on. We also need to remember our position inside the file to answer question such as "Does the text correspond to the title tag?".
 
@@ -2574,7 +2566,6 @@ if __name__ == "__main__":
 
 When running the program, a new file `enwiktionary-frequency.xml` appears in the current folder. Here is an excerpt of its content:
 
-{% raw %}
 ```xml
 <dictionary>
   <entry>
@@ -2621,7 +2612,6 @@ usage, translations, and other data.
 
 ===Etymology===
 ```
-{% endraw %}
 
 This file could quickly be parsed (10s on my local machine). The next step is to parse the value of the `text` tag to extract all relevant information.
 
@@ -2631,7 +2621,6 @@ The `<text>` tag contains a x-wiki document whose main syntax is defined https:/
 
 Here is an shortened example of a x-wiki document (about the word `keyboard`):
 
-{% raw %}
 ```
 ==English== // <1>
 {{wikipedia|dab=keyboard|lang=en}}
@@ -2709,7 +2698,6 @@ from the keyboard device.
 ====Synonyms====
 * {{sense|computing}} {{l|nl|toetsenbord}}
 ```
-{% endraw %}
 
 <dl className="markers">
   <dt><Marker number={1} /></dt>
@@ -2719,7 +2707,7 @@ from the keyboard device.
   <dd>A given word could be used as a noun, a verb, etc. We need to extract the definition for each type while keeping note of the type.</dd>
 
   <dt><Marker number={3} /></dt>
-  <dd>Label syntax such as {% raw %}{{t+|fr|clavier|m}}{% endraw %} is used exhaustively inside the wiki text. Most of the content is present inside these labels but the syntax is not easily parseable.</dd>
+  <dd>Label syntax such as <code>{{t+|fr|clavier|m}}</code> is used exhaustively inside the wiki text. Most of the content is present inside these labels but the syntax is not easily parseable.</dd>
 
   <dt><Marker number={4} /></dt>
   <dd>There are many translation blocks. Often, the first one is the only translation we are interested.</dd>
@@ -2731,7 +2719,6 @@ On this example, the definitions are easily parseable but not all the words are 
 
 Here the same content as x-wiki:
 
-{% raw %}
 ```
 {{en-noun}}
 
@@ -2750,7 +2737,6 @@ would move society away from the ever more expensive}}
 unit in a [[railroad]] train.
 #: ''The conductor coupled the '''cars''' to the locomotive.''
 ```
-{% endraw %}
 
 <dl className="markers">
   <dt><Marker number={1} /></dt>
@@ -3381,17 +3367,15 @@ The `Card 1` displays the English word:
 
 Where the front template is defined like this:
 
-{% raw %}
-[source,subs="verbatim"]
 ```
+{{Word}}
 ```
-{% endraw %}
 
 And the back template:
 
-{% raw %}
-[source,subs="verbatim"]
+
 ```
+{{FrontSide}}
 
 <hr id=answer>
 
@@ -3429,7 +3413,6 @@ And the back template:
 {{Image}}
 {{/Image}}
 ```
-{% endraw %}
 
 Check the https://ankisrs.net/docs/manual.html#conditional-replacement[official Anki manual] to know more about the syntax used in these templates.
 
@@ -3442,13 +3425,11 @@ The `Card 2` displays the picture associated the word:
 
 Where the front template is defined like this:
 
-{% raw %}
-[source,subs="verbatim"]
-```
+``` {"1": 1}
+{{#HasImageCard}}
 {{Image}}
 {{/HasImageCard}}
 ```
-{% endraw %}
 
 <dl className="markers">
   <dt><Marker number={1} /></dt>
@@ -3457,9 +3438,8 @@ Where the front template is defined like this:
 
 And the back template:
 
-{% raw %}
-[source,subs="verbatim"]
 ```
+{{FrontSide}}
 
 <hr id=answer>
 
@@ -3491,7 +3471,6 @@ And the back template:
 </div>
 {{/Synonyms}}
 ```
-{% endraw %}
 
 
 ##### What is the translation?
@@ -3502,19 +3481,16 @@ The `Card 3` displays the translation of the word:
 
 Where the front template is defined like this:
 
-{% raw %}
-[source,subs="verbatim"]
 ```
+{{#HasTranslationCard}}
 {{Translation}}
 {{/HasTranslationCard}}
 ```
-{% endraw %}
 
 And the back template:
 
-{% raw %}
-[source,subs="verbatim"]
 ```
+{{FrontSide}}
 
 <hr id=answer>
 
@@ -3536,7 +3512,6 @@ And the back template:
 {{Image}}
 {{/Image}}
 ```
-{% endraw %}
 
 
 ##### Complete this sentence...
@@ -3547,13 +3522,11 @@ The `Card 4`, `Card 5`, and `Card 6` display a sentence with a missing word and 
 
 Where the front template is defined like this:
 
-{% raw %}
-[source,subs="verbatim"]
-```
+``` {'1':1}
+{{#SampleA}}
 <small>Complete</small> {{SampleA}}
 {{/SampleA}}
 ```
-{% endraw %}
 
 <dl className="markers">
   <dt><Marker number={1} /></dt>
@@ -3562,9 +3535,8 @@ Where the front template is defined like this:
 
 And the back template:
 
-{% raw %}
-[source,subs="verbatim"]
-```
+``` {'1': 13}
+{{FrontSide}}
 
 <hr id=answer>
 
@@ -3576,10 +3548,9 @@ And the back template:
 <br>
 
 <div class="answer">
-{{AnswerA}} // <1>
+{{AnswerA}}
 </div>
 ```
-{% endraw %}
 
 <dl className="markers">
   <dt><Marker number={1} /></dt>
@@ -3594,19 +3565,16 @@ The `Card 7` displays a list of definitions:
 
 Where the front template is defined like this:
 
-{% raw %}
-[source,subs="verbatim"]
 ```
+{{#HasDefinitionsCard}}
 {{DefinitionsOnly}}
 {{/HasDefinitionsCard}}
 ```
-{% endraw %}
 
 And the back template:
 
-{% raw %}
-[source,subs="verbatim"]
 ```
+{{FrontSide}}
 
 <hr id=answer>
 
@@ -3621,7 +3589,6 @@ And the back template:
 {{DefinitionsWithSamples}}
 </div>
 ```
-{% endraw %}
 
 And finally, the CSS used to stylize the cards:
 
