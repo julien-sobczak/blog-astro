@@ -13,7 +13,7 @@ import Lead from '../../components/Lead.astro'
 
 > Nothing brings fear to my heart more than a floating point number.
 >
-> -- <cite>Gerald Jay Sussman,MIT Professor, coauthor of the seminal book _Structure and Interpretation of Computer Programs_</cite>
+> -- <cite>Gerald Jay Sussman, MIT Professor, coauthor of the seminal book _Structure and Interpretation of Computer Programs_</cite>
 
 <Lead>
 In this post, I tried to debunk common myths about floating-point numbers by explaining their subtleties, introducing each of them by showing the problem they are solving. This is a long blog post. To write it, I read several dozen articles on the subject, often shorter, but none answered all my questions. I hope it will answer yours.
@@ -83,9 +83,9 @@ In short, a maximum size limits the numbers that we may fit inside. To measure t
 
 Let's try to put the number &pi; into a fixed floating-point number:
 
-[subs="quotes"]
-```
-| **3.141592653** | 5897932384626433832795028841971...
+```ansi
++-------------+ size limit
+| [1m3.141592653[0m | 5897932384626433832795028841971...
 +-------------+
 ```
 
@@ -95,19 +95,19 @@ The number &pi; is a fascinating number but there are many other floating-point 
 
 Here is the approximate distance to Mars in millimeters:
 
-[subs="quotes"]
-```
-| **54624378953** | 679.68543445...
+```ansi
++-------------+ size limit
+| [1m54624378953[0m | 679.68543445...
 +-------------+
 ```
 
 Problem. The floating point is not even included, so the number is meaningless.
 
-Here is the approximate mass of a neutron in grams (1.675 * 10^-24^ g):
+Here is the approximate mass of a neutron in grams (1.675 * 10<sup>-24</sup> g):
 
-[subs="quotes"]
-```
-| **0.000000000** | 000000000000001675
+```ansi
++-------------+ size limit
+| [1m0.000000000[0m | 000000000000001675
 +-------------+
 ```
 
@@ -712,7 +712,9 @@ This example demonstrates we can lose precision during the operation (one bit wa
 >>> 0.29999998211860657
 ```
 
-NOTE: The result differs slightly from what Python printed if we execute `0.1 + 0.2` (the result is `0.30000000000000004`). There are two reasons to explain this difference. First, **IEEE 754 defines rounding modes** instead of just truncating the numbers like we did. The actual significand is `00110011001100110011010`, and the actual value is `0.30000001192092896`. Second, **Python don't use single precision but only double precision**. This doesn't solve the problem. We still have the same rounding errors but with greater precision (see below).
+<Admonition type="note">
+  The result differs slightly from what Python printed if we execute `0.1 + 0.2` (the result is `0.30000000000000004`). There are two reasons to explain this difference. First, **IEEE 754 defines rounding modes** instead of just truncating the numbers like we did. The actual significand is `00110011001100110011010`, and the actual value is `0.30000001192092896`. Second, **Python don't use single precision but only double precision**. This doesn't solve the problem. We still have the same rounding errors but with greater precision (see below).
+</Admonition>
 
 
 ### Rounding modes

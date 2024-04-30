@@ -960,7 +960,9 @@ TEXT ·RawSyscallNoError(SB),NOSPLIT,$0-48
 	RET
 ```
 
-NOTE: The logic should look familiar if you remember the calling conventions in the System V ABI specification.
+<Admonition type="note">
+  The logic should look familiar if you remember the calling conventions in the System V ABI specification.
+</Admonition>
 
 Concerning the `getpid` system call, the const `SYS_GETPID` is defined like this:
 

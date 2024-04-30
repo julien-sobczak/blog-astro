@@ -13,7 +13,9 @@ import Marker from '../../components/Marker.astro'
 import Lead from '../../components/Lead.astro'
 
 
-[Font Awesome](https://github.com/FortAwesome/Font-Awesome) is published under the [SIL OFL 1.1 license](https://github.com/FortAwesome/Font-Awesome#license). The code presented in this post was simplified (completeness, robustness, etc.) and should not be used outside of this context. This post is based on the version 4.7.0 of Font Awesome.
+<Admonition type="caution" className="license">
+  [Font Awesome](https://github.com/FortAwesome/Font-Awesome) is published under the [SIL OFL 1.1 license](https://github.com/FortAwesome/Font-Awesome#license). The code presented in this post was simplified (completeness, robustness, etc.) and should not be used outside of this context. This post is based on the version 4.7.0 of Font Awesome.
+</Admonition>
 
 
 ## A basic example
@@ -154,7 +156,7 @@ As mentioned previously the character `f1b9` is present in the special range res
 
 > The `@font-face` CSS at-rule allows authors to specify online fonts to display text on their web pages. By allowing authors to provide their own fonts, @font-face eliminates the need to depend on the limited number of fonts users have installed on their computers.
 >
-> -- <cite>Modzilla Developer Network,@font-face</cite>
+> -- <cite>Mozilla Developer Network, `@font-face`</cite>
 
 
 <Admonition type="caution" className="license" title="EOT, TTF, WOFF, SVG, WOFF2...">
@@ -164,7 +166,7 @@ Despite the huge variety of formats, there isn’t a single one that works in al
 
 Having defined the CSS rule, we could easily use it to add icons without using any of the CSS classes defined by _Font Awesome_ (Caution: not a good idea in term of code maintainability):
 
-```html {'1':8}
+```html {8}
 <!doctype html>
 <html>
   <head>
@@ -172,7 +174,7 @@ Having defined the CSS rule, we could easily use it to add icons without using a
     <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
     <style>
       p {
-        font-family: 'FontAwesome'; # <1>
+        font-family: 'FontAwesome';
       }
     </style>
   </head>
@@ -214,7 +216,7 @@ If we scroll to the bottom of the list, we finally found the _Font Awesome_ icon
 
 ### A new font
 
-Designing a new type is visually complex as well as highly technical. Even if it is easier to begin making type when using free tools like _FontForge_, the tasks remains challenging. Just have a look at the extensive [_FontForge_ documentation](http://designwithfontforge.com/en-US/index.html) to make your own opinion.  In this blog post, we will use a shortcoming. _FontForge_ lets users who may be more comfortable designing their glyph outlines in some other vector design program (Illustrator, FreeHand, Inkscape, etc.), import them directly into _FontForge_. We are even taking it a step further: we will directly import a SVG file downloaded from the Internet. So, open your browser, go to Google Images, and enter `filetype:svg <some keywords>`. Download a picture of your choice. I choose the logo of the Haskell language <img src="/posts_resources/2017-06-25-font-awesome/haskell.svg" width="20" height="30" />.
+Designing a new type is visually complex as well as highly technical. Even if it is easier to begin making type when using free tools like _FontForge_, the tasks remains challenging. Just have a look at the extensive [_FontForge_ documentation](http://designwithfontforge.com/en-US/index.html) to make your own opinion.  In this blog post, we will use a shortcoming. _FontForge_ lets users who may be more comfortable designing their glyph outlines in some other vector design program (Illustrator, FreeHand, Inkscape, etc.), import them directly into _FontForge_. We are even taking it a step further: we will directly import a SVG file downloaded from the Internet. So, open your browser, go to Google Images, and enter `filetype:svg <some keywords>`. Download a picture of your choice. I choose the logo of the Haskell language <img src="/posts_resources/2017-06-25-font-awesome/haskell.svg" width="20" height="30" className="inline" />.
 
 Then,
 
@@ -222,27 +224,19 @@ Then,
 * Click `File` > `Open` to create a new font. An empty grid appears.
 * Click `Encoding` > `Reencode` > `ISO 10646-1 (Unicode, BMP)` to use the same encoding as **Font Awesome**.
 * Scroll until you reach the Unicode number `F000` (in case of doubt, right-click on a glyph > `Glyph Info...`, the Unicode value is showed at the top of the dialog)
-+
 * Double-click on the glyph `F000` to open the glyph editor.
-+
-<img src="/posts_resources/2017-06-25-font-awesome/fontforge-glyph-editor.png" />
+  <img src="/posts_resources/2017-06-25-font-awesome/fontforge-glyph-editor.png" />
 * Click `File` > `Import` and select your downloaded picture.
-+
-<img src="/posts_resources/2017-06-25-font-awesome/fontforge-import-dialog.png" />
+  <img src="/posts_resources/2017-06-25-font-awesome/fontforge-import-dialog.png" />
 * Be sure the glyph outline seems all right.
-+
-<img src="/posts_resources/2017-06-25-font-awesome/fontforge-glyph-haskell.png" />
+  <img src="/posts_resources/2017-06-25-font-awesome/fontforge-glyph-haskell.png" />
 * Click `File` > `Close` to close the glyph editor.
 * The imported glyph should appear in the grid.
-+
-<img src="/posts_resources/2017-06-25-font-awesome/fontforge-my-font.png" />
+  <img src="/posts_resources/2017-06-25-font-awesome/fontforge-my-font.png" />
 * Click `File` > `Generate Fonts...` to export our new font.
-+
-<img src="/posts_resources/2017-06-25-font-awesome/fontforge-generate-dialog.png" />
-+
-Note: Be sure to use an output format supported by your browser. On my Debian machine with Google Chrome, I choose the _True Type_ format and named the file `my-font.ttf`. If _FontForge_ warns you about potential errors, try ignoring the warnings.
+  <img src="/posts_resources/2017-06-25-font-awesome/fontforge-generate-dialog.png" />
+  Note: Be sure to use an output format supported by your browser. On my Debian machine with Google Chrome, I choose the _True Type_ format and named the file `my-font.ttf`. If _FontForge_ warns you about potential errors, try ignoring the warnings.
 * Close _FontForge_.
-
 
 ### Test the font
 

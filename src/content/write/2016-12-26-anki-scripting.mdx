@@ -1057,7 +1057,9 @@ Then, we need to download Anki dependencies. In this post, we will use [Pip](htt
 ```
 ```
 
-NOTE: **virtualenv** is probably the only dependency you need to install globally when doing Python. Once installed, add a new virtual environment to each Python project, so their dependencies get installed under their directory.
+<Admonition type="note">
+  `virtualenv` is probably the only dependency you need to install globally when doing Python. Once installed, add a new virtual environment to each Python project, so their dependencies get installed under their directory.
+</Admonition>
 
 At the root of the repository, execute the following command to create a new virtual environment:
 
@@ -2202,7 +2204,9 @@ Wikipedia currently offers multiple frequency lists based on different sources: 
 </table>
 ```
 
-NOTE: Like your browser, most HTML parsers are very tolerant concerning HTML syntax. We don't need to create a perfectly valid HTML document to be able to parse it. We will continue to use the Python language, and its most popular HTML parser [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/).
+<Admonition type="note">
+  Like your browser, most HTML parsers are very tolerant concerning HTML syntax. We don't need to create a perfectly valid HTML document to be able to parse it. We will continue to use the Python language, and its most popular HTML parser [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/).
+</Admonition>
 
 Here is a basic program to parse this HTML file and generate a csv file:
 
@@ -3348,7 +3352,9 @@ In definitive, the assistant application reads the full JSON dictionary, exposes
 
 The problem is that Anki exposes only its internal API written in Python. If the backend of our application was written in Python too, we could have create the flashcards at the same time. Here, we dump the result to a file that we will need to read by another program written in Python. This is task of the **Importer**.
 
-NOTE: The full source of the application is available [here](https://github.com/julien-sobczak/anki-scripting/tree/master/anki-vocabulary-assistant).
+<Admonition type="note">
+  The full source of the application is available [here](https://github.com/julien-sobczak/anki-scripting/tree/master/anki-vocabulary-assistant).
+</Admonition>
 
 
 #### The Importer

@@ -13,24 +13,27 @@ import Marker from '../../components/Marker.astro'
 import Lead from '../../components/Lead.astro'
 
 
-
 > Spring Boot is just the kind of framework the Java community has been seeking for over a decade
 >
 > -- <cite> Andrew Glover, Delivery Engineering at Netflix</cite>
 
 
-- The internals of Spring Boot to help you fix bean definition problems that arise in practice.
-- How Spring Boot use the `@Conditional` annotation to support auto-configuration.
-- Advanced Java techniques like custom `ClassLoader` writing.
-- Inspect a .class file using the ASM library.
-- Create an uber-jar without using any Maven plugin.
+<Admonition type="note" title="What you will learn">
+  * The internals of Spring Boot to help you fix bean definition problems that arise in practice.
+  * How Spring Boot use the `@Conditional` annotation to support auto-configuration.
+  * Advanced Java techniques like custom `ClassLoader` writing.
+  * Inspect a .class file using the ASM library.
+  * Create an uber-jar without using any Maven plugin.
+</Admonition>
 
 
 ## Prerequisites
 
 We will follow the [official Getting Started Guide "Building an Application with Spring Boot"](https://spring.io/guides/gs/spring-boot/) and explain the inner working of the framework by recoding its main features. The resulting code has no vocation to be use outside of this post. Let's go!
 
-NOTE: If you are just beginning with Spring Boot, take the time (around 15 minutes) to try the Getting Starting Guide before continuing.
+<Admonition type="note">
+  If you are just beginning with Spring Boot, take the time (around 15 minutes) to try the Getting Starting Guide before continuing.
+</Admonition>
 
 The tutorial is composed of only 3 files: a `pom.xml` to reference Spring Boot dependencies (starters, Maven Plugin, Parent POM, ...), a basic `HelloController` to exercise the Web Starter and an `Application` class containing the main method to bootstrap our application. Here is the code source of these files.
 
@@ -117,6 +120,7 @@ public class Application {
 To launch the application, simply run the command:
 
 ```
+$ mvn spring-boot:run
 ```
 
 We now have a fully-functional web application using Spring Boot. We will rewrite it progressively to remove the Spring Boot modules while keeping this example operational. Let's go!
@@ -707,8 +711,9 @@ o.s.boot.autoconfigure.web.WebMvcAutoConfiguration, \
 
 The file lists the configuration classes under the EnableAutoConfiguration key.
 
-We still have not finished to cover Spring Boot but you already know how create your [own starter](http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-developing-auto-configuration.html#boot-features-custom-starter). Just create a `Configuration` class and provide a spring.factories file to make your class a candidate to autoloading. That's all!
-
+<Admonition type="tip">
+  We still have not finished to cover Spring Boot but you already know how create your [own starter](http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-developing-auto-configuration.html#boot-features-custom-starter). Just create a `Configuration` class and provide a spring.factories file to make your class a candidate to autoloading. That's all!
+</Admonition>
 
 The class `EnableAutoConfigurationImportSelector` searches across the classpath and loads theses files and registers the classes in the application context. This class implements `ImportSelector` to be used with the `@Import`.
 
@@ -835,7 +840,9 @@ First, we arrange to not have any external dependencies on the outer class defin
 
 Second, we use a new feature in Spring 4, the `@Conditional` annotation. This annotation indicates that a component is only eligible for registration when all specified conditions match. Otherwise, the component will not be registered and inner classes will never be loaded by the class loader. In this way, no `NoClassDefFoundError` will be thrown when Spring MVC is not on the classpath.
 
-NOTE: The inner class technique is only required when extending a third-party library. When defining beans, the `@Conditional` is enough:
+<Admonition type="note">
+  The inner class technique is only required when extending a third-party library. When defining beans, the `@Conditional` is enough:
+</Admonition>
 
 ```java
 package org.springframework.boot.autoconfigure.cassandra;
@@ -1498,9 +1505,9 @@ Under Eclipse, we just have to Right Click + "Run as Java Application" to starts
 
 ### I want to package my web application as a single executable jar?
 
-.What is an uber-jar?
-An uber-jar (or fat jar) is a jar containing the artifact to package, including its dependencies. The classic way to create an uber-jar is to use the Maven Shade Plugin. The plugin allows also to **shade** - i.e. rename - the packages of some of the dependencies.
-
+<Admonition type="tip" title="What is an uber-jar?">
+  An uber-jar (or fat jar) is a jar containing the artifact to package, including its dependencies. The classic way to create an uber-jar is to use the Maven Shade Plugin. The plugin allows also to **shade** - i.e. rename - the packages of some of the dependencies.
+</Admonition>
 
 
 Here is an simple example (only two dependencies) using the Maven Shade Plugin :
@@ -2035,6 +2042,7 @@ Our Maven plugin is now operational. We could update the pom of our project demo
 And run the command:
 
 ```
+$ mvn clean spring-boot-demo:repackage
 ```
 
 A new JAR is created inside the target directory named `spring-boot-demo-0.0.1-SNAPSHOT.jar`. But when launching the JAR, an error message is displayed in the console:
@@ -2179,8 +2187,7 @@ The constructor expects two arguments:
 - The parent class loader.
 
 
-.How many class loaders?
-<Admonition type="tip" className="None" title="What you will learn">
+<Admonition type="tip" className="None" title="How many class loaders?">
 Even the most basic Java program has at least three class loaders:
 
 - The **bootstrap class loader** loads the core Java libraries located in the `$JAVA_HOME/jre/lib` directory.
@@ -2391,6 +2398,7 @@ The method `startRunner` launch the application using the archive file's manifes
 The implementation of the loader is now completed. If we run the Maven command on your demo application:
 
 ```
+$ mvn clean spring-boot-demo:repackage
 ```
 
 The executable JAR will be regenerated and if we launch it again, the application starts correctly:

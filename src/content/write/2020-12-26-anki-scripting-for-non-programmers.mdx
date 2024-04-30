@@ -224,7 +224,9 @@ The Anki library code is published as a Python package, a way for developers to 
 
 To avoid writing the same code every time, I published another package that I named [`anki-cli-unofficial`](https://pypi.org/project/anki-cli-unofficial/). A package can use other packages, which is called dependencies in programming jargon and is probably the biggest challenge for any developers. My package depends logically on the package `anki` and instead of storing the content of the flashcards directly in the code, the script asks for an input file. Let's try it!
 
-NOTE: [AnkiConnect](https://ankiweb.net/shared/info/2055492159) is another project you may find interesting. AnkiConnect is an community add-on that exposes the internal Python API through a simple HTTP API. The motivation is similar by allowing users to script their flashcard creation. This approach is probably less fragile compared to what I will explain in this section, even if using the Python API directly can be more powerful in some cases.
+<Admonition type="note">
+  [AnkiConnect](https://ankiweb.net/shared/info/2055492159) is another project you may find interesting. AnkiConnect is an community add-on that exposes the internal Python API through a simple HTTP API. The motivation is similar by allowing users to script their flashcard creation. This approach is probably less fragile compared to what I will explain in this section, even if using the Python API directly can be more powerful in some cases.
+</Admonition>
 
 To install the pip package:
 
@@ -294,7 +296,9 @@ Here is an example of a valid input file containing French words and expressions
     Back: Voiture <small>n.</small>
 ```
 
-NOTE: The note fields can reference medias using the usual Anki syntax (`<img src="..."/>` for images and `[sound:...]` for sounds). The CLI will try to load these files into the Anki medias database.
+<Admonition type="note">
+  The note fields can reference medias using the usual Anki syntax (`<img src="..."/>` for images and `[sound:...]` for sounds). The CLI will try to load these files into the Anki medias database.
+</Admonition>
 
 The file is a [YAML](https://en.wikipedia.org/wiki/YAML) file. YAML is popular among developers and can be considered like a supercharged CSV or TXT file. Check [the Wikipedia page](https://en.wikipedia.org/wiki/YAML) if you have never used this format before. The syntax is easy to grasp if you have a good text editor, which will ensure only spaces are used and not tabulations.
 

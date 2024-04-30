@@ -166,7 +166,9 @@ As a messaging framework, Spring Integration could be described by three core ab
 
 A message, if you use JMS, Kafka, SOAP, and so on, is always identified by a payload representing the data we want to send, and a collection of headers (key-value), used by the messaging infrastructure to route the message among the different destinations. This way, a messaging framework does not have to concern itself with the content of the message (whose size varies unlike headers whose values have simple type).
 
-NOTE: As of release 4.0, core Spring Integration interfaces migrated to a new project `spring-messaging` included in Spring Core. The aim is to reuse these abstractions in other modules using the concept of message too.
+<Admonition type="note">
+  As of release 4.0, core Spring Integration interfaces migrated to a new project `spring-messaging` included in Spring Core. The aim is to reuse these abstractions in other modules using the concept of message too.
+</Admonition>
 
 Here is the definition of the `Message` interface:
 
@@ -630,7 +632,9 @@ public class DirectChannel extends AbstractSubscribableChannel {
 }
 ```
 
-NOTE: Spring Integration use a well-designed exception hierarchy, centered around the `MessagingException`. For this post, we choose to only use the root exception, whose definition follows:
+<Admonition type="note">
+  Spring Integration use a well-designed exception hierarchy, centered around the `MessagingException`. For this post, we choose to only use the root exception, whose definition follows:
+</Admonition>
 
 ```java
 package my.springframework.messaging;
@@ -988,8 +992,7 @@ public abstract class AbstractEndpoint implements SmartLifecycle {
 This class implements `SmartLifecycle`. This interface is an extension of the `Lifecycle` interface for those objects that require to be notified upon ApplicationContext starting/refresh/shutdown. The `isAutoStartup()` return value indicates whether this object should be started at the time of a context refresh (`true` for our endpoints). With this hook, we can now implement the two main endpoint types: `EventDrivenConsumer` and `PollingConsumer`.
 
 
-.What about synchronization?
-<Admonition type="tip" className="None" title="Note for the novice Spring Integration user">
+<Admonition type="tip" className="None" title="What about synchronization?">
 This class demonstrates common multithreading idioms, not really required for our basic implementation, but a good opportunity to take a look at common Spring code.
 
 The **volatile** keyword tells the JVM that the variable will be updated by multiple threads and guarantees that reads and writes would be made directly to main memory, instead of registers or local processor cache. Since Java 5, **volatile** reads and writes establish a happens-before relationship, much like acquiring and releasing a mutex (like a **synchronized** block), a guarantee for **double-checked locking** pattern to work in Java (more on this subject later). **volatile** variables are typically used for indicating that an important lifecycle
@@ -2091,7 +2094,7 @@ We will not describe the remaining channels and endpoints. The code is very simi
 
 The coding part is finished! All that remains to be done is to make the Spring XML parsing infrastructure aware of our custom namespace. For our example, we need to write the following two files:
 
-#### 'META-INF/spring.handlers'
+#### `META-INF/spring.handlers`
 
 ```properties
 http\://my.springframework.org/schema/integration=\
@@ -2101,7 +2104,7 @@ http\://my.springframework.org/schema/integration=\
 The first part (the key) of the key-value pair is the URI associated with your custom namespace extension, and needs to match exactly the value of the 'targetNamespace' attribute as specified in your custom XSD schema.
 
 
-#### 'META-INF/spring.schemas'
+#### `META-INF/spring.schemas`
 
 ```properties
 http\://my.springframework.org/schema/i...n/my-spring-integration-1.0.xsd=\

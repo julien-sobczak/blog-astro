@@ -51,8 +51,7 @@ body {
 .center {
   display: flex;
   justify-content: center;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 1rem auto;
 }
 
 /* Title */
@@ -829,6 +828,30 @@ footer img.footer-me {
         margin: 0;
       }
     }
+
+    img {
+      max-width: 100%;
+      display: flex;
+      justify-content: center;
+      margin: 1rem auto;
+    }
+    img.inline {
+      display: inline;
+      margin: 0;
+    }
+
+    table {
+      border: 1px solid gray;
+
+      tr, td {
+        padding: 0.5625em 0.625em;
+        line-height: 1.6;
+      }
+
+      tr:nth-of-type(even) {
+        background: #f9f9f9;
+      }
+    }
   }
 }
 
@@ -875,9 +898,6 @@ footer img.footer-me {
   }
 }
 
-#page-post img {
-  max-width: 100%;
-}
 
 /* A class for short list */
 #page-post .compact > ul {
