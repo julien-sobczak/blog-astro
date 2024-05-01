@@ -17,7 +17,9 @@ const readCollection = defineCollection({
     subject: z.string().optional(),
     bookAuthors: z.string(),
     bookIsbn: z.string().optional(), // Ex: LeanPub
-    recommendations: z.array(reference('read')).optional(),
+    relatedReadPosts: z.array(reference('read')).optional(),
+    relatedWritePosts: z.array(reference('write')).optional(),
+    relatedInspectPosts: z.array(reference('inspect')).optional(),
   })
 });
 
@@ -33,7 +35,9 @@ const writeCollection = defineCollection({
     tags: z.array(z.string()),
     unofficialTags: z.array(z.string()).optional(),
     subject: z.string(),
-    recommendations: z.array(reference('write')).optional(),
+    relatedReadPosts: z.array(reference('read')).optional(),
+    relatedWritePosts: z.array(reference('write')).optional(),
+    relatedInspectPosts: z.array(reference('inspect')).optional(),
   })
 });
 
@@ -49,7 +53,9 @@ const inspectCollection = defineCollection({
     tags: z.array(z.string()),
     unofficialTags: z.array(z.string()).optional(),
     subject: z.string(),
-    recommendations: z.array(reference('inspect')).optional(),
+    relatedReadPosts: z.array(reference('read')).optional(),
+    relatedWritePosts: z.array(reference('write')).optional(),
+    relatedInspectPosts: z.array(reference('inspect')).optional(),
   })
 });
 

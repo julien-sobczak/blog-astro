@@ -2,10 +2,20 @@
 import { getEntries } from 'astro:content';
 import PageLayout from './PageLayout.astro'
 const { category, frontmatter } = Astro.props;
-let relatedPosts = [];
-if (frontmatter.recommendations) {
-  relatedPosts = await getEntries(frontmatter.recommendations);
+const relatedPosts = [];
+if (frontmatter.relatedReadPosts) {
+  const relatedReadPosts = await getEntries(frontmatter.relatedReadPosts);
+  relatedPosts.push(...relatedReadPosts);
 }
+if (frontmatter.relatedWritePosts) {
+  const relatedWritePosts = await getEntries(frontmatter.relatedWritePosts);
+  relatedPosts.push(...relatedWritePosts);
+}
+if (frontmatter.relatedInspectPosts) {
+  const relatedInspectPosts = await getEntries(frontmatter.relatedInspectPosts);
+  relatedPosts.push(...relatedInspectPosts);
+}
+console.log(relatedPosts);
 ---
 
 <PageLayout
@@ -58,19 +68,21 @@ if (frontmatter.recommendations) {
         <hr class="star-light">
         <ul>
           {relatedPosts.map(post => {
-            <li>
-              <a class="title" href={post.slug}>{post.data.title }</a>
+            return (
+              <li>
+                <a class="title" href={'/' + post.collection + '/' + post.slug}>{post.data.title }</a>
 
-              {post.data.tags && post.data.tags.map(tag => {
-                return <a href={`/tags/${tag}`} class="label">{tag.toUpperCase()}</a>
-              })}
+                {post.data.tags && post.data.tags.map(tag => {
+                  return <a href={`/tags/${tag}`} class="label">{tag.toUpperCase()}</a>
+                })}
 
-              {post.data.unofficialTags && post.data.unofficialTags.map(tag => {
-                return <span class="label">{tag.toUpperCase()}</span>
-              })}
+                {post.data.unofficialTags && post.data.unofficialTags.map(tag => {
+                  return <span class="label">{tag.toUpperCase()}</span>
+                })}
 
-              {post.data.subtitle && <span class="subtitle">{ post.data.subtitle }</span>}
-            </li>
+                {post.data.subtitle && <span class="subtitle">{ post.data.subtitle }</span>}
+              </li>
+            );
           })}
         </ul>
       </div>
