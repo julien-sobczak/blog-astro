@@ -54,46 +54,38 @@ This flashcard is based on a quiz present in a certification book and has many f
 
 ### Example (refactored)
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
-Valid?<br><br>
-<code>List&lt;?&gt; list = new ArrayList&lt;Dog&gt;();</code>
-</div>
-++++
+<Flashcard face="front" valid={true}>
+Valid?
 
-++++
-<div class="flashcard flashcard-back flashcard-ok">
+```
+List<?> list = new ArrayList<Dog>();
+```
+</Flashcard>
+
+<Flashcard face="back" valid={true}>
 Yes
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
-Valid?<br><br>
+<Flashcard face="front" valid={true}>
+Valid?<br/><br/>
 <code>List&lt;?&gt; foo = new ArrayList&lt;? extends Animal&gt;();</code>
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-back flashcard-ok">
+<Flashcard face="back" valid={true}>
 False. You cannot use wildcard in instantiation
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
-Valid?<br><br>
+<Flashcard face="front" valid={true}>
+Valid?<br/><br/>
 <code>List&lt;?&gt; list = new ArrayList&lt;? extends Animal&gt;();</code>
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-back flashcard-ok">
+<Flashcard face="back" valid={true}>
 Yes
-</div>
-++++
+</Flashcard>
 
-+++<span class="flashcard-advantage">Advantage</span>+++: By splitting into multiple flashcards, you learn each underlying rule at a different pace (on this example, the 3rd rule is the harder and take more time to assimilate). In this way, you don't have to review already assimilated cards, and for each flashcard, either you know the answer or you don't. It's obvious to say if the flashcard was easy or hard.
+
+<span class="flashcard-advantage">Advantage</span>: By splitting into multiple flashcards, you learn each underlying rule at a different pace (on this example, the 3rd rule is the harder and take more time to assimilate). In this way, you don't have to review already assimilated cards, and for each flashcard, either you know the answer or you don't. It's obvious to say if the flashcard was easy or hard.
 
 
 ## Short is better than long
@@ -102,17 +94,13 @@ As a consequence of breaking the first rule, when you avoid creating many small 
 
 ### Example
 
-++++
-<div class="flashcard flashcard-front flashcard-ko">
+<Flashcard face="front" valid={false}>
 Give the Git syntax to define commit ranges.
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-back flashcard-ko">
+<Flashcard face="back" valid={false}>
 <em>"A very long description drawn from the official documentation to explain the numerous different syntaxes. The full content is one-page long and is available <a href="https://git-scm.com/book/en/v2/Git-Tools-Revision-Selection#_commit_rangesp">here</a>"</em>
-</div>
-++++
+</Flashcard>
 
 <Admonition type="caution" className="license" title="Note for non-programmers">
 Git is a program that keep the history of changes you do in a set of files. Programmers use it to keep the history of changes for the source code of a program. After each update, each developer pushes his modifications. Git makes sure there aren't two developers who have changed the same code, and records a new commit, a kind of number to identify the changes. Developers can restore a previous state at any time by specifying an old commit.
@@ -122,41 +110,31 @@ The problem with verbose back card is there is too much information to be able t
 
 ### Example (refactored)
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 What means the Git syntax <code>git log master..experiment</code>?
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 What means the Git syntax <code>git log experiment --not master</code>?
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 What means the Git syntax <code>git log master...experiment</code>?
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 How is called this Git syntax <code>git log master...experiment</code>?
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 What is the difference between <code>git log master..experiment</code> and <code>git log master...experiment</code>?
-</div>
-++++
+</Flashcard>
 
 <Admonition type="caution" className="license" title="Note for non-programmers">
 Git is mainly used by entering commands on a terminal, even if there exists graphical tools that let you click on buttons to get the same result.
 </Admonition>
 
-+++<span class="flashcard-advantage">Advantage</span>+++: Short flashcards are faster to read, you can revise more cards in the same time, review sessions are more fun because flashcards are really testing you (you know the answer or you don't), and often the flashcards are more challenging because you can focus on tricky points, which also increase the satisfaction to learn them.
+<span class="flashcard-advantage">Advantage</span>: Short flashcards are faster to read, you can revise more cards in the same time, review sessions are more fun because flashcards are really testing you (you know the answer or you don't), and often the flashcards are more challenging because you can focus on tricky points, which also increase the satisfaction to learn them.
 
 <Admonition type="tip" className="None" title="Tip">
 A good flashcard (front or back) must fit on your smartphone screen without scrolling (using a 5 inches screen size).
@@ -166,43 +144,33 @@ For the front card, I avoid long, elaborate, question and favor direct question.
 
 ### Example
 
-++++
-<div class="flashcard flashcard-front flashcard-ko">
+<Flashcard face="front" valid={false}>
 When using the command <code>git</code>, which option could be used to get the list of possible commands?
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 List the <code>git</code> commands?
-</div>
-++++
+</Flashcard>
 
 For the back card, I systematically remove all useless words, to make the answer as concise as possible, without losing meaning.
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 You can't send syslog messages exceeding 1K. True or false?
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-back flashcard-ko">
+<Flashcard face="back" valid={false}>
 The maximum size of a UDP packet is 1K, so this is true in UDP, but only if are not using jumbo packets. On the contrary, this statement is false in TCP because there is not a size limit. Anyway, in both cases, the size is configurable.
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-back flashcard-ok">
+<Flashcard face="back" valid={true}>
 Maximum size of a UDP packet, so true in UDP without jumbo packets. False in TCP. In both cases, configurable.
-</div>
-++++
+</Flashcard>
 
 <Admonition type="caution" className="license" title="Note for non-programmers">
 Software applications send informational messages to record what they do in order to help the developer to debug when problems happen. They are called syslog messages and can be sent to another machine, using various guarantees. For high-traffic applications, you can use UDP to send the messages but they will not be resent if the message is lost in transit. Otherwise, you can use TCP to make sure the message is retransmitted.
 </Admonition>
 
-+++<span class="flashcard-advantage">Advantage</span>+++: The faster to read, the faster to review, but don't go to far. You should never have to deduce the question or think hard to understand what the answer means. Write in basic English. No need to be William Shakespeare when writing flashcards.
+<span class="flashcard-advantage">Advantage</span>: The faster to read, the faster to review, but don't go to far. You should never have to deduce the question or think hard to understand what the answer means. Write in basic English. No need to be William Shakespeare when writing flashcards.
 
 
 ## Two-way is better than one-way
@@ -221,19 +189,15 @@ In practice, starting with the right number of flashcards is far from easy. I'm 
 
 ### Example (continued)
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 What means the Git syntax <code>git log master..experiment</code>?
-</div>
-++++
+</Flashcard>
 
 This flashcard help me understand the command if I come across it on Internet or on a coworker's terminal, but does nothing to help me remember it the day I really need to run it. I learn the information only one way. The solution is to create the reversed flashcard.
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 Display the commits in your <code>experiment</code> branch that hasn’t yet been merged into your <code>master</code> branch.
-</div>
-++++
+</Flashcard>
 
 <Admonition type="caution" className="license" title="Note for non-programmers">
 This new flashcard is nothing more the definition of the previous command reformulated as a question. You can safely ignore the details.
@@ -241,33 +205,25 @@ This new flashcard is nothing more the definition of the previous command reform
 
 ### Example
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 What is the causation fallacy in Management?
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-back flashcard-ok">
+<Flashcard face="back" valid={true}>
 <p>The tendency to see the world as a place full of easily explainable events with simple causes and simple effects (financial crisis is caused by bankers, loss of jobs is caused by immigrants,...) instead of assuming things are more complex than that.</p>
-</div>
-++++
+</Flashcard>
 
 I often create similar flashcards when I come across a new concept, or a new jargon. This way, when I see the expression cited again, I already know the meaning and are not diverted by it, and so, I can read more advanced book on the subject. The problem is that if you give me the definition, the name will only be on the tip of my tongue. I need the reversed card to fully learn it.
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 How is called the tendency to see the world as a place full of easily explainable events with simple causes and simple effects?
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-back flashcard-ok">
+<Flashcard face="back" valid={true}>
 The causation fallacy
-</div>
-++++
+</Flashcard>
 
-+++<span class="flashcard-advantage">Advantage</span>+++: Flashcards should reflect the ways you will use the information. Create as many flashcards as necessary to prevent the tip of the tongue phenomenon.
+<span class="flashcard-advantage">Advantage</span>: Flashcards should reflect the ways you will use the information. Create as many flashcards as necessary to prevent the tip of the tongue phenomenon.
 
 
 ## Specific is better than general
@@ -276,110 +232,82 @@ As said before, a flashcard should have a unique valid answer. You should never 
 
 ### Example: (Agile)
 
-++++
-<div class="flashcard flashcard-front flashcard-ko">
+<Flashcard face="front" valid={false}>
 What is the Five W's method?
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-back flashcard-ko">
-Asks Who? Why? What? Where? When? (and sometimes How?)<br>
+<Flashcard face="back" valid={false}>
+Asks Who? Why? What? Where? When? (and sometimes How?)<br/>
 This method helps grasp a problem definition.
-</div>
-++++
+</Flashcard>
 
 The flashcard is short but you don't really understand what is expected. There are many valid answers with such a general question. The solution is again to use the _More is better than less_ rule to replace the flashcard with more specific ones:
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 Explain the name of the Five W's method?
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-back flashcard-ok">
+<Flashcard face="back" valid={true}>
 Ask Who? Why? What? Where? When?
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 What is the difference between the Five W's method and the Five W's and H method?
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-back flashcard-ok">
+<Flashcard face="back" valid={true}>
 The original Five W's method is sometimes completed by asking How?
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 When to use the Five W's method?
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-back flashcard-ok">
+<Flashcard face="back" valid={true}>
 To help grasp a problem definition.
-</div>
-++++
+</Flashcard>
 
 A good way to make flashcards more specific is to use cloze deletions. Cloze deletion is the process of hiding one or more words in a sentence. These flashcards are sometimes called fill-in-the-blank flashcards.
 
 ### Example
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 Which proposition to use after <em>write a letter</em>?
-</div>
-++++
+</Flashcard>
 
 Using cloze deletion, we can rephrase the flashcard like this:
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 I write a letter <strong>___</strong> a friend.
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-back flashcard-ok">
+<Flashcard face="back" valid={true}>
 I write a letter <strong>to</strong> friend.
-</div>
-++++
+</Flashcard>
 
 ### Example
 
 In practice, there are often several valid ways to create a flashcard. Let's reuse the example from the rule _Two-way is better than one-way_:
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 How is called the tendency to see the world as a place full of easily explainable events with simple causes and simple effects?
-</div>
-++++
+</Flashcard>
 
 The flashcard can be rewritten to use cloze deletion:
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 The tendency to see the world as a place full of easily explainable events with simple causes and simple effects is called <strong>___</strong>.
-</div>
-++++
+</Flashcard>
 
 Or
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 The <strong>___</strong> describes the tendency to see the world as a place full of easily explainable events with simple causes and simple effects.
-</div>
-++++
+</Flashcard>
 
 Personally, I was using cloze deletion parsimoniously at the beginning, but now, I use them massively as I found them quickly to answer.
 
-+++<span class="flashcard-advantage">Advantage</span>+++: fill-in-the-blank flashcards make the question crystal clear and make sure the answer is specific. When the answer is displayed, there is no possible doubt.
+<span class="flashcard-advantage">Advantage</span>: fill-in-the-blank flashcards make the question crystal clear and make sure the answer is specific. When the answer is displayed, there is no possible doubt.
 
 <Admonition type="tip" className="None" title="Tip">
 Anki provides native support for cloze deletion. Check the [manual](https://apps.ankiweb.net/docs/manual.html#cloze-deletion).
@@ -392,17 +320,13 @@ Answering _yes_ or _no_ to a flashcards is not optimal, and very often, you'd be
 
 ### Example
 
-++++
-<div class="flashcard flashcard-front flashcard-ko">
+<Flashcard face="front" valid={false}>
 Are bzip2 files splittable?
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-back flashcard-ko">
+<Flashcard face="back" valid={false}>
 Yes
-</div>
-++++
+</Flashcard>
 
 <Admonition type="caution" className="license" title="Note for non-programmers">
 A file is splittable if you can read only a part of it without having to read the full content. Not all file formats are splittable. For example, you need to uncompress a zip file entirely even to read a single file present in the archive.
@@ -410,21 +334,17 @@ A file is splittable if you can read only a part of it without having to read th
 
 The problem with flashcards like those is you are not learning really practical information. Being able to answer _yes_ or _no_ is not going to take you very far. Compare with this flashcard:
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 Why bzip2 files are splittable?
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-back flashcard-ok">
+<Flashcard face="back" valid={true}>
 bzip2 contains a list of independently compressed blocks. You can uncompress only the block that contains the file you are looking for.
-</div>
-++++
+</Flashcard>
 
 If you can answer this flashcard, you know for sure if the bzip2 format is splittable or not, and you can also explain why.
 
-+++<span class="flashcard-advantage">Advantage</span>+++: Flashcards asking for closed questions are not funny. Open questions helps you learn a little more, and overall, can make a great difference. But don't be too general… (see the rule _Specific is better than general_).
+<span class="flashcard-advantage">Advantage</span>: Flashcards asking for closed questions are not funny. Open questions helps you learn a little more, and overall, can make a great difference. But don't be too general… (see the rule _Specific is better than general_).
 
 
 ## Subtle is better than obvious
@@ -433,31 +353,23 @@ A flashcard should never be too obvious, otherwise, you will answer correctly bu
 
 ### Example
 
-++++
-<div class="flashcard flashcard-front flashcard-ko">
+<Flashcard face="front" valid={false}>
 Does the word "shrimp" have a plural form?
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-back flashcard-ko">
+<Flashcard face="back" valid={false}>
 No. The word "shrimp" can be used in the singular and plural forms.
-</div>
-++++
+</Flashcard>
 
 The question gives a clue that it may not be a plural form. Compare with this alternative:
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 What is the plural form of the word "shrimp"?
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-back flashcard-ok">
+<Flashcard face="back" valid={true}>
 No plural form. The word "shrimp" could be used in the singular and plural forms.
-</div>
-++++
+</Flashcard>
 
 The answer is still the same, but with this reformulation, you are influenced to find a solution while there isn't. You will answer correctly only if you are sure that the word _shrimp_ can be used in singular and plural forms. In this way, you test your knowledge, and not your capacity to suppose the answer.
 
@@ -465,30 +377,24 @@ To follow the rule _More is Better Than Less_, you'd better create complementary
 
 ### Example
 
-++++
-<div class="flashcard flashcard-front flashcard-ko">
-Spot the error<br><br>
+<Flashcard face="front" valid={false}>
+Spot the error<br/><br/>
 <em>She never wears hat.</em>
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-back flashcard-ko">
+<Flashcard face="back" valid={false}>
 <em>She never wears <strong>a</strong> hat</em>.
-</div>
-++++
+</Flashcard>
 
 This flashcard seems not so easy at first. There is no clue to find the answer. But with time, you will learn to recognize the sentence and be able to find where the error is. The day you need to write a similar sentence, however, you will probably hesitate between the two options. Indeed, you learned to recognize the error but failed to learn the rule. Compare with this alternative:
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 <em>She never wears <strong>[&empty;/a]</strong> hat.</em>
-</div>
-++++
+</Flashcard>
 
 The solution is still the same but this flashcard force you to consider the rule. You can't just learn to recognize where the error is located. You need to know the rule to answer the question. This flashcard seems less subtle than the first version because we mark explicitly where the problem is, but by providing the two possible options, you make the rule explicit.
 
-+++<span class="flashcard-advantage">Advantage</span>+++: Make sure to learn the rule and not just to detect the error. When you know the rule, you are able to spot errors. The reverse is not true.
+<span class="flashcard-advantage">Advantage</span>: Make sure to learn the rule and not just to detect the error. When you know the rule, you are able to spot errors. The reverse is not true.
 
 
 ## Mixed is better than (to much) organized
@@ -502,8 +408,7 @@ In practice, I limit myself to a few decks whose name should be very general: _E
 
 ### Example
 
-++++
-<div class="flashcard flashcard-deck flashcard-ko">
+<Flashcard face="deck" valid={false}>
 <ul>
 <li>English vocabulary</li>
 <li>English idioms</li>
@@ -513,19 +418,16 @@ In practice, I limit myself to a few decks whose name should be very general: _E
 <li>Countries</li>
 <li>Seas</li>
 </ul>
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-deck flashcard-ok">
+<Flashcard face="deck" valid={true}>
 <ul>
 <li>English</li>
 <li>Geography</li>
 </ul>
-</div>
-++++
+</Flashcard>
 
-+++<span class="flashcard-advantage">Advantage</span>+++: Group flashcards according their topic and not their type. When you speak English, you need to know the grammar, some vocabulary, and maybe a few idioms. Everything is related and that should be reflected into your decks. Organize the information in the same way that you are using it (when programming, you are editing some code in your text editor using shortcuts, you are committing your changes using Git commands from a Linux terminal).
+<span class="flashcard-advantage">Advantage</span>: Group flashcards according their topic and not their type. When you speak English, you need to know the grammar, some vocabulary, and maybe a few idioms. Everything is related and that should be reflected into your decks. Organize the information in the same way that you are using it (when programming, you are editing some code in your text editor using shortcuts, you are committing your changes using Git commands from a Linux terminal).
 
 <Admonition type="tip" className="None" title="Tip">
 With Anki, I use tags to annotate the flashcards with the categories where they belong (vocabulary, grammar, idiom, country, capital, etc). This is very useful when you want to review, for example, only the English grammar. Anki lets you create filtered decks using these tags (`deck:English tag:grammar`).
@@ -542,7 +444,7 @@ This applies not just for vocabulary. You probably don't want to learn all the v
 
 In practice, I make sure to add flashcards at the appropriate time. I added the first thousand most common English words, and only after, the next thousand words, and so on. I added the most Git useful commands after reading an introductory book, and only after, I completed the list by reading a more authoritative book on the subject.
 
-+++<span class="flashcard-advantage">Advantage</span>+++: As said before, our brain is not a perfectly organized warehouse but a giant mess of interconnected neurons. Injecting a little randomness into your decks reflects the complex nature of your brain. This rule is complementary to the previous rule _Mixed is better than organized_.
+<span class="flashcard-advantage">Advantage</span>: As said before, our brain is not a perfectly organized warehouse but a giant mess of interconnected neurons. Injecting a little randomness into your decks reflects the complex nature of your brain. This rule is complementary to the previous rule _Mixed is better than organized_.
 
 
 ## Stylized is better than unstyled
@@ -555,19 +457,15 @@ When mixing various cards into the same deck (see rule _Mixed is better than org
 
 ### Example
 
-++++
-<div class="flashcard flashcard-front flashcard-ko">
+<Flashcard face="front" valid={false}>
 What are the conventions of a test in Go?
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 (Go) What are the conventions of a test?
-</div>
-++++
+</Flashcard>
 
-+++<span class="flashcard-advantage">Advantage</span>+++: By systematically prepending/appending the tag/category, you don't have to look for a clue in the question to get the context. You are directly focused on the question to answer.
+<span class="flashcard-advantage">Advantage</span>: By systematically prepending/appending the tag/category, you don't have to look for a clue in the question to get the context. You are directly focused on the question to answer.
 
 ### Emphaze to highlight keywords
 
@@ -575,77 +473,57 @@ As explained by the rule _Short is better than long_, flashcards should be as sh
 
 ### Example
 
-++++
-<div class="flashcard flashcard-front flashcard-ko">
+<Flashcard face="front" valid={false}>
 (Go) The order of declarations (var, const, type, func) is important?
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 (Go) The <strong>order of declarations</strong> (<code>var</code>, <code>const</code>, <code>type</code>, <code>func</code>) is <strong>important</strong>?
-</div>
-++++
+</Flashcard>
 
 <Admonition type="note">
   You can use different fonts when appropriate. I use a `monospace` font for every programming keywords or command names.
 </Admonition>
 
-++++
-<div class="flashcard flashcard-front flashcard-ko">
+<Flashcard face="front" valid={false}>
 (General) Difference between UTF-8, UTF-16, UTF-32?
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 (General) Difference between UTF-<strong>8</strong>, UTF-<strong>16</strong>, UTF-<strong>32</strong>?
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-front flashcard-ko">
+<Flashcard face="front" valid={false}>
 (Math) What is a chain in a DAG?
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 (Math) What is a <strong>chain</strong> in a <strong>DAG</strong>?
-</div>
-++++
+</Flashcard>
 
-+++<span class="flashcard-advantage">Advantage</span>+++: Revisions are more effective since you lose less time reading the cards.
+<span class="flashcard-advantage">Advantage</span>: Revisions are more effective since you lose less time reading the cards.
 
 I also use highlighting on the back cards to make the expected answer explicit.
 
 ### Example
 
-++++
-<div class="flashcard flashcard-front flashcard-ko">
+<Flashcard face="front" valid={false}>
 (Math) What is a bogus proof?
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-back flashcard-ko">
+<Flashcard face="back" valid={false}>
 Could be a proof with a false conclusion or with the right conclusion, but do so in improper ways such as circular reasoning, leaping correct conclusions, or saying that the hard part is left to the reader.
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 (Math) What is a <strong>bogus proof</strong>?
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-back flashcard-ok">
+<Flashcard face="back" valid={true}>
 Could be <strong>a proof with a false conclusion or with the right conclusion</strong>, <u>but</u> do so <strong>in improper ways</strong> such as circular reasoning, leaping correct conclusions, or saying that the hard part is left to the reader.
-</div>
-++++
+</Flashcard>
 
-+++<span class="flashcard-advantage">Advantage</span>+++: You only need to read highlighted text to check your answer. If you're wrong, read the remaining of the text to get additional explanations (but keep the card short).
+<span class="flashcard-advantage">Advantage</span>: You only need to read highlighted text to check your answer. If you're wrong, read the remaining of the text to get additional explanations (but keep the card short).
 
 
 ### Colorize to create patterns
@@ -654,67 +532,51 @@ When learning a foreign language, you are constantly switching between two langu
 
 ### Example
 
-++++
-<div class="flashcard flashcard-front flashcard-ko">
+<Flashcard face="front" valid={false}>
 car
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-back flashcard-ko">
+<Flashcard face="back" valid={false}>
 voiture
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 <span class="foreign">car</span>
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-back flashcard-ok">
+<Flashcard face="back" valid={true}>
 Voiture
-</div>
-++++
+</Flashcard>
 
 I use the same logic on more elaborate cards, for example, when learning English expressions.
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 <span class="foreign">A leap in the dark</span>
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-back flashcard-ok">
-Un saut dans l’inconnu<br><br>
+<Flashcard face="back" valid={true}>
+Un saut dans l’inconnu<br/><br/>
 
 <p class="flashcard-example foreign">Marrying someone you’ve never met before is taking <strong>a leap in the dark</strong>.</p>
 <p class="flashcard-example">C’est faire <strong>un saut dans l’inconnu</strong> que de se marier avec quelqu’un que l’on n’a jamais vu.</p>
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 Un saut dans l'inconnu
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-back flashcard-ok">
-<span class="foreign">A leap in the dark</span><br><br>
+<Flashcard face="back" valid={true}>
+<span class="foreign">A leap in the dark</span><br/><br/>
 
 <p class="flashcard-example foreign">Marrying someone you’ve never met before is taking <strong>a leap in the dark</strong>.</p>
 <p class="flashcard-example">C’est faire <strong>un saut dans l’inconnu</strong> que de se marier avec quelqu’un que l’on n’a jamais vu.</p>
-</div>
-++++
+</Flashcard>
 
 <Admonition type="tip" className="None" title="Tip">
 I use italics to differentiate examples from definitions. I follow this convention among all my flashcards.
 </Admonition>
 
-+++<span class="flashcard-advantage">Advantage</span>+++: Colors reduce the cost of context switching. When the flashcard appears, if it's blue, you are looking for the translation in your native language, if it's black (or any other color), you are looking for the translation in the foreign language.
+<span class="flashcard-advantage">Advantage</span>: Colors reduce the cost of context switching. When the flashcard appears, if it's blue, you are looking for the translation in your native language, if it's black (or any other color), you are looking for the translation in the foreign language.
 
 ### Illustrate to avoid wordy descriptions
 
@@ -722,34 +584,26 @@ A picture is worth a thousand words. Indeed, adding a (basic) schema can be a hu
 
 ### Example
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 (Algorithm) How to <strong>2-3 tree</strong> is represented when using a <strong>red-black tree</strong>?
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-front flashcard-ko">
+<Flashcard face="front" valid={false}>
 One way to see this equivalence is to "move up" the red nodes in a graphical representation of the red–black tree, so that they align horizontally with their parent black node, by creating together a horizontal cluster. In the B-tree, or in the modified graphical representation of the red–black tree, all leaf nodes are at the same depth.
-</div>
-++++
+</Flashcard>
 
 
 <Admonition type="caution" className="license" title="Note for non-programmers">
 All computer programs produce data by manipulating data (inputs versus outputs). Internally, there exists many ways to store them, each one having advantages and drawbacks. 2-3 trees and red-black trees are examples of structures to store the same data using different formats.
 </Admonition>
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 (Algorithm) How to <strong>2-3 tree</strong> is represented when using a <strong>red-black tree</strong>?
-</div>
-++++
+</Flashcard>
 
-++++
-<div class="flashcard flashcard-front flashcard-ok">
+<Flashcard face="front" valid={true}>
 <img width="550" src="/posts_resources/2018-12-01-10-rules-for-better-flashcards/algorithm-trees.jpg"/>
-</div>
-++++
+</Flashcard>
 
 
 
@@ -757,7 +611,7 @@ All computer programs produce data by manipulating data (inputs versus outputs).
 Anki also supports animated pictures (e.g., gif files). Very useful to animate some diagrams but keep the animation very short and the diagram not too complex. You don't want to watch a video while reviewing your flashcards.
 </Admonition>
 
-+++<span class="flashcard-advantage">Advantage</span>+++: Learn the information using the best media. Sometimes, a small diagram or a sketchnote is all you need to get the idea. The simpler, the more effective.
+<span class="flashcard-advantage">Advantage</span>: Learn the information using the best media. Sometimes, a small diagram or a sketchnote is all you need to get the idea. The simpler, the more effective.
 
 
 ## Custom is better than shared
@@ -774,7 +628,7 @@ On the Internet, you will find numerous discussions about using those specialize
 
 Nevertheless, some subjects like vocabulary makes good candidates for sharing (look at Anki shared decks, the majority concerns foreign languages). Use them with caution to get started or if you have no plan to get really far in this particular language. Otherwise, adapt them to fit your own workflow (change the flashcard style, import them into the same deck, complete them with new cards, etc).
 
-+++<span class="flashcard-advantage">Advantage</span>+++: Creating custom flashcards is the best way to stay in control of what you learn. The only downside is it requires time, a lot of time, but remember we lay the first stone of learning when we are creating them in the first place.
+<span class="flashcard-advantage">Advantage</span>: Creating custom flashcards is the best way to stay in control of what you learn. The only downside is it requires time, a lot of time, but remember we lay the first stone of learning when we are creating them in the first place.
 
 ## Afterword
 

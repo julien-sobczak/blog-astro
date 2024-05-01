@@ -10,7 +10,7 @@ unofficialTags: ['flashcards']
 # - '2020/12/26/anki-scripting-for-non-programmers'
 # - '2018/12/01/10-rules-for-better-flashcards'
 # - '2018/12/30/should-i-create-a-flashcard'
-done: false
+done: true
 ---
 import Admonition from '../../components/Admonition.astro'
 import Marker from '../../components/Marker.astro'
@@ -30,7 +30,8 @@ This is the first part in this lengthy article on Anki and how to use it to crea
 
 A good start is to begin by cloning the official repository of Anki:
 
-```
+```shell
+$ git clone https://github.com/dae/anki.git
 ```
 
 When the clone of the repository is finished, enter into this new directory `anki` et let's see how the code is organized.
@@ -41,6 +42,7 @@ When the clone of the repository is finished, enter into this new directory `ank
 Not all directories are pertinent for our analysis. Here is an annotated description of each folder:
 
 ```
+anki/          -> Main Anki logic. Contains the model and the SRS algorithm
   | importing/ -> Logic to import various file formats including Anki1, Anki2,
                   Supermemo (a paid Anki-like tool)
   | template/  -> Anki uses a modified version of Pystache to provide
@@ -69,7 +71,7 @@ aqt.run()
 ```
 
 <Admonition type="tip" className="None" title="Where are stored my cards?">
-Anki stores your decks in the folder associated with your profile. This folder stores all of your Anki data in a single location, to make backups easy. By default, Anki uses the folder ~/Documents/Anki under your home directory:
+Anki stores your decks in the folder associated with your profile. This folder stores all of your Anki data in a single location, to make backups easy. By default, Anki uses the folder `~/Documents/Anki` under your home directory:
 
 ```python title="aqt/profiles.py"
 def _defaultBase(self):
@@ -101,8 +103,7 @@ def _defaultBase(self):
                 return os.path.join(loc, "Anki")
 ```
 
-To tell Anki to use a different location, please see: https://ankisrs.net/docs/manual.html#startupopts
-This could be very useful when you experiment with Anki to avoid corrupting our data!
+To tell Anki to use a different location, please see this [manual](https://ankisrs.net/docs/manual.html#startupopts). This could be very useful when you experiment with Anki to avoid corrupting our data!
 </Admonition>
 
 Now, we know where is stored our database, let's inspect the different files present under this directory.
@@ -159,16 +160,13 @@ https://github.com/ankidroid/Anki-Android/wiki/Database-Structure
 
 We will start from this description and complete where information is missing.
 
-.How to inspect the Anki database?
-<Admonition type="tip" className="None" title="apkg, anki2, what are these file extensions?">
-
-- Download the SQLite DB Browser: https://sqlitebrowser.org/
-- Unzip the .apkg file that has been generated
-- Open the collection.anki2 with SQLiteBrowser (launch the executable on Windows) (be sure to consider all file extensions)
-- You should see a dialog like this:
+<Admonition type="tip" className="None" title="How to inspect the Anki database?">
+1. Download the SQLite DB Browser: https://sqlitebrowser.org/
+2. Unzip the .apkg file that has been generated
+3. Open the collection.anki2 with SQLiteBrowser (launch the executable on Windows) (be sure to consider all file extensions)
+4. You should see a dialog like this:
+    <img src="/posts_resources/2016-12-26-anki-scripting/sqlitebrowser-anki2-collection.png" width="750" />
 </Admonition>
-
-<img src="sqlitebrowser-anki2-collection.png" width="750" />
 
 What follows is the complete annotated schema. You could safely skim this part and use it as a reference. Note: the model in Python files is rarely documented.
 
@@ -547,7 +545,7 @@ Whose definition follows:
 
 - Field `dconf` contains the JSON representation of a Deck Configuration:
 
-<img src="deck-configuration.png" />
+<img src="/posts_resources/2016-12-26-anki-scripting/deck-configuration.png" />
 
 ```json
 {
@@ -760,7 +758,8 @@ We could use the sqlite CLI to generate a dump before and after each operation e
 - Place the `sqlite3.exe` along your `collection.anki2` file.
 - Open an interpreter prompt (`cmd` on Windows)
 
-```
+```shell
+$ sqlite3 collection.anki2
 sqlite>.databases
 seq name  file
 --- ----- --------------------
@@ -783,7 +782,7 @@ On Windows, just click right on the icon and update the target field to add the 
 
 Relaunch Anki, select your language, and the home screen should appear, containing only the deck "Default":
 
-<img src="anki-home.png" />
+<img src="/posts_resources/2016-12-26-anki-scripting/anki-home.png" />
 
 By default, Anki creates a default collection. This is the only row present in database at first:
 
@@ -808,7 +807,7 @@ Let's try to create a new deck.
 
 #### Deck creation
 
-<img src="anki-new_deck.png" />
+<img src="/posts_resources/2016-12-26-anki-scripting/anki-new_deck.png" />
 
 Internally Anki just update the default collection to add the new deck in the `dconf` field:
 
@@ -836,7 +835,7 @@ def id(self, name, create=True, type=defaultDeck):
 
 #### Card creation
 
-<img src="anki-new_card.png" />
+<img src="/posts_resources/2016-12-26-anki-scripting/anki-new_card.png" />
 
 Anki updates the collection to add the new tag (field `tags`):
 
@@ -920,7 +919,7 @@ def addNote(self, note):
 
 Let's try a card of type "Reversed":
 
-<img src="anki-new_reversed_card.png" />
+<img src="/posts_resources/2016-12-26-anki-scripting/anki-new_reversed_card.png" />
 
 Adding a reversed card does not change anything in the UI code. The only difference is that the previous method `addNode` defined in `collection.py` will returned two cards instead of one in our first example. In database, two rows will be added in the table `cards`:
 
@@ -939,9 +938,9 @@ INSERT INTO "cards"
 
 Studying is the act of reviewing our previously created card. After each review, the SRS algorithm runs to reschedule the card. The metadata required by the algorithm is updated to reflect the new due date.
 
-<img src="anki-study.png" />
+<img src="/posts_resources/2016-12-26-anki-scripting/anki-study.png" />
 
-<img src="anki-study_card.png" />
+<img src="/posts_resources/2016-12-26-anki-scripting/anki-study_card.png" />
 
 For this card, we choose the second button, to study again the card in 10 minutes from now.
 
@@ -1011,7 +1010,10 @@ In the next part, we are going to use this knowledge to create programmatically 
 
 ## Anki Scripting Background
 
-*Creating a flashcard is the first step to learn something new. To make it more memorable, you could customize the content of your flashcard: add a sound with the pronunciation of a new word, add a funny picture, and so one. Therefore, creating flashcards manually is important. But creating flashcards through the UI is also time-consuming in some cases. What if we need to create thousands of flashcards to learn the 5000 most common words in a new language?*
+<Admonition type="note" title="Motivations">
+Creating a flashcard is the first step to learn something new. To make it more memorable, you could customize the content of your flashcard: add a sound with the pronunciation of a new word, add a funny picture, and so one. Therefore, creating flashcards manually is important. But creating flashcards through the UI is also time-consuming in some cases. What if we need to create thousands of flashcards to learn the 5000 most common words in a new language?
+</Admonition>
+
 
 ### Introduction
 
@@ -1027,7 +1029,8 @@ This post will concentrate on the second option. The first option could be imple
 
 The Anki source is not intended to be reused in other program so the code is not packaged as a Python module we could install as easily as:
 
-```
+```shell
+$ pip install anki
 # Doesn't work
 ```
 
@@ -1035,7 +1038,8 @@ One solution is to clone the official repository and put our code along the Anki
 
 First, create new project:
 
-```
+```shell
+$ git init anki-scripting
 $ cd anki-scripting/
 ```
 
@@ -1054,7 +1058,8 @@ anki
 
 Then, we need to download Anki dependencies. In this post, we will use [Pip](https://pypi.python.org/pypi/pip), the classic tool for installing Python packages. To avoid polluting existing Python projects you could have in local, we will use [virtualenv](https://virtualenv.pypa.io/en/stable/). The recommended way to do that in Python is to use virtualenv to isolate our project from other projects, so two projects could depend on conflicting versions of the same dependency. To install virtualenv globally, run the following command:
 
-```
+```shell
+$ sudo pip install virtualenv
 ```
 
 <Admonition type="note">
@@ -1063,19 +1068,22 @@ Then, we need to download Anki dependencies. In this post, we will use [Pip](htt
 
 At the root of the repository, execute the following command to create a new virtual environment:
 
-```
+```shell
+$ virtualenv venv
 $ source venv/bin/activate
 ```
 
 When you need to switch to another project, just run the commands:
 
-```
+```shell
+$ deactivate  # added by the activate script
 $ source <myotherproject>/venv/bin/activate
 ```
 
 So, to install Anki dependencies, everything we need to do is run the Pip installer, passing the `requirements.txt` file present at the root of the Anki repository. This file contains the list of Python modules required by Anki.
 
-```
+```shell
+$ pip install -r anki/requirements.txt
 ```
 
 We could now create our first script. Add a new file at the root of the project:
@@ -1115,6 +1123,7 @@ for cid in col.findNotes("tag:English"):
 When running the script, you will see the "Front" field of each card displayed to the console:
 
 ```
+Car
 Dog
 House
 Train
@@ -1125,7 +1134,8 @@ Congratulations! You just have created your first Python script using the Anki A
 
 As time passes, Anki source will be updated. To update our submodule, just move to the submodule directory and update the HEAD reference like any other repository. Do not forget to commit in order to update the reference maintained by the parent repository:
 
-```
+```shell
+$ cd anki
 $ git pull
 $ cd ..
 $ git commit -am "Update Anki source"
@@ -1142,6 +1152,7 @@ Let's begin with a basic version to dump each card answer in its own HTML file.
 First, we create a new file `generate_site.py` inside a new folder `userscripts` at the root of the project. The folder hierarchy should be:
 
 ```
+anki/ <-- submodule
   anki/
   aqt/
   ...
@@ -1219,9 +1230,9 @@ for cid in col.findCards("tag:Git"):
     card_file.close()
 ```
 
-The code iterate over the card identifiers and begin by collecting required information about the card (template, css, ...). Once this is done, we create the HTML content by injecting the model CSS and the rendered card content (fields are replaced by values with the method `renderQA`).
+The code iterates over the card identifiers and begin by collecting required information about the card (template, css, ...). Once this is done, we create the HTML content by injecting the model CSS and the rendered card content (fields are replaced by values with the method `renderQA`).
 
-When running, the program generate a list of files inside the folder defined by the constant `OUTPUT_DIRECTORY`. Here is the content of the file `card-1429876617511.html`:
+When running, the program generates a list of files inside the folder defined by the constant `OUTPUT_DIRECTORY`. Here is the content of the file `card-1429876617511.html`:
 
 <img src="/posts_resources/2016-12-26-anki-scripting/card-export-HTML.png" />
 
@@ -1308,6 +1319,7 @@ def extractMedia(text):
 When running the program again, a new folder `medias` will be created inside the target directory:
 
 ```
+out/
   medias/
     paste-2911987826689.jpg
 ```
@@ -1703,9 +1715,11 @@ index_file.close()
 
 ## Case Study: Convert an EPUB to Flashcards
 
-_Let's me present you the context. We just bought a new [book to learn the common English expressions](https://www.amazon.fr/Harraps-Expressions-anglaises-Collectif/dp/2818704480). This book contains around 4000 expressions. If we consider it takes two minutes to create a flashcard, more than 100 hours will be required to overcome this daunting task. So, what can we do? One solution is to script the creation of the flashcards and this is exactly what we are going to do here._
+<Admonition type="note" title="Motivations">
+Let's me present you the context. We just bought a new [book to learn the common English expressions](https://www.amazon.fr/Harraps-Expressions-anglaises-Collectif/dp/2818704480). This book contains around 4000 expressions. If we consider it takes two minutes to create a flashcard, more than 100 hours will be required to overcome this daunting task. So, what can we do? One solution is to script the creation of the flashcards and this is exactly what we are going to do here.
+</Admonition>
 
-This post will be divided in two sections. In the first part of this post, we are going to create a small program to read an Epub file in Python. In the second part, we will extend this program to insert the content directly into our Anki collection.
+This case study will be divided in two sections. In the first part, we are going to create a small program to read an Epub file in Python. In the second part, we will extend this program to insert the content directly into our Anki collection.
 
 <Admonition type="note" className="None" title="But does it not preferable to manually create the flashcards in order to retain more?">
 Of course! Creating manually a flashcard is always better than automating its creation. When you enter the words on the keyboard, or when you search on Google Images a memorable picture, you create connections inside your memory and this considerably help you to start fixing this new information. The manual creation is perfectly fine when learning your first words in a new language because it is easy to find a great picture or a personal story about it. Here, we are interested in common idioms, phrases that often does not mean what common sense would say. Relevant memorable pictures are difficult to find, so creating the flashcards manually does not help that much to fix the information in your brain. It is better to spend the 100 or more hours on studying the flashcards than on creating them.
@@ -1847,7 +1861,8 @@ Let's see how the HTML looks like. The `Page_1.html` page contains only a pictur
 If we simplify the HTML definition, we get something like this:
 
 ```
-  .**Chapter-Heading_Toc** ---------------> New category found
+.Bloc-de-texte-standard#_idContainer* --> New page containing expressions
+  .*Chapter-Heading_Toc* ---------------> New category found
 
   ._1_IDIOM ----------------------------> New idiom found
   .EXEMPLE-IDIO ------------------------> An example of the idiom examples
@@ -1996,7 +2011,7 @@ Before importing a flashcard, we need to design the card template. By default, A
 
 We have two solutions: either we create the card type manually using the Anki API directly in Python, or create the card type through the GUI to benefit the direct feedback when defining the CSS declarations. We will choose the second solution but implementing the first one is relatively easy using code similar to the code we already wrote.
 
-So, run the Anki program, and go to *"Tools > Manage Note Types..."*, click on *"Add"*, and choose *"Clone: Basic (with reversed card)"* as the model to clone. Name our note type **Idiom**.
+So, run the Anki program, and go to *"Tools > Manage Note Types..."*, click on *"Add"*, and choose *"Clone: Basic (with reversed card)"* as the model to clone. Name our note type *Idiom*.
 
 Return to the "Manage Note Types" screen and click on *"Fields..."*. Remove the `Front` and `Back` fields and add four new fields like this:
 
@@ -2052,7 +2067,7 @@ Here is the full CSS code:
 
 The back card is very similar. You only need to invert the `French` and `English` fields as shown in the following screenshot:
 
-<img src="note-type-card2.png" />
+<img src="/posts_resources/2016-12-26-anki-scripting/note-type-card2.png" />
 
 Then, close Anki to force it to write the changes to disk. Let's go back to our program to add a new line at the end of the source code:
 
@@ -2232,7 +2247,8 @@ with open(html_file, 'r') as input_file:
 
 To convert the previous HTML file to a CSV file, launch the program using the command:
 
-```
+```shell
+$ python html2csv.py 40000_frequency_list_gutenberg.html > \
       40000_frequency_list_gutenberg.csv
 ```
 
@@ -2292,7 +2308,8 @@ for word, rank in frequencies_sorted:
 
 To generate the new list:
 
-```
+```shell
+$ python calculate_frequency_list.py > my_english_frequency_list.csv
 ```
 
 If we inspect the resulting file, we notice numerous unwanted words such as "Mickey." Let's remove them by updating our program:
@@ -2625,7 +2642,8 @@ The `<text>` tag contains a x-wiki document whose main syntax is defined [here](
 
 Here is an shortened example of a x-wiki document (about the word `keyboard`):
 
-```
+```txt {'1':2,61} {'2':14,48} {'3':27,37} {'4':33,54} {'5':X}
+{{also|Keyboard}}
 ==English==
 {{wikipedia|dab=keyboard|lang=en}}
 [[Image:Player piano keyboard.jpg|thumb|100px|A piano keyboard]]
@@ -2723,7 +2741,8 @@ On this example, the definitions are easily parseable but not all the words are 
 
 Here the same content as x-wiki:
 
-```
+```txt {'1':9} {'2':10}
+====Noun====
 {{en-noun}}
 
 # {{lb|en|dated}} A [[wheeled]] [[vehicle]],
@@ -2838,14 +2857,16 @@ Here is a screenshot of this application:
 
 To launch locally the web application, you need to first retrieve the source and build the archive: (JDK 1.7 > required)
 
-```
+```shell
+$ git clone https://github.com/julien-sobczak/anki-scripting.git
 $ cd anki-scripting/anki-vocabulary-assistant
 $ mvn clean package
 ```
 
 Then, run the following command to start the web application:
 
-```
+```shell
+$ java \
   -DdeveloperKey=<YOUR_DEVELOPER_KEY> \
   -Dcx=<YOUR_CONTEXT_KEY> \
   -DoutputDir="~/output/" \
@@ -3165,7 +3186,7 @@ So, let's add the code to listen the key press:
 
 The code makes an HTTP request to a new service we need to define in our controller `ApiController`:
 
-```java title="ApiController" {'1':18} {'2':22}
+```java title="ApiController" {'1':17-18} {'2':22}
 @RestController
 @RequestMapping("/api")
 public class ApiController {
@@ -3528,7 +3549,7 @@ The `Card 4`, `Card 5`, and `Card 6` display a sentence with a missing word and 
 
 Where the front template is defined like this:
 
-``` {'1':1}
+```txt {'1':1}
 {{#SampleA}}
 <small>Complete</small> {{SampleA}}
 {{/SampleA}}
@@ -3541,7 +3562,7 @@ Where the front template is defined like this:
 
 And the back template:
 
-``` {'1': 13}
+```txt {'1': 13}
 {{FrontSide}}
 
 <hr id=answer>
@@ -3979,9 +4000,10 @@ if __name__ == '__main__':
 
 To launch the program, first close our Anki application if running and enter the following command:
 
-```
+```shell
+$ pwd
 ~/workspace/anki-scripting/anki-vocabulary-assistant
-python scripts/load_word.py \
+$ python scripts/load_word.py \
   --folder save/
   --from 1
   --to 1000
@@ -3990,7 +4012,7 @@ python scripts/load_word.py \
 
 Relaunch Anki. You should see new cards under the English deck.
 
-Congratulations! We finally comes to the end of this lengthy post. We have seen how the internal API of Anki could be used in various scenarios. This is not complete, however. It remains the most important task -- study all of these newly created flashcards!
+**Congratulations!** We finally comes to the end of this lengthy post. We have seen how the internal API of Anki could be used in various scenarios. This is not complete, however. It remains the most important task -- study all of these newly created flashcards!
 
 
 <Admonition type="note" className="remember" title="To remember">
