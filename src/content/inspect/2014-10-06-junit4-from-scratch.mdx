@@ -310,7 +310,7 @@ public class OurSimpleClassRunner implements Runner {
     }
 
     public void run(RunNotifier notifier) {
-        List<Method> testMethods = introspector.getTestMethods(Test.class); // <1>
+        List<Method> testMethods = introspector.getTestMethods(Test.class);
 
         for (Method eachTestMethod : testMethods) {
             invokeTestMethod(eachTestMethod, notifier);

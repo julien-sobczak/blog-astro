@@ -1,6 +1,7 @@
 ---
 slug: "2021/06/19/unicode-for-curious-developers"
 title: "Unicode for Curious Developers Loving Code 😉"
+subtitle: The "Minimum" Every Developer Must Know About Unicode
 author: "Julien Sobczak"
 date: 2021-06-19
 subject: "Unicode"
@@ -8,7 +9,7 @@ excerpt: >
   Unicode is what allows me to say hello in over 100 languages—እው ሰላም ነው (Amharic), 你好 (Chinese), γεια (Greek), שלום (Hebrew), नमस्ते (Hindi), こんにちは (Japanese), سلام (Persian),cześć (Polish), Привет (Russian), and Unicode is what allows you to understand the difference between "You are funny 🤣" and "You are funny 👎." The web would not be the same without Unicode. But Unicode is not magic, and developers have to understand it to create applications running in a multilingual world.
 excerpt_only: true
 tags: []
-done: false
+done: true
 ---
 import Admonition from '../../components/Admonition.astro'
 import Marker from '../../components/Marker.astro'
@@ -82,7 +83,7 @@ As often, if you want to have a good overview of a topic, you have to understand
 
 The story begins well after the origin of speech in the oldest known cave painting, located in France within Chauvet Cave. These paintings, dated to around 30,000 BC, were mainly symbols, and even if a picture is worth a thousand words, we cannot consider these [_proto-writing_](https://en.wikipedia.org/wiki/Proto-writing) systems to be expressive enough to be considered like [_writing systems_](https://en.wikipedia.org/wiki/Writing_system). Drawing is not writing.
 
-We have to move forward to the beginning of the Bronze Age (around 3000 BC) to discover the earliest writing systems, in particular, the famous Egyptian hieroglyphs. They were still symbols, but once their significance was revealed, the meaning of hieroglyphs was unequivocal. *A writing system represents communication visually, using a shared understanding between writers and readers of the meaning behind the sets of characters that make up a script.*
+We have to move forward to the beginning of the Bronze Age (around 3000 BC) to discover the earliest writing systems, in particular, the famous Egyptian hieroglyphs. They were still symbols, but once their significance was revealed, the meaning of hieroglyphs was unequivocal. **A writing system represents communication visually, using a shared understanding between writers and readers of the meaning behind the sets of characters that make up a script.**
 
 Concerning hieroglyphs, this shared understanding was completely lost during the medieval period. The breakthrough in decipherment finally came when Napoleon's troops discovered the Rosetta Stone in 1799. The stone refuted the assumption that hieroglyphs recorded ideas and not the sounds of the language. Hieroglyphs are not drawing but true characters. This idea will serve as the main inspiration for the first alphabets, including the Latin alphabet I am currently using on my computer.
 
@@ -97,7 +98,7 @@ ASCII was the first widely used encoding and used only seven bytes, enough to re
 
 <img src="/posts_resources/2021-06-19-unicode-for-curious-developers/ascii-charset.png" title="ASCII character set" width="600" />
 
-Note that ASCII reserves [the first 32 codes for non-printable control characters](http://www.catb.org/esr/faqs/things-every-hacker-once-knew/#_ascii). For example, the character 10 represents a line feed, causing a __printer__ to advance its paper to the next line and the character 8 is emitted by the __terminal__ when pressing Ctrl+D to represent the "end of file."
+Note that ASCII reserves [the first 32 codes for non-printable control characters](http://www.catb.org/esr/faqs/things-every-hacker-once-knew/#_ascii). For example, the character 10 represents a line feed, causing a _printer_ to advance its paper to the next line and the character 8 is emitted by the _terminal_ when pressing Ctrl+D to represent the "end of file."
 
 Gradually people wanted more characters and new character encodings started to use the other 128 values available when taking all 8 bits of a byte.[^3] The most famous were [ISO 8859-1](https://en.wikipedia.org/wiki/ISO/IEC_8859-1) and [Windows 1252](https://en.wikipedia.org/wiki/Windows-1252), the latter being a superset of the former.
 
@@ -113,7 +114,7 @@ computers, the risk of corruption was high as different character encodings ofte
 
 ### <a name="sect-story-unicode"></a>The Rise of Unicode
 
-The origins of Unicode dates back to 1987, but the name Unicode first appeared the next year in the document [_Unicode 88_](https://unicode.org/history/unicode88.pdf). **The intent of Unicode was to create "a __uni__que, __uni__fied, __uni__versal en__cod__ing," so that computers would only have to implement a single encoding to support all languages**.
+The origins of Unicode dates back to 1987, but the name Unicode first appeared the next year in the document [_Unicode 88_](https://unicode.org/history/unicode88.pdf). **The intent of Unicode was to create "a _uni_que, _uni_fied, _uni_versal en_cod_ing," so that computers would only have to implement a single encoding to support all languages**.
 
 Unicode began with a 16-bit design (i.e., 65,536 codes "to encompass the characters of all the world's living languages"[^2]), but was extended in 1996 to support more than a million code points. The motivation was to allow the encoding of many historic scripts (e.g., the Egyptian hieroglyphs) and thousands of rarely used or obsolete characters that had not been anticipated as needing encoding (e.g., rarely used Kanji or Chinese characters, many of which are part of personal and place names, making them rarely used, but much more essential than envisioned in the original architecture of Unicode). History is always surprising.
 
@@ -154,8 +155,7 @@ Unicode can be used informally to refer to the _Unicode Standard_, the encoding 
 
 The Unicode Standard is the reference document and is [freely accessible online](http://www.unicode.org/versions/latest/) (the [last edition published as a book](https://www.amazon.com/Unicode-Standard-Version-5-0-5th/dp/0321480910/) dates back to 2006, and recent editions are available as Print-on-Demand (POD) for purchase on [lulu.com](https://www.lulu.com/en/us/shop/unicode-consortium/the-unicode-standard-version-130-volume-1/paperback/product-qkgep6.html)). The [current PDF version](https://www.unicode.org/versions/Unicode13.0.0/UnicodeStandard-13.0.pdf) contains more than 1000 pages, but only the first 300 pages define Unicode and are a must-read if you want to go deeper on the subject. The remaining pages examine all supported scripts one by one.
 
-The main contribution of the Unicode Standard is the _Unicode Character Table_. *Unicode specifies a numeric value (code point) and a name for every defined
-character*. In this respect, it is similar to other character encoding standards from ASCII
+The main contribution of the Unicode Standard is the _Unicode Character Table_. **Unicode specifies a numeric value (code point) and a name for every defined character**. In this respect, it is similar to other character encoding standards from ASCII
 onward. But the Unicode Standard is far more than a simple encoding of characters. **Unicode also associates a rich set of semantics with each encoded character**—properties like case and directionality required for interoperability and correct behavior in implementations. These semantics are cataloged in the _Unicode Character Database_, a collection of data files discussed at length in the last part.
 
 **The Unicode Character Table has an overall capacity for more than 1 million characters**, which is more than sufficient for all the world's languages, but also for currency symbols, punctuation marks, mathematical symbols, technical symbols, geometric shapes, dingbats, and emojis. The Unicode Standard does not encode personal characters like logos but reserves 6,400 code points for private use in the Basic Multilingual Plane (BMP), the first 65,536 code points, and more than 100,000 private code points overall.
@@ -165,16 +165,19 @@ onward. But the Unicode Standard is far more than a simple encoding of character
 BUT.
 
 * Unicode includes _compatibility characters_, which would not be included if they were not present in other standards.[^5] The idea is to make it easy to have a one-to-one mapping between the Unicode Standard and other standards. For example, U+2163 “IV” is the roman numeral four even if we could have used two existing characters to represent it.
+
 * Unicode includes _combining characters_, which are characters to be positioned relative to the previous base characters. Accents are implemented using combining characters, so U+0065 e + U+0302  ̂ → ê, and symbols can be composed using the same mechanism, so:
-+
-<img src="/posts_resources/2021-06-19-unicode-for-curious-developers/unicode-standard-figure-2-17.png" title="Combining Enclosing Marks for Symbols (From Unicode Standard, Figure 2.17)" width="300" />
-+
-Unicode does not restrict the number of combining characters that may follow a base character, but implementations are not obliged to support all of them.
-+
-<img src="/posts_resources/2021-06-19-unicode-for-curious-developers/unicode-standard-figure-2-21.png" title="Stacking Sequences (From Unicode Standard, Figure 2.21)" width="500" />
+
+    <img src="/posts_resources/2021-06-19-unicode-for-curious-developers/unicode-standard-figure-2-17.png" title="Combining Enclosing Marks for Symbols (From Unicode Standard, Figure 2.17)" width="300" />
+
+* Unicode does not restrict the number of combining characters that may follow a base character, but implementations are not obliged to support all of them.
+
+    <img src="/posts_resources/2021-06-19-unicode-for-curious-developers/unicode-standard-figure-2-21.png" title="Stacking Sequences (From Unicode Standard, Figure 2.21)" width="500" />
+
 * Unicode recognizes _equivalent sequences_, which are two sequences using different Unicode codes to represent the same character.
-+
-<img src="/posts_resources/2021-06-19-unicode-for-curious-developers/unicode-standard-figure-2-23.png" title="Equivalent Sequences (From Unicode Standard, Figure 2.23)" width="400" />
+
+    <img src="/posts_resources/2021-06-19-unicode-for-curious-developers/unicode-standard-figure-2-23.png" title="Equivalent Sequences (From Unicode Standard, Figure 2.23)" width="400" />
+
 * Unicode includes _special characters_. For example, UTF-16 and UTF-32 are sensible to the endianness of the hardware and often include a Byte Order Mark (BOM), which is composed of two code points—U+FEFF `zero width no-break space` and U+FFFE (a special character). Implementations can detect which byte ordering is used in a file based on the order of these two code points. Another common example is the U+FFFD `replacement character` � used to represent “unknown” characters.
 
 We will talk more about these particularities when covering the implementation.
@@ -209,17 +212,17 @@ These blocks and scripts are also used to organize the [Unicode Code Charts](htt
 
 The [Unicode Character Database](https://www.unicode.org/reports/tr44) (UCD) is a set of documentation and data files [accessible online](https://www.unicode.org/Public/UCD/latest/ucd/). These files contain more than 100 character properties, including:
 
-* A name +
+* A name <br/>
   → Useful to refer to a character using a unique identifier instead of a hexadecimal value, like using the name `tab` instead of U+0009.
-* The general category (basic partition into letters, numbers, symbols, punctuation, and so on). +
+* The general category (basic partition into letters, numbers, symbols, punctuation, and so on). <br/>
   → Useful to determine the primary use (letter, digit, punctuation, symbol) when implementing functions like `isDigit()`.
-* Some general characteristics (whitespace, dash, ideographic, alphabetic, noncharacter, deprecated, and so on) +
+* Some general characteristics (whitespace, dash, ideographic, alphabetic, noncharacter, deprecated, and so on) <br/>
   → Useful to determine the kind of character like digits.
-* Some display-related properties (bidirectional class, shaping, mirroring, width, and so on) +
+* Some display-related properties (bidirectional class, shaping, mirroring, width, and so on) <br/>
   → Useful when rendering the text on screen.
-* The case (upper, lower, title, folding—both simple and full) +
+* The case (upper, lower, title, folding—both simple and full) <br/>
   → Useful to determine if a character is uppercase.
-* The script and block a character belongs. +
+* The script and block a character belongs. <br/>
   → Useful to find characters commonly used together.
 * and a lot more!
 
@@ -250,8 +253,8 @@ Where ([see full details](https://www.unicode.org/reports/tr44/#UnicodeData.txt)
 
 `emoji-data.txt` is the main file concerning emojis:
 
-.emoji/emoji-data.txt
-```
+
+```txt title="emoji/emoji-data.txt"
 1F600         ; Emoji                # E1.0   [1] (😀)       grinning face
 1F601..1F606  ; Emoji                # E0.6   [6] (😁..😆)    beaming face with smiling eyes..grinning squinting face
 1F607..1F608  ; Emoji                # E1.0   [2] (😇..😈)    smiling face with halo..smiling face with horns
@@ -277,8 +280,7 @@ The Unicode Standard provides three distinct encoding forms for Unicode characte
 
 <img src="/posts_resources/2021-06-19-unicode-for-curious-developers/unicode-standard-figure-2-11.png" title="Unicode Encoding Forms (From Unicode Standard, Figure 2.11)" width="500" />
 
-.The Principle of Nonoverlapping
-<Admonition type="note" className="None" title="UnicodeData.txt">
+<Admonition type="note" className="None" title="The Principle of Nonoverlapping">
 Unicode encodings differ from many prior encodings that also use varied-length bytes but where overlap was permitted. For example:
 
 <img src="/posts_resources/2021-06-19-unicode-for-curious-developers/unicode-standard-figure-2-9.png" title="Overlap in Legacy Mixed-Width Encodings (From Unicode Standard, Figure 2.9)" width="500" />
@@ -321,9 +323,9 @@ func EncodeUTF32BE(codepoints []uint32) []byte {
 
 Decoding follows the inverse logic:
 
-. Read the next four bytes.
-. Extract the value to get the code point.
-. Repeat.
+1. Read the next four bytes.
+2. Extract the value to get the code point.
+3. Repeat.
 
 **Preferred Usage**: UTF-32 may be preferred where memory or disk storage space is not limited and when the simplicity of access to single code units is desired. For example, the first version of Python 3 represented strings as sequences of Unicode code points, but Python 3.3 changed the implementation to optimize the memory usage.
 
@@ -343,7 +345,8 @@ The solution (now called UTF-16) is to rely on two unused ranges 0xD800..0xDBFF 
 
 So, in UTF-16, the representation for all initial characters does not change. But when we need to encode one of the new characters, we will not use their code points--they just cannot fit in a 16-byte word--but use instead what is called a surrogate pair, which is a pair of pointers to retrieve the original code point. If we consider the binary representation of the two previously unused ranges:
 
-```
+```txt
+0xD800 = 0b1101100000000000 (110110 = high surrogate prefix)
 0xDFFF = 0b1101111111111111 (110111 =  low surrogate prefix)
 ```
 
@@ -404,9 +407,9 @@ func EncodeUTF16BE(codepoints []uint32) []byte {
 
 Decoding simply needs to test for surrogates:
 
-. Read the next two bytes.
-. If the value is in the range U+0000..U+FFFF, this is a code point.
-. Otherwise, retrieve the value from the high surrogate (0xD800..0xDBFF) and the low surrogate (0xDC00–0xDFFF) by reading two more bytes and extract the code point using basic mathematical operations.
+1. Read the next two bytes.
+2. If the value is in the range U+0000..U+FFFF, this is a code point.
+3. Otherwise, retrieve the value from the high surrogate (0xD800..0xDBFF) and the low surrogate (0xDC00–0xDFFF) by reading two more bytes and extract the code point using basic mathematical operations.
 
 **Preferred Usage**: UTF-16 provides a balanced representation that is reasonably compact as all the common, heavily used characters fit into a single 16-bit code unit. This encoding is often used by programming languages as their internal representation of strings for that reason, but for file encoding, UTF-8 is by far the most privileged encoding.
 
@@ -473,15 +476,15 @@ func EncodeUTF8(codepoints []uint32) []byte {
 
 Decoding is easy to implement.
 
-. Read the next byte.
-. If it starts by `0`, the character is encoded using 1 byte.
-. If it starts by `110`, the character is encoded using 2 bytes. (two leading ``1``s)
-. If it starts by `1110`, the character is encoded using 3 bytes. (three leading ``1``s)
-. If it starts by `11110`, the character is encoded using 4 bytes. (four leading ``1``s)
-. Read the remaining bits of the first byte.
-. Read the last six bits of the other composing byte(s).
-. Reassemble using basic mathematical operations to retrieve the code unit.
-. Repeat.
+1. Read the next byte.
+2. If it starts by `0`, the character is encoded using 1 byte.
+3. If it starts by `110`, the character is encoded using 2 bytes. (two leading ``1``s)
+4. If it starts by `1110`, the character is encoded using 3 bytes. (three leading ``1``s)
+5. If it starts by `11110`, the character is encoded using 4 bytes. (four leading ``1``s)
+6. Read the remaining bits of the first byte.
+7. Read the last six bits of the other composing byte(s).
+8. Reassemble using basic mathematical operations to retrieve the code unit.
+9. Repeat.
 
 **Preferred Usage**: UTF-8 is particularly compact when the text contains mainly ASCII characters, which is often the case for a large percent of the population, but UTF-8 is significantly larger for Asian writing systems compared to UTF-16 as these characters require three bytes in UTF-8.
 
@@ -503,44 +506,47 @@ We will split this section based on the different steps of a program. A program 
 When a program receives or reads a text, it needs to know the encoding. Having a text without knowing its encoding is useless—just a suite of 0s and 1s. Several strategies exist to determine the encoding. For example, the source code of your program is also a text that the compiler or the interpreter must decode. The common solutions are:
 
 * **Use the charset of the underlying operating system** (ex: Java). Unix operating system family uses UTF-8 encoding by default, which means the Java compiler expects source files to be encoded in UTF-8 too. Otherwise, the developer needs to define the encoding explicitly from the command line (`java -Dfile.encoding=UTF-16`) or when reading a text:
-+
-```java
-// $LC_CTYPE returns "UTF-8"
-File file = new File("/path/to/file");
-BufferedReader br = new BufferedReader(new InputStreamReader(
-    new FileInputStream(file), "UTF16")); // Override default encoding
-...
-```
+
+    ```java
+    // $LC_CTYPE returns "UTF-8"
+    File file = new File("/path/to/file");
+    BufferedReader br = new BufferedReader(new InputStreamReader(
+        new FileInputStream(file), "UTF16")); // Override default encoding
+    ...
+    ```
+
 * *Use a default encoding and allows the developer to override it.* (ex: Python). The Python interpreter expects UTF-8 files but supports [various syntaxes to specify a different encoding](https://www.python.org/dev/peps/pep-0263/).
-+
-```python
-#!/usr/bin/python env
-# -*- coding: utf-16 -*-
-```
-This magic comment must be the first or second line. As the interpreter ignores the encoding when reading the file, all characters until the encoding must only be ASCII characters. This technique was already used by browsers to determine the encoding of a web page. Initially, web servers were expected to return the HTTP header `Content-Type` (ex: `text/plain; charset="UTF-8"`) so that the browser knows the encoding before reading the HTML file, but in practice, a web server can serve different files written by different persons in different languages, and thus would also need to know the encoding... The common solution was instead to include the charset directly in the document as the first meta under the `<head>` section:
-+
-```html
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-...
-```
-* *Force a specific encoding.* (ex: Go). Go source code can only be written in UTF-8 files.
-+
-```shell
-$ cat > hello.go << EOF
-package main
 
-import "fmt"
+    ```python
+    #!/usr/bin/python env
+    # -*- coding: utf-16 -*-
+    ```
 
-func main() {
-        fmt.Println("hello world")
-}
-EOF
-$ iconv -f UTF-8 -t UTF-16 hello_UTF-16.go
-$ go run hello_UTF-16.go
-go: reading hello_UTF-16.go: unexpected NUL in input
-```
+    This magic comment must be the first or second line. As the interpreter ignores the encoding when reading the file, all characters until the encoding must only be ASCII characters. This technique was already used by browsers to determine the encoding of a web page. Initially, web servers were expected to return the HTTP header `Content-Type` (ex: `text/plain; charset="UTF-8"`) so that the browser knows the encoding before reading the HTML file, but in practice, a web server can serve different files written by different persons in different languages, and thus would also need to know the encoding... The common solution was instead to include the charset directly in the document as the first meta under the `<head>` section:
+
+    ```html
+    <html>
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    ...
+    ```
+
+* **Force a specific encoding.** (ex: Go). Go source code can only be written in UTF-8 files.
+
+    ```shell
+    $ cat > hello.go << EOF
+    package main
+
+    import "fmt"
+
+    func main() {
+            fmt.Println("hello world")
+    }
+    EOF
+    $ iconv -f UTF-8 -t UTF-16 hello_UTF-16.go
+    $ go run hello_UTF-16.go
+    go: reading hello_UTF-16.go: unexpected NUL in input
+    ```
 
 <Admonition type="note" className="None" title="The Byte Order Mark (BOM)">
 In practice, if a program only works with Unicode encodings (which is the goal of Unicode, after all), it can also check the _byte order mark_ (BOM), a magic number representing the Unicode character, `U+FEFF BYTE ORDER MARK`. Depending on the starting byte sequence (`0xEF,0xBB,0xBF` for UTF-8, `0xFE 0xFF` for UTF-16 in big endian, `0xFF 0xFE` for UTF-16 in little endian, [etc.](https://en.wikipedia.org/wiki/Byte_order_mark#Byte_order_marks_by_encoding)), the parser can detect the encoding (and the endianness). But the BOM is optional and is often missing in UTF-8 text because the BOM character is not a valid ASCII character, and that would break the ASCII backward compatibility supported by UTF-8.
@@ -957,8 +963,7 @@ print(len("\N{LATIN SMALL LETTER A}\N{COMBINING GRAVE ACCENT}"))
 Like most examples in this section, you can reproduce the same behavior in other languages like Java or Go. The fact is our Unicode text is really composed of two Unicode characters. The result may be considered correct or wrong depending on what you are looking for.
 
 
-[[sect-implementation-processing-equals]]
-#### `equals()`
+#### <a name="sect-implementation-processing-equals"></a>`equals()`
 
 Comparing if two strings are equals is not without surprise neither.
 
@@ -1032,14 +1037,14 @@ print(unicodedata.normalize('NFKC', "ℌ"))
 ```
 
 
-[[sect-implementation-processing-case]]
-#### Example: `upper()`
+#### <a name="sect-implementation-processing-case"></a>Example: `upper()`
 
 A function like `upper()` in Python is often used to make case-insensitive comparisons. But not all scripts use cases, and there aren't just two cases (ex: titlecase is used for book titles).
 
 _Case folding_ is defined by the Unicode Standard as a solution for caseless comparison of text to overcome these limitations, but Unicode also provides support to implement these classic functions using the _Unicode Character Database_—the set of data files containing character properties. In particular, we are looking for the property `Simple_Lowercase_Mapping` defined in the file `UnicodeData.txt`.
 
 ```
+0041;LATIN CAPITAL LETTER A;Lu;0;L;;;;;N;;;;0061;
 ...
 0061;LATIN SMALL LETTER A;Ll;0;L;;;;;N;;;0041;;0041
 ```
@@ -1260,8 +1265,8 @@ abstract class CharacterData {
 
 The classes `CharacterDataXX` contain the properties for each plane of the Unicode Character Table and are generated by the Java build process. The definition is present in `make/modules/java.base/gensrc/GensrcCharacterData.gmk`:
 
-.make/modules/java.base/gensrc/GensrcCharacterData.gmk
-```
+
+```txt title="make/modules/java.base/gensrc/GensrcCharacterData.gmk"
 # Rules to create $(SUPPORT_OUTPUTDIR)/gensrc/java.base/sun/lang/CharacterData*.java
 #
 
@@ -1496,8 +1501,7 @@ func to(_case int, r rune, caseRange []CaseRange) (mappedRune rune, foundMapping
 </dl>
 
 
-[[sect-implementation-processing-regex]]
-#### `matches()`
+#### <a name="sect-implementation-processing-regex"></a>`matches()`
 
 We will close the string manipulation section with a classic example: regular expressions.
 
@@ -1556,8 +1560,7 @@ public class StringTest {
 In Java, the metacharacter `\w` also matches `[a-zA-Z_0-9]` (which is faster than checking the Unicode Character Database). Other character classes exist like `\p{L}`. (`L` matches a single code point in the category "letter", but other values are possible: `N` for any kind of numeric character in any script, etc.) This syntax is also supported by Go.
 
 
-.Emojis in identifiers?
-<Admonition type="note" className="None" title="UnicodeData.txt">
+<Admonition type="note" className="None" title="Emojis in identifiers?">
 Most languages require source files to be encoded in Unicode, but that does not mean these languages accept any Unicode character in variable names. [Rules differs among languages](https://rosettacode.org/wiki/Unicode_variable_names) but most languages like Java, [Python](https://www.python.org/dev/peps/pep-3131/), and [Go](https://golang.org/ref/spec#Identifiers) accept only characters considered as letters or digits in the Unicode table (ex: ツ, Δ, π).
 
 Some languages do not have these restrictions. You can write [hieroglyphs in Hashell](https://twitter.com/t3xtm0de/status/600711130324008961):
@@ -1608,8 +1611,7 @@ echo $🙍‍♂️->🍽('🍪', '🍔', '🍟', '🍫');
 
 
 
-[[sect-implementation-writing]]
-### Writing
+### <a name="sect-implementation-writing"></a>Writing
 
 A program should usually output some texts, for example, when printing messages in the console or when sending documents to another program when calling a remote API.
 
@@ -1649,9 +1651,7 @@ Writing texts to the console, a file, or a socket makes no difference concerning
 
 
 
-
-[[sect-implementation-rendering]]
-### Rendering
+### <a name="sect-implementation-rendering"></a>Rendering
 
 Until now, we still haven't try to render Unicode text. Sooner or later, the text will have to be displayed on the screen of a computer device.
 
@@ -1661,8 +1661,8 @@ Until now, we still haven't try to render Unicode text. Sooner or later, the tex
 
 Here are the fonts available under MacOS:
 
-[source,]
-```
+```shell
+$ ls -1 /System/Library/Fonts/
 Apple Braille Outline 6 Dot.ttf
 Apple Braille Outline 8 Dot.ttf
 Apple Braille Pinpoint 6 Dot.ttf
@@ -1801,9 +1801,8 @@ Not all programs have to implement this logic from scratch. The library [FreeTyp
 Under the hood, this library depends on the shaping engine [HarfBuzz](https://github.com/harfbuzz/harfbuzz), which does a lot of the hard work. Both programs are written in C and are low-level code. Here is a simple program using FreeType to render a sequence of Unicode characters (the original code appears in this [StackOverflow thread](https://gist.github.com/jokertarot/7583938)):
 
 
-[source,c++]
-.clfontpng.cc
-```
+```cpp title="clfontpng.cc"
+// = Requirements: freetype 2.5, libpng, libicu, libz, libzip2
 // = How to compile:
 //  % export CXXFLAGS=`pkg-config --cflags freetype2 libpng`
 //  % export LDFLAGS=`pkg-config --libs freetype2 libpng`
@@ -2300,7 +2299,7 @@ If you are curious about this text rendering process, you can inspect the [Chrom
 
 Slack and emojis are inseparable. Emojis make long messages less boring and are indispensable to communicate your mood so that others can interpret your messages correctly. Slack even support custom emojis. How does Slack support so many different emojis? It's simple. They are not Unicode emojis.
 
-Indeed, Unicode is an evolving standard. Slack cannot wait for Unicode to approve your custom emoji during the next meeting. Slack cannot either use the private-use range of characters as it would mean regenerating new font files with your emojis and making sure your recipient receives the new font too. So, Slack is using images, even for standard Unicode characters when using the Slack web client (ex: the image <a href="https://a.slack-edge.com/production-standard-emoji-assets/13.0/apple-large/1f52b@2x.png","><img src="/posts_resources/2021-06-19-unicode-for-curious-developers/slack-pistol-emoji.png" height="18" /></a> represents the `PISTOL EMOJI` 🔫 U+1F52B).
+Indeed, Unicode is an evolving standard. Slack cannot wait for Unicode to approve your custom emoji during the next meeting. Slack cannot either use the private-use range of characters as it would mean regenerating new font files with your emojis and making sure your recipient receives the new font too. So, Slack is using images, even for standard Unicode characters when using the Slack web client (ex: the image <a href="https://a.slack-edge.com/production-standard-emoji-assets/13.0/apple-large/1f52b@2x.png" class="inline"><img src="/posts_resources/2021-06-19-unicode-for-curious-developers/slack-pistol-emoji.png" height="18" class="inline" /></a> represents the `PISTOL EMOJI` 🔫 U+1F52B).
 
 **Using images instead of Unicode characters is not problematic when the same application is used on both sides**. When you are sending a message on Slack Desktop, you know that your recipient will check it using one of the clients supported by Slack. Therefore, it is easy for Slack to make sure that the images for the emojis are available everywhere. The problem occurs when you try to copy/paste some text from Slack to a different application. In this case, what Slack is doing is replacing these images with textual representation like `:slightly_smiling_face:`:
 
@@ -2308,7 +2307,8 @@ Indeed, Unicode is an evolving standard. Slack cannot wait for Unicode to approv
 
 When copied into a different application:
 
-```
+```txt
+Hey :wave:,
 What’s up? :slightly_smiling_face:
 ```
 
@@ -2365,7 +2365,9 @@ When copying this URL to my browser:
 
 When pressing the Enter key, the URL becomes:
 
+```
 https://y.at/%F0%9F%93%96%F0%9F%92%BB%E2%9C%8D%EF%B8%8F%E2%9D%A4%EF%B8%8F
+```
 
 The fact is a URI must be composed of a limited set of ASCII characters consisting of digits, letters, and a few graphic symbols—some unreserved (`-`, `.`, `_`, `~`), some reserved (`:`, `/`, `?`, `#`, ...) as used as delimiters. Emojis are not directly supported. For these characters, the [URI RFC](https://datatracker.ietf.org/doc/html/rfc3986) defines a percent-encoding mechanism.
 
@@ -2374,6 +2376,7 @@ A percent-encoded octet is encoded as a character triplet, consisting of the per
 If you navigate on the YAT website, you will also see a ton of beautiful emojis displayed in large definition. These emojis are not Unicode emojis but hand-crafted illustrations in PNG format that you can also [browse online](https://emojis.y.at/our-emojis#download).
 
 <img src="/posts_resources/2021-06-19-unicode-for-curious-developers/YAT-Exploding_head.png" title="Shocked Face With Exploding Head Emoji U+1F92F rendered using the YAT artwork" width="350" />
+
 <img src="/posts_resources/2021-06-19-unicode-for-curious-developers/Unicode-Exploding_head.png" title="Shocked Face With Exploding Head Emoji U+1F92F rendered using the HTML character" width="300" />
 
 The Unicode character does not look good when displayed as a large text. The reason is most fonts like _Noto Color Emoji_ or _Apple Color Emoji_ are distributed with bitmap emoji glyphs. The [OpenType-SVG specification](https://help.fontself.com/en/articles/1241232-color-fonts-101) adds support for vector-based glyphs using SVG. Font files will be larger as a consequence but the rendering will not be affected when scaling a glyph. The support is still partial, but Adobe is already supporting [an OpenType-SVG font for Noto Color Emoji](https://github.com/adobe-fonts/noto-emoji-svg). Here is the rendering in Chrome:
@@ -2386,11 +2389,9 @@ The output is still not ideal (colors are missing), but we observe that the brow
 This ends the part about the implementation of Unicode.
 
 
+---
 
-'''
-
-[[sect-future]]
-## The Future
+## <a name="sect-future"></a>The Future
 
 Unicode provides a unique code for every character, in every program, on every platform. Unicode exists to preserve the world’s heritage. But with [approximately 6,000 languages spoken in the world today](http://www.unicode.org/education/consortwork.html), there are still many characters, writing systems to encode, and many new emojis to make Unicode even more popular.
 
@@ -2407,6 +2408,7 @@ The scope of Unicode is wider than simply assigning code points to characters. U
 * [How to deal with security concerns](https://unicode.org/reports/tr36/) regarding the many look-alike characters from writing systems around the world.
 </Admonition>
 
+---
 
 [^1]: The motivation for ASCII to save bytes was not really new. The problem occurred with the publication of the first books. [Gutenberg used 250 characters to produce in 1455 the 42-line Bible](http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.41.9729), the first printed book. Then, character sets became smaller and smaller in successive fonts, to reduce the costs of cutting, founding, composing, and distributing type.
 [^2]: In the document _Unicode 88_, the authors estimate the total number of characters to be less than 2<sup>14</sup> = 16,384, based on the union of all newspapers and magazines printed in the world in 1988.

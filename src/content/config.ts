@@ -5,6 +5,7 @@ const readCollection = defineCollection({
     draft: z.boolean().optional(),
     title: z.string(),
     shortTitle: z.string().optional(),
+    subtitle: z.string().optional(),
     date: z.date(),
     description: z.string().optional(), // FIXME make mandatory to use in RSS feed
     author: z.string(),
@@ -25,6 +26,7 @@ const writeCollection = defineCollection({
     draft: z.boolean().optional(),
     title: z.string(),
     shortTitle: z.string().optional(),
+    subtitle: z.string().optional(),
     date: z.date(),
     description: z.string().optional(), // FIXME make mandatory to use in RSS feed
     author: z.string(),
@@ -40,6 +42,7 @@ const inspectCollection = defineCollection({
     draft: z.boolean().optional(),
     title: z.string(),
     shortTitle: z.string().optional(),
+    subtitle: z.string().optional(),
     date: z.date(),
     description: z.string().optional(), // FIXME make mandatory to use in RSS feed
     author: z.string(),

@@ -1,11 +1,12 @@
 ---
 slug: "2019/03/10/floating-point-numbers-demystified"
 title: "Floating-Point Numbers Demystified"
+subtitle: "A Problem-Solving Approach to understand the IEEE 754 Standard"
 author: "Julien Sobczak"
 date: 2019-03-10
 subject: "Floating-Point Numbers"
 tags: ['languages', 'computer-science']
-done: false
+done: true
 ---
 import Admonition from '../../components/Admonition.astro'
 import Marker from '../../components/Marker.astro'
@@ -315,6 +316,7 @@ func main() {
 When running this program ([_Try it by yourself_](https://play.golang.org/p/$$_$$XL4UB8jYxu)):
 
 ```
+Are you serious?
 ```
 
 It's not a bug. The good news is we have already seen everything we need to know in the previous section to be able to explain this behavior.
@@ -584,7 +586,7 @@ We know they should be interpresent as zero and we have to ignore the hidden bit
 
 Let's try to find the smallest normalized number in single precision. We know that exponent can't be only 0 because it's reserved for zero, so, we have:
 
-```
+```ansi
 0 0000000[1m1[0m 00000000000000000000000
 ```
 
@@ -596,7 +598,7 @@ This number corresponds to:
 
 The next representable number is:
 
-```
+```ansi
 0 00000001 0000000000000000000000[1m1[0m
 ```
 
@@ -678,44 +680,49 @@ These numbers are represented like this in IEEE 754:
 0.2 = 0 01111100 10011001100110011001101
 ```
 
-Floating-point addition (or subtraction) is analogous to addition (or subtraction) using scientific notation. For example, to add `3.3 x 10^0^` to `9.985 x 10^2^`: FIXME
+Floating-point addition (or subtraction) is analogous to addition (or subtraction) using scientific notation. For example, to add <code>3.3 x 10<sup>0</sup></code> to <code>9.985 x 10<sup>2</sup></code>:
 
-* Shift the decimal point of the smaller number to the left until the exponents are equal (`2.5 x 10^0^` becomes `0.025 x 10^2^`).
-* Add the numbers using integer addition (`0.033 + 9.985 = 10.018 x 10^2^`).
-* Normalize the result (`1.0018 x 10^3^`).
+* Shift the decimal point of the smaller number to the left until the exponents are equal (<code>2.5 x 10<sup>0^</sup></code> becomes <code>0.025 x 10<sup>2</sup></code>).
+* Add the numbers using integer addition (<code>0.033 + 9.985 = 10.018 x 10<sup>2</sup></code>).
+* Normalize the result (<code>1.0018 x 10<sup>3</sup></code>).
 
 Let's try the same logic on the binary numbers:
 
 ```
+0.1 = 0 01111011 (1) 10011001100110011001101 (exp -4)
 0.2 = 0 01111100 (1) 10011001100110011001101 (exp -3)
 ```
 
 1. The smaller exponent is incremented and the significand is shifted right until the exponents are equal:
-+
-```
-0.1 = 0 01111100 (0) 110011001100110011001101 (exp -3) >>> shift
-0.2 = 0 01111100 (1) 10011001100110011001101  (exp -3)
-```
+
+    ```
+                                                X lost
+    0.1 = 0 01111100 (0) 110011001100110011001101 (exp -3) >>> shift
+    0.2 = 0 01111100 (1) 10011001100110011001101  (exp -3)
+    ```
 
 2. The significands are added using integer addition:
-+
-```
-0.2 = 0 01111100 (1) 10011001100110011001101 (exp -3)
-                ----------------------------
-              = (10) 01100110011001100110011
-```
+
+    ```
+    0.1 = 0 01111100 (0) 11001100110011001100110 (exp -3)
+    0.2 = 0 01111100 (1) 10011001100110011001101 (exp -3)
+                    ----------------------------
+                  = (10) 01100110011001100110011
+    ```
 
 3. The result is not normalized. The sum overflows the position of the hidden bit. We need to shift one bit to the right the significand and to increment the exponent in consequence:
-+
-```
-=>
-0 01111101 (1)  001100110011001100110011 (exp -2) >>> shift
-                                       X lost
-```
+
+    ```
+    0 01111100 (10) 01100110011001100110011  (exp -3)
+    =>
+    0 01111101 (1)  001100110011001100110011 (exp -2) >>> shift
+                                           X lost
+    ```
 
 This example demonstrates we can lose precision during the operation (one bit was lost when we aligned the exponent of `0.1` and one bit was lost when we normalized the final result). Floating-point arithmetic is subject to rounding errors too. Here is the result in decimal:
 
 ```
+$ python
 (1 + 2**-3 + 2**-4 + 2**-7 + 2**-8 + 2**-11 + 2**-12 + \
      2**-15 + 2**-16 + 2**-19 + 2**-20 + 2**-23) * 2**-2
 >>> 0.29999998211860657
@@ -739,20 +746,20 @@ We will not go deeper on the subject. Just remember that rounding errors are una
 
 Consider the addition of the following two numbers:
 
-[subs="quotes"]
-```
-0 **10011000** (1) 00000000000000000000001 = 2^-23^ * 2^**25**^ = 2^2^
+```ansi
+0 [1m01111111[0m (1) 00000000000000000000001 = 2^-23 * 2^[1m0[0m  = 2^-23
+0 [1m10011000[0m (1) 00000000000000000000001 = 2^-23 * 2^[1m25[0m = 2^2
 ```
 
 The first step requires the smaller exponent to be incremented and the significand shifted right until the exponents match. This means:
 
-[subs="quotes"]
-```
+```ansi
+0 [1m01111111[0m (1) 00000000000000000000001|
 0 10000000 (0) 10000000000000000000000|1
 0 10000001 (0) 01000000000000000000000|01
 0 10000010 (0) 00100000000000000000000|001
 ...
-0 **10011000** (0) 00000000000000000000000|100000000000000000000001
+0 [1m10011000[0m (0) 00000000000000000000000|100000000000000000000001
                ----------------------- XXXXXXXXXXXXXXXXXXXXXXXX
                  23 bits significand
 ```
@@ -770,9 +777,9 @@ Let's see what happen precisely.
 
 The largest single precision number is obtained by using the largest exponent and significand values:
 
-[subs="quotes"]
-```
-= 1.11111111111111111111111 x 2^127^
+```ansi
+0 [1m11111110[0m [1m11111111111111111111111[0m
+= 1.11111111111111111111111 x 2^127
 = 3.4028234663852886e+38
 ```
 
@@ -821,7 +828,7 @@ func main() {
 }
 ```
 
-Unlike the previous example, we notice a difference in the result. Why? Because there was a change in magnitude. On the first example about overflow, we added a small number that doesn't change the exponent. The result is rounded to the largest representable number, thus the value didn't change. On this second example, we add a number that would change the exponent. By adding the product of the smallest significand (2^-24^) with the current exponent (2^127^), the exponent has to change, but it can't, it's already set to the maximum value. Rounding to the largest value is not as pertinent in this case, so a special value is returned instead, the **positive infinity**.
+Unlike the previous example, we notice a difference in the result. Why? Because there was a change in magnitude. On the first example about overflow, we added a small number that doesn't change the exponent. The result is rounded to the largest representable number, thus the value didn't change. On this second example, we add a number that would change the exponent. By adding the product of the smallest significand (2<sup>-24</sup>) with the current exponent (2<sup>127</sup>), the exponent has to change, but it can't, it's already set to the maximum value. Rounding to the largest value is not as pertinent in this case, so a special value is returned instead, the **positive infinity**.
 
 IEEE 754 standard defines positive and negative infinity using the following representations:
 
@@ -829,9 +836,9 @@ IEEE 754 standard defines positive and negative infinity using the following rep
 * exponent = all 1 bits.
 * significand = all 0 bits.
 
-[subs="quotes"]
-```
--Inf **1**1111111100000000000000000000000
+```ansi
++Inf [1m0[0m1111111100000000000000000000000
+-Inf [1m1[0m1111111100000000000000000000000
 ```
 
 This is exactly the result we got in our last example when running the Go program. We may use another example to illustrate the negative infinity:
@@ -856,6 +863,7 @@ func main() {
 The program prints what is defined by the standard:
 
 ```
+-Inf
 11111111100000000000000000000000
 ```
 
@@ -886,6 +894,7 @@ func main() {
 The result has changed to return `NaN` instead:
 
 ```
+NaN
 11111111110000000000000000000000
 ```
 
@@ -899,28 +908,28 @@ All ``NaN``s in IEEE 754 have this format:
 
 So, all of the following representations are valid `NaN` examples:
 
-[subs="quotes"]
-```
-1 **11111111** 00000000000000000000001
-1 **11111111** 10000000000000000000000
-0 **11111111** 11111111111111111111111
+```ansi
+0 [1m11111111[0m 00000000000000000000001
+1 [1m11111111[0m 00000000000000000000001
+1 [1m11111111[0m 10000000000000000000000
+0 [1m11111111[0m 11111111111111111111111
 ```
 
-In fact, there are a lot a possible representations for ``NaN``s: 2^23-1^ for single precision (23 bits for the significand) if we omit the bit sign. That's a lot of valid combinaisons!
+In fact, there are a lot a possible representations for ``NaN``s: 2<sup>23-1</sup> for single precision (23 bits for the significand) if we omit the bit sign. That's a lot of valid combinaisons!
 
 The IEEE standard interprets differently these two representations:
 
-[subs="quotes"]
-```
-1 11111111 **1**0000000000000000000000
+```ansi
+1 11111111 [1m0[0m0000000000000000000001
+1 11111111 [1m1[0m0000000000000000000000
 ```
 
-If the first bit of the trailing significand is `0`, we have a **quiet NaN** (`qNaN`). If it is `1`, we have a **signaling NaN** (`sNaN`). _Signaling_ means an exception should be raised, whereas _quiet_ means `NaN` should be propagated through every arithmetic operation without signaling an exception (it is always possible to raise an exception at the end of the calculation if we want, as the `NaN` information is preserved). Semantically, ``qNaN``'s denote indeterminate operations, while ``sNaN``'s denote invalid operations. When programming in most of the languages, you are only using `qNaN` and have to test the value with an utility method like the `math.IsNaN` in Go.
+If the first bit of the trailing significand is `0`, we have a **quiet NaN** (`qNaN`). If it is `1`, we have a **signaling NaN** (`sNaN`). _Signaling_ means an exception should be raised, whereas _quiet_ means `NaN` should be propagated through every arithmetic operation without signaling an exception (it is always possible to raise an exception at the end of the calculation if we want, as the `NaN` information is preserved). Semantically, `qNaN`'s denote indeterminate operations, while `sNaN`'s denote invalid operations. When programming in most of the languages, you are only using `qNaN` and have to test the value with an utility method like the `math.IsNaN` in Go.
 
 <Admonition type="note" className="None" title="Why so many representations for NaNs?">
 **The quiet/signaling distinction imposes only two representations** (`1 11111111 00000000000000000000001` and `1 11111111 10000000000000000000000` are sufficient). The standard doesn't explicit what can be done with all of these additional representations. These remaining bits are called the payload and can be use to provide context about the origin of the error. But this isn't the only known use.
 
-A known technique, called **NaN-boxing**, is implemented by some interpreters like JavaScriptCore, to **pack other types such as pointers (48-bits) or integers (32-bit) inside the space left by NaNs in double precisions** (where the significand represents 52 bits). As a variable can be of any type, the interpreter uses only double precision floating-points to store everything. If it's a floating-point, it uses the usual IEEE 754 representation. If it's another type, it uses the available 51-bits for ``NaN``s to store any value (a pointer address, an integer, etc). If you want to know more about this hack, you can start looking at this [great article](https://anniecherkaev.com/the-secret-life-of-nan).
+A known technique, called **NaN-boxing**, is implemented by some interpreters like JavaScriptCore, to **pack other types such as pointers (48-bits) or integers (32-bit) inside the space left by NaNs in double precisions** (where the significand represents 52 bits). As a variable can be of any type, the interpreter uses only double precision floating-points to store everything. If it's a floating-point, it uses the usual IEEE 754 representation. If it's another type, it uses the available 51-bits for `NaN`s to store any value (a pointer address, an integer, etc). If you want to know more about this hack, you can start looking at this [great article](https://anniecherkaev.com/the-secret-life-of-nan).
 
 <img src="/posts_resources/2019-03-10-floating-point-numbers-demystified/nan-boxing.png" title="NaN-Boxing" width="650" />
 </Admonition>
@@ -947,10 +956,10 @@ By understanding the underlying logic behind the standard, you are now better eq
 
 
 <Admonition type="note" className="experiment" title="Myths vs Reality">
-* **Myth**: I can use floating-point numbers to represent common numbers like amounts.
+* **Myth**: I can use floating-point numbers to represent common numbers like amounts.<br/>
 _**Wrong**. Floating-point numbers cannot represent simple numbers such as 0.1 or 0.2._
-* **Myth**: I will not have problems if I use double precision (64 bits).
+* **Myth**: I will not have problems if I use double precision (64 bits).<br/>
 _**Wrong**. Problems are identical, but less frequent. Gaps are smaller but there are rounding errors too, and numbers such as 0.1 cannot be represented with floating-point numbers, single or double precision._
-* **Myth**: Floating-point numbers approximation only affects insignificant digits after the floating-point.
+* **Myth**: Floating-point numbers approximation only affects insignificant digits after the floating-point.<br/>
 _**Wrong**. Not all integers can be represented. There exists gaps, even for relatively small values like 16,777,217 when using single precision._
 </Admonition>

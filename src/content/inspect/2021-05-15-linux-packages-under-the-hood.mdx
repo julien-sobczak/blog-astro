@@ -1,6 +1,7 @@
 ---
 slug: "2021/05/15/linux-packages-under-the-hood"
 title: "Linux Packages Under The Hood"
+subtitle: "What happens when you install a Debian package on your machine"
 author: "Julien Sobczak"
 date: 2021-05-15
 subject: "Linux Packages"
@@ -8,7 +9,7 @@ tags: []
 excerpt: >
   A Linux package is a bundle of files that your package manager knows how to unpack on your system. Installing packages is something you are doing regularly and I suggest that we are looking under the hood to understand the steps between the creation and the installation of a Linux package.
 excerpt_only: true
-done: false
+done: true
 ---
 import Admonition from '../../components/Admonition.astro'
 import Marker from '../../components/Marker.astro'
@@ -82,7 +83,7 @@ Because there are two main Linux distributions: Red Hat and Debian and each one 
 
 Both package formats have a lot in common and we will only discuss Debian packages in this document. The following table summarizes the main differences between the archive files.
 
-|| .rpm | .deb |
+| | .rpm | .deb |
 |---|---|---|
 | Archive Format | Uses the [`cpio` command and file format](https://en.wikipedia.org/wiki/Cpio) | Uses the [`ar` command and file format](https://en.wikipedia.org/wiki/Ar_(Unix)) |
 | Package Manager | `rpm` + (1997, Written in C) | `dpkg` + (1993, Written in C) |
@@ -99,31 +100,31 @@ A package is a collection of files to distribute applications or libraries via t
 * `debian-binary`: A text file containing `2.0\n`. This states the version of the deb file format. For 2.0, all other lines get ignored.
 * `data.tar.gz`: A `tar` archive containing all files that will be installed with their destination paths
 
-```
-./
-./sbin/
-./sbin/parted
-./usr/
-./usr/share/
-./usr/share/man/
-./usr/share/man/man8/
-./usr/share/man/man8/parted.8.gz
-./usr/share/doc/
-./usr/share/doc/parted/
-./usr/share/doc/parted/README.Debian
-./usr/share/doc/parted/copyright
-./usr/share/doc/parted/changelog.Debian.gz
-./usr/share/doc/parted/changelog.gz
-```
+    ```
+    ./
+    ./sbin/
+    ./sbin/parted
+    ./usr/
+    ./usr/share/
+    ./usr/share/man/
+    ./usr/share/man/man8/
+    ./usr/share/man/man8/parted.8.gz
+    ./usr/share/doc/
+    ./usr/share/doc/parted/
+    ./usr/share/doc/parted/README.Debian
+    ./usr/share/doc/parted/copyright
+    ./usr/share/doc/parted/changelog.Debian.gz
+    ./usr/share/doc/parted/changelog.gz
+    ```
 
 * `control.tar.gz`: A `tar` archive containing various files useful for the `dpkg` command to do its job: metadata about the package (`control`) including the list of required dependencies, the md5 sums of every data file to check integrity (`md5sums`), and also maintainer scripts (ex: `postinst` for post-installation, `prerm` for pre-removal, etc.), which are executables that must be run when installing or removing a package.
 
-```
-control
-md5sums
-postinst
-prerm
-```
+    ```
+    control
+    md5sums
+    postinst
+    prerm
+    ```
 
 _Further documentation_:
 
@@ -262,7 +263,7 @@ vagrant# tree /vagrant/debian/
 <Admonition type="note" title="What You Need to Know About the DEB822 Format">
 <a name="wynk-deb822"></a>This format can be seen as an ancestor of YAML or JSON. Here is an example showing the three supported types of fields:
 
-```deb822
+```txt
 FieldSimple: simple value
 FieldFolded: very long value
  continuing on the next line starting with a space.
@@ -304,13 +305,13 @@ ar: creating hello_1.1-1_amd64.deb
 ```
 
 <dl className="markers">
-  <dt>Marker number={1} /></dt>
+  <dt><Marker number={1} /></dt>
   <dd>The package will fail most linter checks. Indeed, we ignored many of the best practices that higher-level commands ensure but we will still be able to install this package on our server.</dd>
 </dl>
 
 Now is the time to look at the code. Dpkg is written in C, and the function executed by the command `dpkg --build` is the [function `do_build` in `./dpkg-deb/build.c`](https://github.com/guillemj/dpkg/blob/1.20.7/dpkg-deb/build.c#L552-L728).
 
-```c title=".dpkg-deb/build.c" {"1": 18} {"2": 23} {"3": 51} {"4": 52} {"5": 53} {"6": 75} {"7": 82}
+```c title="dpkg-deb/build.c" {"1": 18} {"2": 23} {"3": 51} {"4": 52} {"5": 53} {"6": 75} {"7": 82}
 int
 do_build(const char *const *argv)
 {
@@ -427,7 +428,7 @@ do_build(const char *const *argv)
 
 What follows is a minimal rewrite of this code in Go. The full code is available on GitHub in the repository [julien-sobczak/linux-packages-under-the-hood](https://github.com/julien-sobczak/linux-packages-under-the-hood).
 
-```go title=".cmd/dpkg/main.go"
+```go title="cmd/dpkg/main.go"
 package main
 
 import (
@@ -559,7 +560,7 @@ vagrant# tar -tf data.tar
 usr/bin/hello
 ```
 
-🎉 *We have finished with the format `.deb`.* This completes the first part of this article. We created a Debian package from scratch! Now, we will inspect the installation process.
+🎉 **We have finished with the format `.deb`.** This completes the first part of this article. We created a Debian package from scratch! Now, we will inspect the installation process.
 
 
 
@@ -591,7 +592,7 @@ The command does a lot of interesting things and the code is larger than the pre
 
 The entry point for the installation of a package is the function `archivefiles`, and most specifically the function `process_archive`:
 
-```c title=".src/archives.c" {"1": 9} {"2": 12}
+```c title="src/archives.c" {"1": 9} {"2": 12}
 int
 archivefiles(const char *const *argv)
 {
@@ -624,7 +625,7 @@ Let's go!
 
 1. **Extract the control files of the new package.**
 
-```c title=".src/unpack.c" {"1": 3} {"2": 7}
+```c title="src/unpack.c" {"1": 3} {"2": 7}
 void process_archive(const char *filename) {
   …
   cidir = get_control_dir(cidir);
@@ -1150,7 +1151,7 @@ The last step uses the same code as the command `dpkg --configure`, which may be
 
 The configuration step is implemented by the function `deferred_configure` which focuses on a single package to configure. If the configuration cannot proceed, the package will be enqueued to be reprocessed later or not. Here is a simplified version:
 
-```c title="src/configure.c" {"1": 14} {"2": 46} {"3": 57} {"4": 60}
+```c title="src/configure.c" {"1": 14} {"2": 46} {"3": 53-57} {"4": 60}
 /**
  * Process the deferred configure package.
  *
@@ -1809,89 +1810,85 @@ APT makes software available to the user by doing the dirty work of downloading 
 <a name="wynk-apt-configuration-files"></a>APT configuration resides under `/etc/apt/`, which contains the following files:
 
 * `apt.conf` and `apt.conf.d/`: The main configuration files where hundred of options are available ([more about them soon](#wynk-apt-configuration-options)). The command `apt-config dump` can be used to view all available options with their default values:
-+
-```sh
-$ apt-config dump
-...
-Dir "/";
-Dir::State "var/lib/apt";
-Dir::State::status "/var/lib/dpkg/status";
-Dir::Cache "var/cache/apt";
-Dir::Etc "etc/apt";
-Dir::Etc::sourcelist "sources.list";
-Dir::Etc::sourceparts "sources.list.d";
-Dir::Etc::main "apt.conf";
-Dir::Etc::parts "apt.conf.d";
-Dir::Etc::preferences "preferences";
-Dir::Etc::preferencesparts "preferences.d";
-Dir::Etc::trusted "trusted.gpg";
-Dir::Etc::trustedparts "trusted.gpg.d";
-...
-```
+    ```sh
+    $ apt-config dump
+    ...
+    Dir "/";
+    Dir::State "var/lib/apt";
+    Dir::State::status "/var/lib/dpkg/status";
+    Dir::Cache "var/cache/apt";
+    Dir::Etc "etc/apt";
+    Dir::Etc::sourcelist "sources.list";
+    Dir::Etc::sourceparts "sources.list.d";
+    Dir::Etc::main "apt.conf";
+    Dir::Etc::parts "apt.conf.d";
+    Dir::Etc::preferences "preferences";
+    Dir::Etc::preferencesparts "preferences.d";
+    Dir::Etc::trusted "trusted.gpg";
+    Dir::Etc::trustedparts "trusted.gpg.d";
+    ...
+    ```
 * `sources.list` and `sources.list.d/`: lists of repositories ([more about them soon](#wynk-repositories)). Here are the default repositories on my Debian server:
-+
-```sh
-$ cat /etc/apt/sources.list
-deb http://deb.debian.org/debian buster main
-deb-src http://deb.debian.org/debian buster main
-deb http://security.debian.org/debian-security buster-security main
-deb-src http://security.debian.org/debian-security buster-security main
-deb http://deb.debian.org/debian buster-updates main
-deb-src http://deb.debian.org/debian buster-updates main
-deb http://deb.debian.org/debian buster-backports main
-deb-src http://deb.debian.org/debian buster-backports main
-```
+    ```sh
+    $ cat /etc/apt/sources.list
+    deb http://deb.debian.org/debian buster main
+    deb-src http://deb.debian.org/debian buster main
+    deb http://security.debian.org/debian-security buster-security main
+    deb-src http://security.debian.org/debian-security buster-security main
+    deb http://deb.debian.org/debian buster-updates main
+    deb-src http://deb.debian.org/debian buster-updates main
+    deb http://deb.debian.org/debian buster-backports main
+    deb-src http://deb.debian.org/debian buster-backports main
+    ```
 * `preferences` and `preferences.d/`: APT pinning is the only available preference. By default, when multiple repositories are configured, a package can exist in several of them and APT applies logic to decide which one must be installed. Pinning allows you to change this logic (called a policy) for some packages. The command `apt-cache policy [pkg]` can be used to view the global policy when called without argument:
-+
-```sh
-$ apt-cache policy
-Package files:
- 100 /var/lib/dpkg/status
-     release a=now
- 500 http://security.debian.org/debian-security buster-security/main
-     amd64 Packages
-     release o=Debian,a=testing-security,n=buster-security,
-     l=Debian-Security,c=main,b=amd64
-     origin security.debian.org
- 500 http://deb.debian.org/debian buster/main amd64 Packages
-     release o=Debian,a=testing,n=buster,l=Debian,c=main,b=amd64
-     origin deb.debian.org
-```
-+
-You can create preferences files to privilege a specific repository for a given package or to prevent this package to be upgraded. _(not covered in this article)_
+    ```sh
+    $ apt-cache policy
+    Package files:
+     100 /var/lib/dpkg/status
+         release a=now
+     500 http://security.debian.org/debian-security buster-security/main
+         amd64 Packages
+         release o=Debian,a=testing-security,n=buster-security,
+         l=Debian-Security,c=main,b=amd64
+         origin security.debian.org
+     500 http://deb.debian.org/debian buster/main amd64 Packages
+         release o=Debian,a=testing,n=buster,l=Debian,c=main,b=amd64
+         origin deb.debian.org
+    ```
+    You can create preferences files to privilege a specific repository for a given package or to prevent this package to be upgraded. _(not covered in this article)_
 * `trusted.gpg` and `trusted.gpg.d/`: keys for secure authentication of packages (known as "Secure APT" and used in Debian since 2005). The command `apt-key` can be used to show the keys, and to add or remove a key. APT uses public-key (asymmetric) cryptography using GPG:
-+
-```sh
-$ ls -1 /etc/apt/trusted.gpg.d/
-debian-archive-buster-automatic.gpg
-debian-archive-buster-security-automatic.gpg
-debian-archive-buster-stable.gpg
-debian-archive-stretch-automatic.gpg
-debian-archive-stretch-security-automatic.gpg
-debian-archive-stretch-stable.gpg
-```
-+
-When installing a package, APT retrieves the package from an external repository and the `Release` file, which is the entry file to find `Packages` index files, may have be altered (which means checking the MD5 sums inside these index files is useless if we can't guarantee that the `Release` file is safe against a man-in-the-middle attack). This is the goal of secure APT. Concretely, secure APT always downloads a `Release.gpg` file if existing before downloading a `Release` file. (NB: The file `InRelease` had now merged the intent of these two deprecated files.) Using cryptography, APT can be sure that the file is safe and can trust the MD5 sums present inside it to check other files like `Packages` files. Otherwise, APT will complain with the following message you have probably encountered before:
-+
-```sh
-# When adding a new repository in `/etc/apt/sources.list.d/`:
-W: GPG error: http://ftp.us.debian.org testing Release:
- The following signatures couldn't be verified
- because the public key is not available:
- NO_PUBKEY 010908312D230C5F
-# When installing a new package from this repository:
-WARNING: The following packages cannot be authenticated!
-  libglib-perl libgtk2-perl
-Install these packages without verification [y/N]?
-```
+
+    ```sh
+    $ ls -1 /etc/apt/trusted.gpg.d/
+    debian-archive-buster-automatic.gpg
+    debian-archive-buster-security-automatic.gpg
+    debian-archive-buster-stable.gpg
+    debian-archive-stretch-automatic.gpg
+    debian-archive-stretch-security-automatic.gpg
+    debian-archive-stretch-stable.gpg
+    ```
+
+    When installing a package, APT retrieves the package from an external repository and the `Release` file, which is the entry file to find `Packages` index files, may have be altered (which means checking the MD5 sums inside these index files is useless if we can't guarantee that the `Release` file is safe against a man-in-the-middle attack). This is the goal of secure APT. Concretely, secure APT always downloads a `Release.gpg` file if existing before downloading a `Release` file. (NB: The file `InRelease` had now merged the intent of these two deprecated files.) Using cryptography, APT can be sure that the file is safe and can trust the MD5 sums present inside it to check other files like `Packages` files. Otherwise, APT will complain with the following message you have probably encountered before:
+
+    ```sh
+    # When adding a new repository in `/etc/apt/sources.list.d/`:
+    W: GPG error: http://ftp.us.debian.org testing Release:
+     The following signatures couldn't be verified
+     because the public key is not available:
+     NO_PUBKEY 010908312D230C5F
+    # When installing a new package from this repository:
+    WARNING: The following packages cannot be authenticated!
+      libglib-perl libgtk2-perl
+    Install these packages without verification [y/N]?
+    ```
+
 * `auth.conf` and `auth.conf.d/`: APT configuration and repositories list must be accessible to any user on the system but some repositories may require login information to connect, which are stored in these restrictive files. For example, instead of specifying the user/password `apt:debian` in the source list file directly (`deb https://apt:debian@example.org/debian buster main`), you can create an entry in `auth.conf`:
-+
-```
-machine example.org
-login apt
-password debian
-```
-_(not covered in this article)_
+    ```
+    machine example.org
+    login apt
+    password debian
+    ```
+    _(not covered in this article)_
 * `listchanges.conf` and `listchanges.conf.d`: Only used by the command `apt-listchanges` to show what has been changed in a new version of a Debian package, as compared to the version currently installed on the system. It does this by extracting the relevant entries from both the `NEWS.Debian` and `changelog[.Debian]` files, usually found in `/usr/share/doc/_package_` in Debian package archives. _(not covered in this article)_
 
 In practice, `.d` directories are privileged so that the configuration can be split into several files. Single file may not even exist on your machine and are often deprecated.
@@ -1976,10 +1973,10 @@ if (_config->FindB("pkgCacheFile::Generate", true) == false) {}
 
 // Example with an integer option
 int const Limit = _config->FindI("Acquire::QueueHost::Limit",DEFAULT_HOST_LIMIT)
-----
-
-_Further documentation_: link:[man page](https://www.commandlinux.com/man-page/man5/apt.conf.5.html)
 ```
+
+_Further documentation_: [man page](https://www.commandlinux.com/man-page/man5/apt.conf.5.html)
+</Admonition>
 
 
 ### <a name="cmd-apt-update"></a> `apt update`
@@ -2038,7 +2035,7 @@ bool DoUpdate(CommandLine &CmdL)
 The command is divided in four steps that we will cover separately:
 
 
-1. **Read the `sources.list` and `sources.list.d/` files**.
+1. **Read the `sources.list` and `sources.list.d/*` files**.
 
 ```cpp
 // Get the source list
@@ -2060,7 +2057,7 @@ deb http://us.archive.ubuntu.com/ubuntu focal-updates main restricted
 
 Example using the new format:
 
-```deb822
+```txt
 Types: deb
 URIs: http://us.archive.ubuntu.com/ubuntu
 Suites: focal focal-updates
@@ -2171,10 +2168,10 @@ ListUpdate(Stat, *List);
 
 Ex: `deb https://deb.debian.org/debian stable main contrib non-free`
 
-* `deb` is used for *binary packages*, `deb-src` for *source packages*.
-* `https://deb.debian.org/debian` specifies the root of the *repository*.
-* `stable` is the distribution, which is commonly a *suite* (`stable`, `oldstable`, `testing`, `unstable`), which is an alias for a Debian *codename* (`wheezy`, `jessie`, `stretch`), which is based on Toy Story characters.
-* `main contrib non-free` are the three *component* types and indicate the licensing terms of the software they contain.
+* `deb` is used for **binary packages**, `deb-src` for **source packages**.
+* `https://deb.debian.org/debian` specifies the root of the **repository**.
+* `stable` is the distribution, which is commonly a **suite** (`stable`, `oldstable`, `testing`, `unstable`), which is an alias for a Debian **codename** (`wheezy`, `jessie`, `stretch`), which is based on Toy Story characters.
+* `main contrib non-free` are the three **component** types and indicate the licensing terms of the software they contain.
 
 Here is a preview of files tree for this repository:
 
@@ -2222,7 +2219,7 @@ The root directory contains a directory `dists/` which in turn has a directory f
 
 Example of a `Packages` file:
 
-``` title="http://ftp.debian.org/debian/dists/Debian10.9/main/binary-amd64/Packages.gz"
+```txt title="http://ftp.debian.org/debian/dists/Debian10.9/main/binary-amd64/Packages.gz"
 # 57849 binary packages declarations like this:
 Package: wget
 Version: 1.20.1-1.1
@@ -2273,7 +2270,7 @@ SHA256: 3bf97e4852e76dba5bf2261f4a949a445edda646d09d7d1175dccfdf77bdbc3f
 
 Example of a `Sources` file:
 
-``` title="http://ftp.debian.org/debian/dists/Debian10.9/main/source/Sources.gz"
+```txt title="http://ftp.debian.org/debian/dists/Debian10.9/main/source/Sources.gz"
 # 28489 source packages declarations like this:
 Package: wget
 Binary: wget, wget-udeb
@@ -2345,7 +2342,7 @@ Notes:
 * `Release` is an index file in the DEB822 format but containing only a single document whose field names refers to the repository -- `Origin`, `Suite`, `Codename`, `Architectures` (plural), `Components` -- and whose field `MD5Sum` contains the checksums for all files in this repository.
 
 _Further documentation_: [Debian Repository](https://wiki.debian.org/DebianRepository) and the more complete [Repository Format](https://wiki.debian.org/DebianRepository/Format)
-====
+</Admonition>
 
 
 Here is the function `ListUpdate` that actively downloads index files from the repositories:
@@ -2439,7 +2436,7 @@ $ tree /var/cache/apt/
 
 The APT Cache files under this directory (except the `lock` file) can be safely deleted using the command `apt clean` to reclaim disk space:
 
-```sh`
+```sh
 $ sudo apt clean --dry-run
 Del /var/cache/apt/archives/* /var/cache/apt/archives/partial/*
 Del /var/lib/apt/lists/partial/*
@@ -2929,7 +2926,7 @@ That's all for the command `apt update`. We will now cover other APT commands, r
 
 Here is the code of the command `apt list`. This version omits optional arguments that are used to filter the list of results.
 
-```cpp {"1": 3} {"2": 8} {"3": 10}
+```cpp {"1": 4} {"2": 9} {"3": 11}
 bool DoList(CommandLine &Cmd)
 {
    pkgCacheFile CacheFile;
@@ -3295,7 +3292,7 @@ This step simply iterates over the package to install and inspects the calculate
 
 Here is an example of a package with recommended and suggested packages:
 
-```title="/var/lib/apt/lists/deb.debian.org_debian_dists_buster_main_binary-amd64_Packages"
+```txt title="/var/lib/apt/lists/deb.debian.org_debian_dists_buster_main_binary-amd64_Packages"
 ...
 Package: ngraph-gtk
 Version: 6.09.01-1
@@ -4819,5 +4816,7 @@ We wrote basic versions from scratch using only a few hundreds of lines of Go co
 If you are managing a large pool of servers like a datacenter, reimplementing your own package manager can be interesting. For example, you could centralize all local databases to ensure that all machines share the same state, or you can take corrective actions like excluding a server from the pool when an upgrade ends in a bad state. Google provides a great example of application. They decided to implement their own package management system. “Any package change is guaranteed to succeed, or the machine is rolled back completely to the previous state. If the rollback fails, the machine is sent through our repairs process for reinstallation and potential hardware replacement. This approach allows us to eliminate much of the complexity of the package states.”[^1] The decision was surely not obvious, but the benefits are for sure obvious.
 
 Implementing a package manager from scratch can be intimidating, but as we have seen in this article, the reality is not so bad, especially if we consider the long list of features that Apt supports that are not useful when managing a large number of homogenous machines in an automated way.
+
+---
 
 [^1]: Building Secure and Reliable Systems, O'Reilly, Chapter 9 - Design for Recovery, Footnote 18

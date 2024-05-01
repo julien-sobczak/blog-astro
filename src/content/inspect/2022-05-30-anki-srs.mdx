@@ -1,6 +1,7 @@
 ---
 slug: "2022/05/30/anki-srs"
 title: "Anki SRS Algorithm"
+subtitle: Spaced Repetition Explained with Code
 author: "Julien Sobczak"
 date: 2022-05-30
 subject: "Anki"
@@ -11,7 +12,7 @@ excerpt: >
 excerpt_only: true
 # recommendations:
 # - '2020-12-26-anki-scripting-for-non-programmers'
-done: false
+done: true
 ---
 import Admonition from '../../components/Admonition.astro'
 import Marker from '../../components/Marker.astro'
@@ -35,7 +36,9 @@ Forgetting is key to learning. Forgetting is what separates what is useful and w
 * How Anki SRS algorithm can be improved.
 </Admonition>
 
+<Admonition type="caution" className="license">
 The Anki source code is published under [AGPL v3](https://www.gnu.org/licenses/agpl-3.0.en.html). The code presented in this article has been slightly adapted for learning and readability purposes.
+</Admonition>
 
 <Admonition type="note" className="None" title="Prerequisites">
 I assume that you have used Anki before. All code examples use the Python language, mainly because Anki was implemented only in Python until recently, and also because it's a great language for novice programmers. You don't need to have a solid understanding of the language to follow the article as the code uses basic Python syntax.
@@ -448,7 +451,7 @@ The use of separate new/review queues tries to remediate a common complaint with
 
 Unlike previous systems, Anki is highly configurable. Not all settings affect the SRS algorithm. Here are the default setting values used by Anki that will be used:
 
-```python {'1':13} {'2':18} {'2':24} {'3':30}
+```python {'1':12} {'2':17,23} {'3':29}
 
 # Whether new cards should be mixed with reviews, or shown first or last
 NEW_CARDS_DISTRIBUTE = 0
@@ -490,7 +493,6 @@ deckConf = {
   <dt><Marker number={1} /></dt>
   <dd>
     If there is no more card to review now but the next card in learning is in less than `collapseTime` seconds, show it now.
-
     * `collapseTime`: Tells Anki how to behave when there is nothing left to study in the current deck but cards in learning. +
       _Setting_: `Preferences` > `Basic` > `Learn ahead limit` * 60 (default: `20` minutes)
   </dd>
@@ -498,7 +500,6 @@ deckConf = {
   <dt><Marker number={2} /></dt>
   <dd>
     The settings differ based on the queue where a card belongs. For example, when learning (`new`) cards, the delay is increased by graduating steps whereas the delay is multiplied by a given factor for review (`rev`) cards. The meaning of individual settings will become clearer when we will detail the logic.
-
     * `new.delays`: The list of successive delays between the learning steps of the new cards. The first delay will be used when you press the `Again` button on a new card. The `Good` button will advance to the next step. Once all steps have been passed, the card will become a review card and will appear on a different day. +
       _Setting_: `Preferences` > `New Cards` > `Learning steps` (Default: `1m 10m`)
     * `new.ints`: The list of delays according to the button pressed while leaving the learning mode after pressing "Good" or "Easy." +
@@ -899,8 +900,10 @@ class Scheduler:
   <dt><Marker number={2} /></dt>
   <dd>
   The methods `_fillXXX()` return `True` when a queue is not empty, in which case, we simply have to pop an element from it.
+  </dd>
+</dl>
 
-  The queues are now initialized when retrieving the first card in each of them. This works great for the current session but when a new day begins, Anki must reinitialize the queues because other cards may have reached their due date.
+The queues are now initialized when retrieving the first card in each of them. This works great for the current session but when a new day begins, Anki must reinitialize the queues because other cards may have reached their due date.
 
 ```python showLineNumbers highlight='4,9-14,16-19,22' {'1':4} {'2':22}
 class Scheduler:
@@ -931,17 +934,13 @@ class Scheduler:
             return card
 
 ```
-  </dd>
 
+<dl className="markers">
   <dt><Marker number={1} /></dt>
-  <dd>
-    The method `_updateCutoff()` is called every time the queues are reset (= once a day). When this happens, it means a new day began and therefore the day limit must be refreshed too.
-  </dd>
+  <dd>The method `_updateCutoff()` is called every time the queues are reset (= once a day). When this happens, it means a new day began and therefore the day limit must be refreshed too.</dd>
 
   <dt><Marker number={2} /></dt>
-  <dd>
-    The method `_checkDay()` is called every time we retrieve a new card to study. This way, if we have passed the current day, the queue will be reset before returning the next card.
-  </dd>
+  <dd>The method `_checkDay()` is called every time we retrieve a new card to study. This way, if we have passed the current day, the queue will be reset before returning the next card.</dd>
 </dl>
 
 
@@ -1241,7 +1240,7 @@ class Scheduler:
 
 #### After pressing "Again"...
 
-```python {'1':6} {'2':7} {'3':9} {'4':13} {'5':16}
+```python {'1':6} {'2':7} {'3':9}
 class Scheduler:
 
     def _rescheduleLapse(self, card):
@@ -1254,10 +1253,10 @@ class Scheduler:
 
         if not suspended:
             card.type = 2
-            delay = self._moveToFirstStep(card, conf) # <4>
+            delay = self._moveToFirstStep(card, conf)
         else:
             # no relearning steps
-            self._updateRevIvlOnFail(card, conf) # <5>
+            self._updateRevIvlOnFail(card, conf)
             delay = 0
 
         return delay
@@ -1520,20 +1519,20 @@ A two-dimensional matrix is easier to represent but the logic is similar with mo
 The two-component model of long-term memory still represents the foundation of SuperMemo since its introduction in SM-4 in 1989. [Piotr Wozniak was pessimistic about a better, faster, and more effective algorithm](http://super-memory.com/articles/kowal.htm) as soon as 1994. The versions of the algorithm that appeared after that didn't introduce a breakthrough improvement like SuperMemo did when it abandoned the SM-2 algorithm in 1989, the same algorithm that keeps popping up in new applications.
 
 
-<Admonition type="note" className="None" title="&quote;New&quote; Applications">
+<Admonition type="note" className="None" title="&quot;New&quot; Applications">
   Many applications relying on SRS appeared in popular app stores more or less recently: [Quizlet](https://quizlet.com/), [Memrise](https://www.memrise.com/), [Duolingo](https://www.duolingo.com/), [LingoDeer](https://www.lingodeer.com/), [Brainscape](https://www.brainscape.com/), [Lingvist](https://lingvist.com/), [Chegg](https://chegg.com), [RemNote](https://www.remnote.com/), [Mochi](https://mochi.cards/), [Memcode](https://www.memcode.com/), ...
 
-* [__Mochi__'s algorithm](https://mochi.cards/docs/#spaced-repetition) is very simple. The card interval is doubled after each correct answer, and cut in half otherwise.
+* [_Mochi_'s algorithm](https://mochi.cards/docs/#spaced-repetition) is very simple. The card interval is doubled after each correct answer, and cut in half otherwise.
 
-* [__Memrise__'s algorithm](https://memrise.zendesk.com/hc/en-us/articles/360015889057-How-does-the-spaced-repetition-system-work-) is similar to _Mochi_'s. The card interval increases using the following steps: 4 hours, 12 hours, 24 hours, 6 days, 12 days, 48 days, 96 days, and 6 months. Any wrong answer moves back the card to the first interval.
+* [_Memrise_'s algorithm](https://memrise.zendesk.com/hc/en-us/articles/360015889057-How-does-the-spaced-repetition-system-work-) is similar to _Mochi_'s. The card interval increases using the following steps: 4 hours, 12 hours, 24 hours, 6 days, 12 days, 48 days, 96 days, and 6 months. Any wrong answer moves back the card to the first interval.
 
-* [Quizlet's algorithm](https://quizlet.com/blog/spaced-repetition-for-all-cognitive-science-meets-big-data-in-a-procrastinating-world) has known several iterations. The first implementation simply repeats all the questions you got wrong. The second implementation is similar to Anki where the card interval increases by approximately 2.2 and wrong answers reset the interval to one day. The next implementation relies on machine learning and uses the millions of answers to determine the recall probability, which is the chance you answer correctly. This allows, for example, to reduce the interval for words with irregular spellings when learning a foreign language.
+* [_Quizlet_'s algorithm](https://quizlet.com/blog/spaced-repetition-for-all-cognitive-science-meets-big-data-in-a-procrastinating-world) has known several iterations. The first implementation simply repeats all the questions you got wrong. The second implementation is similar to Anki where the card interval increases by approximately 2.2 and wrong answers reset the interval to one day. The next implementation relies on machine learning and uses the millions of answers to determine the recall probability, which is the chance you answer correctly. This allows, for example, to reduce the interval for words with irregular spellings when learning a foreign language.
 
-* [__Duolingo__'s algorithm](https://blog.duolingo.com/how-we-learn-how-you-learn/) is similar to Quizlet. Duolingo has millions of students who generate billions of statistics about language learning every day. Like Quizlet, Duolingo uses machine learning to predict how likely you are to remember any given word at any time. This is represented by the strength meter (still strong, pretty good, time to practice, overdue) below every lesson.
+* [_Duolingo_'s algorithm](https://blog.duolingo.com/how-we-learn-how-you-learn/) is similar to Quizlet. Duolingo has millions of students who generate billions of statistics about language learning every day. Like Quizlet, Duolingo uses machine learning to predict how likely you are to remember any given word at any time. This is represented by the strength meter (still strong, pretty good, time to practice, overdue) below every lesson.
 
-* [RemNote's algorithm](https://www.youtube.com/watch?v=IwaoV-C9az8&ab_channel=RemNote) is customizable like Anki and most settings will look familiar to Anki users, especially after following this tutorial.
+* [_RemNote_'s algorithm](https://www.youtube.com/watch?v=IwaoV-C9az8&ab_channel=RemNote) is customizable like Anki and most settings will look familiar to Anki users, especially after following this tutorial.
 
-* [Memcode's algorithm](https://news.ycombinator.com/item?id=23948541) also uses SM-2.
+* [_Memcode_'s algorithm](https://news.ycombinator.com/item?id=23948541) also uses SM-2.
 </Admonition>
 
 In my opinion, **Anki is not perfect but there is no need to focus too much on optimizing it**:
@@ -1557,7 +1556,7 @@ One last important thing,
 <Admonition type="note" className="remember" title="To Remember">
   * **A Spaced Repetition System (SRS) counteracts the effect of the forgetting curve**. Memory decay is inevitable but can be influenced.
   * **SRS systems can be implemented with or without a computer**. The Leitner system remains popular.
-  * *SRS systems often target a retention close to 90%* (= 10% of cards are wrongly answered).
+  * **SRS systems often target a retention close to 90%** (= 10% of cards are wrongly answered).
   * **SuperMemo** introduced the first **SRS algorithm running on a computer** (SM-2).
   * **SM-2 continues to be used by most applications** including Anki, despite having been abandoned in SuperMemo three decades ago.
   * **Anki makes the SM-2 highly configurable** and uses different queues to manage cards differently based on if they are new, in learning, or simply in review.
