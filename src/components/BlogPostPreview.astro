@@ -20,22 +20,21 @@ const { category, post } = Astro.props;
 
   {category === 'read' && <span class="authors">{ post.data.bookAuthors }</span>}
 
-  <!-- FIXME still relevant to exclude readings? --->
-  {category !== 'read' &&
-    <span>
-      {post.data.tags && post.data.tags.map(tag => {
-        return (
-          <a href="{{ '/tags/' | append: tag | relative_url }}" class="label">
-            {tag.toUpperCase()}
-          </a>
-        )
-      })}
-      {post.data.unofficialTags && post.data.unofficialTags.map(tag => {
-        return (
-          <span class="label">
-            {tag.toUpperCase()}
-          </span>
-        )
-      })}
-  }
+  <span>
+    {post.data.tags && post.data.tags.map(tag => {
+      return (
+        <a href="{{ '/tags/' | append: tag | relative_url }}" class="label">
+          {tag.toUpperCase()}
+        </a>
+      )
+    })}
+    {post.data.unofficialTags && post.data.unofficialTags.map(tag => {
+      return (
+        <span class="label">
+          {tag.toUpperCase()}
+        </span>
+      )
+    })}
+  </span>
+  
 </div>
