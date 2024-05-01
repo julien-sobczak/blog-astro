@@ -25,7 +25,7 @@ Let's begin by visualizing the main obstacles of clean code.
 
 <img src="/posts_resources/2021-05-04-clean-code-obsession/clean-code-obsession-illustrated.png" />
 
-Any program gets more and more complex over time. The larger the program, and the more people that work on it, the more difficult it is to manage complexity. Clean code is a solution to reduce this complexity and add more and more features to the program. But [what means clean code is not obvious](/write/2021-03-24-common-sense-doesnt-make-sense) in practice. Many things can go wrong along the way...
+Any program gets more and more complex over time. The larger the program, and the more people that work on it, the more difficult it is to manage complexity. Clean code is a solution to reduce this complexity and add more and more features to the program. But [what means clean code is not obvious](/write/2021/03/24/common-sense-doesnt-make-sense) in practice. Many things can go wrong along the way...
 
 
 ### The Cliff of Fragility
@@ -106,7 +106,7 @@ _Example_: You are proud of your web application optimized for desktop, but your
 
 ### Symptom 4: When you value simplicity
 
-_Example_: You know simplicity is important to keep your code clean, and thus are reluctant to add code that will make it more complicated. **You're wrong**. [Simplicity is not simple](/write/2020-02-23-simplicity-is-not-simple). For example, the Google search engine uses a single text field to search for anything--a website, a location, an image, but also the latest trends, your next flight, the real-time stock info, or even the result of a calculation. [The code behind this form is not simple](https://static.googleusercontent.com/media/research.google.com/en//archive/googlecluster-ieee.pdf) but being simple to use makes this complicated code so valuable.
+_Example_: You know simplicity is important to keep your code clean, and thus are reluctant to add code that will make it more complicated. **You're wrong**. [Simplicity is not simple](/write/2020/02/23/simplicity-is-not-simple). For example, the Google search engine uses a single text field to search for anything--a website, a location, an image, but also the latest trends, your next flight, the real-time stock info, or even the result of a calculation. [The code behind this form is not simple](https://static.googleusercontent.com/media/research.google.com/en//archive/googlecluster-ieee.pdf) but being simple to use makes this complicated code so valuable.
 
 **Clean code is not simple code but simpler code**. Clean code reduces code complexity but does not remove it completely. There is always a user for your code. It can be a human or another program, and you must care about [simplicity from their viewpoints, not yours](https://overreacted.io/what-are-the-react-team-principles/). Returning user-friendly error messages is not simple. Responding under a few hundred milliseconds is not simple. Offering intuitive interfaces is not simple. But it is not because the code is complicated that it cannot be clean too. You can, for example, encapsulate the complexity in a module that you will not have to touch for a long time.
 
