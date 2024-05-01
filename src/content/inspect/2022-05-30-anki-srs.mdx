@@ -274,7 +274,7 @@ class Page:
                 questions_to_review.append(remaining_questions.get())
 
             for question in questions_to_review:
-                if not review_question(question, iteration): # <1>
+                if not review_question(question, iteration):
                     # Review again
                     remaining_questions.append(question)
                     if iteration == 1:
@@ -354,20 +354,20 @@ def grade(question, repetitions):
 # Settings
 I1 = 1
 I2 = 6
-MIN_EF = 1.3 # <1>
+MIN_EF = 1.3
 
 class Item:
 
     def __init__(self, question, answer):
         self.question = question
         self.answer = answer
-        self.EF = 2.5 # <2>
+        self.EF = 2.5
         self.I = I1
         self.next_review = date.today() + timedelta(days=self.I)
         self.repetitions = 0
 
     def review(self, day, q):
-        self.EF = max(self.EF+(0.1-(5-q)*(0.08+(5-q)*0.02)), MIN_EF) # <3>
+        self.EF = max(self.EF+(0.1-(5-q)*(0.08+(5-q)*0.02)), MIN_EF)
         if q < 3:
             self.I = I1
         elif self.I == I1:
@@ -397,7 +397,7 @@ if __name__ == "__main__":
         while not items_to_review.empty():
             item = items_to_review.get()
             q = grade(item.question, item.repetitions + 1)
-            if not item.review(day, q): # <4>
+            if not item.review(day, q):
                 items_to_review.put(item)
 ```
 
@@ -464,24 +464,24 @@ STARTING_FACTOR = 2500
 # Default collection configuration
 colConf = {
     'newSpread': NEW_CARDS_DISTRIBUTE,
-    'collapseTime': 1200, # <1>
+    'collapseTime': 1200,
 }
 
 # Default deck configuration
 deckConf = {
-    'new': { # <2>
+    'new': {
         'delays': [1, 10],
         'ints': [1, 4],
         'initialFactor': STARTING_FACTOR,
         'perDay': 20,
     },
-    'rev': { # <2>
+    'rev': {
         'perDay': 200,
         'ease4': 1.3,
         'maxIvl': 36500,
         'hardFactor': 1.2,
     },
-    'lapse': { # <3>
+    'lapse': {
         'delays': [10],
         'mult': 0,
         'minInt': 1,
@@ -549,7 +549,7 @@ class Collection:
         self.crt = int(time.mktime(d.timetuple()))
         # In-memory list of cards
         self.cards = []
-        self.sched = Scheduler(self) # <1>
+        self.sched = Scheduler(self)
 
     def addNote(self, note):
         self.cards.append(Card(note))
@@ -557,7 +557,7 @@ class Collection:
 class Note:
 
     def __init__(self):
-        self.id = intId() # <2>
+        self.id = intId()
         self.tags = []
 
     def addTag(self, tag):
@@ -567,7 +567,7 @@ class Note:
 class Card:
 
     def __init__(self, note, id=None):
-        self.id = intId() # <2>
+        self.id = intId()
         self.note = note
         # Timestamp of the creation date in second.
         self.crt = intTime()
@@ -644,11 +644,11 @@ class Scheduler:
         # The number of already reviewed cards today
         self.reps = 0
         # The number of days since the collection creation
-        self.today = self._daysSinceCreation() # <1>
+        self.today = self._daysSinceCreation()
         # The timestamp of the end of day
-        self.dayCutoff = self._dayCutoff() # <2>
+        self.dayCutoff = self._dayCutoff()
         # The timestamp in seconds to determine the learn ahead limit
-        self._lrnCutoff = 0 # <3>
+        self._lrnCutoff = 0
         self.reset()
 ```
 
@@ -717,15 +717,15 @@ class Scheduler:
     #################################################################
 
     def _resetNew(self):
-        self._newQueue = [] # <1>
-        self._updateNewCardRatio() # <2>
+        self._newQueue = []
+        self._updateNewCardRatio()
 
     def _fillNew(self):
         if self._newQueue:
             return True
         lim = min(self.queueLimit, deckConf["new"]["perDay"])
         self._newQueue = list(filter(lambda card: card.queue == 0,
-            self.col.cards)) # <3>
+            self.col.cards))
         self._newQueue.sort(key=lambda card: card.due)
         self._newQueue = self._newQueue[:lim]
         if self._newQueue:
@@ -750,14 +750,14 @@ class Scheduler:
 
     def _resetLrn(self):
         self._updateLrnCutoff(force=True)
-        self._lrnQueue = [] # <1>
+        self._lrnQueue = []
 
     def _fillLrn(self):
         if self._lrnQueue:
             return True
         cutoff = intTime() + colConf['collapseTime']
         self._lrnQueue = list(filter(lambda card: card.queue == 1 and
-            card.due < cutoff, self.col.cards)) # <4>
+            card.due < cutoff, self.col.cards))
         self._lrnQueue.sort(key=lambda card: card.id)
         self._lrnQueue = self._lrnQueue[:self.reportLimit]
         return self._lrnQueue
@@ -766,14 +766,14 @@ class Scheduler:
     #################################################################
 
     def _resetRev(self):
-        self._revQueue = [] # <1>
+        self._revQueue = []
 
     def _fillRev(self):
         if self._revQueue:
             return True
         lim = min(self.queueLimit, self.col.deckConf["rev"]["perDay"])
         self._revQueue = list(filter(lambda card: card.queue == 2 and
-            card.due <= self.today, self.col.cards)) # <5>
+            card.due <= self.today, self.col.cards))
         self._revQueue.sort(key=lambda card: card.due)
         self._revQueue = self._revQueue[:lim]
 
@@ -823,7 +823,7 @@ This method delegates to `_getCard()` and simply increases the counter of studie
 ```python {'1':3} {'2':35} {'2':54} {'2':61}
 class Scheduler:
 
-    def _getCard(self): # <1>
+    def _getCard(self):
         "Return the next due card or None."
 
         # learning card due?
@@ -855,7 +855,7 @@ class Scheduler:
     ##########################################################################
 
     def _getNewCard(self):
-        if self._fillNew(): # <2>
+        if self._fillNew():
             return self._newQueue.pop()
 
     def _timeForNewCard(self):
@@ -874,14 +874,14 @@ class Scheduler:
     ##########################################################################
 
     def _getLrnCard(self, collapse=False):
-        if self._fillLrn(): # <2>
+        if self._fillLrn():
             return self._lrnQueue.pop()
 
     # Reviews
     ##########################################################################
 
     def _getRevCard(self):
-        if self._fillRev(): # <2>
+        if self._fillRev():
             return self._revQueue.pop()
 ```
 
@@ -909,7 +909,7 @@ The queues are now initialized when retrieving the first card in each of them. T
 class Scheduler:
 
     def reset(self):
-        self._updateCutoff() # <1>
+        self._updateCutoff()
         self._resetLrn()
         self._resetRev()
         self._resetNew()
@@ -927,7 +927,7 @@ class Scheduler:
             self.reset()
 
     def getCard(self):
-        self._checkDay() # <2>
+        self._checkDay()
         card = self._getCard()
         if card:
             self.reps += 1
@@ -976,10 +976,10 @@ class Scheduler:
 
     def _answerNewCard(self, card, ease):
         # came from the new queue, move to learning
-        card.queue = 1 # <1>
-        card.type = 1 # <2>
+        card.queue = 1
+        card.type = 1
         # init reps to graduation
-        card.left = self._startingLeft(card) # <3>
+        card.left = self._startingLeft(card)
 
     def _startingLeft(self, card):
         conf = self._lrnConf(card)
@@ -1021,7 +1021,7 @@ So, when answering a new card, the card is automatically promoted to the learnin
 class Scheduler:
 
     def _answerLrnCard(self, card, ease):
-        conf = self._lrnConf(card) # <1>
+        conf = self._lrnConf(card)
 
         # immediate graduate?
         if ease == 4:
@@ -1066,13 +1066,13 @@ The card is moved back to the first step:
 class Scheduler:
 
     def _moveToFirstStep(self, card, conf):
-        card.left = self._startingLeft(card) # <1>
+        card.left = self._startingLeft(card)
 
         # relearning card?
         if card.type == 3:
-            self._updateRevIvlOnFail(card, conf) # <2>
+            self._updateRevIvlOnFail(card, conf)
 
-        return self._rescheduleLrnCard(card, conf) # <3>
+        return self._rescheduleLrnCard(card, conf)
 
     def _updateRevIvlOnFail(self, card, conf):
         card.ivl = self._lapseIvl(card, conf)
@@ -1090,7 +1090,7 @@ class Scheduler:
         card.queue = 1
         return delay
 
-    def _delayForGrade(self, conf, left): # <4>
+    def _delayForGrade(self, conf, left):
         left = left % 1000
         delay = conf['delays'][-left]
         return delay*60
@@ -1124,7 +1124,7 @@ class Scheduler:
 
     def _repeatStep(self, card, conf):
         delay = self._delayForRepeatingGrade(conf, card.left)
-        self._rescheduleLrnCard(card, conf, delay=delay) # <1>
+        self._rescheduleLrnCard(card, conf, delay=delay)
 
     def _delayForRepeatingGrade(self, conf, left):
         # halfway between last and next
@@ -1161,9 +1161,9 @@ class Scheduler:
         lapse = card.type == 2
 
         if lapse:
-            self._rescheduleGraduatingLapse(card) # <1>
+            self._rescheduleGraduatingLapse(card)
         else:
-            self._rescheduleNew(card, conf, early) # <2>
+            self._rescheduleNew(card, conf, early)
 
     def _rescheduleGraduatingLapse(self, card):
         card.due = self.today+card.ivl
@@ -1178,7 +1178,7 @@ class Scheduler:
     def _graduatingIvl(self, card, conf, early):
         if card.type in (2,3):
             return card.ivl
-        if not early: # <3>
+        if not early:
             # graduate
             ideal =  conf['ints'][0]
         else:
@@ -1206,7 +1206,7 @@ class Scheduler:
     def _moveToNextStep(self, card, conf):
         # decrement real left count and recalculate left today
         left = (card.left % 1000) - 1
-        card.left = self._leftToday(conf['delays'], left)*1000 + left # <1>
+        card.left = self._leftToday(conf['delays'], left)*1000 + left
 
         self._rescheduleLrnCard(card, conf)
 ```
@@ -1246,10 +1246,10 @@ class Scheduler:
     def _rescheduleLapse(self, card):
         conf = self.col.deckConf["lapse"]
 
-        card.lapses += 1 # <1>
-        card.factor = max(1300, card.factor-200) # <2>
+        card.lapses += 1
+        card.factor = max(1300, card.factor-200)
 
-        suspended = self._checkLeech(card, conf) # <3>
+        suspended = self._checkLeech(card, conf)
 
         if not suspended:
             card.type = 2
@@ -1294,10 +1294,10 @@ class Scheduler:
 
     def _rescheduleRev(self, card, ease):
         # update interval
-        self._updateRevIvl(card, ease) # <1>
+        self._updateRevIvl(card, ease)
 
         # then the rest
-        card.factor = max(1300, card.factor+[-150, 0, 150][ease-2]) # <2>
+        card.factor = max(1300, card.factor+[-150, 0, 150][ease-2])
         card.due = self.today + card.ivl
 
     def _updateRevIvl(self, card, ease):
@@ -1306,7 +1306,7 @@ class Scheduler:
     # Interval management
     ##########################################################################
 
-    def _nextRevIvl(self, card, ease): # <3>
+    def _nextRevIvl(self, card, ease):
         "Next review interval for CARD, given EASE."
         delay = self._daysLate(card)
         conf = self.col.deckConf["rev"]
@@ -1370,7 +1370,7 @@ In the implementation, the code splits the learning queue into two distinct queu
 
 def _resetLrn(self):
     self._lrnQueue = []
-    self._lrnDayQueue = [] # <1>
+    self._lrnDayQueue = []
 
 # ...
 
@@ -1381,7 +1381,7 @@ def _rescheduleLrnCard(self, card, conf, delay=None):
 
     card.due = int(time.time() + delay)
     # due today?
-    if card.due < self.dayCutoff: # <2>
+    if card.due < self.dayCutoff:
         card.queue = 1
     else:
         # the card is due in one or more days, so we need to use the
@@ -1394,7 +1394,7 @@ def _rescheduleLrnCard(self, card, conf, delay=None):
 
 def _getCard(self):
     # learning card due?
-    c = self._getLrnCard() # <3>
+    c = self._getLrnCard()
     if c:
         return c
 
@@ -1410,7 +1410,7 @@ def _getCard(self):
         return c
 
     # day learning card due?
-    c = self._getLrnDayCard() # <3>
+    c = self._getLrnDayCard()
     if c:
         return c
 
@@ -1447,7 +1447,7 @@ When you select an ease button on a review card, [Anki also applies a small amou
 Here is the code:
 
 ```python {'1':1} {'2':10} {'2':12} {'2':14}
-def _fuzzedIvl(self, ivl): # <1>
+def _fuzzedIvl(self, ivl):
     min, max = self._fuzzIvlRange(ivl)
     return random.randint(min, max)
 
@@ -1456,11 +1456,11 @@ def _fuzzIvlRange(self, ivl):
         return [1, 1]
     elif ivl == 2:
         return [2, 3]
-    elif ivl < 7: # <2>
+    elif ivl < 7:
         fuzz = int(ivl*0.25)
-    elif ivl < 30: # <2>
+    elif ivl < 30:
         fuzz = max(2, int(ivl*0.15))
-    else: # <2>
+    else:
         fuzz = max(4, int(ivl*0.05))
     # fuzz at least a day
     fuzz = max(fuzz, 1)

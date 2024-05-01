@@ -323,20 +323,20 @@ public class OurSimpleClassRunner implements Runner {
 
         try {
             Object test = createTest();
-            notifier.fireTestStarted(description); // <2>
+            notifier.fireTestStarted(description);
 
             method.invoke(test);
 
         } catch (Throwable t) {
             Failure failure = new Failure(description, t);
-            notifier.fireTestFailure(failure); // <2>
+            notifier.fireTestFailure(failure);
         } finally {
-            notifier.fireTestFinished(description); // <2>
+            notifier.fireTestFinished(description);
         }
     }
 
     private Object createTest() throws Exception {
-        return testClass.getConstructor().newInstance(); // <3>
+        return testClass.getConstructor().newInstance();
     }
 
 }

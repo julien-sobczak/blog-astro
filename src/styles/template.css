@@ -1212,6 +1212,9 @@ dl.markers dd {
   margin-top: 0.5em;
   font-size: 90%;
 }
+dl.markers dd > p:first-child {
+  margin-top: 0;
+}
 
 /* Callout */
 

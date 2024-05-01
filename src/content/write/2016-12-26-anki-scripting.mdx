@@ -1084,18 +1084,18 @@ We could now create our first script. Add a new file at the root of the project:
 import sys, os
 
 # Load Anki library
-sys.path.append("anki") # <1>
+sys.path.append("anki")
 from anki.storage import Collection
 
 # Define the path to the Anki SQLite collection
-PROFILE_HOME = os.path.expanduser("~/Documents/Anki/User 1") # <2>
+PROFILE_HOME = os.path.expanduser("~/Documents/Anki/User 1")
 cpath = os.path.join(PROFILE_HOME, "collection.anki2")
 
 # Load the Collection
 col = Collection(cpath, log=True) # Entry point to the API
 
 # Use the available methods to list the notes
-for cid in col.findNotes("tag:English"): # <3>
+for cid in col.findNotes("tag:English"):
     note = col.getNote(cid)
     front =  note.fields[0] # "Front" is the first field of these cards
     print(front)
@@ -2066,8 +2066,8 @@ The function `bulk_loading_anki` iterate over the idioms, and create a new note 
 def bulk_loading_anki(idioms):
 
     # Load the anki collection
-    cpath = os.path.join(PROFILE_HOME, "collection.anki2") # <1>
-    col = Collection(cpath, log=True) # <2>
+    cpath = os.path.join(PROFILE_HOME, "collection.anki2")
+    col = Collection(cpath, log=True)
 
     # Set the model
     modelBasic = col.models.byName('Idiom')
@@ -2105,12 +2105,12 @@ def bulk_loading_anki(idioms):
                '<span class="english">%s</span> ' +
                '<span class="french">%s</span>' +
                '</p>' \
-                % (example['en'], example['fr']) # <3>
+                % (example['en'], example['fr'])
 
         for warning in idiom.warnings:
             note_field += '<p class="warning">%s<p>' % warning
 
-        note.fields[0] = english_field # <4>
+        note.fields[0] = english_field
         note.fields[1] = french_field
         note.fields[2] = examples_field
         note.fields[3] = note_field
@@ -2129,7 +2129,7 @@ def bulk_loading_anki(idioms):
         col.addNote(note)
 
     # Save the changes to DB
-    col.save() # <5>
+    col.save()
 ```
 
 <dl className="markers">
@@ -2626,7 +2626,7 @@ The `<text>` tag contains a x-wiki document whose main syntax is defined [here](
 Here is an shortened example of a x-wiki document (about the word `keyboard`):
 
 ```
-==English== // <1>
+==English==
 {{wikipedia|dab=keyboard|lang=en}}
 [[Image:Player piano keyboard.jpg|thumb|100px|A piano keyboard]]
 
@@ -2638,7 +2638,7 @@ From {{compound|key|board|lang=en}}.
 * {{a|UK|Australia}} {{IPA|/ˈkiːbɔːd/|lang=en}}
 * {{audio|En-us-keyboard.ogg|Audio (US)|lang=en}}
 
-===Noun=== // <2>
+===Noun===
 {{en-noun}}
 
 # {{lb|en|computing|etc.}} A set of keys used to operate
@@ -2651,17 +2651,17 @@ and white keys that cause different tones to be produced when struck.
 from the keyboard device.
 
 ====Synonyms====
-* {{sense|electronic musical device}} {{l|en|electronic keyboard}} // <3>
+* {{sense|electronic musical device}} {{l|en|electronic keyboard}}
 
 ====Related terms====
 * {{l|en|key}}
 * {{l|en|keypad}}
 
-====Translations==== // <4>
+====Translations====
 {{trans-top|set of keys used to operate a typewriter, computer etc.}}
 * Breton: {{t|br|klavier|m}}
 * Dutch: {{t+|nl|toetsenbord|n}}, {{t+|nl|klavier|n}}
-* French: {{t+|fr|clavier|m}} // <3>
+* French: {{t+|fr|clavier|m}}
 {{trans-bottom}}
 
 {{trans-top|component of many instruments}}
@@ -2672,20 +2672,20 @@ from the keyboard device.
 * German: {{t+|de|Tastatur|f}}, {{t+|de|Klaviatur|f}}, {{t+|de|Manual|n}}
 {{trans-bottom}}
 
-===Verb=== // <2>
+===Verb===
 {{en-verb}}
 
 # {{lb|en|intransitive}} To [[type]] on a [[computer]] keyboard.
 #: '' '''Keyboarding''' is the part of this job I hate the most.''
 
-====Translations==== // <4>
+====Translations====
 {{trans-top|to type in}}
 *: Mandarin: {{t+|cmn|打字|tr=dǎzì|sc=Hani}}
 * French: {{t+|fr|clavier}}
 * Greek: {{t|el|πληκτρογραφώ}}, {{t+|el|πληκτρολογώ}}
 {{trans-bottom}}
 
-==Dutch== // <1>
+==Dutch==
 
 ===Pronunciation===
 * {{audio|Nl-keyboard.ogg|Audio|lang=nl}}
@@ -2731,8 +2731,8 @@ drawn by a [[horse]] or other animal.
 # A wheeled vehicle that moves independently,
 with at least three wheels, powered mechanically,
 steered by a driver
-#: ''She drove her '''car''' to the mall.'' // <1>
-#* {{quote-book|year=2006|author=[[w:Edwin Black|Edwin Black]] // <2>
+#: ''She drove her '''car''' to the mall.''
+#* {{quote-book|year=2006|author=[[w:Edwin Black|Edwin Black]]
 |title=Internal Combustion
 |chapter=1|url=http://openlibrary.org/works/OL4103950W
 |passage=If successful, Edison and Ford—in 1914—
@@ -3008,7 +3008,7 @@ For example, if you want to retrieve the information about the word **daughter**
 
 We could now create an application based on AngularJS 1.x and hosted in the same project for convenience. By default, every resource present under the directory `src/main/resources/public` will be exposed as static resources by Spring Boot. So, let's create the index page:
 
-```html title="index.html" {'1':52}
+```html title="index.html" {'1':28,35}
 <!doctype html>
 <html lang="fr" ng-app="app">
 <head>
@@ -3036,14 +3036,14 @@ We could now create an application based on AngularJS 1.x and hosted in the same
                     <label>{{type.type}}</label>
                     <input type="checkbox"
                       ng-click="type.include = !type.include"
-                      ng-checked="type.include" /> <!-- <1> -->
+                      ng-checked="type.include" />
                     <span class="label">Include?</span>
                 </h2>
                 <ol class="definitions">
                     <li ng-repeat="definition in type.definitions">
                         <input type="checkbox"
                           ng-click="definition.include = !definition.include"
-                          ng-checked="definition.include" /> <!-- <1> -->
+                          ng-checked="definition.include" />
                         <span class="definition">{{definition.text}}</span>
                         <!-- quotations -->
                     </li>
@@ -3060,7 +3060,7 @@ We could now create an application based on AngularJS 1.x and hosted in the same
                     <input type="checkbox"
                         ng-click="json.audio.include = !json.audio.include"
                         ng-checked="json.audio.include"
-                        ng-if="json.audio" /> // <1>
+                        ng-if="json.audio" />
                     <span class="label">Sound?</span>
                 </h2>
                 <div id="audio">
@@ -3099,7 +3099,7 @@ angular.module('app', [])
   // Display a word.
   function showWord(rank) {
 
-    $http.get('/api/word/' + rank).then(function(json) { // <2>
+    $http.get('/api/word/' + rank).then(function(json) {
       $scope.json = json.data;
       $scope.word = $scope.json.title;
     });
@@ -3108,7 +3108,7 @@ angular.module('app', [])
   }
 
   // Inspect the Hash to determine the word to display
-  if (window.location.hash) { // <1>
+  if (window.location.hash) {
     $scope.rank = Number(window.location.hash.substring(1));
   } else {
     $scope.rank = 1;
@@ -3183,11 +3183,11 @@ public class ApiController {
 
         // Parse the input
         ObjectNode node = Json.readFromString(jsonWord,
-            ObjectNode.class); // <1>
+            ObjectNode.class);
         Word newWord = new Word(node);
 
         // Save picture
-        newWord.save(outputDir); // <2>
+        newWord.save(outputDir);
     }
 
 }
@@ -3225,8 +3225,8 @@ public class Word {
    }
 
    public void save(String outputDir) throws IOException {
-       downloadAudio(outputDir); // <1>
-       saveDictionaryEntry(outputDir); // <2>
+       downloadAudio(outputDir);
+       saveDictionaryEntry(outputDir);
    }
 
    private void saveDictionaryEntry(String outputDir) throws IOException {

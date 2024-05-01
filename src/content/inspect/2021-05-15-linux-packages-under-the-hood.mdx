@@ -329,12 +329,12 @@ do_build(const char *const *argv)
   dir = *argv++;
   dest = *argv++;
 
-  debar = gen_dest_pathname(dir, dest); // <1>
+  debar = gen_dest_pathname(dir, dest);
   ctrldir = str_fmt("%s/%s", dir, "DEBIAN");
 
   /* Now that we have verified everything it is time to actually
    * build something. Let's start by making the ar-wrapper. */
-  ar = dpkg_ar_create(debar, 0644); // <2>
+  ar = dpkg_ar_create(debar, 0644);
 
   /* Create a temporary file to store the control data in. */
   tfbuf = path_make_temp_template("dpkg-deb");
@@ -362,9 +362,9 @@ do_build(const char *const *argv)
   sprintf(adminmember, "%s%s", "control.tar",
           compressor_get_extension(control_compress_params.type));
 
-  dpkg_ar_put_magic(ar); // <3>
-  dpkg_ar_member_put_mem(ar, "debian-binary", deb_magic, strlen(deb_magic)); // <4>
-  dpkg_ar_member_put_file(ar, adminmember, gzfd, -1); // <5>
+  dpkg_ar_put_magic(ar);
+  dpkg_ar_member_put_mem(ar, "debian-binary", deb_magic, strlen(deb_magic));
+  dpkg_ar_member_put_file(ar, adminmember, gzfd, -1);
 
   close(gzfd);
 
@@ -386,14 +386,14 @@ do_build(const char *const *argv)
   sprintf(datamember, "%s%s", "data.tar",
           compressor_get_extension(compress_params.type));
 
-  dpkg_ar_member_put_file(ar, datamember, gzfd, -1); // <6>
+  dpkg_ar_member_put_file(ar, datamember, gzfd, -1);
 
   close(gzfd);
 
   if (fsync(ar->fd))
     ohshite(_("unable to sync file '%s'"), ar->name);
 
-  dpkg_ar_close(ar); // <7>
+  dpkg_ar_close(ar);
 
   free(debar);
 
@@ -2133,9 +2133,9 @@ bool pkgSourceList::ReadMainList()
 
    _error->PushToStack();
    if (RealFileExists(Main) == true)
-      ReadAppend(Main); // <1>
+      ReadAppend(Main);
    if (DirectoryExists(Parts) == true)
-      ReadSourceDir(Parts); // <1>
+      ReadSourceDir(Parts);
 
    auto good = _error->PendingError() == false;
    _error->MergeWithStack();
@@ -3122,7 +3122,7 @@ bool DoInstall(CommandLine &CmdL)
    // Covered in step 3
    /* Print out a list of packages that are going to be installed extra
       to what the user asked */
-   if (Cache->InstCount() != verset.size()) // <1>
+   if (Cache->InstCount() != verset.size())
       std::list<pkgCache::PkgIterator> extras;
       for (pkgCache::PkgIterator I = Cache->PkgBegin(); I.end() != true; ++I)
       {

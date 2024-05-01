@@ -100,7 +100,7 @@ For example, in C, the PID of your program is accessible using the function `get
 int main(void)
 {
     pid_t pid;
-    pid = getpid(); // <1>
+    pid = getpid();
     printf("PID=%d\n", pid);
     return 0;
 }
@@ -121,7 +121,7 @@ Here is a minimal benchmark illustrating this difference:
 #include <unistd.h>
 #include <time.h>
 
-pid_t getdummyid() { // <1>
+pid_t getdummyid() {
 	return 1;
 }
 
@@ -133,15 +133,15 @@ int main(void)
     double elapsed_time;
 
     start_time = clock();
-    for (int i=0; i<10000000; i++) { // <2>
+    for (int i=0; i<10000000; i++) {
         pid = getdummyid();
   	}
     elapsed_time = (double)(clock() - start_time) / CLOCKS_PER_SEC;
   	printf("Done getdummyid in %f seconds\n", elapsed_time);
 
     start_time = clock();
-    for (int i=0; i<10000000; i++) { // <2>
-        pid = getpid(); // <3>
+    for (int i=0; i<10000000; i++) {
+        pid = getpid();
   	}
 	elapsed_time = (double)(clock() - start_time) / CLOCKS_PER_SEC;
   	printf("Done getpid     in %f seconds\n", elapsed_time);
@@ -443,11 +443,11 @@ really_getpid (pid_t oldval)
 }
 
 pid_t
-__getpid (void) // <1>
+__getpid (void)
 {
-  pid_t result = THREAD_GETMEM (THREAD_SELF, pid); // <2>
+  pid_t result = THREAD_GETMEM (THREAD_SELF, pid);
   if (__glibc_unlikely (result <= 0))
-    result = really_getpid (result); // <3>
+    result = really_getpid (result);
   return result;
 }
 
@@ -519,7 +519,7 @@ Here is the definition of the `getpid` system call :
  */
 SYSCALL_DEFINE0(getpid)
 {
-	return task_tgid_vnr(current); // <1>
+	return task_tgid_vnr(current);
 }
 ```
 
@@ -554,7 +554,7 @@ But some architectures (e.g. x86) have their own architecture-specific system ca
 # The format is:
 # <number> <abi> <name> <entry point>
 ...
-39	common	getpid			sys_getpid // <1>
+39	common	getpid			sys_getpid
 ...
 ```
 
@@ -606,8 +606,8 @@ The kernel starts when the function `start_kernel` defined in `init/main.c` is c
 ```c title="arch/x86/kernel/cpu/common.c" {'1':3} {'2':4}
 void syscall_init(void)
 {
-	wrmsr(MSR_STAR, 0, (__USER32_CS << 16) | __KERNEL_CS); // <1>
-	wrmsrl(MSR_LSTAR, (unsigned long)entry_SYSCALL_64); // <2>
+	wrmsr(MSR_STAR, 0, (__USER32_CS << 16) | __KERNEL_CS);
+	wrmsrl(MSR_LSTAR, (unsigned long)entry_SYSCALL_64);
   ...
 }
 ```
@@ -631,8 +631,8 @@ This table is represented by the `sys_call_table` array in the Linux kernel:
 
 ```c title="arch/x86/entry/syscall_64.c" {'1':2} {'2':3}
 asmlinkage const sys_call_ptr_t sys_call_table[__NR_syscall_max+1] = {
-	[0 ... __NR_syscall_max] = &__x64_sys_ni_syscall, // <1>
-  #include <asm/syscalls_64.h> // <2>
+	[0 ... __NR_syscall_max] = &__x64_sys_ni_syscall,
+  #include <asm/syscalls_64.h>
 };
 ```
 
@@ -730,9 +730,9 @@ __visible noinstr void do_syscall_64(unsigned long nr, struct pt_regs *regs)
 {
 	nr = syscall_enter_from_user_mode(regs, nr);
 
-	if (likely(nr < NR_syscalls)) { // <1>
-		nr = array_index_nospec(nr, NR_syscalls); // <2>
-		regs->ax = sys_call_table[nr](regs); // <3>
+	if (likely(nr < NR_syscalls)) {
+		nr = array_index_nospec(nr, NR_syscalls);
+		regs->ax = sys_call_table[nr](regs);
 	}
 	syscall_exit_to_user_mode(regs);
 }
@@ -849,7 +849,7 @@ Let's output some information about our file:
 Symbols from "/home/vagrant/getpid".
 Local exec file:
 	`/home/vagrant/getpid', file type elf64-x86-64.
-	Entry point: 0x401000 // <1>
+	Entry point: 0x401000
 	0x0000000000401000 - 0x0000000000401010 is .text
 ```
 
@@ -1014,7 +1014,7 @@ That's all. You have reviewed the standard Go code to execute a system call on L
 Since Java 9, the process API can be used to get the current process ID.
 
 ```java {'1':1}
-long pid = ProcessHandle.current().pid(); // <1>
+long pid = ProcessHandle.current().pid();
 ```
 
 <dl className="markers">
@@ -1085,7 +1085,7 @@ The code delegates to the `native` function `getCurrentPid0` implemented in C in
  */
 JNIEXPORT jlong JNICALL
 Java_java_lang_ProcessHandleImpl_getCurrentPid0(JNIEnv *env, jclass clazz) {
-    pid_t pid = getpid(); // <1>
+    pid_t pid = getpid();
     return (jlong) pid;
 }
 ```

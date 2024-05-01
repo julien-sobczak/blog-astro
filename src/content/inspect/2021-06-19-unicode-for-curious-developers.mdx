@@ -642,20 +642,20 @@ public final class String
     implements java.io.Serializable, Comparable<String>, CharSequence {
 
     /** The value is used for character storage. */
-    private final char value[]; // <1>
+    private final char value[];
 
     public String(byte bytes[], int offset, int length, Charset charset) {
         if (charset == null)
             throw new NullPointerException("charset");
         checkBounds(bytes, offset, length);
-        this.value =  StringCoding.decode(charset, bytes, offset, length); // <2>
+        this.value =  StringCoding.decode(charset, bytes, offset, length);
     }
 
     public char charAt(int index) {
         if ((index < 0) || (index >= value.length)) {
             throw new StringIndexOutOfBoundsException(index);
         }
-        return value[index]; // <3>
+        return value[index];
     }
 
     ...
@@ -684,7 +684,7 @@ public final class String
      * The value is used for character storage.
      */
     @Stable
-    private final byte[] value; // <1>
+    private final byte[] value;
 
     /**
      * The identifier of the encoding used to encode the bytes in
@@ -693,19 +693,19 @@ public final class String
      * LATIN1
      * UTF16
      */
-    private final byte coder; // <2>
+    private final byte coder;
 
     public String(byte bytes[], int offset, int length, Charset charset) {
         if (charset == null)
             throw new NullPointerException("charset");
         checkBoundsOffCount(offset, length, bytes.length);
         StringCoding.Result ret =
-            StringCoding.decode(charset, bytes, offset, length); // <3>
+            StringCoding.decode(charset, bytes, offset, length);
         this.value = ret.value;
         this.coder = ret.coder;
     }
 
-    public char charAt(int index) { // <4>
+    public char charAt(int index) {
         if (isLatin1()) {
             return StringLatin1.charAt(value, index);
         } else {
@@ -757,7 +757,7 @@ sunt in culpa qui officia deserunt mollit anim id est laborum.
 
         // StringLatin1
         for (int i = 0; i < 1000000; i++) {
-            results.add((loremIpsum + i).toLowerCase()); // <1>
+            results.add((loremIpsum + i).toLowerCase());
         }
 
         long timeElapsed = System.nanoTime() - startTime;
@@ -768,7 +768,7 @@ sunt in culpa qui officia deserunt mollit anim id est laborum.
 
         // StringUTF16
         for (int i = 0; i < 1000000; i++) {
-            results.add((loremIpsum + "😀" + i).toLowerCase()); // <2>
+            results.add((loremIpsum + "😀" + i).toLowerCase());
         }
 
         timeElapsed = System.nanoTime() - startTime;
@@ -869,7 +869,7 @@ Iterating over strings using this syntax does not work so well. We get bytes, no
 To solve this, Go introduces the data type `rune` (a synonym of code point that is defined as a `int32`). If we convert the string to a slice of `rune`, we get a different result:
 
 ```go {'1':1}
-s := []rune("Hey 🤚!") // <1>
+s := []rune("Hey 🤚!")
 
 fmt.Printf("len=%d\n", len(s))
 // Print the characters
@@ -1137,10 +1137,10 @@ The code relies on a global structure initialized using the Unicode Character Da
 `Modules/unicodename_db.h`, and `Objects/unicodetype_db.h`.
 
 ```python title="Tools/unicode/makeunicodedata.py" {'1':1} {'2':4}
-def makeunicodetype(unicode, trace): # <1>
+def makeunicodetype(unicode, trace):
     ...
 
-    for char in unicode.chars: # <2>
+    for char in unicode.chars:
         record = unicode.table[char]
         # extract database properties
         category = record.general_category
@@ -1233,7 +1233,7 @@ abstract class CharacterData {
     // ...
 
     static final CharacterData of(int ch) {
-        if (ch >>> 8 == 0) {     // fast-path <1>
+        if (ch >>> 8 == 0) {     // fast-path
             return CharacterDataLatin1.instance;
         } else {
             switch(ch >>> 16) {  //plane 00-16
@@ -1282,10 +1282,10 @@ define SetupCharacterData
 	$$(call MakeDir, $$(@D))
 	$(TOOL_GENERATECHARACTER) $2 $(DEBUG_OPTION) \
 	    -template $(CHARACTERDATA)/$1.java.template \
-	    -spec $(UNICODEDATA)/UnicodeData.txt \ # <1>
-	    -specialcasing $(UNICODEDATA)/SpecialCasing.txt \ # <1>
-	    -proplist $(UNICODEDATA)/PropList.txt \ # <1>
-	    -derivedprops $(UNICODEDATA)/DerivedCoreProperties.txt \ # <1>
+	    -spec $(UNICODEDATA)/UnicodeData.txt \
+	    -specialcasing $(UNICODEDATA)/SpecialCasing.txt \
+	    -proplist $(UNICODEDATA)/PropList.txt \
+	    -derivedprops $(UNICODEDATA)/DerivedCoreProperties.txt \
 	    -o $(SUPPORT_OUTPUTDIR)/gensrc/java.base/java/lang/$1.java \
 	    -usecharforbyte $3
 
@@ -1359,7 +1359,7 @@ func ToUpper(s string) string {
 	isASCII, hasLower := true, false
 	for i := 0; i < len(s); i++ {
 		c := s[i]
-		if c >= utf8.RuneSelf { // <1>
+		if c >= utf8.RuneSelf {
 			isASCII = false
 			break
 		}
@@ -1375,13 +1375,13 @@ func ToUpper(s string) string {
 		for i := 0; i < len(s); i++ {
 			c := s[i]
 			if 'a' <= c && c <= 'z' {
-				c -= 'a' - 'A' // <2>
+				c -= 'a' - 'A'
 			}
 			b.WriteByte(c)
 		}
 		return b.String()
 	}
-	return Map(unicode.ToUpper, s) // <3>
+	return Map(unicode.ToUpper, s)
 }
 ```
 
@@ -1433,8 +1433,8 @@ For example:
 
 ```go title="src/unicode/tables.go" {'1':2} {'2':3}
 var _CaseRanges = []CaseRange{
-	{0x0041, 0x005A, d{0, 32, 0}},    // <1>
-	{0x0061, 0x007A, d{-32, 0, -32}}, // <2>
+	{0x0041, 0x005A, d{0, 32, 0}},
+	{0x0061, 0x007A, d{-32, 0, -32}},
     ...
 }
 ```
@@ -1452,14 +1452,14 @@ This variable is then used by the function `to`, which is called by higher-level
 ```go title="src/unicode/letter.go" {'1':3} {'2':10} {'3':28} {'2':30}
 // to maps the rune using the specified case mapping.
 // It additionally reports whether caseRange contained a mapping for r.
-func to(_case int, r rune, caseRange []CaseRange) (mappedRune rune, foundMapping bool) { // <1>
+func to(_case int, r rune, caseRange []CaseRange) (mappedRune rune, foundMapping bool) {
 	if _case < 0 || MaxCase <= _case {
 		return ReplacementChar, false // as reasonable an error as any
 	}
 	// binary search over ranges
 	lo := 0
 	hi := len(caseRange)
-	for lo < hi { // <2>
+	for lo < hi {
 		m := lo + (hi-lo)/2
 		cr := caseRange[m]
 		if rune(cr.Lo) <= r && r <= rune(cr.Hi) {
@@ -1477,9 +1477,9 @@ func to(_case int, r rune, caseRange []CaseRange) (mappedRune rune, foundMapping
 				// is odd so we take the low bit from _case.
 				return rune(cr.Lo) + ((r-rune(cr.Lo))&^1 | rune(_case&1)), true
 			}
-			return r + delta, true // <3>
+			return r + delta, true
 		}
-		if r < rune(cr.Lo) { // <2>
+		if r < rune(cr.Lo) {
 			hi = m
 		} else {
 			lo = m + 1
@@ -1628,7 +1628,7 @@ The Python interpreter outputs:
 
 ```shell {'1':2}
 $ python3 output.py | hexdump
-0000000 48 65 6c 6c 6f 20 f0 9f 91 8b 0a // <1>
+0000000 48 65 6c 6c 6f 20 f0 9f 91 8b 0a
 ```
 
 <dl className="markers">

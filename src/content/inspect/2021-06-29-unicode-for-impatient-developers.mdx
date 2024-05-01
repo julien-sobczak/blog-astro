@@ -242,7 +242,7 @@ public class Regex {
 
     public static void main(String[] args) {
         String s = "100 µAh 10 mAh";
-        Pattern p = Pattern.compile("\\d+ \\p{L}Ah"); // <1>
+        Pattern p = Pattern.compile("\\d+ \\p{L}Ah");
         Matcher m = p.matcher(s);
         System.out.println(m.results().count(); // Output: 2
     }

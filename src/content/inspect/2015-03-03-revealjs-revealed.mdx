@@ -120,13 +120,13 @@ var Reveal;
 
     'use strict';
 
-    var SLIDES_SELECTOR = '.slides section', // <1>
+    var SLIDES_SELECTOR = '.slides section',
         HORIZONTAL_SLIDES_SELECTOR = '.slides>section',
         VERTICAL_SLIDES_SELECTOR = '.slides>section.present>section',
 
         // The horizontal and vertical index of the currently active slide
-        indexh, // <2>
-        indexv, // <2>
+        indexh,
+        indexv,
 
         // Cached references to DOM elements
         dom = {};
@@ -138,7 +138,7 @@ var Reveal;
         dom.slides = document.querySelector( '.reveal .slides' );
 
         // Go to first slide
-        slide(0, 0); // <3>
+        slide(0, 0);
     }
 
 
@@ -328,7 +328,7 @@ function layout() {
       size.presentationWidth / size.slideWidth,
       size.presentationHeight / size.slideHeight );
 
-    dom.slides.style.left = '50%'; // <1>
+    dom.slides.style.left = '50%';
     dom.slides.style.top = '50%';
     dom.slides.style.bottom = 'auto';
     dom.slides.style.right = 'auto';
@@ -555,19 +555,19 @@ Here are the CSS declarations to support this effect:
 
 ```css {'1':2} {'2':5,8,11,14}
 .reveal.slide section {
-  transition: all 800ms ease-in-out; } // <1>
+  transition: all 800ms ease-in-out; }
 
 .reveal.slide .slides > section.past {
-  transform: translate(-150%, 0); } // <2>
+  transform: translate(-150%, 0); }
 
 .reveal.slide .slides > section.future {
-  transform: translate(150%, 0); } // <2>
+  transform: translate(150%, 0); }
 
 .reveal.slide .slides > section > section.past {
-  transform: translate(0, -150%); } // <2>
+  transform: translate(0, -150%); }
 
 .reveal .slides > section > section.future {
-  transform: translate(0, 150%); } // <2>
+  transform: translate(0, 150%); }
 ```
 
 <dl className="markers">
@@ -684,7 +684,7 @@ function initialize() {
     addEventListeners();
 
     // Read the initial hash
-    readURL(); // <1>
+    readURL();
 
 }
 ```
@@ -708,19 +708,19 @@ Reveal.js, like many existing libraries, started by exposing a single global var
 The UMD pattern makes possible to interoperate with existing loaders. As often in JavaScript, we inspect the objects present in the global namespace to detect the environment. Here is a preview of the code:
 
 ```javascript {'1':1} {'2':4} {'3':10} {'4':13}
-(function( root, factory ) { // <1>
+(function( root, factory ) {
     if( typeof define === 'function' && define.amd ) {
         // AMD. Register as an anonymous module.
-        define( function() { // <2>
+        define( function() {
             root.Reveal = factory();
             return root.Reveal;
         } );
     } else if( typeof exports === 'object' ) {
         // Node.
-        module.exports = factory(); // <3>
+        module.exports = factory();
     } else {
         // Browser globals.
-        root.Reveal = factory(); // <4>
+        root.Reveal = factory();
     }
 }( this, function() {
 
