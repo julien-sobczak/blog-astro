@@ -15,20 +15,19 @@ import Marker from '../../components/Marker.astro'
 import Lead from '../../components/Lead.astro'
 
 <Admonition type="caution" className="license">
-This post is a part of a two-parts series. This first post focuses on simplicity while [the following one](/write/2020/06/02/complexity-is-not-complex) focuses on complexity.
+  This post is a part of a two-parts series. This first post focuses on simplicity while [the following one](/write/2020/06/02/complexity-is-not-complex) focuses on complexity.
 </Admonition>
 
 > The purpose of software engineering is to control complexity, not to create it.
 >
-> -- <cite> Jon L. Bentley, Programming Pearls</cite>
+> -- <cite>Jon L. Bentley, Programming Pearls</cite>
 
 <Lead>
-Make it simple.
+  Make it simple.
 </Lead>
 
-<Lead>
 This simple advice is too simplistic in practice. What must be simple? Simple to do? Simple to change? Simple for the user? The truth is that simplicity is great but we can’t make everything simple. We need a better approach. But first, we need to know what we are fighting against. As British novelist Anthony Horowitz said, “You cannot defeat your enemies until you know who they are.”
-</Lead>
+
 
 ## Complicated Problems vs Complex Problems
 
@@ -40,43 +39,6 @@ Complicated problems can be hard to solve, but they are addressable with techniq
 
 To illustrate the differences, we will use a more familiar situation: writing code in your IDE is mostly a complicated problem while designing an application as a team is mostly a complex problem.[^1]
 
-++++
-<style>
-.comparison-table {
-  border-collapse: collapse;
-  border: none;
-}
-.comparison-table th {
-  text-align: center;
-  background-color: white;
-}
-.comparison-table tr.category {
-  border-top: 1px dotted black;
-}
-.comparison-table th, .comparison-table td {
-  padding: 1em;
-  vertical-align: top;
-}
-.comparison-table .category span {
-  color: white;
-  background-color: black;
-  border-radius: 0.5em;
-  padding: 0.5em 1em;
-}
-.comparison-table .example {
-  background-color: #EEE;
-  padding: 0.5em 1em;
-  border-radius: 0.5em;
-  margin: 0;
-  margin-top: 1.5em;
-  font-size: 90%;
-  font-style: italic;
-}
-.comparison-table .conclusion {
-  padding: 0 1em 2em;
-  text-align: center;
-}
-</style>
 <table class="comparison-table">
 
 <thead>
@@ -115,7 +77,7 @@ Too many interactions mean trying to find a cause always elude a large part of t
 <tr>
 <td>
 The same input always results in the same output.
-<p class="example">Add more CPUs to a CPU-bound process and you will get better performance.<p>
+<p class="example">Add more CPUs to a CPU-bound process and you will get better performance.</p>
 </td>
 <td>
 A minor variation in one place can completely change the output.
@@ -215,7 +177,6 @@ Complex systems observe themselves and change even without external influences.
 
 </tbody>
 </table>
-++++
 
 
 To sum up the differences, **a complicated system is nothing more than the sum of its parts**, while **a complex system is greater than the sum of its parts**. And this makes a huge difference!
@@ -223,6 +184,7 @@ To sum up the differences, **a complicated system is nothing more than the sum o
 These differences explain, in part, why great developers that excel at solving complicated problems don’t necessarily make great managers. Switching from one type of problem to the other must not be considered like an evolution or a promotion, but like a new job. **If you manage complex things as if they are complicated, you’re doomed to failure**.
 
 Therefore, when facing a problem that doesn’t look simple, you must consider if you are facing a complicated or a complex problem, but that’s not all.
+
 
 ## Essential Complexity vs Accidental Complexity
 
@@ -238,25 +200,27 @@ That’s all for the theory. For the rest of this article, I will ignore complex
 
 Now, let's try to apply what we have seen to a concrete example of a complicated problem.
 
+
 ## A Complicated Problem
 
 **The Problem**: _Let’s try to implement a search engine, a minimalist Google. The logic is mainly divided in two parts: the search, and the rendering_.
 
 First, the search. The most simple algorithm (but not the most performant one) is to retrieve the homepage, inspect the text, extract the links present in the page, and continue the search until having visited all the pages.
 
-```
+```python
+q = "simplicity"
 url = "https://mysuperwebsite.com"
 pages_to_scrape = [url]
 visited = []
 
-While not pages_to_scrape.empty?
+while not pages_to_scrape.empty?:
   page_url = pages_to_scrape.pop()
   body = http.Get(page_url)
   document = xml.Parse(body)
-  If q in document.innerText
+  if q in document.innerText:
     print "Found $q in $page_url"
-  For link in document.getElementsByTagName("a")
-    If link.href not in visited
+  for link in document.getElementsByTagName("a"):
+    if link.href not in visited:
       append(pages_to_scrape, link.href)
   append(visited, page_url)
 ```
@@ -265,7 +229,8 @@ Simple? Yes. This algorithm will not compete with the PageRank algorithm but it�
 
 Let’s try to render an HTML document instead using code like this:
 
-```
+```python
+output = "<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -275,7 +240,7 @@ Let’s try to render an HTML document instead using code like this:
         <h1>Results</h1>
         <ul>
 "
-For result in results
+for result in results:
   output += "<li>$result</li>"
 output += "
         </ul>
@@ -286,7 +251,8 @@ output += "
 
 Simple? Yes. Like the previous snippet, we wrote the most basic version to render a list in HTML. Both programs are easy to understand in isolation. Now, let’s try to mix them:
 
-```
+```python
+print "<!html<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -301,14 +267,14 @@ url = "https://mysuperwebsite.com"
 pages_to_scrape = [url]
 visited = []
 
-While not pages_to_scrape.empty?
+While not pages_to_scrape.empty?:
   page_url = pages_to_scrape.pop()
   body = http.Get(page_url)
   document = xml.Parse(body)
-  If q in document.innerText:
+  if q in document.innerText:
     print "<li>$page_url</li>" # Convert to HTML
-  For link in document.getElementsByTagName("a")
-    If link.href not in visited:
+  for link in document.getElementsByTagName("a"):
+    if link.href not in visited:
       append(pages_to_scrape, link.href)
   append(visited, page_url)
 
@@ -335,18 +301,19 @@ We often say it’s harder to read code than to write it. Indeed, when you are w
 
 If we go back to our code, the solution is to reduce the number of chunks required to maintain the code, by using more powerful ones. What we need are abstractions. Abstractions can be new variables, new functions, new classes, new modules, new packages, new dependencies, etc. For this example, we will use interfaces.
 
-```
+```txt
+interface Search:
   search(query string) []string
 
-interface Renderer
+interface Renderer:
   render(results []string)
 
-class BruteForceSearch implements Search
+class BruteForceSearch implements Search:
 
   def search(query string) []string
     # Same code as above but return the results instead of printing them
 
-class HTMLRenderer implements Renderer
+class HTMLRenderer implements Renderer:
 
   def render(results []string)
     # Same code as above
@@ -355,6 +322,7 @@ class HTMLRenderer implements Renderer
 Using these interfaces, our program can be rewritten as easily as:
 
 ```
+search = new BruteForceSearch()
 renderer = new HTMLRenderer()
 
 results = search.search(“simplicity")
@@ -369,7 +337,8 @@ Here is a small diagram to visualize the refactoring:
 
 Using a brute force algorithm is not optimal. We can provide a new implementation based on indexing to get better performance:
 
-```
+```txt
+class IndexSearch implements Search:
 
   def search(query string) []string
     # Use an inverted index
@@ -378,7 +347,8 @@ Using a brute force algorithm is not optimal. We can provide a new implementatio
 
 Similarly, we can provide a new UI using 3D to visualize the results (why not?).
 
-```
+```txt
+class CanvasRenderer implements Renderer:
 
   def render(results []string)
     # Use WebGL to print the results
@@ -416,7 +386,9 @@ I would like to make it clear, **doing the most simple thing is a bad strategy t
 
 When facing a decision, choosing the most simple option may seem like a sensible approach, but it is not. **Don’t look for the simplest idea but for the best idea**. The best idea may seem complex at first, and may be more difficult to absorb, but it will bring you the most long-term benefits. If all that matters to you is to make the simplest choice, it means that you don't care about simplicity. Period.
 
+<Admonition type="tip">
 ✔️ Stop doing the most simple thing. **Start valuing the most simple result**.
+</Admonition>
 
 ### ❌ Don't use principles as rules
 
@@ -430,7 +402,10 @@ This problem commonly occurs when principles are interpreted as rules. In fact, 
 
 The problem is our brain loves rules to make sense of the world. It’s a lot harder to accept, “Well, come up with some experiments and see what happens.” But the truth is **thinking is the only way to make things simple**. Therefore, you must work very hard and not succumb to the temptation to see inspiring principles as stupid rules.
 
+<Admonition type="tip">
 ✔️ **Use principles to make you think**, not to not have to think.
+</Admonition>
+
 
 ### ❌ Don't simplify locally
 
@@ -440,8 +415,9 @@ The interface between your code and your users is another good example. Don’t 
 
 **Simplicity is not black or white**. You need to appreciate shades of gray to determine the right balance between simplicity and essential complexity.
 
-✔️Simplicity for you can mean complexity for others. Don’t optimize locally. **Think globally**.
-
+<Admonition type="tip">
+✔️ Simplicity for you can mean complexity for others. Don’t optimize locally. **Think globally**.
+</Admonition>
 
 ## Conclusion
 
@@ -457,8 +433,9 @@ I hope you now better understand that complexity is not a problem per se. Not ev
 
 **Simplicity is not simple**. There is only one way to get it: complex thinking. **So, think**.
 
+
 <Admonition type="note" className="remember" title="Key Takeaways">
-* *There are simple problems. There are complicated problems. And there are complex problems.* Trying to cast all problems as simple is the guarantee to solve the wrong problem with the wrong solution.
+* **There are simple problems. There are complicated problems. And there are complex problems.** Trying to cast all problems as simple is the guarantee to solve the wrong problem with the wrong solution.
 * Make it simple. But **understand what must be simple**.
 * **Simplicity is the goal, not the process**. You don’t get simple solutions by doing simple things.
 * **Simplicity is not additive**. Adding simplicity over simplicity rarely result in simplicity.
@@ -467,8 +444,8 @@ I hope you now better understand that complexity is not a problem per se. Not ev
 * **Stop using simplicity as an argument** to prevent discussions to find the best solution.
 </Admonition>
 
+---
 
-[^1]: 7 Differences between complex and complicated, Sonja Blignaut
-, http://www.morebeyond.co.za/7-differences-between-complex-and-complicated-systems/
+[^1]: 7 Differences between complex and complicated, Sonja Blignaut, http://www.morebeyond.co.za/7-differences-between-complex-and-complicated-systems/
 [^2]: Coding Without Comments, Coding Horror, https://blog.codinghorror.com/coding-without-comments/
 [^3]: Goodbye, Clean Code, Dan Abramov, https://overreacted.io/goodbye-clean-code/

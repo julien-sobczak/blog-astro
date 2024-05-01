@@ -1186,9 +1186,10 @@ article {
   }
 }
 
-#footnotes .footnote {
+section.footnotes {
   font-size: 0.75em;
   margin: 20px 15px;
+  padding: 0;
 }
 
 
@@ -1347,3 +1348,41 @@ hr {
   }
 }
 
+
+/* Post-Specific Styling */
+
+/* Used by 2020-02-23-simplicity-is-not-simple */
+.comparison-table {
+  border-collapse: collapse;
+  border: none;
+}
+.comparison-table th {
+  text-align: center;
+  background-color: white;
+}
+.comparison-table tr.category {
+  border-top: 1px dotted black;
+}
+.comparison-table th, .comparison-table td {
+  padding: 1em;
+  vertical-align: top;
+}
+.comparison-table .category span {
+  color: white;
+  background-color: black;
+  border-radius: 0.5em;
+  padding: 0.5em 1em;
+}
+.comparison-table .example {
+  background-color: #EEE;
+  padding: 0.5em 1em;
+  border-radius: 0.5em;
+  margin: 0;
+  margin-top: 1.5em;
+  font-size: 90%;
+  font-style: italic;
+}
+.comparison-table .conclusion {
+  padding: 0 1em 2em;
+  text-align: center;
+}

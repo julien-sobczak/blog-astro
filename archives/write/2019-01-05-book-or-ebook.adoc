@@ -17,7 +17,7 @@ recommendations:
 
 :page-liquid:
 
-[quote,Stephen Fry, English comedian, actor, writer, presenter, and activist]
+[quote,Stephen Fry, English comedian]
 ____
 Books are no more threatened by Kindle than stairs by elevators.
 ____
@@ -50,7 +50,7 @@ Let's begin with the new contestant, ebooks, which comes with solid arguments, a
 
 
 [NOTE]
-.Tablets are not a-readers!
+.Tablets are not e-readers!
 ====
 Tablets have a larger screen, rich color capabilities, support more formats than any e-reader, but tablets suck for reading. The battery will let you read only one book, the blue light emitted causes eye fatigue, and more importantly, they include too many distractions to stay focused on your book. _“I will mark this new mail as read”, “Someone mentions me in a Facebook publication”, “I still haven’t blocked this application that flood me with notifications”_. *Interruptions are omnipresent when using a tablet* (or a computer). Most applications are fighting for your attention (the more you use them, the more they are valuable in the eyes of investors). Don't try to read ebooks on tablet to determine if you will buy an e-reader. They are incomparable and you will be disappointed. I only use my tablet to read very specific kind of ebooks (comics, photography books).
 ====

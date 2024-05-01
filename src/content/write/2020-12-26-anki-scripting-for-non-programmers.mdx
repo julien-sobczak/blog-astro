@@ -19,8 +19,6 @@ import Marker from '../../components/Marker.astro'
 import Lead from '../../components/Lead.astro'
 
 
-## Anki Scripting for Non-Programmers
-
 <Admonition type="caution" className="license">
 This post revises an old post that I wrote four years ago, [Anki Scripting](/write/2016/12/26/anki-scripting). My motivation at that time was just to publish my notes mainly for myself. I have not anticipated that so many learners were trying to automate their flashchards creation.
 
@@ -33,7 +31,7 @@ This post is written for an audience with minimal programming skills. I've tried
 The code present in this article was tested on MacOS using Python 3.8 and Anki 2.1.35. Future versions must be working but if you encounter errors, differences with your environment may explain why I didn't get the same error.
 </Admonition>
 
-### Under the Hood
+## Under the Hood
 
 Anki is packaged as a Desktop application for Windows/MacOS/Linux. Additional applications exist for Android and iOS but the core of Anki resides in the desktop version.
 
@@ -42,7 +40,7 @@ Anki is packaged as a Desktop application for Windows/MacOS/Linux. Additional ap
 The Anki source code is available on [GitHub](https://github.com/ankitects/anki), the largest code hosting platform used by millions of developers to share their work. The majority of code you use in your daily life, on your computer, tablet, or phone, has home in GitHub.
 
 <Admonition type="note" className="None" title="Python, the programming language">
-Anki is written in Python (at least at the time of writing), which is great because **Python is the main programming language to initiate new coders**. Python syntax is intuitive and excels for small programs like we are going to write in this article. If you are curious about programming, starting with Python is a great choice. Learning Python is not just useful for interacting with Anki. *Learning Python is a fun way to get starting with programming.*
+Anki is written in Python (at least at the time of writing), which is great because **Python is the main programming language to initiate new coders**. Python syntax is intuitive and excels for small programs like we are going to write in this article. If you are curious about programming, starting with Python is a great choice. Learning Python is not just useful for interacting with Anki. **Learning Python is a fun way to get starting with programming.**
 </Admonition>
 
 To automate the creation of our flashcards, several strategies are possible:
@@ -54,7 +52,7 @@ To automate the creation of our flashcards, several strategies are possible:
 Consequently, like for my previous post, **I think the best approach is to use the Python API to create our flashcards**. Interacting with the SQL database or the GUI is brittle as every new version of Anki may change the schema or the UI. The Python API is the more stable component. This explains why I think it's preferable to rely on it.
 
 
-### Using the Anki Python Library
+## Using the Anki Python Library
 
 <Admonition type="note" className="None" title="Not feeling the programmer in you?">
 If you don't want to get your hands dirty in code, **you can safely jump to the next section** where I will explain how to load flashcards into Anki without writing a single line of code.
@@ -218,7 +216,7 @@ Reopen Anki. You now have more cards to review!
 That's all for the programming stuff. The next section applies the same logic and presents a small utility I created so that you don't need to write Python code.
 
 
-### Hiding the Anki Python Library behind a CLI
+## Hiding the Anki Python Library behind a CLI
 
 The Anki library code is published as a Python package, a way for developers to share and reuse code. When we run the command `pip3 install` in the previous section, we use the de facto standard tool in Python to install a package locally. This means we can now create a Python program reusing the Anki code as we did in the previous section.
 
@@ -267,7 +265,7 @@ The CLI supports a single command `load`. This command accepts various arguments
 - `input_file`: A YAML file containing the content of your flashcards to create. (This file must exist.)
 - `output_file`: The filename that the CLI will use to create the Anki archive. (This file doesn't have to exist and be will overriden otherwise.)
 
-#### Editing the input file
+### Editing the input file
 
 Here is an example of a valid input file containing French words and expressions (the file is named `french.yml`):
 
@@ -321,7 +319,7 @@ There are several strategies to create your input file:
 * **Programmatically**. Open your favorite code editor, and write a small program to generate the YAML file. You can use any language, not just Python, even if personally, I love using Python for such scripts.
 
 
-#### Running the CLI
+### Running the CLI
 
 Let's load the file `french.yml`:
 
@@ -370,10 +368,13 @@ $ anki-cli-unofficial load --media-dir path/to/medias/ french.yaml french.apkg
 The generation process is summarized in the following video:
 
 {/* cli.gif[title=Using the CLI to generate an Anki package] */}
-<video src="/posts_resources/2020-12-26-anki-scripting-for-non-programmers/cli.mp4" width="800" />
+<video controls width="800">
+  <source src="/posts_resources/2020-12-26-anki-scripting-for-non-programmers/cli.mp4" type="video/mp4" />
+</video>
 _([Download the video](/posts_resources/2020-12-26-anki-scripting-for-non-programmers/cli.mp4))_
 
-#### Importing the output file
+
+### Importing the output file
 
 The CLI generates a new file in the current directory (`french.apkg` in the previous example). This file is a valid Anki package like the ones you can download from the [Anki website](https://ankiweb.net/shared/decks/).
 
@@ -382,8 +383,11 @@ To import your flashcards, open Anki without option to load your main collection
 Note that when importing an archive, Anki expects the archive to be self-containing. For example, if you have generated flashcards using the note type `Basic`, Anki will recreate a new type `Basic-XXXX` when importing the archive. You may have to do post-processing as illustrated in the following video:
 
 {/* import.gif[title=Import the Anki package into your collection] */}
-<video src="/posts_resources/2020-12-26-anki-scripting-for-non-programmers/import.mp4" width="800" />
+<video controls width="800">
+  <source src="/posts_resources/2020-12-26-anki-scripting-for-non-programmers/import.mp4" type="video/mp4" />
+</video>
 _([Download the video](/posts_resources/2020-12-26-anki-scripting-for-non-programmers/import.mp4))_
+
 
 ## Next Step
 
