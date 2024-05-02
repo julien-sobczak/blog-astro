@@ -8,9 +8,9 @@ subject: "Success"
 headline: "Start seeing obstacles as not so bad, but simply as good."
 note: 15
 stars: 3
-tags: ['self-help']
-unofficialTags: []
-cover: "/posts_resources/covers/the-obstacle-is-the-way.jpg"
+tags: [being]
+topics: [self-help, stoicism, philosophy]
+bookCover: "/posts_resources/covers/the-obstacle-is-the-way.jpg"
 bookAuthors: "Ryan Holiday"
 bookIsbn: '1591846358'
 ---

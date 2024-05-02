@@ -8,9 +8,9 @@ subject: "OKR"
 headline: "How successful enterprises are using OKRs and why you should start using them."
 note: 18
 stars: 5
-tags: ['management', 'productivity']
-unofficialTags: []
-cover: "/posts_resources/covers/measure-what-matters.jpg"
+tags: [working, productivity]
+topics: [management]
+bookCover: "/posts_resources/covers/measure-what-matters.jpg"
 bookAuthors: "John Doerr"
 bookIsbn: '978-0525538349'
 ---

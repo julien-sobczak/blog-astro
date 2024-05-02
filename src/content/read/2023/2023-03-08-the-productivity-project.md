@@ -8,9 +8,8 @@ subject: "Productivity"
 headline: "A modern overview of productivity techniques"
 note: 16
 stars: 4
-tags: []
-unofficialTags: []
-cover: "/posts_resources/covers/the-productivity-project.png"
+tags: [productivity]
+bookCover: "/posts_resources/covers/the-productivity-project.png"
 bookAuthors: "Chris Bailey"
 bookIsbn: '9781101904053'
 ---

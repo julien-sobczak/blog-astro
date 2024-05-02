@@ -8,9 +8,9 @@ subject: "SonarQube"
 headline: "A thorough, in-depth guide to Code Inspection with SonarQube"
 note: 17
 stars: 4
-tags: ['tools', 'craftsmanship']
-unofficialTags: []
-cover: "/posts_resources/covers/sonarqube-in-action.jpg"
+tags: [programming]
+topics: [tools, craftsmanship]
+bookCover: "/posts_resources/covers/sonarqube-in-action.jpg"
 bookAuthors: "Patroklos P. Papapetrou"
 bookIsbn: '978-1617290954'
 ---

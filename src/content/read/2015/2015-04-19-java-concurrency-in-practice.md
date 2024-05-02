@@ -8,12 +8,9 @@ subject: Concurrency
 headline: java.util.concurrent demystified by its creators. One of my top 3 most important book on the Java language.
 note: 19
 stars: 5
-tags:
-  - languages
-  - computer-science
-unofficialTags:
-  - java
-cover: '/posts_resources/covers/java-concurrency-in-practice.jpg'
+tags: [programming]
+topics: [java, computer-science]
+bookCover: '/posts_resources/covers/java-concurrency-in-practice.jpg'
 bookAuthors: Brian Goetz, Tim Peierls, Joshua Bloch, Joseph Bowbeer, David Holmes, Doug Lea
 bookIsbn: '0321349601'
 ---

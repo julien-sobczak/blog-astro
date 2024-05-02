@@ -8,9 +8,9 @@ subject: "Linux"
 headline: 'Should be titled "Become a Linux superuser"'
 note: 6
 stars: 1
-tags: ['computer-science']
-unofficialTags: ['Linux']
-cover: "/posts_resources/covers/how-linux-works.jpg"
+tags: [programming]
+topics: [linux]
+bookCover: "/posts_resources/covers/how-linux-works.jpg"
 bookAuthors: "Brian Ward"
 bookIsbn: '1593275676'
 ---

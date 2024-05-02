@@ -8,9 +8,9 @@ subject: "Programming Languages"
 headline: "A pleasant reading to sharpen your programming skills and broaden your horizon"
 note: 17
 stars: 4
-tags: ['craftsmanship', 'languages']
-unofficialTags: []
-cover: "/posts_resources/covers/seven-languages-in-seven-weeks.jpg"
+tags: [programming]
+topics: [craftsmanship, languages]
+bookCover: "/posts_resources/covers/seven-languages-in-seven-weeks.jpg"
 bookAuthors: "Bruce A. Tate"
 bookIsbn: '193435659X'
 ---

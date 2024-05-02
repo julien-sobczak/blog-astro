@@ -8,9 +8,9 @@ subject: "Feedback"
 headline: "Difficult conversations are … difficult but much more approachable with this book!"
 note: 19
 stars: 5
-tags: ['human', 'management']
-unofficialTags: []
-cover: "/posts_resources/covers/difficult-conversations.jpg"
+tags: [working]
+topics: [management]
+bookCover: "/posts_resources/covers/difficult-conversations.jpg"
 bookAuthors: "Douglas Stone, Bruce Patton, Sheila Heen"
 bookIsbn: '0143118447'
 ---

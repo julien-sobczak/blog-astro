@@ -8,9 +8,8 @@ subject: "Learning"
 headline: "Indispensable resource for the hard learner inside of you."
 note: 16
 stars: 4
-tags: ['learning']
-unofficialTags: []
-cover: "/posts_resources/covers/ultralearning.jpg"
+tags: [learning]
+bookCover: "/posts_resources/covers/ultralearning.jpg"
 bookAuthors: "Scott H. Young"
 bookIsbn: '978-0062852687'
 ---

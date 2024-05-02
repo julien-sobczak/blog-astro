@@ -8,9 +8,8 @@ subject: "Happiness"
 headline: "A beautiful and relaxing reading."
 note: 16
 stars: 4
-tags: ['people']
-unofficialTags: []
-cover: "/posts_resources/covers/the-art-of-making-memories.jpg"
+tags: ['living']
+bookCover: "/posts_resources/covers/the-art-of-making-memories.jpg"
 bookAuthors: "Meik Wiking"
 bookIsbn: '0062943391'
 ---

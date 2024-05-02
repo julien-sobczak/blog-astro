@@ -8,9 +8,9 @@ subject: "Python"
 headline: "Every language deserves a book like that"
 note: 15
 stars: 3
-tags: ['languages']
-unofficialTags: ['python']
-cover: "/posts_resources/covers/fluent-python.jpg"
+tags: [programming]
+topics: [languages, python]
+bookCover: "/posts_resources/covers/fluent-python.jpg"
 bookAuthors: "Luciano Ramalho"
 bookIsbn: '1491946008'
 ---

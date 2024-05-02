@@ -8,9 +8,9 @@ subject: "Memory"
 headline: "The programmer's memory (not brain) at work"
 note: 13
 stars: 3
-tags: []
-unofficialTags: []
-cover: "/posts_resources/covers/the-programmers-brain.png"
+tags: [programming]
+topics: [psychology, memory]
+bookCover: "/posts_resources/covers/the-programmers-brain.png"
 bookAuthors: "Felienne Hermans"
 bookIsbn: '9781617298677'
 ---

@@ -8,9 +8,9 @@ subject: "Programming"
 headline: "Brilliant. A classic to understand what programming is really about."
 note: 18
 stars: 5
-tags: ['computer-science', 'languages']
-unofficialTags: []
-cover: "/posts_resources/covers/structure-and-interpretation-of-computer-programs.jpg"
+tags: [programming]
+topics: [computer-science]
+bookCover: "/posts_resources/covers/structure-and-interpretation-of-computer-programs.jpg"
 bookAuthors: "Harold Abelson, Gerald Jay Sussman, Julie Sussman"
 bookIsbn: '0262510871'
 ---

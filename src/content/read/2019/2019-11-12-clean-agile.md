@@ -8,9 +8,9 @@ subject: "Agile"
 headline: "Rediscover Agile from its inception."
 note: 12
 stars: 2
-tags: ['craftsmanship']
-unofficialTags: ['agile']
-cover: "/posts_resources/covers/clean-agile.jpg"
+tags: [programming]
+topics: [craftsmanship, agile]
+bookCover: "/posts_resources/covers/clean-agile.jpg"
 bookAuthors: "Robert C. Martin"
 bookIsbn: '0135781868'
 ---

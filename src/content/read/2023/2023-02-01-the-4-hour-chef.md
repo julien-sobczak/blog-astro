@@ -8,9 +8,8 @@ subject: "Cooking"
 headline: "Learning differently, illustrated with cooking."
 note: 14
 stars: 3
-tags: []
-unofficialTags: []
-cover: "/posts_resources/covers/the-4-hour-chef.png"
+tags: [learning]
+bookCover: "/posts_resources/covers/the-4-hour-chef.png"
 bookAuthors: "Timothy Ferriss"
 bookIsbn: '9781328519160'
 ---

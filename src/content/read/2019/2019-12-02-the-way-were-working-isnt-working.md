@@ -8,9 +8,9 @@ subject: "Work"
 headline: "Toward a more satisfying, productive, and sustainable way to work."
 note: 12
 stars: 2
-tags: ['management']
-unofficialTags: []
-cover: "/posts_resources/covers/the-way-were-working-isnt-working.jpg"
+tags: [working]
+topics: [management]
+bookCover: "/posts_resources/covers/the-way-were-working-isnt-working.jpg"
 bookAuthors: "Tony Schwartz"
 bookIsbn: '1439127662'
 ---

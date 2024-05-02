@@ -15,7 +15,6 @@ if (frontmatter.relatedInspectPosts) {
   const relatedInspectPosts = await getEntries(frontmatter.relatedInspectPosts);
   relatedPosts.push(...relatedInspectPosts);
 }
-console.log(relatedPosts);
 ---
 
 <PageLayout
@@ -33,11 +32,11 @@ console.log(relatedPosts);
         <span class="date">{ frontmatter.date.toLocaleDateString('en-us', { year:"numeric", month:"long", day:"numeric"})}</span>
 
         {frontmatter.tags && frontmatter.tags.map(tag => {
-          return <a href={`/tags/${tag}`} class="label">{tag.toUpperCase()}</a>
+          return <a href={`/tags/${tag}`} class="tag">{tag.toUpperCase()}</a>
         })}
 
-        {frontmatter.unofficialTags && frontmatter.unofficialTags.map(tag => {
-          return <span class="label">{tag.toUpperCase()}</span>
+        {frontmatter.topics && frontmatter.topics.map(topic => {
+          return <span class="topic">{topic.toUpperCase()}</span>
         })}
 
         <ul class="language">
@@ -70,14 +69,14 @@ console.log(relatedPosts);
           {relatedPosts.map(post => {
             return (
               <li>
-                <a class="title" href={'/' + post.collection + '/' + post.slug}>{post.data.title }</a>
+                <a class="title" href={'/' + post.collection + '/' + post.slug}>{post.data.title }</a><br/>
 
                 {post.data.tags && post.data.tags.map(tag => {
-                  return <a href={`/tags/${tag}`} class="label">{tag.toUpperCase()}</a>
+                  return <a href={`/tags/${tag}`} class="tag">{tag.toUpperCase()}</a>
                 })}
 
-                {post.data.unofficialTags && post.data.unofficialTags.map(tag => {
-                  return <span class="label">{tag.toUpperCase()}</span>
+                {post.data.topics && post.data.topics.map(topic => {
+                  return <span class="topic">{topic.toUpperCase()}</span>
                 })}
 
                 {post.data.subtitle && <span class="subtitle">{ post.data.subtitle }</span>}

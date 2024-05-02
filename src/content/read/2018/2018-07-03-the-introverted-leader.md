@@ -8,9 +8,9 @@ subject: "Introversion"
 headline: "A good complement to Quiet to improve your leadership at work"
 note: 14
 stars: 3
-tags: ['self-help']
-unofficialTags: ['introversion']
-cover: "/posts_resources/covers/the-introverted-leader.jpg"
+tags: [being]
+topics: [self-help, management]
+bookCover: "/posts_resources/covers/the-introverted-leader.jpg"
 bookAuthors: "Jennifer B. Kahnweiler"
 bookIsbn: '1609942000'
 ---

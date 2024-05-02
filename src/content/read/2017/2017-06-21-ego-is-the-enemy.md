@@ -8,9 +8,9 @@ subject: "Egoism"
 headline: "Be somebody or do something. That's the question."
 note: 15
 stars: 3
-tags: ['self-help']
-unofficialTags: []
-cover: "/posts_resources/covers/ego-is-the-enemy.jpg"
+tags: [being]
+topics: [self-help, philosophy]
+bookCover: "/posts_resources/covers/ego-is-the-enemy.jpg"
 bookAuthors: "Ryan Holiday"
 bookIsbn: '1591847818'
 ---

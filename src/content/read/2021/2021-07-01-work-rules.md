@@ -8,9 +8,9 @@ subject: "HR"
 headline: "HR reinvented through experimentations"
 note: 14
 stars: 4
-tags: ['management']
-unofficialTags: []
-cover: "/posts_resources/covers/work-rules.jpg"
+tags: [working]
+topics: [management]
+bookCover: "/posts_resources/covers/work-rules.jpg"
 bookAuthors: "Laszlo Bock"
 bookIsbn: '1455554790'
 ---

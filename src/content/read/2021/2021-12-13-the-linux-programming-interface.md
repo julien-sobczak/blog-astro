@@ -8,9 +8,9 @@ subject: "Linux"
 headline: "A masterpiece"
 note: 17
 stars: 5
-tags: ['devops']
-unofficialTags: []
-cover: "/posts_resources/covers/the-linux-programming-interface.jpg"
+tags: [programming]
+topics: [devops, linux]
+bookCover: "/posts_resources/covers/the-linux-programming-interface.jpg"
 bookAuthors: "Michael Kerrisk"
 bookIsbn: '1593272200'
 ---

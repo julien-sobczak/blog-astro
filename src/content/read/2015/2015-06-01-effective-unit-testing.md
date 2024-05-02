@@ -8,9 +8,9 @@ subject: "Unit Testing"
 headline: "Learn unit testing through a catalog of bad Test smells."
 note: 16
 stars: 4
-tags: ['craftsmanship']
-unofficialTags: ['testing']
-cover: "/posts_resources/covers/effective-unit-testing.jpg"
+tags: [programming]
+topics: [craftsmanship, testing]
+bookCover: "/posts_resources/covers/effective-unit-testing.jpg"
 bookAuthors: "Lasse Koskela"
 bookIsbn: '9781935182573'
 ---

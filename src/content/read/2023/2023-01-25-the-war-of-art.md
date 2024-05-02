@@ -8,9 +8,9 @@ subject: "Creativity"
 headline: "An inspiring classic"
 note: 16
 stars: 4
-tags: []
-unofficialTags: []
-cover: "/posts_resources/covers/the-war-of-art.png"
+tags: [doing]
+topics: [creativity]
+bookCover: "/posts_resources/covers/the-war-of-art.png"
 bookAuthors: "Steven Pressfield"
 bookIsbn: '9781936891023'
 ---

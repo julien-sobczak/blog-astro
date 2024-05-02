@@ -8,9 +8,9 @@ subject: "Leadership"
 headline: "An idea so simple, yet so powerful. A must-have book!"
 note: 17
 stars: 4
-tags: ['human', 'management']
-unofficialTags: []
-cover: "/posts_resources/covers/start-with-why.jpg"
+tags: [leading]
+topics: [leadership, management]
+bookCover: "/posts_resources/covers/start-with-why.jpg"
 bookAuthors: "Simon Sinek"
 bookIsbn: '1591842808'
 ---

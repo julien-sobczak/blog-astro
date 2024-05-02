@@ -8,9 +8,9 @@ subject: "Spring Integration"
 headline: "The reference book about the reference implementation of EIPs. A journey through the framework for beginners and intermediate users."
 note: 16
 stars: 4
-tags: ['frameworks']
-unofficialTags: ['java']
-cover: "/posts_resources/covers/spring-integration-in-action.jpg"
+tags: [programming]
+topics: [java, frameworks]
+bookCover: "/posts_resources/covers/spring-integration-in-action.jpg"
 bookAuthors: "Mark Fisher, Jonas Partner, Marius Bogoevici, Iwein Fuld"
 bookIsbn: '1935182439'
 ---

@@ -8,9 +8,9 @@ subject: "Stoicism"
 headline: "The best book in the trilogy."
 note: 18
 stars: 5
-tags: ['self-help']
-unofficialTags: ['stoicism', 'meditation']
-cover: "/posts_resources/covers/stillness-is-the-key.jpg"
+tags: [being]
+topics: [self-help, stoicism, philosophy]
+bookCover: "/posts_resources/covers/stillness-is-the-key.jpg"
 bookAuthors: "Ryan Holiday"
 bookIsbn: '0525538585'
 ---

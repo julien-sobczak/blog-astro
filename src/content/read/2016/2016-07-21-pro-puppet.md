@@ -8,9 +8,9 @@ subject: "Puppet"
 headline: "A messy collection of advanced Puppet code. Valuable information delivered in a poorly organized book"
 note: 5
 stars: 1
-tags: ['devops', 'tools']
-unofficialTags: []
-cover: "/posts_resources/covers/pro-puppet.jpg"
+tags: [programming]
+topics: [devops, tools]
+bookCover: "/posts_resources/covers/pro-puppet.jpg"
 bookAuthors: "Spencer Krum, William Van Hevelingen, Ben Kero, James Turnbull, Jeffrey McCune"
 bookIsbn: '1430260408'
 ---

@@ -8,9 +8,9 @@ subject: "Architecture"
 headline: "The timeless way of building software"
 note: 17
 stars: 4
-tags: ['architecture', 'craftsmanship']
-unofficialTags: []
-cover: "/posts_resources/covers/clean-architecture.jpg"
+tags: [programming]
+topics: [architecture' craftsmanship]
+bookCover: "/posts_resources/covers/clean-architecture.jpg"
 bookAuthors: "Robert C. Martin"
 bookIsbn: '0134494164'
 ---

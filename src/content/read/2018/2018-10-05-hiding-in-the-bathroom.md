@@ -8,9 +8,9 @@ subject: "Introversion"
 headline: "The struggle of anxiety to succeed as an introvert"
 note: 14
 stars: 3
-tags: ['self-help']
-unofficialTags: ['introversion']
-cover: "/posts_resources/covers/hiding-in-the-bathroom.jpg"
+tags: [being]
+topics: [self-help, psychology]
+bookCover: "/posts_resources/covers/hiding-in-the-bathroom.jpg"
 bookAuthors: "Morra Aarons-Mele"
 bookIsbn: '006266610X'
 ---

@@ -8,9 +8,9 @@ subject: "Memory Techniques"
 headline: "The wonderful story of the author from his discovery of ancient memory techniques to the top of the US Memory Championship. A thorough work of research and a very enjoyable reading that you should not miss."
 note: 17
 stars: 4
-tags: ['learning']
-unofficialTags: []
-cover: "/posts_resources/covers/moonwalking-with-einstein.jpg"
+tags: [learning, remembering]
+topics: [memory]
+bookCover: "/posts_resources/covers/moonwalking-with-einstein.jpg"
 bookAuthors: "Joshua Foer (Goodreads Author)"
 bookIsbn: '159420229X'
 ---

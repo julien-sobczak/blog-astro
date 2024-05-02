@@ -8,9 +8,9 @@ subject: "Software Architecture"
 headline: "A brittle foundation to the topic"
 note: 8
 stars: 1
-tags: ['architecture']
-unofficialTags: []
-cover: "/posts_resources/covers/building-evolutionary-architectures.jpg"
+tags: [programming]
+topics: [architecture]
+bookCover: "/posts_resources/covers/building-evolutionary-architectures.jpg"
 bookAuthors: "Neal Ford, Rebecca Parsons, Patrick Kua"
 bookIsbn: '1491986360'
 ---

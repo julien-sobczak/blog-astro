@@ -8,9 +8,9 @@ subject: "Cloud Computing"
 headline: "No more clouds on the horizon with this book!"
 note: 16
 stars: 5
-tags: ['architecture']
-unofficialTags: []
-cover: "/posts_resources/covers/cloud-strategy.jpg"
+tags: [programming]
+topics: [architecture]
+bookCover: "/posts_resources/covers/cloud-strategy.jpg"
 bookAuthors: "Gregor Hohpe (Goodreads Author)"
 bookIsbn: '79-8665253046'
 ---

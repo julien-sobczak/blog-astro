@@ -8,9 +8,9 @@ subject: "Security"
 headline: "The SRE book series welcomes a long-awaited guest to the party."
 note: 12
 stars: 3
-tags: ['architecture']
-unofficialTags: []
-cover: "/posts_resources/covers/building-secure-and-reliable-systems.jpg"
+tags: [programming]
+topics: [architecture]
+bookCover: "/posts_resources/covers/building-secure-and-reliable-systems.jpg"
 bookAuthors: "Heather Adkins, Betsy Beyer, Paul Blankinship, Piotr Lewandowski, Ana Oprea, Adam Stubblefield"
 bookIsbn: '1492083127'
 ---

@@ -8,9 +8,9 @@ subject: "Shell Programming"
 headline: "Every technology needs its reference book and it makes me no doubt that bash has found its one"
 note: 15
 stars: 3
-tags: ['tools']
-unofficialTags: ['linux']
-cover: "/posts_resources/covers/learning-the-bash-shell.jpg"
+tags: [programming]
+topics: [linux]
+bookCover: "/posts_resources/covers/learning-the-bash-shell.jpg"
 bookAuthors: "Cameron Newham, Bill Rosenblatt"
 bookIsbn: '0596009658'
 ---

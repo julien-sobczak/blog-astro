@@ -8,9 +8,9 @@ subject: "Sleep"
 headline: "A good read to book before a good night sleep"
 note: 15
 stars: 3
-tags: ['self-help']
-unofficialTags: []
-cover: "/posts_resources/covers/why-we-sleep.jpg"
+tags: [living]
+topics: [self-help]
+bookCover: "/posts_resources/covers/why-we-sleep.jpg"
 bookAuthors: "Matthew P. Walker"
 bookIsbn: '1501144316'
 ---

@@ -8,9 +8,9 @@ subject: "Golang"
 headline: "The K&R of the Go programming language"
 note: 17
 stars: 4
-tags: ['languages']
-unofficialTags: ['go']
-cover: "/posts_resources/covers/the-go-programming-language.jpg"
+tags: [programming]
+topics: [go, languages]
+bookCover: "/posts_resources/covers/the-go-programming-language.jpg"
 bookAuthors: "Alan A. A. Donovan, Brian W. Kernighan"
 bookIsbn: '978-0134190440'
 ---

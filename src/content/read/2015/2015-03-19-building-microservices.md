@@ -8,10 +8,9 @@ subject: Microservices
 headline: "An essential contribution to know if you should build microservices and what it means."
 note: 17
 stars: 4
-tags:
-  - architecture
-  - devops
-cover: '/posts_resources/covers/building-microservices.jpg'
+tags: [programming]
+topics: [architecture]
+bookCover: '/posts_resources/covers/building-microservices.jpg'
 bookAuthors: 'Sam Newman'
 bookIsbn: '1491950358'
 ---

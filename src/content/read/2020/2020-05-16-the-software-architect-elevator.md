@@ -8,9 +8,9 @@ subject: "Software Architect"
 headline: "The best book I've read about the role of an architect."
 note: 19
 stars: 5
-tags: ['architecture']
-unofficialTags: []
-cover: "/posts_resources/covers/the-software-architect-elevator.jpg"
+tags: [programming]
+topics: [architecture]
+bookCover: "/posts_resources/covers/the-software-architect-elevator.jpg"
 bookAuthors: "Gregor Hohpe"
 bookIsbn: '1492077542'
 ---

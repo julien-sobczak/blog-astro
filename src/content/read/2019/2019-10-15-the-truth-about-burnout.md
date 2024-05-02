@@ -8,9 +8,9 @@ subject: "Burnout"
 headline: "The true face of burnout in contrast to common misconceptions."
 note: 16
 stars: 4
-tags: ['management', 'productivity']
-unofficialTags: []
-cover: "/posts_resources/covers/the-truth-about-burnout.jpg"
+tags: [working]
+topics: [management]
+bookCover: "/posts_resources/covers/the-truth-about-burnout.jpg"
 bookAuthors: "Christina Maslach"
 bookIsbn: '0787908746'
 ---

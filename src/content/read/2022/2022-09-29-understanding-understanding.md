@@ -8,9 +8,9 @@ subject: "Understanding"
 headline: "A life of connections while connecting ideas. Unique."
 note: 17
 stars: 4
-tags: []
-unofficialTags: []
-cover: "/posts_resources/covers/understanding-understanding.png"
+tags: [understanding]
+topics: [information]
+bookCover: "/posts_resources/covers/understanding-understanding.png"
 bookAuthors: "Richard Saul Wurman"
 bookIsbn: '9781939621696'
 ---

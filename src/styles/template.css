@@ -719,7 +719,8 @@ footer img.footer-me {
   margin-right: 10px;
   text-transform: uppercase;
 }
-#page-post header .label, #page-post #recommendations .label, #page-category .list-view .label {
+#page-post header .tag, #page-post #recommendations .tag, #page-category .list-view .tag,
+#page-post header .topic, #page-post #recommendations .topic, #page-category .list-view .topic {
   display: inline-block;
   border-radius: 0.2em;
   font-size: 0.9em;
@@ -729,7 +730,12 @@ footer img.footer-me {
   color: white;
   text-transform: uppercase;
   text-decoration: none !important;
+}
+#page-post header .tag, #page-post #recommendations .tag, #page-category .list-view .tag {
   background-color: #93c90E;
+}
+#page-post header .topic, #page-post #recommendations .topic, #page-category .list-view .topic {
+  background-color: rgba(0,0,0,.5);
 }
 #page-post header ul.language {
   display: inline-block;

@@ -8,9 +8,9 @@ subject: "Reading"
 headline: "A great idea"
 note: 13
 stars: 4
-tags: []
-unofficialTags: []
-cover: "/posts_resources/covers/a-velocity-of-being.png"
+tags: [reading, parenting]
+topics: [books]
+bookCover: "/posts_resources/covers/a-velocity-of-being.png"
 bookAuthors: "Maria Popova, Claudia Zoe Bedrick"
 bookIsbn: '9781592702282'
 ---

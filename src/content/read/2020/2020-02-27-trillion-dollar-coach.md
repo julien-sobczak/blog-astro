@@ -8,9 +8,9 @@ subject: "Leadership"
 headline: "The football coach that changed the face of Silicon Valley"
 note: 16
 stars: 4
-tags: ['management', 'people']
-unofficialTags: []
-cover: "/posts_resources/covers/trillion-dollar-coach.jpg"
+tags: [leading]
+topics: [management]
+bookCover: "/posts_resources/covers/trillion-dollar-coach.jpg"
 bookAuthors: "Eric Schmidt, Jonathan Rosenberg, Alan Eagle"
 bookIsbn: '0062839276'
 ---

@@ -8,9 +8,8 @@ subject: "Learning"
 headline: "Learning the growth mindset by example."
 note: 14
 stars: 4
-tags: []
-unofficialTags: []
-cover: "/posts_resources/covers/limitless.png"
+tags: [learning]
+bookCover: "/posts_resources/covers/limitless.png"
 bookAuthors: "Jim Kwik"
 bookIsbn: '9781401958237'
 ---

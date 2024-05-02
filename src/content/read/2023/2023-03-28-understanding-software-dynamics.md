@@ -8,9 +8,9 @@ subject: "Performance"
 headline: "Lessons learned after 55 years spent living at the intersection of hardware and software."
 note: 17
 stars: 4
-tags: []
-unofficialTags: []
-cover: "/posts_resources/covers/understanding-software-dynamics.png"
+tags: [programming]
+topics: [computer-science]
+bookCover: "/posts_resources/covers/understanding-software-dynamics.png"
 bookAuthors: "Richard L. Sites"
 bookIsbn: '9780137589739'
 ---

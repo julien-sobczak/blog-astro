@@ -8,9 +8,9 @@ subject: "Understanding"
 headline: "The Age of Entertainment, and its intellectual consequences"
 note: 15
 stars: 4
-tags: []
-unofficialTags: []
-cover: "/posts_resources/covers/amusing-ourselves-to-death.png"
+tags: [living]
+topics: [information]
+bookCover: "/posts_resources/covers/amusing-ourselves-to-death.png"
 bookAuthors: "Neil Postman"
 bookIsbn: '9780143036531'
 ---

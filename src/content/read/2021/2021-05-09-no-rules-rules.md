@@ -8,9 +8,9 @@ subject: "Culture"
 headline: "A Netflix Original About How Netflix Became Netflix."
 note: 15
 stars: 4
-tags: ['management']
-unofficialTags: []
-cover: "/posts_resources/covers/no-rules-rules.jpg"
+tags: [leading]
+topics: [management]
+bookCover: "/posts_resources/covers/no-rules-rules.jpg"
 bookAuthors: "Reed Hastings, Erin Meyer"
 bookIsbn: '0593152387'
 ---

@@ -8,9 +8,9 @@ subject: "Apache Mesos"
 headline: "Valuable advices targeted to Mesos framework developers delivered in a poorly edited book"
 note: 8
 stars: 1
-tags: ['devops', 'architecture']
-unofficialTags: []
-cover: "/posts_resources/covers/building-applications-on-mesos.jpg"
+tags: [programming]
+topics: [devops]
+bookCover: "/posts_resources/covers/building-applications-on-mesos.jpg"
 bookAuthors: "David Greenberg"
 bookIsbn: '149192652X'
 ---

@@ -8,9 +8,9 @@ subject: "Leadership"
 headline: "What happens when human needs integrate the management equation."
 note: 17
 stars: 4
-tags: ['management']
-unofficialTags: ['leadership']
-cover: "/posts_resources/covers/leaders-eat-last.jpg"
+tags: [leading]
+topics: [leadership, management]
+bookCover: "/posts_resources/covers/leaders-eat-last.jpg"
 bookAuthors: "Simon Sinek"
 bookIsbn: '1591845327'
 ---

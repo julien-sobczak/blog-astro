@@ -8,9 +8,9 @@ subject: "Leadership"
 headline: "Why winning sometimes means losing."
 note: 18
 stars: 5
-tags: []
-unofficialTags: []
-cover: "/posts_resources/covers/the-infinite-game.png"
+tags: [leading]
+topics: [leadership]
+bookCover: "/posts_resources/covers/the-infinite-game.png"
 bookAuthors: "Simon Sinek"
 bookIsbn: '9780735213500'
 ---

@@ -8,9 +8,9 @@ subject: "Cryptography"
 headline: "Learn to think like a cryptographer. The perfect introduction."
 note: 17
 stars: 4
-tags: ['computer-science']
-unofficialTags: ['security']
-cover: "/posts_resources/covers/cryptography-engineering.jpg"
+tags: [programming]
+topics: [computer-science, security]
+bookCover: "/posts_resources/covers/cryptography-engineering.jpg"
 bookAuthors: "Niels Ferguson, Bruce Schneier, Tadayoshi Kohno"
 bookIsbn: '0470474246'
 ---

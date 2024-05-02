@@ -8,9 +8,9 @@ subject: "Change"
 headline: "A model to understand human nature and its evolution"
 note: 16
 stars: 4
-tags: ['human', 'management']
-unofficialTags: []
-cover: "/posts_resources/covers/spiral-dynamics.jpg"
+tags: [leading]
+topics: [management]
+bookCover: "/posts_resources/covers/spiral-dynamics.jpg"
 bookAuthors: "Don Edward Beck, Christopher C. Cowan"
 bookIsbn: '1405133562'
 ---

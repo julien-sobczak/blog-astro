@@ -8,9 +8,9 @@ subject: "ZooKeeper"
 headline: "The reference for developers of distributed systems and administrators of applications using ZooKeeper in production"
 note: 16
 stars: 4
-tags: ['data', 'architecture']
-unofficialTags: []
-cover: "/posts_resources/covers/zookeeper-distributed-process-coordination.jpg"
+tags: [programming]
+topics: [data]
+bookCover: "/posts_resources/covers/zookeeper-distributed-process-coordination.jpg"
 bookAuthors: "Flavio Junqueira, Benjamin Reed"
 bookIsbn: '1449361307'
 ---

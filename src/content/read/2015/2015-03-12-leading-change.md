@@ -8,10 +8,9 @@ subject: Change management
 headline: "Eight steps to considerably increase your chance of success. Useful to any company, large and small, that needs to adapt in today's rapidly changing world."
 note: 15
 stars: 3
-tags:
-  - people
-  - management
-cover: '/posts_resources/covers/leading-change.jpg'
+tags: [leading]
+topics: [management]
+bookCover: '/posts_resources/covers/leading-change.jpg'
 bookAuthors: 'John P. Kotter'
 bookIsbn: '0875847471'
 ---

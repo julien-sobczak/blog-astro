@@ -8,9 +8,9 @@ subject: "Creativity"
 headline: "The entertaining, fascinating, illuminating, story of a truly unique company."
 note: 19
 stars: 5
-tags: ['management']
-unofficialTags: ['creativity']
-cover: "/posts_resources/covers/creativity-inc.jpg"
+tags: [leading]
+topics: [management, creativity]
+bookCover: "/posts_resources/covers/creativity-inc.jpg"
 bookAuthors: "Ed Catmull, Amy Wallace"
 bookIsbn: '0812993012'
 ---

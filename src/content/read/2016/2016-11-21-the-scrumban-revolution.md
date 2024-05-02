@@ -8,9 +8,9 @@ subject: "Scrumban Methodology"
 headline: "An important subject delivered in a very disorganized verbose book. Recommended for the more adventurous reader."
 note: 3
 stars: 1
-tags: ['management']
-unofficialTags: ['agile']
-cover: "/posts_resources/covers/the-scrumban-revolution.jpg"
+tags: [programming]
+topics: [management, agile]
+bookCover: "/posts_resources/covers/the-scrumban-revolution.jpg"
 bookAuthors: "Ajay Reddy"
 bookIsbn: '978-0134086217'
 ---

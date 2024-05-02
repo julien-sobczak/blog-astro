@@ -8,9 +8,9 @@ subject: "Cryptography"
 headline: "A classic still useful to master the foundations of the discipline"
 note: 17
 stars: 4
-tags: ['classics', 'computer-science']
-unofficialTags: ['security', 'cryptography']
-cover: "/posts_resources/covers/applied-cryptography.jpg"
+tags: [programming]
+topics: ['security', computer-science]
+bookCover: "/posts_resources/covers/applied-cryptography.jpg"
 bookAuthors: "Bruce Schneier"
 bookIsbn: '0471128457'
 ---

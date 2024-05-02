@@ -8,9 +8,9 @@ subject: "Memory Palace"
 headline: "The Memory Palace illustrated through advanced use cases. No explanation but really great examples"
 note: 14
 stars: 3
-tags: ['learning']
-unofficialTags: []
-cover: "/posts_resources/covers/remember-remember.jpg"
+tags: [remembering]
+topics: [memory]
+bookCover: "/posts_resources/covers/remember-remember.jpg"
 bookAuthors: "Ed Cooke"
 bookIsbn: '0670917850'
 ---

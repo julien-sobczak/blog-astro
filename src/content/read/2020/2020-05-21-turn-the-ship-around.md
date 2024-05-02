@@ -8,9 +8,9 @@ subject: "Leadership"
 headline: "One of the most inspiring leadership books."
 note: 15
 stars: 4
-tags: ['management']
-unofficialTags: ['leadership']
-cover: "/posts_resources/covers/turn-the-ship-around.jpg"
+tags: [leading]
+topics: [management, leadership]
+bookCover: "/posts_resources/covers/turn-the-ship-around.jpg"
 bookAuthors: "L. David Marquet"
 bookIsbn: '1591846404'
 ---

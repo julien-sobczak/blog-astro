@@ -8,9 +8,9 @@ subject: "Life"
 headline: "Start giving a f*ck on what is really important to you"
 note: 14
 stars: 3
-tags: ['self-help', 'productivity', 'human']
-unofficialTags: []
-cover: "/posts_resources/covers/the-subtle-art-of-not-giving-a-f-ck.jpg"
+tags: [productivity, being]
+topics: [self-help]
+bookCover: "/posts_resources/covers/the-subtle-art-of-not-giving-a-f-ck.jpg"
 bookAuthors: "Mark Manson"
 bookIsbn: '006245773X'
 ---

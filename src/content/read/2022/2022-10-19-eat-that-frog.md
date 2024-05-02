@@ -8,9 +8,9 @@ subject: "Productivity"
 headline: "Productivity distilled"
 note: 16
 stars: 5
-tags: []
-unofficialTags: []
-cover: "/posts_resources/covers/eat-that-frog.png"
+tags: [doing, productivity]
+topics: [habit]
+bookCover: "/posts_resources/covers/eat-that-frog.png"
 bookAuthors: "Brian Tracy"
 bookIsbn: '9781626569416'
 ---

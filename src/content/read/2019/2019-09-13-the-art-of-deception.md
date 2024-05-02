@@ -8,9 +8,9 @@ subject: "Security"
 headline: "True stories demonstrating why we stay indisputably the security's weakest link."
 note: 14
 stars: 3
-tags: []
-unofficialTags: ['security']
-cover: "/posts_resources/covers/the-art-of-deception.jpg"
+tags: [programming]
+topics: [security]
+bookCover: "/posts_resources/covers/the-art-of-deception.jpg"
 bookAuthors: "Kevin D. Mitnick, William L. Simon"
 bookIsbn: '076454280X'
 ---

@@ -8,9 +8,9 @@ subject: "Passion"
 headline: "To be happy, you must follow your passion, or read this book."
 note: 16
 stars: 4
-tags: ['self-help']
-unofficialTags: []
-cover: "/posts_resources/covers/so-good-they-cant-ignore-you.jpg"
+tags: [doing]
+topics: [self-help]
+bookCover: "/posts_resources/covers/so-good-they-cant-ignore-you.jpg"
 bookAuthors: "Cal Newport"
 bookIsbn: '1455509108'
 ---

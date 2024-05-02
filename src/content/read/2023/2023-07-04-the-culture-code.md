@@ -8,9 +8,9 @@ subject: "Company Culture"
 headline: "An interesting perspective on group culture based on real-world examples."
 note: 16
 stars: 4
-tags: []
-unofficialTags: []
-cover: "/posts_resources/covers/the-culture-code.png"
+tags: [leading, working]
+topics: [success, management]
+bookCover: "/posts_resources/covers/the-culture-code.png"
 bookAuthors: "Daniel Coyle"
 bookIsbn: '9780804176989'
 ---

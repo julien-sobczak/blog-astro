@@ -8,9 +8,9 @@ subject: "Success"
 headline: "ONE forceful idea in ONE excellent book."
 note: 17
 stars: 5
-tags: ['self-help', 'productivity']
-unofficialTags: []
-cover: "/posts_resources/covers/the-one-thing.jpg"
+tags: [doing, productivity]
+topics: [self-help]
+bookCover: "/posts_resources/covers/the-one-thing.jpg"
 bookAuthors: "Gary Keller, Jay Papasan"
 bookIsbn: '1885167776'
 ---

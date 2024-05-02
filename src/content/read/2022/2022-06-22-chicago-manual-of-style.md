@@ -8,9 +8,9 @@ subject: "Writing"
 headline: "Essential for writers. Informative for readers."
 note: 18
 stars: 5
-tags: []
-unofficialTags: []
-cover: "/posts_resources/covers/chicago-manual-of-style.png"
+tags: [writing]
+topics: [reference]
+bookCover: "/posts_resources/covers/chicago-manual-of-style.png"
 bookAuthors: "University of Chicago Press"
 bookIsbn: '9780226287058'
 ---

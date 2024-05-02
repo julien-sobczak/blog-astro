@@ -8,9 +8,9 @@ subject: "Humor"
 headline: "Your workplace is eager to discover how funny you are."
 note: 17
 stars: 5
-tags: ['management', 'people', 'productivity']
-unofficialTags: []
-cover: "/posts_resources/covers/humor-seriously.jpg"
+tags: [being]
+topics: [management]
+bookCover: "/posts_resources/covers/humor-seriously.jpg"
 bookAuthors: "Jennifer Aaker, Naomi Bagdonas"
 bookIsbn: '0593135288'
 ---

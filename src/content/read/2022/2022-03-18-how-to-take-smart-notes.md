@@ -8,9 +8,8 @@ subject: "Note-Taking"
 headline: "What great writers do to never face the blank page."
 note: 16
 stars: 5
-tags: []
-unofficialTags: []
-cover: "/posts_resources/covers/how-to-take-smart-notes.png"
+tags: [note-taking, writing]
+bookCover: "/posts_resources/covers/how-to-take-smart-notes.png"
 bookAuthors: "Sönke Ahrens"
 bookIsbn: '9783982438801'
 ---

@@ -8,9 +8,9 @@ subject: "iBatis"
 headline: "Still a good reference to understand concepts behind MyBatis."
 note: 12
 stars: 2
-tags: ['frameworks']
-unofficialTags: ['java']
-cover: "/posts_resources/covers/ibatis-in-action.jpg"
+tags: [programming]
+topics: [java, programming]
+bookCover: "/posts_resources/covers/ibatis-in-action.jpg"
 bookAuthors: "Clinton Begin, Brandon Goodin, Larry Meadors"
 bookIsbn: '1932394826'
 ---

@@ -8,9 +8,9 @@ subject: "Management"
 headline: "What happens when the corporate pyramid is reversed"
 note: 14
 stars: 3
-tags: ['management']
-unofficialTags: []
-cover: "/posts_resources/covers/employees-first-customers-second.jpg"
+tags: [leading]
+topics: [management]
+bookCover: "/posts_resources/covers/employees-first-customers-second.jpg"
 bookAuthors: "Vineet Nayar"
 bookIsbn: '1422139069'
 ---

@@ -8,10 +8,9 @@ subject: Continuous Integration
 headline: Still the best introduction to the most popular CI Server but not a definitive guide.
 note: 12
 stars: 2
-tags:
-  - devops
-  - tools
-cover: '/posts_resources/covers/jenkins-the-definitive-guide.jpg'
+tags: [programming]
+topics: [devops, tools]
+bookCover: '/posts_resources/covers/jenkins-the-definitive-guide.jpg'
 bookAuthors: John Ferguson Smart
 bookIsbn: '1449305350'
 ---

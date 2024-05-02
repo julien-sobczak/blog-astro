@@ -8,9 +8,9 @@ subject: "Reliability"
 headline: "Fantastic contribution to the operational field. One of the most important book published the last years"
 note: 18
 stars: 5
-tags: ['devops', 'architecture']
-unofficialTags: []
-cover: "/posts_resources/covers/site-reliability-engineering.jpg"
+tags: [programming]
+topics: [devops]
+bookCover: "/posts_resources/covers/site-reliability-engineering.jpg"
 bookAuthors: "Betsy Beyer, Chris Jones, Jennifer Petoff, Niall Richard Murphy"
 bookIsbn: '149192912X'
 ---

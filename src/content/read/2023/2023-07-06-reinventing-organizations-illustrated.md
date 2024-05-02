@@ -8,9 +8,9 @@ subject: "Management"
 headline: "A peek into the right way to work"
 note: 15
 stars: 4
-tags: []
-unofficialTags: []
-cover: "/posts_resources/covers/reinventing-organizations-illustrated.png"
+tags: [leading, working]
+topics: [management]
+bookCover: "/posts_resources/covers/reinventing-organizations-illustrated.png"
 bookAuthors: "Frédéric Laloux"
 bookIsbn: '9782960133554'
 ---

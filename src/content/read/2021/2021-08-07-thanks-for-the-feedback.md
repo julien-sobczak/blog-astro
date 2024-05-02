@@ -8,9 +8,9 @@ subject: "Feedback"
 headline: "A life-changing skill"
 note: 17
 stars: 5
-tags: ['self-help']
-unofficialTags: []
-cover: "/posts_resources/covers/thanks-for-the-feedback.jpg"
+tags: [working]
+topics: [self-help]
+bookCover: "/posts_resources/covers/thanks-for-the-feedback.jpg"
 bookAuthors: "Douglas Stone, Sheila Heen"
 bookIsbn: '0670014664'
 ---

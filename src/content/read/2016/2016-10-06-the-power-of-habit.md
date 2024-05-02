@@ -8,9 +8,9 @@ subject: "Habits"
 headline: "Insightful but not the game changer I was expecting."
 note: 14
 stars: 3
-tags: ['productivity', 'self-help']
-unofficialTags: []
-cover: "/posts_resources/covers/the-power-of-habit.jpg"
+tags: [productivity, doing]
+topics: [self-help]
+bookCover: "/posts_resources/covers/the-power-of-habit.jpg"
 bookAuthors: "Charles Duhigg"
 bookIsbn: '1400069289'
 ---

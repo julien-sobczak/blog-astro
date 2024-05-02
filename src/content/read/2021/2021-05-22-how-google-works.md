@@ -8,9 +8,9 @@ subject: "Culture"
 headline: "An overview of the Google's Culture"
 note: 16
 stars: 5
-tags: ['management']
-unofficialTags: []
-cover: "/posts_resources/covers/how-google-works.jpg"
+tags: [programming]
+topics: [management]
+bookCover: "/posts_resources/covers/how-google-works.jpg"
 bookAuthors: "Eric Schmidt, Jonathan Rosenberg"
 bookIsbn: '978-1444792461'
 ---

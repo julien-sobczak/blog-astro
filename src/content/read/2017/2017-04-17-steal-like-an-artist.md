@@ -8,9 +8,9 @@ subject: "Creativity"
 headline: "The hidden face of creativity"
 note: 17
 stars: 4
-tags: ['self-help']
-unofficialTags: ['creativity']
-cover: "/posts_resources/covers/steal-like-an-artist.jpg"
+tags: [doing]
+topics: [creativity]
+bookCover: "/posts_resources/covers/steal-like-an-artist.jpg"
 bookAuthors: "Austin Kleon"
 bookIsbn: '0761169253'
 ---

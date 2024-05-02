@@ -8,9 +8,9 @@ subject: Definition of Architecture
 headline: Just enough architecture but too much repetitions. Great ideas delivered in a poor format.
 note: 9
 stars: 1
-tags:
-  - architecture
-cover: '/posts_resources/covers/software-architecture-for-developers.jpg'
+tags: [programming]
+topics: [architecture]
+bookCover: '/posts_resources/covers/software-architecture-for-developers.jpg'
 bookAuthors: Simon Brown
 ---
 

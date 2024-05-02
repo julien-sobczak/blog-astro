@@ -8,9 +8,9 @@ subject: "Understanding"
 headline: "The only book that doesn't increase information anxiety."
 note: 14
 stars: 4
-tags: []
-unofficialTags: []
-cover: "/posts_resources/covers/information-anxiety-2.jpg"
+tags: [understanding]
+topics: [data]
+bookCover: "/posts_resources/covers/information-anxiety-2.jpg"
 bookAuthors: "Richard Saul Wurman"
 bookIsbn: '978-0789724106'
 ---

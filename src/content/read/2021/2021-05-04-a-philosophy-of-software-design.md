@@ -8,9 +8,9 @@ subject: "Code Design"
 headline: "Much more insightful than the classic Clean Code."
 note: 16
 stars: 5
-tags: ['craftsmanship']
-unofficialTags: []
-cover: "/posts_resources/covers/a-philosophy-of-software-design.jpg"
+tags: [programming]
+topics: [craftsmanship]
+bookCover: "/posts_resources/covers/a-philosophy-of-software-design.jpg"
 bookAuthors: "John Ousterhout"
 bookIsbn: '1732102201'
 ---

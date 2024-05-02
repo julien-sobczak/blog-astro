@@ -8,9 +8,9 @@ subject: "Network"
 headline: "Lessons learned from the trenches"
 note: 14
 stars: 4
-tags: []
-unofficialTags: []
-cover: "/posts_resources/covers/network-warrior-2nd-edition.png"
+tags: [programming]
+topics: [network]
+bookCover: "/posts_resources/covers/network-warrior-2nd-edition.png"
 bookAuthors: "Gary A. Donahue"
 bookIsbn: '9781449387860'
 ---

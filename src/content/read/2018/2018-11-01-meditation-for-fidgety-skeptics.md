@@ -8,9 +8,9 @@ subject: "Meditation"
 headline: "The book I was waiting for"
 note: 15
 stars: 3
-tags: ['self-help']
-unofficialTags: ['meditation']
-cover: "/posts_resources/covers/meditation-for-fidgety-skeptics.jpg"
+tags: [doing]
+topics: [self-help, meditation]
+bookCover: "/posts_resources/covers/meditation-for-fidgety-skeptics.jpg"
 bookAuthors: "Dan Harris"
 bookIsbn: '0399588949'
 ---

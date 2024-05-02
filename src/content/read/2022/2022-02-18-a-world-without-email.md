@@ -8,9 +8,8 @@ subject: "Productivity"
 headline: 'From the "busy" place to the "work" place.'
 note: 15
 stars: 4
-tags: []
-unofficialTags: []
-cover: "/posts_resources/covers/a-world-without-email.png"
+tags: [productivity]
+bookCover: "/posts_resources/covers/a-world-without-email.png"
 bookAuthors: "Cal Newport"
 bookIsbn: '9780525536550'
 ---

@@ -8,9 +8,9 @@ subject: "Stoicism"
 headline: "Short biographies from Zeno to Marcus Aurelius collected from remaining writings."
 note: 13
 stars: 3
-tags: ['human']
-unofficialTags: []
-cover: "/posts_resources/covers/lives-of-the-stoics.jpg"
+tags: [being]
+topics: [stoicism, history]
+bookCover: "/posts_resources/covers/lives-of-the-stoics.jpg"
 bookAuthors: "Ryan Holiday, Stephen Hanselman"
 bookIsbn: '052554187X'
 ---

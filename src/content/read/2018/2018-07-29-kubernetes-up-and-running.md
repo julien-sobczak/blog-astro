@@ -8,9 +8,9 @@ subject: "Kubernetes"
 headline: "The perfect recipe for a technical book"
 note: 17
 stars: 4
-tags: ['devops']
-unofficialTags: ['reliability']
-cover: "/posts_resources/covers/kubernetes-up-and-running.jpg"
+tags: [programming]
+topics: [devops]
+bookCover: "/posts_resources/covers/kubernetes-up-and-running.jpg"
 bookAuthors: "Kelsey Hightower, Brendan Burns, Joe Beda"
 bookIsbn: '1491935677'
 ---

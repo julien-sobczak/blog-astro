@@ -8,9 +8,9 @@ subject: "Reactive programming"
 headline: "The EIP catalog reimplemented with Akka"
 note: 6
 stars: 1
-tags: ['architecture']
-unofficialTags: []
-cover: "/posts_resources/covers/reactive-messaging-patterns.jpg"
+tags: [programming]
+topics: [architecture]
+bookCover: "/posts_resources/covers/reactive-messaging-patterns.jpg"
 bookAuthors: "Vaughn Vernon"
 bookIsbn: '0133846830'
 ---

@@ -8,9 +8,8 @@ subject: "Lessons"
 headline: "A treasure book"
 note: 16
 stars: 4
-tags: []
-unofficialTags: []
-cover: "/posts_resources/covers/tools-of-titans.png"
+tags: [productivity]
+bookCover: "/posts_resources/covers/tools-of-titans.png"
 bookAuthors: "Timothy Ferris"
 bookIsbn: '9781328683786'
 ---

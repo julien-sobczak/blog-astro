@@ -8,9 +8,8 @@ subject: "Routines"
 headline: "The devil is in the details, but the details are missing from this book."
 note: 9
 stars: 1
-tags: ['productivity']
-unofficialTags: ['habit']
-cover: "/posts_resources/covers/daily-rituals.jpg"
+tags: [doing, productivity]
+bookCover: "/posts_resources/covers/daily-rituals.jpg"
 bookAuthors: "Mason Currey"
 bookIsbn: '0307273601'
 ---

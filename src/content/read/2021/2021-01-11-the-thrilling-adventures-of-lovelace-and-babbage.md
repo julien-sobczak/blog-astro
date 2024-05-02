@@ -8,9 +8,9 @@ subject: "Ada Lovelace"
 headline: "A unique book in the computing literature"
 note: 18
 stars: 5
-tags: ['computer-science']
-unofficialTags: ['comics']
-cover: "/posts_resources/covers/the-thrilling-adventures-of-lovelace-and-babbage.jpg"
+tags: [programming]
+topics: [comics, computer-science]
+bookCover: "/posts_resources/covers/the-thrilling-adventures-of-lovelace-and-babbage.jpg"
 bookAuthors: "Sydney Padua"
 bookIsbn: '978-0141981536'
 ---

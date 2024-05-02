@@ -8,9 +8,9 @@ subject: "Creativity"
 headline: "A short burst of motivation to make things happen"
 note: 17
 stars: 4
-tags: ['self-help']
-unofficialTags: ['creativity']
-cover: "/posts_resources/covers/keep-going.jpg"
+tags: [doing]
+topics: [creativity]
+bookCover: "/posts_resources/covers/keep-going.jpg"
 bookAuthors: "Austin Kleon"
 bookIsbn: '1523506644'
 ---

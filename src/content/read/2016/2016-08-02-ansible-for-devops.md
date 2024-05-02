@@ -8,9 +8,9 @@ subject: "DevOps"
 headline: "Learn Ansible and DevOps best practices with this well-written and technically excellent guide"
 note: 16
 stars: 4
-tags: ['tools', 'devops']
-unofficialTags: []
-cover: "/posts_resources/covers/ansible-for-devops.jpg"
+tags: [programming]
+topics: [tools, devops]
+bookCover: "/posts_resources/covers/ansible-for-devops.jpg"
 bookAuthors: "Jeff Geerling (Goodreads Author)"
 bookIsbn: '978-0986393426'
 ---

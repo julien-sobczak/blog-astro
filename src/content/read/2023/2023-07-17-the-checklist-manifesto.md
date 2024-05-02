@@ -8,8 +8,8 @@ subject: Efficiency
 headline: Effective teamwork using the cheapest technique
 note: 12
 stars: 3
-tags: []
-cover: "/posts_resources/covers/the-checklist-manifesto.png"
+tags: [productivity]
+bookCover: "/posts_resources/covers/the-checklist-manifesto.png"
 bookAuthors: "Atul Gawande"
 bookIsbn: '9780805091748'
 ---

@@ -8,9 +8,8 @@ subject: "Learning"
 headline: "An immersive look into excellence."
 note: 15
 stars: 3
-tags: []
-unofficialTags: []
-cover: "/posts_resources/covers/the-art-of-learning.png"
+tags: [learning, mastering]
+bookCover: "/posts_resources/covers/the-art-of-learning.png"
 bookAuthors: "Josh Waitzkin"
 bookIsbn: '9780743277464'
 ---

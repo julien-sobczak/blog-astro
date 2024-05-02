@@ -8,9 +8,9 @@ subject: "JUnit"
 headline: "A quick introduction to the world of modern unit-testing."
 note: 14
 stars: 3
-tags: ['craftsmanship', 'frameworks']
-unofficialTags: ['java']
-cover: "/posts_resources/covers/pragmatic-unit-testing-in-java-8-with-junit.jpg"
+tags: [programming]
+topics: [java, craftsmanship, frameworks]
+bookCover: "/posts_resources/covers/pragmatic-unit-testing-in-java-8-with-junit.jpg"
 bookAuthors: "Jeff Langr, Andy Hunt, Dave Thomas"
 bookIsbn: '1941222595'
 ---

@@ -8,9 +8,8 @@ subject: "Software Engineering"
 headline: "Following the success of the SRE book series, an inside look on the other side of the looking-glass."
 note: 15
 stars: 4
-tags: ['tools']
-unofficialTags: []
-cover: "/posts_resources/covers/software-engineering-at-google.jpg"
+tags: ['programming']
+bookCover: "/posts_resources/covers/software-engineering-at-google.jpg"
 bookAuthors: "Titus Winters, Tom Manshreck, Hyrum Wright"
 bookIsbn: '1492082791'
 ---

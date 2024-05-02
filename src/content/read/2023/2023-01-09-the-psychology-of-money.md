@@ -8,9 +8,9 @@ subject: "Money"
 headline: "Timeless lessons on wealth, greed, and happiness"
 note: 18
 stars: 5
-tags: []
-unofficialTags: []
-cover: "/posts_resources/covers/the-psychology-of-money.png"
+tags: [thinking]
+topics: [money, psychology]
+bookCover: "/posts_resources/covers/the-psychology-of-money.png"
 bookAuthors: "Morgan Housel"
 bookIsbn: '9780857197689'
 ---

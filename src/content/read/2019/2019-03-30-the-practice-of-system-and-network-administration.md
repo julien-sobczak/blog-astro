@@ -8,9 +8,9 @@ subject: "System Administration"
 headline: "Everything missing from other technical system administration books"
 note: 14
 stars: 3
-tags: ['management']
-unofficialTags: ['linux']
-cover: "/posts_resources/covers/the-practice-of-system-and-network-administration.jpg"
+tags: [programming]
+topics: [linux]
+bookCover: "/posts_resources/covers/the-practice-of-system-and-network-administration.jpg"
 bookAuthors: "Thomas A. Limoncelli, Christina J. Hogan, Strata R. Chalup"
 bookIsbn: '0321919165'
 ---

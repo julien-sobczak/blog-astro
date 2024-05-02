@@ -8,9 +8,9 @@ subject: "Systems Performance"
 headline: "From black art to systematic approach"
 note: 16
 stars: 4
-tags: ['devops']
-unofficialTags: ['performance']
-cover: "/posts_resources/covers/systems-performance.jpg"
+tags: [programming]
+topics: [performance, linux]
+bookCover: "/posts_resources/covers/systems-performance.jpg"
 bookAuthors: "Brendan Gregg"
 bookIsbn: '0133390098'
 ---

@@ -8,9 +8,9 @@ subject: "Data"
 headline: "Undeniably one of the best books published in the last years"
 note: 19
 stars: 5
-tags: ['data', 'architecture']
-unofficialTags: []
-cover: "/posts_resources/covers/designing-data-intensive-applications.jpg"
+tags: [programming]
+topics: [data, architecture]
+bookCover: "/posts_resources/covers/designing-data-intensive-applications.jpg"
 bookAuthors: "Martin Kleppmann"
 bookIsbn: '978-1449373320'
 ---

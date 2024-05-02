@@ -8,9 +8,9 @@ subject: "Software Quality"
 headline: "Sometimes code behaves as planned but not as expected by users."
 note: 19
 stars: 5
-tags: ['craftsmanship']
-unofficialTags: ['quality']
-cover: "/posts_resources/covers/humans-vs-computers.jpg"
+tags: [programming]
+topics: [funny]
+bookCover: "/posts_resources/covers/humans-vs-computers.jpg"
 bookAuthors: "Gojko Adzic"
 bookIsbn: '0993088147'
 ---

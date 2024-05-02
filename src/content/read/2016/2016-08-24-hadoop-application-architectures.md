@@ -8,9 +8,9 @@ subject: "Hadoop"
 headline: "Could have been better if the authors focuses on architectural concerns only"
 note: 10
 stars: 1
-tags: ['data', 'architecture']
-unofficialTags: []
-cover: "/posts_resources/covers/hadoop-application-architectures.jpg"
+tags: [programming]
+topics: [data, architecture]
+bookCover: "/posts_resources/covers/hadoop-application-architectures.jpg"
 bookAuthors: "Gwen Shapira, Ted Malaska Jonathan S Mark Grover"
 bookIsbn: '978-1491900086'
 ---

@@ -8,9 +8,9 @@ subject: "Linux"
 headline: "Linux performance analysis made easier"
 note: 15
 stars: 4
-tags: ['devops']
-unofficialTags: ['performance']
-cover: "/posts_resources/covers/bpf-performance-tools.jpg"
+tags: [programming]
+topics: [devops, linux, performance]
+bookCover: "/posts_resources/covers/bpf-performance-tools.jpg"
 bookAuthors: "Brendan Gregg"
 bookIsbn: '0136554822'
 ---

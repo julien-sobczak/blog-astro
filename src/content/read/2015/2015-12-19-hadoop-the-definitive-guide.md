@@ -8,9 +8,9 @@ subject: "Hadoop"
 headline: "Excellent style, clear and understandable examples. Useful both as a guide and as a reference. Still the best book on Hadoop"
 note: 15
 stars: 3
-tags: ['data']
-unofficialTags: ['big-data']
-cover: "/posts_resources/covers/hadoop-the-definitive-guide.jpg"
+tags: [programming]
+topics: [data]
+bookCover: "/posts_resources/covers/hadoop-the-definitive-guide.jpg"
 bookAuthors: "Tom White"
 bookIsbn: '9781491901'
 ---

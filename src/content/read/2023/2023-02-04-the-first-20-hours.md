@@ -8,9 +8,8 @@ subject: "Learning"
 headline: "Start fast to have fun as soon as possible and never stop learning."
 note: 15
 stars: 5
-tags: []
-unofficialTags: []
-cover: "/posts_resources/covers/the-first-20-hours.png"
+tags: [learning]
+bookCover: "/posts_resources/covers/the-first-20-hours.png"
 bookAuthors: "Josh Kaufman"
 bookIsbn: '9781591846949'
 ---

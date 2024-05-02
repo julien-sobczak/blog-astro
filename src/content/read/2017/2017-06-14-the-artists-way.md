@@ -8,9 +8,9 @@ subject: "Creativity"
 headline: "Literally, the Bible of Creativity. Go[o]d or Evil?"
 note: 8
 stars: 1
-tags: ['self-help']
-unofficialTags: ['creativity']
-cover: "/posts_resources/covers/the-artists-way.jpg"
+tags: [reflecting]
+topics: [self-help, creativity]
+bookCover: "/posts_resources/covers/the-artists-way.jpg"
 bookAuthors: "Julia Cameron"
 bookIsbn: '1585421464'
 ---

@@ -8,9 +8,9 @@ subject: "Reading"
 headline: "Interesting answers but…"
 note: 12
 stars: 2
-tags: []
-unofficialTags: []
-cover: "/posts_resources/covers/reading-for-our-lives.png"
+tags: [reading, parenting]
+topics: [books]
+bookCover: "/posts_resources/covers/reading-for-our-lives.png"
 bookAuthors: "Maya Payne Smart"
 bookIsbn: '9780593332177'
 ---

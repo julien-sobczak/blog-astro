@@ -8,9 +8,9 @@ subject: "Career change"
 headline: "Learning as a life changer"
 note: 15
 stars: 3
-tags: ['self-help', 'learning']
-unofficialTags: []
-cover: "/posts_resources/covers/mindshift.jpg"
+tags: [thinking]
+topics: [self-help]
+bookCover: "/posts_resources/covers/mindshift.jpg"
 bookAuthors: "Barbara Oakley"
 bookIsbn: '1101982853'
 ---

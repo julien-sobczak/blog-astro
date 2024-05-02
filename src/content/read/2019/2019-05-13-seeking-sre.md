@@ -8,9 +8,9 @@ subject: "SRE"
 headline: "SRE outside Google. Brilliant contributions on the subject after a slow start."
 note: 15
 stars: 3
-tags: ['devops']
-unofficialTags: []
-cover: "/posts_resources/covers/seeking-sre.jpg"
+tags: [programming]
+topics: [devops]
+bookCover: "/posts_resources/covers/seeking-sre.jpg"
 bookAuthors: "David N. Blank-Edelman"
 bookIsbn: '978-1491978863'
 ---

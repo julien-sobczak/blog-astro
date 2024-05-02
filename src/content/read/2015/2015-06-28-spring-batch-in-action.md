@@ -8,9 +8,9 @@ subject: "Spring Batch"
 headline: "An in-depth guide to batch processing. Cover every aspect of Spring Batch."
 note: 4
 stars: 4
-tags: ['frameworks']
-unofficialTags: ['java']
-cover: "/posts_resources/covers/spring-batch-in-action.jpg"
+tags: [programming]
+topics: [java, frameworks]
+bookCover: "/posts_resources/covers/spring-batch-in-action.jpg"
 bookAuthors: "Arnaud Cogoluegnes, Thierry Templier, Gary Gregory, Olivier Bazoud"
 bookIsbn: '1935182951'
 ---

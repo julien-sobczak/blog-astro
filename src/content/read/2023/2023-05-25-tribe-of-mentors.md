@@ -8,9 +8,8 @@ subject: "Lessons"
 headline: "Invaluable wisdom hidden between the lines"
 note: 18
 stars: 5
-tags: []
-unofficialTags: []
-cover: "/posts_resources/covers/tribe-of-mentors.png"
+tags: [doing, productivity]
+bookCover: "/posts_resources/covers/tribe-of-mentors.png"
 bookAuthors: "Timothy Ferriss"
 bookIsbn: '9781328994967'
 ---

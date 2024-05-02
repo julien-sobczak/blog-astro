@@ -8,9 +8,9 @@ subject: "Happiness"
 headline: 'A convincing approach to answer the question: "What should I do with my life?"'
 note: 17
 stars: 4
-tags: ['self-help']
-unofficialTags: []
-cover: "/posts_resources/covers/designing-your-life.jpg"
+tags: [reflecting]
+topics: [self-help]
+bookCover: "/posts_resources/covers/designing-your-life.jpg"
 bookAuthors: "Bill Burnett, David J. Evans"
 bookIsbn: '1101875321'
 ---

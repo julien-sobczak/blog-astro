@@ -8,9 +8,8 @@ subject: "Attention"
 headline: "The missing manual to dislike the like button"
 note: 17
 stars: 5
-tags: ['productivity']
-unofficialTags: []
-cover: "/posts_resources/covers/digital-minimalism.jpg"
+tags: [doing, productivity]
+bookCover: "/posts_resources/covers/digital-minimalism.jpg"
 bookAuthors: "Cal Newport"
 bookIsbn: '978-0525542872'
 ---

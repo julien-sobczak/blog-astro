@@ -8,9 +8,9 @@ subject: "Kid"
 headline: "Fun to read. And so true!"
 note: 14
 stars: 4
-tags: ['self-help']
-unofficialTags: []
-cover: "/posts_resources/covers/be-more-kid.jpg"
+tags: [thinking]
+topics: [self-help]
+bookCover: "/posts_resources/covers/be-more-kid.jpg"
 bookAuthors: "Mark Taylor, Nicky Taylor, Ed James"
 bookIsbn: '0857088831'
 ---

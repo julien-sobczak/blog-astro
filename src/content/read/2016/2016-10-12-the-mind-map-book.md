@@ -8,9 +8,9 @@ subject: "MindMapping"
 headline: "The only reference (a little too verbose) you need to discover Mind Mapping and apply it successfully to your best advantage"
 note: 15
 stars: 3
-tags: ['learning', 'productivity', 'self-help']
-unofficialTags: []
-cover: "/posts_resources/covers/the-mind-map-book.jpg"
+tags: [learning, productivity]
+topics: [self-help, memory]
+bookCover: "/posts_resources/covers/the-mind-map-book.jpg"
 bookAuthors: "Tony Buzan, Barry Buzan"
 bookIsbn: '0452273226'
 ---

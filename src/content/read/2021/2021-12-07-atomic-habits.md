@@ -8,9 +8,9 @@ subject: "Habits"
 headline: "The art of making new habits"
 note: 18
 stars: 5
-tags: ['productivity']
-unofficialTags: []
-cover: "/posts_resources/covers/atomic-habits.jpg"
+tags: [doing, productivity]
+topics: [habit]
+bookCover: "/posts_resources/covers/atomic-habits.jpg"
 bookAuthors: "James Clear"
 bookIsbn: '978-0593189641'
 ---

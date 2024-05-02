@@ -8,10 +8,10 @@ subject: "Linux"
 headline: "Very concise explanations + an exhaustive list of topics = a voluminous reference book"
 note: 16
 stars: 4
-tags: ['computer-science']
-unofficialTags: ['linux']
-cover: "/posts_resources/covers/unix-and-linux-system-administration-handbook.jpg"
-bookAuthors: "Evi Nemeth, Garth Snyder,‎ Trent R. Hein,‎ Ben Whaley,‎ Dan Mackin"
+tags: [programming]
+topics: [linux]
+bookCover: "/posts_resources/covers/unix-and-linux-system-administration-handbook.jpg"
+bookAuthors: "Evi Nemeth, Garth Snyder, Trent R. Hein, Ben Whaley, Dan Mackin"
 bookIsbn: '0134278283'
 ---
 

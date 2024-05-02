@@ -8,9 +8,8 @@ subject: "Note-Taking"
 headline: "An indispensable resource for curious people."
 note: 14
 stars: 4
-tags: []
-unofficialTags: []
-cover: "/posts_resources/covers/building-a-second-brain.png"
+tags: [note-taking, doing]
+bookCover: "/posts_resources/covers/building-a-second-brain.png"
 bookAuthors: "Tiago Forte"
 bookIsbn: '9781982167387'
 ---

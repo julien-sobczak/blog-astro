@@ -8,9 +8,9 @@ subject: "Management"
 headline: "A good book for better managers, but not great managers."
 note: 12
 stars: 3
-tags: ['management']
-unofficialTags: []
-cover: "/posts_resources/covers/managing-the-unmanageable.jpg"
+tags: [programming]
+topics: [management]
+bookCover: "/posts_resources/covers/managing-the-unmanageable.jpg"
 bookAuthors: "Mickey W. Mantle, Ron Lichty"
 bookIsbn: '978-0135667361'
 ---

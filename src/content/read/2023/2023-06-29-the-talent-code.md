@@ -8,9 +8,9 @@ subject: "Excellence"
 headline: "A passionate journey in the world of skill acquisition"
 note: 16
 stars: 4
-tags: []
-unofficialTags: []
-cover: "/posts_resources/covers/the-talent-code.png"
+tags: [mastering]
+topics: [self-help, success]
+bookCover: "/posts_resources/covers/the-talent-code.png"
 bookAuthors: "Daniel Coyle"
 bookIsbn: '9780553806847'
 ---

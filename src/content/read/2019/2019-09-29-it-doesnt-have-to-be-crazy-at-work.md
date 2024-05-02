@@ -8,9 +8,8 @@ subject: "Work"
 headline: "When common sense reinvents management practices"
 note: 18
 stars: 5
-tags: ['management', 'productivity']
-unofficialTags: []
-cover: "/posts_resources/covers/it-doesnt-have-to-be-crazy-at-work.jpg"
+tags: [working, productivity]
+bookCover: "/posts_resources/covers/it-doesnt-have-to-be-crazy-at-work.jpg"
 bookAuthors: "Jason Fried, David Heinemeier Hansson"
 bookIsbn: '0062874780'
 ---

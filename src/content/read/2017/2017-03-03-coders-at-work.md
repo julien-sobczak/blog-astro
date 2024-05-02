@@ -8,9 +8,9 @@ subject: "Top-programmer interviews"
 headline: "Inspiring insights from top-experts."
 note: 15
 stars: 3
-tags: ['craftsmanship']
-unofficialTags: []
-cover: "/posts_resources/covers/coders-at-work.jpg"
+tags: [programming]
+topics: [craftsmanship]
+bookCover: "/posts_resources/covers/coders-at-work.jpg"
 bookAuthors: "Peter Seibel"
 bookIsbn: '1430219483'
 ---

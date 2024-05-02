@@ -8,9 +8,9 @@ subject: "Thinking"
 headline: "Thinking in a human world."
 note: 15
 stars: 4
-tags: []
-unofficialTags: []
-cover: "/posts_resources/covers/the-extended-mind.png"
+tags: [thinking]
+topics: [memory]
+bookCover: "/posts_resources/covers/the-extended-mind.png"
 bookAuthors: "Annie Murphy Paul"
 bookIsbn: '9780544947665'
 ---
