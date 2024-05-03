@@ -21,6 +21,14 @@ const { id, pageTitle } = Astro.props;
   <meta name="googlebot" content="index,follow">
   <meta name="subject" content="Programming">
 
+  <!-- https://docs.astro.build/en/guides/rss/#enabling-rss-feed-auto-discovery -->
+  <link
+    rel="alternate"
+    type="application/rss+xml"
+    title="Your Site's Title"
+    href={`${Astro.site}rss.xml`}
+  />
+
   <title>{pageTitle}</title>
 
   <!-- FIXME test rss -->

@@ -5,6 +5,7 @@ author: "Julien Sobczak"
 date: 2016-12-26
 subject: "SRS"
 tags: [flashcards, learning]
+description: Use the Anki API to bulk the creation of your flashcards in Python.
 topics: [anki]
 relatedWritePosts:
 - '2020/12/26/anki-scripting-for-non-programmers'
@@ -3451,7 +3452,7 @@ The `Card 2` displays the picture associated the word:
 
 Where the front template is defined like this:
 
-``` {"1": 1}
+```txt {"1": 1}
 {{#HasImageCard}}
 {{Image}}
 {{/HasImageCard}}

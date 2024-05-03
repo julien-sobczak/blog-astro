@@ -16,7 +16,7 @@ const commonProperties = {
   title: z.string(),
   shortTitle: z.string().optional(),
   subtitle: z.string().optional(),
-  description: z.string().optional(), // FIXME make mandatory to use in RSS feed
+  description: z.string().optional(),
 
   // Organizing
   tags: z.array(z.enum(tags)).optional(),
@@ -50,12 +50,14 @@ const readCollection = defineCollection({
 const writeCollection = defineCollection({
   schema: z.object({
     ...commonProperties,
+    description: z.string(), // Required for the RSS feed
   })
 });
 
 const inspectCollection = defineCollection({
   schema: z.object({
     ...commonProperties,
+    description: z.string(), // Required for the RSS feed
   })
 });
 

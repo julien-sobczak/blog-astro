@@ -18,7 +18,13 @@
     "@types/react-dom": "^18.2.25",
     "astro": "^4.6.1",
     "astro-expressive-code": "^0.34.1",
+    "markdown-it": "^14.1.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "sanitize-html": "^2.13.0"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^14.1.1",
+    "@types/sanitize-html": "^2.11.0"
   }
 }
