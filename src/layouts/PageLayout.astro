@@ -1,6 +1,24 @@
 ---
+import { getCollection } from "astro:content";
 import BaseLayout from '../layouts/BaseLayout.astro';
 const { category, contentBased, pageTitle } = Astro.props;
+
+// Extract tags
+const postsRead = await getCollection('read');
+const postsWrite = await getCollection('write');
+const postsInspect = await getCollection('inspect');
+const allPosts = [...postsRead, ...postsWrite, ...postsInspect];
+const tags = new Map<string, number>();
+allPosts.forEach((post) => {
+  post.data.tags.forEach((tag) => {
+    if (!tags.has(tag)) {
+      tags.set(tag, 1);
+    } else {
+      tags.set(tag, tags.get(tag) + 1);
+    }
+  })
+});
+const orderedTags = new Map([...tags.entries()].sort((a, b) => b[1] - a[1]));
 ---
 
 <BaseLayout id={contentBased ? 'page-post' : 'page-category'} pageTitle={pageTitle}>
@@ -41,5 +59,23 @@ const { category, contentBased, pageTitle } = Astro.props;
   </nav>
 
   <slot />
+
+  <section id="labels" class="labels">
+    <div class="container">
+
+    <div>
+      <h2>Tags</h2>
+      <hr class="star-light">
+    </div>
+    <ul class="labels">
+      {[...orderedTags.keys()].map(tag => {
+        return (
+          <li>
+            <a href={`/tags/${tag}`}>{tag} <sup class="count">{orderedTags.get(tag)}</sup></a>
+          </li>
+        );
+      })}
+    </ul>
+  </section>
 
 </BaseLayout>

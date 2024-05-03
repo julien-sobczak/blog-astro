@@ -463,6 +463,9 @@ header {
   font-size: 0.8rem; /* Used for the home page but not ideal for post pages */
   padding-top: 150px !important;
 }
+#page-home header blockquote {
+  color: white;
+}
 #page-home header #logo {
   margin: 0 auto 20px;
   /* Draw a round circle behind the logo: */
@@ -614,6 +617,46 @@ section.colored a {
 }
 
 
+/* Labels */
+
+#labels {
+  clear: both;
+  padding: 75px 35px;
+  background: var(--color-base);
+  text-align: center;
+  color: white;
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  li {
+    display: inline-flex;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    border-radius: 50vh;
+    border: 1px solid white;
+    padding: 0.5em 1.5em;
+    margin: 0.5em;
+
+    a {
+      color: white;
+      text-decoration: none;
+    }
+    sup {
+      font-weight: bold;
+      margin-left: 0.2rem;
+    }
+  }
+  li:hover {
+    background-color: var(--color-gray);
+    border: 1px solid black;
+  }
+}
+
+
+
 
 
 /* Footer */
@@ -735,7 +778,7 @@ footer img.footer-me {
   background-color: #93c90E;
 }
 #page-post header .topic, #page-post #recommendations .topic, #page-category .list-view .topic {
-  background-color: rgba(0,0,0,.5);
+  background-color: #505050;
 }
 #page-post header ul.language {
   display: inline-block;

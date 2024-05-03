@@ -1,12 +1,12 @@
 ---
-const { category, post } = Astro.props;
+const { post } = Astro.props;
 ---
-<div class={`post-preview post-${category}-preview`}>
+<div class={`post-preview post-${post.collection}-preview`}>
 
   <h4>{ post.data.date.toLocaleDateString('en-us', { year:"numeric", month:"long", day:"numeric"})}</h4>
 
   <h3>
-    <a href={`/${category}/${post.slug}`}>{ post.data.shortTitle ? post.data.shortTitle : post.data.title }</a>
+    <a href={`/${post.collection}/${post.slug}`}>{ post.data.shortTitle ? post.data.shortTitle : post.data.title }</a>
     {post.data.stars &&
       <span class="rating">
         <i class="fas fa-star"></i>
@@ -18,7 +18,7 @@ const { category, post } = Astro.props;
     }
   </h3>
 
-  {category === 'read' && <span class="authors">{ post.data.bookAuthors }</span>}
+  {post.collection === 'read' && <span class="authors">{ post.data.bookAuthors }</span>}
 
   <span>
     {post.data.tags && post.data.tags.map(tag => {
