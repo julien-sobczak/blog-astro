@@ -6,7 +6,7 @@ import mdx from "@astrojs/mdx";
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://juliensobczak.github.io',
+  site: 'https://juliensobczak.com',
 
   integrations: [
     expressiveCode({
