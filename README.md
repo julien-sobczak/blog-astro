@@ -1,4 +1,4 @@
-# Blog
+# My Blog
 
 
 ## Setup
@@ -9,28 +9,46 @@ Simply run `npm install`. The following commands were run to populate the first 
 npm create astro@latest # Choose empty
 npx astro add react
 npx astro add astro-expressive-code
+# To support a RSS Feed
 npm install @astrojs/rss
+npm install markdown-it
+npm install sanitize-html
 ```
-
 
 ## 🚀 Project Structure
 
-Inside of your Astro project, you'll see the following folders and files:
+Blog posts are organized using different [Astro content collections](https://docs.astro.build/en/guides/content-collections/):
 
 ```text
 /
 ├── public/
 ├── src/
+│   └── content/
+│   |   └── read/     # .md files
+│   |   └── write/    # .mdx files
+│   |   └── inspect/  # .mdx files
 │   └── pages/
+|       └── categories
+|       |   └── read.astro
+|       |   └── write.astro
+|       |   └── inspect.astro
+|       └── read
+|       |   └── [...slug].astro
+|       └── write
+|       |   └── [...slug].astro
+|       └── inspect
+|       |   └── [...slug].astro
 │       └── index.astro
 └── package.json
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Short posts use basic Markdown files and long posts use MDX support (admonition, custom components).
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+Static assets, like images, are placed in the `public/` directory.
 
-Any static assets, like images, can be placed in the `public/` directory.
+## 🌍 Hosting
+
+The blog is published on [GitHub Pages](https://docs.astro.build/en/guides/deploy/github/) using the official GitHub Action.
 
 ## 🧞 Commands
 
@@ -45,6 +63,4 @@ All commands are run from the root of the project, from a terminal:
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `npm run astro -- --help` | Get help using the Astro CLI                     |
 
-## 👀 Want to learn more?
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
