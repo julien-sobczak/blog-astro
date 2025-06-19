@@ -8,13 +8,12 @@ subject: "Memory"
 headline: "The programmer's memory (not brain) at work"
 note: 13
 stars: 3
-tags: [programming]
-topics: [psychology, memory]
+tags: ['programming']
+topics: ['memory', 'psychology']
 bookCover: "/posts_resources/covers/the-programmers-brain.png"
 bookAuthors: "Felienne Hermans"
 bookIsbn: '9781617298677'
 ---
-
 
 The book is remarkably well-written. The author explains how our short-term memory (STM) and our long-term memory (LTM) help the working memory when reading, writing, thinking, and collaborating on code. She extensively uses research papers and classic experiments to introduce the key concepts, and making this research accessible is for sure one of the strengths of this book, but also its main weakness.
 
@@ -23,4 +22,4 @@ There is more to the programmer's brain than what has been studied. Programming 
 What I like about this book is it demonstrates you don't have to feel stupid when facing a new task, or a new problem. Your cognitive load is just too high, and the book will help you find strategies to reduce it, and move on.
 
 The book will benefit developers with just a few years of experience or experienced developers that mentor newcomers and have forgotten what it feels to learn programming. For novice programmers, I think learning programming must be fun, and trying to learn it by optimizing how your brain works is not the best approach in my opinion.
-
+    
