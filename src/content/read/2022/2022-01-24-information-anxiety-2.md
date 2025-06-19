@@ -10,7 +10,7 @@ note: 14
 stars: 4
 tags: ['understanding']
 topics: ['data']
-
+bookCover: "/posts_resources/covers/information-anxiety-2.png"
 bookAuthors: "Richard Saul Wurman"
 bookIsbn: '9780789724106'
 ---
