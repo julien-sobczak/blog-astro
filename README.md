@@ -63,4 +63,23 @@ All commands are run from the root of the project, from a terminal:
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `npm run astro -- --help` | Get help using the Astro CLI                     |
 
+## Resume
 
+Run the following command to export the resume:
+
+```shell
+$ npm run dev
+# export PERSONAL_BIRTH_DATE="01 January 1985"
+# export PERSONAL_EMAIL="first.name@gmail.com"
+# export PERSONAL_PHONE_NUMBER="01.02.03.04.05"
+$ chrome --headless --disable-gpu \
+  --print-to-pdf=resume.pdf \
+  --print-to-pdf-no-header \
+  http://localhost:4321/resume
+```
+
+Define an alias if `chrome` doesn't exist (ex: MacOS):
+
+```bash
+alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
+```
