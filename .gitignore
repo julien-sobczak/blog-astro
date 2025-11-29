@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Don't commit generated resume as includes personal information
+/resume.pdf
