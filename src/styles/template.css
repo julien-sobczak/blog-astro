@@ -211,6 +211,12 @@ button, html input[type=button], input[type=reset], input[type=submit] {
   font-size: 1.3em;
   line-height: 1.3em;
   color: white;
+
+  #subtitle {
+    font-weight: normal;
+    font-size: 0.5em;
+    color: white;
+  }
 }
 
 .navbar-collabsible .navbar-checkbox-toggle {
@@ -452,6 +458,9 @@ body > nav .container, body > header .container {
   #page-home > * {
     padding: 50px 15px;
   }
+  #subtitle {
+    display: none;
+  }
 }
 
 /* Header */
@@ -479,7 +488,8 @@ header {
   overflow: hidden;
 }
 #page-home header #logo img {
-  margin-top: 45px;
+  width: 120%;
+  margin-left: -15%;
 }
 
 #page-home header .intro-text .name {
