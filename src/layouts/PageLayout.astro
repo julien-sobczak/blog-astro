@@ -30,7 +30,7 @@ const orderedTags = new Map([...tags.entries()].sort((a, b) => b[1] - a[1]));
     {contentBased && <div id="reading-bar"></div>}
 
     <div class="container">
-      <a class="navbar-brand" href="/">I'm lovin' I.T.</a>
+      <a class="navbar-brand" href="/">Julien Sobczak</a>
       <div class="navbar-collabsible">
         <input id="collapsible" class="navbar-checkbox-toggle" type="checkbox">
         <label for="collapsible" class="navbar-label-toggle">Menu <i class="fas fa-bars"></i></label>
@@ -38,13 +38,13 @@ const orderedTags = new Map([...tags.entries()].sort((a, b) => b[1] - a[1]));
           <ul>
 
             <li class={category === 'read' ? "active" : ''}>
-              <a href="/categories/read">I'm readin' I.T.</a>
+              <a href="/categories/read">Reading</a>
             </li>
             <li class={category === 'write' ? "active" : ''}>
-              <a href="/categories/write">I'm writin' I.T.</a>
+              <a href="/categories/write">Writing</a>
             </li>
             <li class={category === 'inspect' ? "active" : ''}>
-              <a href="/categories/inspect">I'm inspectin' I.T.</a>
+              <a href="/categories/inspect">Understanding</a>
             </li>
 
             <li class="page-scroll">
