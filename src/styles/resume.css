@@ -40,6 +40,11 @@ code {
   font-weight: 600;
 }
 
+.emoji {
+  font-family: 'Noto Emoji', sans-serif;
+  color: black;
+}
+
 /* Page Layout */
 
 page {
@@ -397,6 +402,7 @@ ul#contact {
     font-family: var(--font-mono);
     font-size: 1.2em;
     margin: 0;
+    display: inline-block;
   }
   /* Use handwritten for metadata and technos*/
   .metadata {
@@ -429,6 +435,10 @@ ul#contact {
   li {
     margin: 0.3em 0;
   }
+}
+.project:hover {
+  transform: rotate(-1deg);
+  transition: transform 0.2s ease-in-out;
 }
 #side-projects .project {
   border-color: white;
@@ -589,7 +599,7 @@ ul#contact {
   padding: 0.5em 1.5em;
   width: 100%;
   border: 1px solid black;
-  font-size: 0.8em;
+  font-size: 0.9em;
   margin: 1rem 0;
 
   &::after {
@@ -602,10 +612,6 @@ ul#contact {
 
   .manuscript {
     font-size: 1.2em;
-  }
-
-  span {
-    margin: 0 1em;
   }
 }
 

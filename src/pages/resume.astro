@@ -55,6 +55,7 @@ console.log('BIRTH DATE:', birthDate);
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Emoji:wght@300..700&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -106,7 +107,7 @@ console.log('BIRTH DATE:', birthDate);
 
     <section id="skills">
       <div class="legend">
-        <span class="ignorant">Ignorance</span>...<span class="master">Mastery</span> / <span class="highlight manuscript">Love to do</span>
+        <span class="emoji">🤷</span> <span class="ignorant">Ignorance</span> ... <span class="emoji">💪</span> <span class="master">Mastery</span> / <span class="highlight"><span class="emoji">😍</span> <span class="manuscript">Love to do</span></span>
       </div>
       <div class="hard-skills">
         <dl>
@@ -227,7 +228,7 @@ console.log('BIRTH DATE:', birthDate);
   <page id="second" size="A4" orientation="landscape">
     <section id="work-projects" class="projects">
       <div class="project postit">
-        <h4>Scaleway</h4>
+        <h4><span class="highlight">Scaleway</span></h4>
         <p class="metadata"><span><MapPinIcon /> Remote</span> <span><CalendarDotsIcon /> Since 2020</span></p>
         <p><TargetIcon weight="regular" size={16} /> Order your baremetal server (LEGACY, UEFI) with a fresh installation (Linux distribs, Windows, etc.) from a simple API call.</p>
         <p>
@@ -243,7 +244,7 @@ console.log('BIRTH DATE:', birthDate);
         </div>
       </div>
       <div class="project postit">
-        <h4>OUI.sncf</h4>
+        <h4><span class="highlight">OUI.sncf</span></h4>
         <p class="metadata"><span><MapPinIcon /> Lille</span> <span><CalendarDotsIcon /> 2016-2018</span></p>
         <p><TargetIcon weight="regular" size={16} /> Help product teams understand their high-traffic applications with hundreds of GBs of metrics, logs and several TBs of Hadoop data.</p>
         <p>
@@ -259,7 +260,7 @@ console.log('BIRTH DATE:', birthDate);
         </div>
       </div>
       <div class="project postit">
-        <h4>Adeo</h4>
+        <h4><span class="highlight">Adeo</span></h4>
         <p class="metadata"><span><MapPinIcon /> Lille</span> <span><CalendarDotsIcon /> 2011-2015</span></p>
         <p><TargetIcon weight="regular" size={16} /> Implemented large technical tasks required to improve the performance and the testability of the store sale application</p>
         <p>
@@ -296,7 +297,8 @@ console.log('BIRTH DATE:', birthDate);
           <Image id="qr-linkedin" src={qrLinkedInImage} alt="View my full profile on LinkedIn" />
         </div>
         <div class="legend">
-          ▲ <span class="manuscript">A few</span> work experiences / <span class="manuscript">My main</span> side projects ▶
+          <span class="manuscript">My main</span><br/>
+          ▲ work experiences / side projects ▶
         </div>
       </div>
     </section>
@@ -316,7 +318,7 @@ console.log('BIRTH DATE:', birthDate);
         <div class="interactive-link">
           <span class="manuscript">Browse</span>&nbsp;&nbsp;<small>▶</small>&nbsp;&nbsp;
           <a href="https://juliensobczak.com/">
-            <LinkIcon size={32} weight="regular" aria-label="Browse to blog" />
+            <LinkIcon size={16} weight="regular" aria-label="Browse to blog" />
           </a>
         </div>
         <div class="qr-code">
@@ -347,7 +349,7 @@ console.log('BIRTH DATE:', birthDate);
         <div class="interactive-link">
           <span class="manuscript">Browse</span>&nbsp;&nbsp;<small>▶</small>&nbsp;&nbsp;
           <a href="https://julien-sobczak.github.io/the-notewriter/">
-            <LinkIcon size={32} weight="regular" aria-label="Browse to project" />
+            <LinkIcon size={16} weight="regular" aria-label="Browse to project" />
           </a>
         </div>
         <div class="qr-code">
