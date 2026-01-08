@@ -4,6 +4,12 @@
   --font-cursive: "Caveat", cursive;
   --font-sans: 'Source Sans 3', sans-serif;
   --font-mono: 'Source Code Pro', monospace;
+
+  --color-scaleway: rgb(79, 5, 154);
+  --color-oui-sncf: rgb(241, 70, 51);
+  --color-leroy-merlin: #188803; /* Original color is too light rgb(120, 190, 31); */
+  --color-blog: rgb(65, 133, 244);
+  --color-the-notewriter: rgb(255, 214, 0);
 }
 
 * {
@@ -137,6 +143,7 @@ section#side-projects {
 /* Header */
 
 #picture {
+  position: relative;
   margin: 2rem auto 0; /* Do not set margin below to have the tagline stick to the picture */
   width: 4cm;
   height: 4cm;
@@ -146,6 +153,34 @@ section#side-projects {
   text-align: center;
   background-color: black;
 }
+
+@media screen {
+  #first header:hover #picture {
+    background: linear-gradient(180deg, #373b44, #4286f4);
+	  background-size: 200% 200%;
+	  animation: picture-gradient 15s ease infinite;
+  }
+
+  @keyframes picture-gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  #first header:hover #tagline-me {
+    display: none;
+  }
+  #first header:hover #tagline-hi {
+    display: block;
+  }
+}
+
 #picture img {
   width: 100%;
   height: 100%;
@@ -176,6 +211,14 @@ h3 { font-size: 16px; }
   #play-tagline-audio {
     cursor: pointer;
     margin-left: 0.1em;
+  }
+
+  #tagline-hi {
+    display: none;
+  }
+
+  strong {
+    font-weight: bold;
   }
 }
 
@@ -436,12 +479,48 @@ ul#contact {
     margin: 0.3em 0;
   }
 }
-.project:hover {
-  transform: rotate(-1deg);
-  transition: transform 0.2s ease-in-out;
-}
 #side-projects .project {
   border-color: white;
+}
+.project .logo {
+  display: none;
+}
+@media screen {
+  /* Add brand colors when hoving over projects */
+  .project:hover .highlight::before {
+    background: black;
+  }
+  .project.the-notewriter:hover .highlight::before {
+    background: white;
+  }
+  .project.scaleway:hover {
+    background-color: var(--color-scaleway);
+    color: white;
+  }
+  .project.oui-sncf:hover {
+    background-color: var(--color-oui-sncf);
+    color: white;
+  }
+  .project:hover .logo {
+    display: block;
+    max-width: 70px;
+    max-height: 30px;
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+  }
+  .project.leroy-merlin:hover {
+    background-color: var(--color-leroy-merlin);
+    color: white;
+  }
+  .project.blog:hover {
+    background-color: var(--color-blog);
+    color: white;
+  }
+  .project.the-notewriter:hover {
+    background-color: var(--color-the-notewriter);
+    color: black;
+  }
 }
 
 /* Add larger margin around the projects to create bleeds when printing */
@@ -598,16 +677,17 @@ ul#contact {
   position: relative;
   padding: 0.5em 1.5em;
   width: 100%;
-  border: 1px solid black;
+  border: 1px dotted black;
   font-size: 0.9em;
   margin: 1rem 0;
 
   &::after {
     content: "Legend";
     position: absolute;
-    rotate: -90deg;
-    left: -2.5em;
-    font-size: 0.8em;
+    font-family: var(--font-cursive);
+    top: -1.5em;
+    right: 1em;
+    font-size: 1.2em;
   }
 
   .manuscript {

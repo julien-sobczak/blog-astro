@@ -20,7 +20,7 @@ import {
   BackpackIcon,
   BoatIcon,
   LinkedinLogoIcon,
-  SpeakerLowIcon,
+  // SpeakerLowIcon,
   ImageIcon,
   CheckCircleIcon,
   TargetIcon,
@@ -29,8 +29,8 @@ import {
   MapPinIcon,
 } from '@phosphor-icons/react';
 import '../styles/resume.css';
-import meImage from '../assets/julien-portrait.png';
-import qrLinkedInImage from '../assets/qr-linkedin-profile.png';
+import meImage from '../assets/julien-portrait-transparent.png';
+import qrLinkedInImage from '../assets/qr-linkedin-julien.svg';
 import qrBlogImage from '../assets/qr-blog-dark.svg';
 import qrTheNotewriterImage from '../assets/qr-the-notewriter-documentation-dark.svg';
 const email = import.meta.env.PERSONAL_EMAIL;
@@ -73,9 +73,11 @@ console.log('BIRTH DATE:', birthDate);
       <div id="picture">
         <Image src={meImage} alt="It's me" />
       </div>
-
       <div id="tagline" class="speech">
-        Serious about my work without never taking myself too seriously.
+        <span id="tagline-hi"><strong>Hi!</strong> Thank you for taking the time to learn a bit more about me.</span>
+        <span id="tagline-me">Serious about my work without never taking myself too seriously.</span>
+        <!--
+        NB: Commented out as not inspired enough to record a good audio
         <sup id="play-tagline-audio"><SpeakerLowIcon size={16} weight="fill" aria-label="I'm serious but playful" /></sup>
         <script type="text/javascript" is:inline>
           document.addEventListener('DOMContentLoaded', function () {
@@ -87,6 +89,7 @@ console.log('BIRTH DATE:', birthDate);
             }
           });
         </script>
+         -->
       </div>
 
       <ul id="contact">
@@ -107,7 +110,8 @@ console.log('BIRTH DATE:', birthDate);
 
     <section id="skills">
       <div class="legend">
-        <span class="emoji">🤷</span> <span class="ignorant">Ignorance</span> ... <span class="emoji">💪</span> <span class="master">Mastery</span> / <span class="highlight"><span class="emoji">😍</span> <span class="manuscript">Love to do</span></span>
+        <!-- <span class="emoji">🤷</span> <span class="ignorant">Ignorance</span> ... <span class="emoji">💪</span> <span class="master">Mastery</span> / <span class="highlight"><span class="emoji">😍</span> <span class="manuscript">Love to do</span></span> -->
+        <span class="ignorant">Apprentice</span> → <span class="intermediate">Journeyman</span> → <span class="master">Master</span> / <span class="highlight"><span class="emoji">😍</span> <span class="manuscript">Love to do</span></span>
       </div>
       <div class="hard-skills">
         <dl>
@@ -211,7 +215,7 @@ console.log('BIRTH DATE:', birthDate);
       <div id="hobbies" class="hobbies">
         <h4 class="title">Hobbies</h4>
         <p>
-          I <HeartIcon size={14} weight="fill" aria-label="Love" /> reading <BookIcon size={14} weight="fill" aria-label="Book" /> for growth (and stunning <ImageIcon size={14} weight="fill" aria-label="Picture" /> books with my kids <HeartIcon size={14} weight="fill" aria-label="Love" />), running <PersonSimpleRunIcon size={14} weight="fill" aria-label="Run" />, walking <BackpackIcon size={14} weight="fill" aria-label="Ruck" /> and playing table tennis <PingPongIcon size={14} weight="fill" aria-label="Table Tennis" />, taking family pictures <CameraIcon size={14} weight="fill" aria-label="Camera" /> or when traveling on land <MountainsIcon size={14} weight="fill" aria-label="Landscape" /> or sea <BoatIcon size={14} weight="fill" aria-label="Sea" />.
+          I <HeartIcon size={14} weight="fill" aria-label="Love" /> reading <BookIcon size={14} weight="fill" aria-label="Book" /> for growth (and stunning picture books with my kids <HeartIcon size={14} weight="fill" aria-label="Love" />), running <PersonSimpleRunIcon size={14} weight="fill" aria-label="Run" />, walking <BackpackIcon size={14} weight="fill" aria-label="Ruck" /> and playing table tennis <PingPongIcon size={14} weight="fill" aria-label="Table Tennis" />, taking family pictures <CameraIcon size={14} weight="fill" aria-label="Camera" /> or when traveling on land <MountainsIcon size={14} weight="fill" aria-label="Landscape" /> or sea <BoatIcon size={14} weight="fill" aria-label="Sea" />.
         </p>
       </div>
 
@@ -227,15 +231,16 @@ console.log('BIRTH DATE:', birthDate);
   <!-- Second page: Projects -->
   <page id="second" size="A4" orientation="landscape">
     <section id="work-projects" class="projects">
-      <div class="project postit">
+      <div class="project postit scaleway">
+        <img class="logo" src="/img/scaleway-white.svg" alt="Scaleway Logo" />
         <h4><span class="highlight">Scaleway</span></h4>
         <p class="metadata"><span><MapPinIcon /> Remote</span> <span><CalendarDotsIcon /> Since 2020</span></p>
         <p><TargetIcon weight="regular" size={16} /> Order your baremetal server (LEGACY, UEFI) with a fresh installation (Linux distribs, Windows, etc.) from a simple API call.</p>
         <p>
           <em><CheckCircleIcon weight="regular" size={16} /> Challenges</em>
           <ul>
-            <li>Many hardware/operational issues = <em>My problem-solving skill always at work</em></li>
-            <li>Complex organizational environment = <em>Opportunities to reflect</em></li>
+            <li>Many hardware/operational issues = My problem-solving skill always at work</li>
+            <li><strong>Complex organizational environment</strong> = Opportunities to reflect</li>
             <li>Missing internal platform = <em>Scope very large</em></li>
           </ul>
         </p>
@@ -243,32 +248,34 @@ console.log('BIRTH DATE:', birthDate);
           Go, Temporal, Postgres, GitLab CI, Nomad
         </div>
       </div>
-      <div class="project postit">
+      <div class="project postit oui-sncf">
+        <img class="logo" src="/img/oui-sncf-white.svg" alt="OUI.sncf Logo" />
         <h4><span class="highlight">OUI.sncf</span></h4>
         <p class="metadata"><span><MapPinIcon /> Lille</span> <span><CalendarDotsIcon /> 2016-2018</span></p>
         <p><TargetIcon weight="regular" size={16} /> Help product teams understand their high-traffic applications with hundreds of GBs of metrics, logs and several TBs of Hadoop data.</p>
         <p>
           <em><CheckCircleIcon weight="regular" size={16} /> Challenges</em>
           <ul>
-            <li>Only developer (at first) in a production team responsible to automate the boring stuff</li>
-            <li>No prior knowledge of monitoring & big data tools</li>
-            <li>High volumetry and strong reliability expected</li>
+            <li>Only developer (at first) in a production team responsible to <strong>automate the boring stuff</strong></li>
+            <li><strong>No prior knowledge</strong> of monitoring & big data tools</li>
+            <li><strong>High volumetry and strong reliability</strong> expected</li>
           </ul>
         </p>
         <div class="technologies">
           Java, Python, Go, Bash, Hadoop, Elasticsearch, Graphite, Ansible
         </div>
       </div>
-      <div class="project postit">
-        <h4><span class="highlight">Adeo</span></h4>
+      <div class="project postit leroy-merlin">
+        <img class="logo" src="/img/leroy-merlin-white.svg" alt="Leroy Merlin Logo" />
+        <h4><span class="highlight">Leory Merlin</span></h4>
         <p class="metadata"><span><MapPinIcon /> Lille</span> <span><CalendarDotsIcon /> 2011-2015</span></p>
         <p><TargetIcon weight="regular" size={16} /> Implemented large technical tasks required to improve the performance and the testability of the store sale application</p>
         <p>
           <em><CheckCircleIcon weight="regular" size={16} /> Challenges</em>
           <ul>
-            <li>Long-lasting codebase with millions lines of code and almost 30 contributors</li>
-            <li>Many large refactorings without causing regressions</li>
-            <li>Published my first design documents in a team more experienced than me</li>
+            <li><strong>Long-lasting codebase</strong> with millions lines of code and almost 30 contributors</li>
+            <li>Many <strong>large refactorings</strong> without causing regressions</li>
+            <li>Published my first <strong>design documents</strong> in a team more experienced than me</li>
           </ul>
         </p>
         <div class="technologies">
@@ -276,6 +283,8 @@ console.log('BIRTH DATE:', birthDate);
         </div>
       </div>
       <div class="project-more">
+        <!--
+        NB: Removed for brevity. Less is more.
         <div class="postit small">
           Spring Trainer at Zenika
         </div>
@@ -285,6 +294,7 @@ console.log('BIRTH DATE:', birthDate);
         <div class="postit small">
           Some PHP early in my career
         </div>
+        -->
         <div class="interactive-link">
           <span class="manuscript">View my full profile on</span>
           <br/>▼<br/>
@@ -293,7 +303,7 @@ console.log('BIRTH DATE:', birthDate);
           </a>
         </div>
         <div class="qr-code">
-          <!-- https://juliensobczak.com/ -->
+          <!-- Generated using https://genqrcode.com/generator/linkedin -->
           <Image id="qr-linkedin" src={qrLinkedInImage} alt="View my full profile on LinkedIn" />
         </div>
         <div class="legend">
@@ -303,7 +313,7 @@ console.log('BIRTH DATE:', birthDate);
       </div>
     </section>
     <section id="side-projects" class="projects">
-      <div class="project postit">
+      <div class="project postit blog">
         <h4>Blog</h4>
         <p class="metadata"><GithubLogoIcon /><a href="https://github.com/julien-sobczak/blog-astro"><code>julien-sobczak/blog-astro</code></a></p>
         <p><TargetIcon weight="regular" size={16} /> My sandbox. Write to understand. Write to learn. Never write to be read.</p>
@@ -329,7 +339,7 @@ console.log('BIRTH DATE:', birthDate);
           Blogger > Jekyll > Astro
         </div>
       </div>
-      <div class="project postit">
+      <div class="project postit the-notewriter">
         <h4>The NoteWriter</h4>
         <p class="metadata"><GithubLogoIcon /><a href="https://github.com/julien-sobczak/the-notewriter"><code>julien-sobczak/the-notewriter</code></a></p>
         <p><TargetIcon weight="regular" size={16} /> Minimal CLI to process my personal Markdown notes (reading notes, flashcards, in-progress and future projects, journals, reminders, goto links).</p>
