@@ -78,11 +78,11 @@ const recentBlogPostsInspect = allBlogPostsInspect.sort(sortByDate).slice(0, 3);
           <p class="manuscript">Find your next technical (or not) book and expand your knowledge</p>
           <ul>
             <li>Latest books:</li>
-            {recentBlogPostsRead.map((post) => {
+            {recentBlogPostsRead.map((post, i) => {
               return (
                 <li>
                   <a href={`/read/${post.slug}`}>
-                    { post.data.shortTitle ? post.data.shortTitle : post.data.title }
+                    { post.data.shortTitle ? post.data.shortTitle : post.data.title }{ i !== recentBlogPostsRead.length - 1 ? ',' : '' }
                   </a>
                 </li>
               );
@@ -101,11 +101,11 @@ const recentBlogPostsInspect = allBlogPostsInspect.sort(sortByDate).slice(0, 3);
           <p class="manuscript">Various posts or essays mainly about productivity, learning, soft skills and personal development</p>
           <ul>
             <li>Read the latest posts about</li>
-            {recentBlogPostsWrite.map((post) => {
+            {recentBlogPostsWrite.map((post, i) => {
               return (
                 <li>
                   <a href={`/write/${post.slug}`}>
-                    { post.data.subject }
+                    { post.data.subject }{ i !== recentBlogPostsWrite.length - 1 ? ',' : '' }
                   </a>
                 </li>
               );
@@ -119,11 +119,11 @@ const recentBlogPostsInspect = allBlogPostsInspect.sort(sortByDate).slice(0, 3);
           <p class="manuscript">Stand on the shoulders of giants by learning techniques from top developers.</p>
           <ul>
             <li>Discover the inner working of famous OSS projects or programming languages:</li>
-            {recentBlogPostsInspect.map((post) => {
+            {recentBlogPostsInspect.map((post, i) => {
               return (
                 <li>
                   <a href={`/inspect/${post.slug}`}>
-                    { post.data.subject }
+                    { post.data.subject }{ i !== recentBlogPostsInspect.length - 1 ? ',' : '' }
                   </a>
                 </li>
               );
