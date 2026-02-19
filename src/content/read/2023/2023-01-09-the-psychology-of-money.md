@@ -8,9 +8,10 @@ subject: "Money"
 headline: "Timeless lessons on wealth, greed, and happiness"
 note: 18
 stars: 5
-tags: ['thinking']
-topics: ['money', 'psychology']
-bookCover: "/posts_resources/covers/the-psychology-of-money.png"
+recommendation: 9
+tags: ["thinking"]
+topics: ["money","psychology"]
+bookCover: "/posts_resources/covers/the-psychology-of-money.jpg"
 bookAuthors: "Morgan Housel"
 bookIsbn: '0857199099'
 ---
@@ -22,4 +23,3 @@ _The Psychology of Money_ challenges brilliantly the preconceived idea that fina
 It's one of my favorite books. It's the kind of book where you end up with a lot more insights than you expected before opening it.
 
 The 20 chapters revolve around the main topic, but exist on their own and could be read independently, even if it's probably simpler to just read it from cover to cover as it's a short book.
-    
