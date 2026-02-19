@@ -7,6 +7,7 @@ date: 2023-01-25
 subject: "Creativity"
 headline: "An inspiring classic"
 note: 16
+stars: 4
 recommendation: 8
 tags: ["doing"]
 topics: ["creativity"]
