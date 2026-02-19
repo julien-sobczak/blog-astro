@@ -8,9 +8,10 @@ subject: "Note-Taking"
 headline: "What great writers do to never face the blank page."
 note: 16
 stars: 5
-tags: ['writing', 'note-taking']
+recommendation: 9
+tags: ["writing","note-taking"]
 topics: []
-bookCover: "/posts_resources/covers/how-to-take-smart-notes.png"
+bookCover: "/posts_resources/covers/how-to-take-smart-notes.jpg"
 bookAuthors: "Sönke Ahrens"
 bookIsbn: '9783982438801'
 ---
@@ -26,4 +27,3 @@ But the book is not perfect. I found the title misleading, the content insuffici
 If you read non-fiction books, you must read this book. If you take notes, you must read this book. If you write articles, even occasionally, you must read this book. Do not wait for ideas to pop up. Creativity is a process. The book contains many answers to demystify it. Don't let your notes end up in a graveyard for thoughts.
 
 As a side note, I love how the book focuses on principles, not tools. "Tools are only as good as your ability to work with them," says the author. And even if the author mentions a few tools that he uses, you will have no trouble adapting these principles to other tools. As a developer, I agree digital tools can help (at least for durability) but I'm afraid we still haven't found a clear winner. The software Zettelkasten used by the author is free and open source, but contributions are limited. Putting our notes in an application when we know any tool will become obsolete someday is the main obstacle you will face before applying the lessons of this book.
-    
