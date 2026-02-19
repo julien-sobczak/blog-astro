@@ -8,10 +8,11 @@ subject: "Network"
 headline: "Lessons learned from the trenches"
 note: 14
 stars: 4
+recommendation: 4
 tags: []
-topics: []
-bookCover: "/posts_resources/covers/network-warrior.png"
-bookAuthors: "Gary A. Donahue"
+topics: [""]
+bookCover: "/posts_resources/covers/network-warrior.jpg"
+bookAuthors: "Gary Donahue"
 bookIsbn: '9781449387860'
 ---
 
@@ -20,4 +21,3 @@ _Network Warrior_ is a book that I've seen acclaimed many times despite its huge
 It's easy to understand why this book is so beloved. It's literally solid experiences condensed and printed on paper. This book is full of information to get your work done. It's like learning from someone so much more experienced (= having already done many errors) that truly cares about you to help you avoid repeating the same mistakes.
 
 The main downside of such a book is the more practical a book gets, the quickest it becomes outdated. Even if network protocols outlast any book on the subject, the practical sections demonstrating how to operate Cisco devices are probably less relevant today.
-    
