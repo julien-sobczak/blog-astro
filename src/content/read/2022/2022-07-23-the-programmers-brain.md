@@ -7,6 +7,7 @@ date: 2022-07-23
 subject: "Memory"
 headline: "The programmer's memory (not brain) at work"
 note: 13
+stars: 3
 recommendation: 4
 tags: ["programming"]
 topics: ["memory","psychology"]
