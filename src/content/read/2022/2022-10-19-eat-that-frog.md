@@ -1,6 +1,6 @@
 ---
 slug: 2022/10/19/eat-that-frog
-title: "Book Review: Eat That Frog! 21 Great Ways to Stop Procrastinating and Get More Done in Less Time"
+title: "Book Review: Eat That Frog!: 21 Great Ways to Stop Procrastinating and Get More Done in Less Time"
 shortTitle: "Eat That Frog!"
 author: Julien Sobczak
 date: 2022-10-19
@@ -8,9 +8,10 @@ subject: "Productivity"
 headline: "Productivity distilled"
 note: 16
 stars: 5
-tags: ['productivity']
+recommendation: 9
+tags: ["productivity"]
 topics: []
-bookCover: "/posts_resources/covers/eat-that-frog.png"
+bookCover: "/posts_resources/covers/eat-that-frog.jpg"
 bookAuthors: "Brian Tracy"
 bookIsbn: '9781626569416'
 ---
@@ -20,4 +21,3 @@ bookIsbn: '9781626569416'
 The book is organized into 21 independent chapters describing 21 independent techniques, methods, or strategies applied by the author with great success. Not all are relevant depending on circumstances but most can be combined more often than not.
 
 I've often recommended _Atomic Habits_ but _Eat That Frog_ is maybe preferable as a first reading on the subject since its scope is larger (productivity vs habit). Both books are invaluable. Habits determine everything (= we are what we repeatedly do) and you will need _Atomic Habits_ to replace detrimental habits with better ones if you really dare to be more productive.
-    
