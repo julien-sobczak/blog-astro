@@ -8,9 +8,10 @@ subject: "Thinking"
 headline: "Thinking in a human world."
 note: 15
 stars: 4
-tags: ['thinking']
-topics: ['memory']
-bookCover: "/posts_resources/covers/the-extended-mind.png"
+recommendation: 7
+tags: ["thinking"]
+topics: ["memory"]
+bookCover: "/posts_resources/covers/the-extended-mind.jpg"
 bookAuthors: "Annie Murphy Paul"
 bookIsbn: '9780544947665'
 ---
@@ -20,4 +21,3 @@ The popular misconception is to think that we think in our minds alone. It doesn
 "What we _shouldn't_ do is keep our thoughts inside our heads, inert, unchanged by encounters with the world beyond the skull," says the author. We need to think like our species evolved to think. Seeing thinking as something that occurs only inside us is detrimental to us and the world around us. This book has the potential to rethink how we think today using techniques from the past to create a bigger impact in the future.
 
 If you want to think clearer, this book must be on your reading list. It's not perfect, sometimes too monotonous as the author describes the results of numerous studies, but the key points are always instructing and easily applicable.
-    
