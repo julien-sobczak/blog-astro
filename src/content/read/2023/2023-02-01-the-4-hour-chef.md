@@ -1,16 +1,17 @@
 ---
 slug: 2023/02/01/the-4-hour-chef
-title: "Book Review: The 4-Hour Chef: The Simple Path to Cooking like a Pro, Learning Anything, and Living the Good Life"
-shortTitle: "The 4-Hour Chef"
+title: "Book Review: The 4-hour Chef: The Simple Path to Cooking Like a Pro, Learning Anything, and Living the Good Life"
+shortTitle: "The 4-hour Chef"
 author: Julien Sobczak
 date: 2023-02-01
 subject: "Cooking"
 headline: "Learning differently, illustrated with cooking."
 note: 14
 stars: 3
-tags: ['learning']
+recommendation: 9
+tags: ["learning"]
 topics: []
-bookCover: "/posts_resources/covers/the-4-hour-chef.png"
+bookCover: "/posts_resources/covers/the-4-hour-chef.jpg"
 bookAuthors: "Timothy Ferriss"
 bookIsbn: '9780547884592'
 ---
@@ -19,5 +20,4 @@ It's hard to describe this book. It isn't just a cookbook, nor just a book about
 
 If you are curious about learning, the first part (~100 pages) is invaluable. If like me, cooking is now something you are passionate about, you can skim over the recipes and still enjoy the reading. Don't focus too much on the title. Focus on how much this book can feed you.
 
-"I wrote this book to make you a master student of all things," declares Tim Ferris. "This book is not _the_ truth, but it contains many truths as I've found them, and — even if they're not your truths — the process I teach can help you find yours." There are valuable lessons for all of us. We just need to find them and start experimenting.
-    
+"I wrote this book to make you a master student of all things," declares Tim Ferris. "This book is not _the_ truth, but it contains many truths as I've found them, and -- even if they're not your truths -- the process I teach can help you find yours." There are valuable lessons for all of us. We just need to find them and start experimenting.
