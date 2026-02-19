@@ -11,6 +11,7 @@ stars: 5
 recommendation: 6
 tags: ["writing"]
 topics: []
+bookCover: "/posts_resources/covers/chicago-manual-of-style.jpg"
 bookAuthors: ". The University Of Chicago"
 bookIsbn: '9780226287058'
 ---
