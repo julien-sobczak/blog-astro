@@ -1,20 +1,22 @@
 ---
 import { getCollection } from "astro:content";
 import PageLayout from "../../layouts/PageLayout.astro";
-import BlogPostList from "../../components/BlogPostList.astro";
-const posts = await getCollection('write');
+import BlogPostList from "../../components/BlogPostList";
+const posts = await getCollection("write");
 posts.reverse();
 ---
 
-<PageLayout category="write" contentBased={false} pageTitle="Julien Sobczak | Writing">
+<PageLayout
+  category="write"
+  contentBased={false}
+  pageTitle="Julien Sobczak | Writing"
+>
   <section class="category-content">
-
     <div>
       <h2>Writing</h2>
-      <hr class="star-primary">
+      <hr class="star-primary" />
     </div>
 
     <BlogPostList category="write" posts={posts} />
-
   </section>
 </PageLayout>

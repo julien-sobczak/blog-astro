@@ -1,55 +1,72 @@
 ---
-import '../styles/normalize.css';
-import '../styles/template.css';
-import MyFooter from  '../components/Footer.astro';
-import Libraries from  '../components/Libraries.astro';
+import "../styles/normalize.css";
+import "../styles/template.css";
+import MyFooter from "../components/Footer.astro";
+import Libraries from "../components/Libraries.astro";
 const { id, pageTitle } = Astro.props;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content="Diary of a Life Long Learner" />
+    <meta name="author" content="Julien Sobczak" />
+    <meta name="robots" content="index,follow,noodp" />
+    <meta name="googlebot" content="index,follow" />
+    <meta name="subject" content="Programming" />
 
-<head>
+    <!-- https://docs.astro.build/en/guides/rss/#enabling-rss-feed-auto-discovery -->
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Your Site's Title"
+      href={`${Astro.site}rss.xml`}
+    />
 
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="generator" content={Astro.generator} />
-  <meta name="description" content="Diary of a Life Long Learner">
-  <meta name="author" content="Julien Sobczak">
-  <meta name="robots" content="index,follow,noodp">
-  <meta name="googlebot" content="index,follow">
-  <meta name="subject" content="Programming">
+    <title>{pageTitle}</title>
 
-  <!-- https://docs.astro.build/en/guides/rss/#enabling-rss-feed-auto-discovery -->
-  <link
-    rel="alternate"
-    type="application/rss+xml"
-    title="Your Site's Title"
-    href={`${Astro.site}rss.xml`}
-  />
+    <!-- FIXME test rss -->
+    <!-- <link rel="alternate" type="application/atom+xml" title="Julien Sobczak" href="https://www.juliensobczak.com/feed.xml"> -->
 
-  <title>{pageTitle}</title>
+    <!-- Custom Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i|Oswald"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:400,700"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:400,700,400italic,700italic"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nothing+You+Could+Do"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Righteous"
+      rel="stylesheet"
+    />
+  </head>
 
-  <!-- FIXME test rss -->
-  <!-- <link rel="alternate" type="application/atom+xml" title="Julien Sobczak" href="https://www.juliensobczak.com/feed.xml"> -->
+  <body id={id}>
+    <slot />
 
-  <!-- Custom Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Noto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i|Oswald" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Nothing+You+Could+Do" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Righteous" rel="stylesheet">
-
-</head>
-
-<body id={id}>
-
-  <slot />
-
-  <MyFooter />
-  <Libraries />
-
-</body>
+    <MyFooter />
+    <Libraries />
+  </body>
 </html>

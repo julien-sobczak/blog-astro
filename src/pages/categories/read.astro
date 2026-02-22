@@ -1,20 +1,18 @@
 ---
 import { getCollection } from "astro:content";
 import PageLayout from "../../layouts/PageLayout.astro";
-import BlogPostList from "../../components/BlogPostList.astro";
-const posts = await getCollection('read');
+import ReadingListOrBlogPostList from "../../components/ReadingListOrBlogPostList.jsx";
+const posts = await getCollection("read");
 posts.reverse();
 ---
 
-<PageLayout category="read" contentBased={false} pageTitle="Julien Sobczak | Reading">
+<PageLayout
+  category="read"
+  contentBased={false}
+  pageTitle="Julien Sobczak | Reading"
+>
   <section class="category-content">
-
-    <div>
-      <h2>Reading</h2>
-      <hr class="star-primary">
-    </div>
-
-    <BlogPostList category="read" posts={posts} />
-
+    <!-- We don't render the page heading to customize it in below component (readings vs reviews) -->
+    <ReadingListOrBlogPostList posts={posts} client:only="react" />
   </section>
 </PageLayout>
