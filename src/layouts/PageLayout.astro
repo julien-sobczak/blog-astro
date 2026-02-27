@@ -1,12 +1,12 @@
 ---
 import { getCollection } from "astro:content";
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
 const { category, contentBased, pageTitle } = Astro.props;
 
 // Extract tags
-const postsRead = await getCollection('read');
-const postsWrite = await getCollection('write');
-const postsInspect = await getCollection('inspect');
+const postsRead = await getCollection("read");
+const postsWrite = await getCollection("write");
+const postsInspect = await getCollection("inspect");
 const allPosts = [...postsRead, ...postsWrite, ...postsInspect];
 const tags = new Map<string, number>();
 allPosts.forEach((post) => {
@@ -16,39 +16,47 @@ allPosts.forEach((post) => {
     } else {
       tags.set(tag, tags.get(tag) + 1);
     }
-  })
+  });
 });
 const orderedTags = new Map([...tags.entries()].sort((a, b) => b[1] - a[1]));
 ---
 
-<BaseLayout id={contentBased ? 'page-post' : 'page-category'} pageTitle={pageTitle}>
-
+<BaseLayout
+  id={contentBased ? "page-post" : "page-category"}
+  pageTitle={pageTitle}
+>
   <!-- Navigation -->
 
   <nav id="mainNav" class="navbar-default">
-
-    {contentBased && <div id="reading-bar"></div>}
+    {contentBased && <div id="reading-bar" />}
 
     <div class="container">
       <a class="navbar-brand" href="/">Julien Sobczak</a>
       <div class="navbar-collabsible">
-        <input id="collapsible" class="navbar-checkbox-toggle" type="checkbox">
-        <label for="collapsible" class="navbar-label-toggle">Menu <i class="fas fa-bars"></i></label>
+        <input
+          id="collapsible"
+          class="navbar-checkbox-toggle"
+          type="checkbox"
+        />
+        <label for="collapsible" class="navbar-label-toggle"
+          >Menu <i class="fas fa-bars"></i></label
+        >
         <div class="navbar-collapse">
           <ul>
-
-            <li class={category === 'read' ? "active" : ''}>
+            <li class={category === "read" ? "active" : ""}>
               <a href="/categories/read">Reading</a>
             </li>
-            <li class={category === 'write' ? "active" : ''}>
+            <li class={category === "write" ? "active" : ""}>
               <a href="/categories/write">Writing</a>
             </li>
-            <li class={category === 'inspect' ? "active" : ''}>
+            <li class={category === "inspect" ? "active" : ""}>
               <a href="/categories/inspect">Understanding</a>
             </li>
 
             <li class="page-scroll">
-                <a href="https://fr.linkedin.com/in/julien-sobczak-56780a91">About Me</a>
+              <a href="https://fr.linkedin.com/in/julien-sobczak-56780a91"
+                >About Me</a
+              >
             </li>
           </ul>
         </div>
@@ -62,20 +70,23 @@ const orderedTags = new Map([...tags.entries()].sort((a, b) => b[1] - a[1]));
 
   <section id="labels" class="labels">
     <div class="container">
-
-    <div>
-      <h2>Tags</h2>
-      <hr class="star-light">
+      <div>
+        <h2>Tags</h2>
+        <hr class="star-light" />
+      </div>
+      <ul class="labels">
+        {
+          [...orderedTags.keys()].map((tag) => {
+            return (
+              <li>
+                <a href={`/tags/${tag}`}>
+                  {tag} <sup class="count">{orderedTags.get(tag)}</sup>
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
     </div>
-    <ul class="labels">
-      {[...orderedTags.keys()].map(tag => {
-        return (
-          <li>
-            <a href={`/tags/${tag}`}>{tag} <sup class="count">{orderedTags.get(tag)}</sup></a>
-          </li>
-        );
-      })}
-    </ul>
   </section>
-
 </BaseLayout>
