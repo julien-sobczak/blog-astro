@@ -94,18 +94,16 @@ const recentBlogPostsInspect = allBlogPostsInspect.sort(sortByDate).slice(0, 3);
           <ul>
             <li>Latest books:</li>
             {
-              recentBlogPostsRead.map((post, i) => {
-                return (
-                  <li>
-                    <a href={`/read/${post.slug}`}>
-                      {post.data.shortTitle
-                        ? post.data.shortTitle
-                        : post.data.title}
-                      {i !== recentBlogPostsRead.length - 1 ? "," : ""}
-                    </a>
-                  </li>
-                );
-              })
+              recentBlogPostsRead.map((post, i) => (
+                <li>
+                  <a href={`/read/${post.slug}`}>
+                    {post.data.shortTitle
+                      ? post.data.shortTitle
+                      : post.data.title}
+                  </a>
+                  {i !== recentBlogPostsRead.length - 1 ? "," : ""}
+                </li>
+              ))
             }
             <li>or see them <a href="/categories/read">all</a>!</li>
           </ul>
@@ -127,16 +125,12 @@ const recentBlogPostsInspect = allBlogPostsInspect.sort(sortByDate).slice(0, 3);
           <ul>
             <li>Read the latest posts about</li>
             {
-              recentBlogPostsWrite.map((post, i) => {
-                return (
-                  <li>
-                    <a href={`/write/${post.slug}`}>
-                      {post.data.subject}
-                      {i !== recentBlogPostsWrite.length - 1 ? "," : ""}
-                    </a>
-                  </li>
-                );
-              })
+              recentBlogPostsWrite.map((post, i) => (
+                <li>
+                  <a href={`/write/${post.slug}`}>{post.data.subject}</a>
+                  {i !== recentBlogPostsWrite.length - 1 ? "," : ""}
+                </li>
+              ))
             }
             <li>or see them <a href="/categories/write">all</a>!</li>
           </ul>
@@ -158,16 +152,12 @@ const recentBlogPostsInspect = allBlogPostsInspect.sort(sortByDate).slice(0, 3);
               languages:
             </li>
             {
-              recentBlogPostsInspect.map((post, i) => {
-                return (
-                  <li>
-                    <a href={`/inspect/${post.slug}`}>
-                      {post.data.subject}
-                      {i !== recentBlogPostsInspect.length - 1 ? "," : ""}
-                    </a>
-                  </li>
-                );
-              })
+              recentBlogPostsInspect.map((post, i) => (
+                <li>
+                  <a href={`/inspect/${post.slug}`}>{post.data.subject}</a>
+                  {i !== recentBlogPostsInspect.length - 1 ? "," : ""}
+                </li>
+              ))
             }
             <li>or see them <a href="/categories/inspect">all</a>!</li>
           </ul>

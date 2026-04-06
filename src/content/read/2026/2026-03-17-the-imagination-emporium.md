@@ -1,7 +1,7 @@
 ---
 slug: 2026/03/17/the-imagination-emporium
 title: "Book Review: The Imagination Emporium: Creative Recipes for Innovation"
-shortTitle: "The Imagination Emporium: Creative Recipes for Innovation"
+shortTitle: "The Imagination Emporium"
 author: Julien Sobczak
 date: 2026-03-17
 subject: ""

@@ -1320,6 +1320,11 @@ blockquote cite {
   color: rgba(0, 0, 0, 0.6);
 }
 
+figcaption {
+  font-size: 0.9em;
+  color: rgba(0, 0, 0, 0.6);
+  font-style: italic;
+}
 
 .admonitionblock {
   font-size: 0.9em;

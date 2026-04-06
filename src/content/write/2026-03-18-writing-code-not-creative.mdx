@@ -1,0 +1,82 @@
+---
+slug: "2026/03/18/writing-code-not-creative"
+title: "Programming Is Not Creative, And Must Not Be"
+author: "Julien Sobczak"
+date: 2026-03-18
+subject: "Creativity"
+description: Writing code must not be creative.
+tags: [programming]
+topics: [creativity]
+---
+import Lead from '../../components/Lead.astro'
+
+> Creativity is intelligence having fun.
+> — Albert Einstein
+
+
+## The Blank Canvas
+
+I have always enjoyed being creative, or at least, believing than I am. I drew a lot when I was a kid. I even “drew” digitally on Microsoft Paint. I enjoyed the magic of starting with a blank canvas or a blank screen and seeing something come out of it.
+
+When I started studying programming, it felt similar. Every new programming assignment was like a new blank page. My code was like my first drawings, not perfect, but I was proud of it.
+
+<figure>
+  <img src="/posts_resources/2026-03-18-writing-code-not-creative/software-creativity-solo.png" title="Coding in school" width="650" />
+  <figcaption>Coding in school</figcaption>
+</figure>
+
+Working as a software developer is different.
+
+<figure>
+  <img src="/posts_resources/2026-03-18-writing-code-not-creative/software-creativity-team.png" title="Coding at work" width="800" />
+  <figcaption>Coding at work</figcaption>
+</figure>
+
+There is a huge difference: the blank canvas is now rare. You can recreate the feeling of a blank page when starting a new feature, a new sprint, or a new milestone, it's never as inspiring as a real blank sheet, and -- except after completing large refactorings -- it's hard, in my experience, to be proud of the final code, even if the quality is so much better than during my studies.
+
+Maybe writing code is not where creativity lives…
+
+## The Uncreative Codebase
+
+Is writing code a creative activity? Probably. You are creating something that doesn't exist\! But really?
+
+When writing code, you aren't putting as much of yourself into it as artists do into their artwork. Being too “creative” with the code itself is a bad idea (we all have examples of “creative” coworkers 😅). The goal is to write code that your team can understand and maintain. YOUR code is never really your code. You've only contributed to a collective work that will continue to exist long after you have departed.
+
+When writing code, there is never a clear finish line, unlike artworks (a book is published, a painting is exhibited, an animation film is released, etc.). Seeing their name in the movie credits or on a book cover must feel special for artists. The work is done. Time to move on to another project. Code has no such finish line.
+
+Code is malleable (software was created with that goal in mind). Code will be edited after its initial release, and over time, the initial code may no longer be present in the codebase at all.
+
+**Code is a different kind of creative activity where craftsmanship is more important than creativity.** It's the reason why AI performs so well. Writing code is not creative. Mastering code is learning to manage the _accidental_ complexity that AI agents are so good at handling.
+
+But there are plenty of creative developers out there…
+
+
+## The Creative Product
+
+If code shouldn't be creative, the product must be. Code is the medium used to build a product. Different authors could use the same language and write completely different books, some more creative than others. Code is the language. Your product is your message to the world.
+
+Designing a product is creative. Mastering product development is learning to manage the _essential_ complexity that AI agents cannot reliably handle alone.
+
+So, how to install creativity during product development? Here are a few ideas:
+
+* **Recreate the blank canvas**. A great exercise when adding complex features is to try to imagine starting from scratch. How would you implement the logic if you started the code right now? You then identify the steps (and compromises) to integrate the feature on the existing codebase without straying too far from the ideal design. It's a great way to inject creativity during the design process.
+* **Experiment with A/B testing**. Be like an artist and experiment with different approaches to discover what works best.
+* **Conduct UX research** to identify pain points to imagine better approaches.
+* **Collect user feedback** to expose yourself to more problems and opportunities for improvements.
+* **Write user documentation** to identify friction. It's hard to explain clearly what is not clear to the user.
+* **Track metrics** to validate hypotheses using data.
+
+Embracing a product-mindset is a great way for developers to feel more creative, and more relevant in the future. If more developers were trying to be more creative with the product instead of the technological stack, we would have better products – more maintainable, more evolvable, and more useful.
+
+
+## Conclusion
+
+Working closer to infrastructure during the last decade has made me reflect a lot about the role of creativity in programming. Even if infrastructure itself is a kind of product[^1], most companies had better not be too creative on their infrastructure and on their code. Using proven solutions the right way is more important so that you can focus on your product that makes a real difference for your customers.
+
+With the rise of AI, creative developers must embrace a product mindset. You still have to learn about infrastructure, patterns, frameworks in the same way that authors must master their language and understand the publishing industry, but when it comes to creativity, forget the codebase, forget the technologies, and care only about your product.
+
+If you want to become more familiar with product-related topics for developers, I strongly recommend the [excellent book _Product-Minded Engineer_ by Drew Hoskins](/read/2026/03/03/the-product-minded-engineer).
+
+---
+
+[^1]:  AWS, GCP or Azure are great examples of infrastructure products that I consider creative. They own the code. They can iterate to make better products. This differs from the large majority of companies using cloud providers or deploying OSS projects like Kubernetes, Prometheus, Elasticsearch. The creativity of platform engineers working on these infrastructures is limited.
