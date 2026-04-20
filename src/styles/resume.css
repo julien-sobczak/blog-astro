@@ -7,7 +7,8 @@
 
   --color-scaleway: rgb(79, 5, 154);
   --color-oui-sncf: rgb(241, 70, 51);
-  --color-leroy-merlin: #188803; /* Original color is too light rgb(120, 190, 31); */
+  --color-leroy-merlin: #188803;
+  /* Original color is too light rgb(120, 190, 31); */
   --color-blog: rgb(65, 133, 244);
   --color-the-notewriter: rgb(255, 214, 0);
 }
@@ -18,7 +19,7 @@
 
 body {
   font-family: var(--font-sans);
-  font-size: 12px;
+  font-size: 13px;
   background-color: gray;
 
   --margin-vertical: 1.5cm;
@@ -54,24 +55,27 @@ code {
 /* Page Layout */
 
 page {
-  background: black;
   position: relative;
   display: block;
   margin: 2rem auto;
 }
+
 page[size="A4"] {
   width: 21cm;
   height: 29.7cm;
 }
+
 page[size="A4"][orientation="landscape"] {
   width: 29.7cm;
   height: 21cm;
 }
+
 @media screen {
   page {
-    box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+    box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
   }
 }
+
 @media print {
 
   @page {
@@ -80,9 +84,36 @@ page[size="A4"][orientation="landscape"] {
     size: A4 landscape;
   }
 
-  body, page {
+  /*
+   * To ensure the right panel is printed in black,
+   * we split the whole body background in two parts.
+   * Otherwise, a white margin remains even when they are set to none in CSS.
+   */
+  body {
+    /* Remove default margins so the background touches the edges */
+    margin: 0;
+    /* Ensure the body takes up at least the full viewport height */
+    min-height: 100vh;
+    /* Create the split background */
+    background: linear-gradient(to right, white 66%, black 66%);
+  }
+
+  /* No need to set background for each section as done above */
+  section#informations,
+  section#side-projects {
+    background-color: inherit !important;
+  }
+
+  /* Neither for page */
+  page {
+    background: inherit;
+  }
+
+  body,
+  page {
     margin: 0 !important;
-    print-color-adjust: exact; /* Include background colors/images */
+    print-color-adjust: exact;
+    /* Include background colors/images */
     box-shadow: 0;
   }
 
@@ -102,7 +133,8 @@ page {
   flex-direction: row;
 }
 
-page section, page header {
+page section,
+page header {
   height: 100%;
   padding: var(--margin-vertical) var(--margin-horizontal);
   position: relative;
@@ -116,24 +148,39 @@ header {
   border-right: 1px solid black;
   display: flex;
   flex-direction: column;
-  gap: 2rem; /* space between children */
+  gap: 2rem;
+  /* space between children */
 }
+
 section#skills {
   width: 33%;
   background-color: white;
   color: black;
-  position: relative; /* Used by footnotes */
+  position: relative;
+  /* Used by footnotes */
 }
+
 section#informations {
   width: 34%;
   background-color: black;
   color: white;
+
+  h4 {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
 }
+
 section#work-projects {
   width: 66%;
   background-color: white;
   color: black;
 }
+
 section#side-projects {
   width: 34%;
   background-color: black;
@@ -144,7 +191,8 @@ section#side-projects {
 
 #picture {
   position: relative;
-  margin: 2rem auto 0; /* Do not set margin below to have the tagline stick to the picture */
+  margin: 2rem auto 0;
+  /* Do not set margin below to have the tagline stick to the picture */
   width: 4cm;
   height: 4cm;
   border-radius: 50%;
@@ -157,17 +205,19 @@ section#side-projects {
 @media screen {
   #first header:hover #picture {
     background: linear-gradient(180deg, #373b44, #4286f4);
-	  background-size: 200% 200%;
-	  animation: picture-gradient 15s ease infinite;
+    background-size: 200% 200%;
+    animation: picture-gradient 15s ease infinite;
   }
 
   @keyframes picture-gradient {
     0% {
       background-position: 0% 50%;
     }
+
     50% {
       background-position: 100% 50%;
     }
+
     100% {
       background-position: 0% 50%;
     }
@@ -176,6 +226,7 @@ section#side-projects {
   #first header:hover #tagline-me {
     display: none;
   }
+
   #first header:hover #tagline-hi {
     display: block;
   }
@@ -184,21 +235,36 @@ section#side-projects {
 #picture img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Fill entire parent, cropping if needed */
+  object-fit: cover;
+  /* Fill entire parent, cropping if needed */
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   margin: -0.2cm;
 }
-h2, h3 {
+
+h2,
+h3 {
   color: gray;
   font-weight: 300;
 }
-h1 { font-size: 46px; }
-h2 { font-size: 32px; }
-h3 { font-size: 16px; }
 
-#name h2, #name h1 {
+h1 {
+  font-size: 46px;
+}
+
+h2 {
+  font-size: 32px;
+}
+
+h3 {
+  font-size: 16px;
+}
+
+#name h2,
+#name h1 {
   line-height: 1em;
 }
 
@@ -259,6 +325,8 @@ ul#contact {
   font-weight: 400;
   font-size: 11px;
   margin-top: 2em;
+  /* Increase contact information as important to reach me */
+  font-size: 1.1em;
 
   li {
     list-style-type: none;
@@ -282,8 +350,9 @@ ul#contact {
 
 /* Informations */
 
-#personality, #hobbies {
-  margin-top: 3rem;
+#personality,
+#hobbies {
+  margin-top: 2.25rem;
 }
 
 .languages {
@@ -297,14 +366,18 @@ ul#contact {
     margin: 0;
     padding: 0;
   }
-  dt, dd {
+
+  dt,
+  dd {
     margin: 0;
   }
+
   dt {
     width: 30%;
     font-weight: bold;
     margin-bottom: 1em;
   }
+
   dd {
     width: 70%;
   }
@@ -322,22 +395,27 @@ ul#contact {
   justify-content: center;
   align-items: center;
 
-  position: relative; /* Useful for the tooltip */
+  position: relative;
+  /* Useful for the tooltip */
   cursor: pointer;
 
   &:hover .tooltip {
+    font-size: 1.2em;
     opacity: 1;
     pointer-events: auto;
   }
 }
+
 .competency.acquired {
   background-color: white;
   color: black;
 }
+
 .competency.almost-acquired {
   background-color: rgba(255, 255, 255, 0.7);
   color: black;
 }
+
 .competency.half-acquired {
   background-color: rgba(255, 255, 255, 0.4);
   color: black;
@@ -354,7 +432,8 @@ ul#contact {
 /* Hide tooltip by default */
 .tooltip {
   position: absolute;
-  top: calc(100% + 8px); /* below the trigger, with spacing */
+  top: calc(100% + 8px);
+  /* below the trigger, with spacing */
   left: 50%;
   transform: translateX(-50%);
   background: #333;
@@ -374,29 +453,31 @@ ul#contact {
 .tooltip::before {
   content: "";
   position: absolute;
-  top: -6px; /* place arrow above tooltip box */
+  top: -6px;
+  /* place arrow above tooltip box */
   left: 50%;
   transform: translateX(-50%);
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
-  border-bottom: 6px solid #333; /* arrow color matches tooltip */
+  border-bottom: 6px solid #333;
+  /* arrow color matches tooltip */
 }
 
 #personality {
 
   dt {
     font-weight: bold;
-    margin-top: 0.5em;
+    margin-top: 0.7em;
   }
+
   dd {
-    font-size: 0.9em;
     font-style: italic;
   }
 }
 
 #hobbies p {
-  font-size: 0.9em;
   font-style: italic;
+  line-height: 1.8em;
 }
 
 #footnotes {
@@ -410,13 +491,17 @@ ul#contact {
     display: flex;
     flex-wrap: wrap;
   }
-  dt, dd {
+
+  dt,
+  dd {
     margin: 0.25em 0;
   }
+
   dt {
     width: 3%;
     font-weight: bold;
   }
+
   dd {
     width: 97%;
   }
@@ -428,15 +513,22 @@ ul#contact {
   display: grid;
   padding: 0;
 }
+
 #work-projects {
-  grid-template-columns: repeat(2, 1fr); /* 2 equal columns */
+  grid-template-columns: repeat(2, 1fr);
+  /* 2 equal columns */
 }
+
 #side-projects {
-  grid-template-columns: repeat(1, 1fr); /* 2 equal columns */
-  grid-auto-rows: 1fr; /* Make all rows equal height */
+  grid-template-columns: repeat(1, 1fr);
+  /* 2 equal columns */
+  grid-auto-rows: 1fr;
+  /* Make all rows equal height */
 }
+
 .project {
-  position: relative; /* To position some children absolutely inside */
+  position: relative;
+  /* To position some children absolutely inside */
   display: flex;
   flex-direction: column;
 
@@ -447,60 +539,80 @@ ul#contact {
     margin: 0;
     display: inline-block;
   }
+
+  p {
+    margin-bottom: 0.5em;
+  }
+
   /* Use handwritten for metadata and technos*/
   .metadata {
     font-family: var(--font-cursive);
     font-weight: normal;
-    font: 0.8em;
+    font: 1em;
 
     span {
       margin-left: 0.2cm;
     }
   }
+
   .technologies {
     font-family: var(--font-cursive);
-    margin-top: auto; /* Push to bottom */
+    font-size: 1.1em;
+    margin-top: auto;
+    /* Push to bottom */
   }
+
   ins {
     /* Use a handwritten font for inserted text to look like manual corrections*/
     font-family: var(--font-cursive);
     text-decoration: none;
     font-weight: bold;
   }
+
   svg {
     /* Hack: SVG icons default to being slightly off-baseline */
     vertical-align: -3px;
     margin-right: 3px;
   }
+
   ul {
     margin: 0;
   }
+
   li {
     margin: 0.3em 0;
   }
 }
+
 #side-projects .project {
   border-color: white;
 }
+
 .project .logo {
   display: none;
 }
+
 @media screen {
+
   /* Add brand colors when hoving over projects */
   .project:hover .highlight::before {
     background: black;
   }
+
   .project.the-notewriter:hover .highlight::before {
     background: white;
   }
+
   .project.scaleway:hover {
     background-color: var(--color-scaleway);
     color: white;
   }
+
   .project.oui-sncf:hover {
     background-color: var(--color-oui-sncf);
     color: white;
   }
+
   .project:hover .logo {
     display: block;
     max-width: 70px;
@@ -509,14 +621,17 @@ ul#contact {
     top: 1rem;
     right: 1.5rem;
   }
+
   .project.leroy-merlin:hover {
     background-color: var(--color-leroy-merlin);
     color: white;
   }
+
   .project.blog:hover {
     background-color: var(--color-blog);
     color: white;
   }
+
   .project.the-notewriter:hover {
     background-color: var(--color-the-notewriter);
     color: black;
@@ -527,9 +642,11 @@ ul#contact {
 #work-projects .project:nth-child(1) {
   margin: calc(var(--margin-vertical)/2) calc(var(--margin-horizontal)/6) calc(var(--margin-vertical)/6) calc(var(--margin-horizontal)/2);
 }
+
 #work-projects .project:nth-child(2) {
   margin: calc(var(--margin-vertical)/2) calc(var(--margin-horizontal)/3) calc(var(--margin-vertical)/6) calc(var(--margin-horizontal)/6);
 }
+
 #work-projects .project:nth-child(3) {
   margin: calc(var(--margin-vertical)/6) calc(var(--margin-horizontal)/6) calc(var(--margin-vertical)/2) calc(var(--margin-horizontal)/2);
 }
@@ -537,6 +654,7 @@ ul#contact {
 #side-projects .project:nth-child(1) {
   margin: calc(var(--margin-vertical)/2) calc(var(--margin-horizontal)/2) calc(var(--margin-vertical)/6) calc(var(--margin-horizontal)/3);
 }
+
 #side-projects .project:nth-child(2) {
   margin: calc(var(--margin-vertical)/6) calc(var(--margin-horizontal)/2) calc(var(--margin-vertical)/2) calc(var(--margin-horizontal)/3);
 }
@@ -557,6 +675,7 @@ ul#contact {
     z-index: 20;
     transform: rotate(-2deg);
   }
+
   .postit:nth-child(2) {
     position: absolute;
     top: 2rem;
@@ -564,6 +683,7 @@ ul#contact {
     z-index: 30;
     transform: rotate(2deg);
   }
+
   .postit:nth-child(3) {
     position: absolute;
     top: 4.5rem;
@@ -585,7 +705,9 @@ ul#contact {
   width: 5rem;
   height: 5rem;
 }
+
 @media screen {
+
   /* For an unknown reason, the QR code is not visible on print when using "@media print" instead */
   #qr-linkedin {
     display: none;
@@ -599,7 +721,8 @@ ul#contact {
   --postit-corner-color: black;
 
   position: relative;
-  z-index: 0; /* base stacking context */
+  z-index: 0;
+  /* base stacking context */
   padding: calc(var(--margin-vertical)/4) calc(var(--margin-horizontal)/4);
   border: 1px solid black;
   background-color: var(--postit-background-color);
@@ -615,9 +738,11 @@ ul#contact {
     /* triangle using borders: creates a right-angled triangle pointing down-left */
     border-right: var(--postit-corner-size) solid transparent;
     border-bottom: var(--postit-corner-size) solid var(--postit-corner-color);
-    z-index: 3; /* on top of the small paper triangle */
+    z-index: 3;
+    /* on top of the small paper triangle */
     pointer-events: none;
   }
+
   /* Smaller paper triangle (sits underneath the fold) */
   &::after {
     content: "";
@@ -629,7 +754,8 @@ ul#contact {
     border-right: calc(var(--postit-corner-size) + 2px) solid var(--postit-background-color);
     border-bottom: calc(var(--postit-corner-size) + 2px) solid var(--postit-background-color);
     transform: translate(2px, -2px);
-    z-index: 2; /* under the black fold */
+    z-index: 2;
+    /* under the black fold */
     pointer-events: none;
   }
 }
@@ -649,17 +775,20 @@ ul#contact {
   right: 0.5rem;
   bottom: 0.5rem;
 }
+
 .qr-code img {
   width: 3rem;
   height: 3rem;
 }
 
 @media screen {
+
   /* For an unknown reason, the QR code is not visible on print when using "@media print" instead */
   .qr-code {
     display: none;
   }
 }
+
 @media print {
   .interactive-link {
     display: none;
@@ -697,24 +826,30 @@ ul#contact {
 
 .separator {
   position: relative;
-  height: 1px; /* the line itself */
+  height: 1px;
+  /* the line itself */
   background: black;
-  margin: 48px 0; /* space around the separator to display labels */
+  margin: 48px 0;
+  /* space around the separator to display labels */
 }
+
 .separator::before,
 .separator::after {
-  content: attr(data-label-top); /* will be overridden for ::after */
+  content: attr(data-label-top);
+  /* will be overridden for ::after */
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   padding: 4px 10px;
   font-family: var(--font-cursive);
 }
+
 /* top label (above the line) */
 .separator::before {
   content: attr(data-label-top);
   top: -1.2rem;
 }
+
 /* bottom label (below the line) */
 .separator::after {
   content: attr(data-label-bottom);
@@ -722,39 +857,57 @@ ul#contact {
 }
 
 
-.ignorant, .beginner, .intermediate, .advanced, .expert, .master {
+.ignorant,
+.beginner,
+.intermediate,
+.advanced,
+.expert,
+.master {
   font-family: var(--font-mono);
 }
+
 .ignorant {
   font-weight: 100;
 }
+
 .beginner {
   font-weight: 200;
 }
+
 .intermediate {
   font-weight: 400;
 }
+
 .advanced {
   font-weight: 600;
 }
+
 .expert {
   font-weight: 800;
 }
+
 .master {
   font-weight: 900;
 }
 
 
-.hard-skills dt, .soft-skills li {
+.hard-skills dt,
+.soft-skills li {
   display: inline-block;
   margin: 0.5em;
   padding: 0.2em 0.5em;
   border: 1px solid black;
   border-radius: 50vh;
 }
+
+.hard-skills dd {
+  margin-left: 1.5rem;
+}
+
 .hard-skills dd span {
   margin: 0 0.2em;
 }
+
 .soft-skills ul {
   padding: 0;
   margin: 0;
@@ -778,9 +931,7 @@ ul#contact {
   inset: 0;
   background: #ffeb58;
   z-index: -1;
-  clip-path: polygon(
-    0% 60%, 5% 65%, 10% 55%, 20% 70%, 30% 58%,
-    45% 72%, 60% 56%, 75% 68%, 90% 50%, 100% 64%,
-    100% 100%, 0 100%
-  );
+  clip-path: polygon(0% 60%, 5% 65%, 10% 55%, 20% 70%, 30% 58%,
+      45% 72%, 60% 56%, 75% 68%, 90% 50%, 100% 64%,
+      100% 100%, 0 100%);
 }

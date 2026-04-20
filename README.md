@@ -72,10 +72,7 @@ $ npm run dev
 # export PERSONAL_BIRTH_DATE="01 January 1985"
 # export PERSONAL_EMAIL="first.name@gmail.com"
 # export PERSONAL_PHONE_NUMBER="01.02.03.04.05"
-$ chrome --headless --disable-gpu \
-  --print-to-pdf=resume.pdf \
-  --print-to-pdf-no-header \
-  http://localhost:4321/resume
+$ chrome --headless --disable-gpu --print-to-pdf=resume.pdf --print-to-pdf-no-header http://localhost:4321/resume
 ```
 
 Define an alias if `chrome` doesn't exist (ex: MacOS):
