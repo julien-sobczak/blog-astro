@@ -702,8 +702,8 @@ ul#contact {
 
 #qr-linkedin {
   display: block;
-  width: 5rem;
-  height: 5rem;
+  width: 10rem;
+  height: 10rem;
 }
 
 @media screen {
