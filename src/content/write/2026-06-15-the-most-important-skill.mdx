@@ -1,0 +1,197 @@
+---
+slug: "2026/06/15/the-most-important-skill"
+title: "The Most Important Skill for Developers"
+author: "Julien Sobczak"
+date: 2026-06-15
+subject: "Hiring right"
+description: "Hiring the right developer is not about solving the immediate problem that motivates the decision, but finding someone to solve future problems."
+tags: [hiring]
+---
+import Highlight from '../../components/Highlight.astro'
+import Lead from '../../components/Lead.astro'
+import Admonition from '../../components/Admonition.astro'
+
+<Lead>
+Technical problems at work always hide an organizational problem. For example, technical debt could easily be explained as a technical problem: poor coding standards, the wrong framework, or missing documentation. But they are always organizational problems. Someone decided to focus on adding features. Someone decided to use an immature framework. Someone decided to split the team. Every technical problem results from past decisions, and decisions are made by people. Therefore, the most important decision you can make at work is not *what* to build, but *who* to work with. Every problem is a hiring problem.
+</Lead>
+
+
+## A bit of context
+
+During the last decades, there have been more job opportunities than developers on the market. Companies had to be flexible to attract the right candidates. Trying to find the perfect candidate was an unreachable goal. Hiring people with the right mindset was more important than hiring for hard skills. The AI era seems to rebalance the situation. In addition, many companies reverted to the way they operated before the Covid pandemic, which makes them even less attractive than before. As a consequence, the best companies will benefit from a growing pool of candidates. Hiring the perfect candidate who matches all requirements now seems attainable, and while it may seem a good idea, it isn't. I will explain why.
+
+## An illustrated example
+
+You are building a distributed system in Golang receiving a huge volume of traffic with strong low-latency requirements. You are working in a fast-moving startup. The number of users is growing more than expected. You need to hire someone as soon as possible to help you make the product even better. But who? You decide to open a new position and write the following job opening:
+
+<figure>
+  <img src="/posts_resources/2026-06-15-the-most-important-skill/hiring-skill-job-opening.png" title="New job opening" width="650" />
+</figure>
+
+We've just received the resumes for two candidates, Alice and Bob, and we need to decide who to bring on board.
+
+<figure>
+  <img src="/posts_resources/2026-06-15-the-most-important-skill/resume-bob.png" title="Bob's Resume" width="650" />
+</figure>
+<figure>
+  <img src="/posts_resources/2026-06-15-the-most-important-skill/resume-alice.png" title="Alice's Resume" width="650" />
+</figure>
+
+Bob seems more qualified. His past experience matches closely the problems we are trying to solve. His expertise could be beneficial. Unlike Bob, Alice has no experience building large-scale distributed systems but her last experience demonstrates a complicated product with different technical challenges to tackle. Who would you hire?
+
+In this post, I will share lessons I learned the easy way through reading and reflecting on books, as well as lessons I learned the hard way from participating in interviews as both a candidate and an interviewer.
+
+# Hiring Lessons
+
+## Lesson \#1: Hire for tomorrow
+
+One of the goals during job interviews is to evaluate how a candidate performs. Like exams at school, job interviews are great to assess skills at the present moment. The problem is that the candidate will work with you for the following years to come, not just today. Instead, you need to visualize the trajectory of the candidate on a curve. Does he move up or down? People are like vectors, increasing or decreasing. People inevitably start to decay when they stop growing. What you need to evaluate during a job interview is the angle of that vector. An “unskilled” candidate that is moving up will, most of the time, outperform a “skilled” candidate that is moving down.
+
+When people stop growing, they stop welcoming new ideas, which makes them more and more irrelevant over time. Companies are similar. A company can also be visualized as a vector on a curve, independent of the revenue. A company can generate more revenue than ever, if their HR policy makes the best employees leave, the company is moving down. To keep growing, a company must be driven by ideas and therefore focus on employees who are thirsty for new knowledge, and are eager to work, think differently.
+
+<figure>
+  <img src="/posts_resources/2026-06-15-the-most-important-skill/hiring-growth@2x.png" title="Hire for tomorrow" width="550" />
+</figure>
+
+✓ <Highlight>Do not hire a past. Do not hire a present. Hire candidates who are growing.</Highlight>
+
+
+## Lesson \#2: Hire a problem-solver
+
+You must be more interested in hiring a problem-solver than hiring a candidate matching the hard skills you need for your immediate problem. If you are building a large distributed system, you may want candidates that are currently working on a large distributed system. They will probably be familiar with the problem. But were they present when the application was small, and did they contribute to every action that has been taken iteratively to scale the application. Probably not. And what if tomorrow your scaling problem becomes a performance problem and you need someone to analyze memory dumps and flame graphs to elaborate a plan to improve the throughput. What if tomorrow you have to migrate to another environment where cloud managed services that addressed the scalability issue are no longer possible to reduce the expenses. Hiring is finding the best candidates to solve these "what if" questions, hiring is about finding problem-solvers.
+
+From my experience, the difference between good and great developers is that the best developers love being challenged. They actively seek problems they don't know how to solve. During job interviews, they will truly enjoy answering more and more complicated questions when good developers just want to answer correctly to end the interview as soon as possible.
+
+Hiring problem-solvers is not about hiring hard skills. It's about hiring the ability to acquire the hard skills required for a problem at hand. If you find such a candidate, give him any problem, and he will naturally immerse himself into it, going as deep as needed. The risk of hiring someone with prior experience with the problem is to find someone who thinks he has been hired for his expertise and simply reapplies the same recipe he used in his previous job, except constraints may be different in your context.
+
+<figure>
+  <img src="/posts_resources/2026-06-15-the-most-important-skill/hiring-win-win@2x.png" title="Hire a problem-solver" width="600" />
+</figure>
+
+✓ <Highlight>Don’t hire hard skills. Hire the ability to acquire new hard skills. The best developers want to be challenged.</Highlight>
+
+
+## Lesson \#3: Hire soft skills
+
+Hard skills can be self-taught in a few days when soft skills rarely change over the years. Therefore, a curious developer missing some hard skills but demonstrating a proven history of self-learning will learn so much more compared to a developer matching the technical requirements with a strong ego and lacking humility. He will never change. I'm not more humble, curious, or open-minded than I was at the beginning of my career. Of course, most job openings describe expected soft skills like humility that are tested using behavioral questions, but from my experience, companies focus too much on hard skills. The more closely a candidate matches the technical skills you need, the more you may unconsciously ignore alarming signals about his soft skills.
+
+✓ <Highlight>Hard skills and soft skills are important to do the job but soft skills cannot be learned as easily as hard skills. The right soft skills make hard skills manageable. The reverse is not true.</Highlight>
+
+
+## Lesson \#4: Hire habits
+
+All great developers have great habits. They don't necessarily share the same ones (it would be too easy) but they all have routines and use systems to help them do their best work. They may take notes to think more deeply. They may batch small tasks to have long, uninterrupted periods of time to focus. They actively seek answers when a question pops up in their mind. Routines are often ignored during job interviews when mastery is built slowly over time through your routines. We are what we repeatedly do. Small habits when repeated consistently grow into something bigger. The same is true for bad habits.
+
+✓ <Highlight>Hire developers with great habits. Great developers don't act like good developers. Find the differences that make a difference.</Highlight>
+
+
+## Lesson \#5: Hire a character
+
+Hiring is a decision where humans decide to collaborate towards a shared goal. Humans are perfectly imperfect creatures. Trying to be too rational during the hiring process may be wrong. Trusting your intuition is part of being human. History repeatedly proved that greatness is defined not by how smart you are but by how intuitive you are. Walt Disney and Steve Jobs are great examples. Sometimes, a candidate will not match the expected qualifications. Listen to what your intuition is whispering to you. Remember that when it comes to being human, there are no rules. Everything that I’ve discussed in this post is just a guide to show a direction, but as often, the journey doesn't have to be a straight line in that direction.
+
+✓ <Highlight>Hire using your conscious and unconscious brain. Mistakes are inevitable even with the perfect hiring process. Sometimes, trusting your intuition is the most reasonable thing to do.</Highlight>
+
+
+# Hiring Practices
+
+Different companies have imagined different hiring processes even if large companies such as Google and Amazon all mostly follow a similar process. In this section, I will introduce the most popular kinds of interviews for a software developer position and highlight how relevant they are based on the lessons covered in this post.
+
+## Technical Questions
+
+A classic when you don't have a well-defined hiring process. The interviewer is asking specific technical questions (ex: What is a rebase in Git?) of increasing difficulty. Two options are possible:
+
+- You could test the required hard skills for the job. It's a common approach for startups. Finding people with the right skills is invaluable during the first years when the goal is to iterate fast on an MVP. It's also a common approach for companies looking for experts. Even Google started initially by hiring the most brilliant minds in the search landscape.
+- You could test the hard skills the candidate knows best. You don't necessarily need to know the answers. It's easy to generate questions using a prompt. The goal is to measure prior expertise as the ability to go deep on a topic is a transferable skill. If a candidate has a solid background in a given programming language, mastering a new language will not be as challenging compared to another candidate already familiar with your programming language but having never reached expertise on it.
+
+<Admonition type="tip" title="Interviewing in the AI era">
+Technical questions could be answered with AI, for sure. But mastering core technologies is essential when reviewing code published by an agent. You cannot ask AI to explain everything. It's ok to ignore subtleties about a library or a framework but it's not ok to ignore advanced syntaxes in your programming language that could have been used to make the code more expressive. Therefore, technical questions are still relevant if you focus on core skills that stand the test of time (ex: programming languages, Git Linux)
+</Admonition>
+
+<figure>
+  <img src="/posts_resources/2026-06-15-the-most-important-skill/interview-technical-questions@2x.png" title="Technical Questions Illustrated" width="450" />
+</figure>
+
+## Take-Home Assignments
+
+Software developers are hired to complete projects. Take-home assignments mimic that environment as closely as possible. For a candidate that doesn't match the qualifications, this kind of interview is an opportunity to prove that he can learn. That was true before the rise of AI….
+
+<Admonition type="tip" title="Interviewing in the AI era">
+Projects are now bootstrapped using a simple AI prompt. AI models will even ask you questions to clarify the design and help you make the right decisions. What takes hours or days before could now be completed in a few minutes, making take-home assignments obsolete.
+
+An alternative could be to ask explicitly the candidate to use AI to implement a new feature. The interview will focus on reviewing the prompts, the code review, the comments and if the candidate really understands what they have built.
+
+A more extreme alternative is to ask the candidate to create a product from scratch using AI, a great way to determine if a candidate is comfortable wearing a more product-focused hat.
+</Admonition>
+
+<figure>
+  <img src="/posts_resources/2026-06-15-the-most-important-skill/interview-take-home@2x.png" title="Take-Home Assignment Illustrated" width="450" />
+</figure>
+
+## Live Coding
+
+Live coding is writing a limited number of lines of code while the interviewer is watching you and encouraging you to speak aloud to share your thinking. Unlike take-home assignments, programming and speaking at the same time is not natural. It's important to practice a lot before becoming comfortable in that uncomfortable exercise.
+
+Different kinds of algorithms are often used:
+
+- A basic algorithm to write like creating a new data type, filtering a collection. Most developers could solve such problems. Many will fail as they are not prepared to do it live. You will therefore not learn a lot.
+- An advanced algorithm like working with a binary tree or implementing a hash table. Only prepared developers will solve such problems. They don't reflect what you will do at work but they are a great way to determine if a candidate can go deep on a topic by studying consistently during a few weeks or months. Large companies often formulate clearly the scope of this interview and provide recommendations for resources to prepare.
+- A kata where unit tests will be written to assist the refactoring. Most developers could improve the code but the best developers will quickly identify bad smells and refactor the code with confidence.
+
+And different environments are possible:
+
+- Writing code on a whiteboard (ensure the candidate focuses on the algorithm and is relatively proficient in his programming language).
+- Writing code on platforms like [LeetCode](https://leetcode.com/). These solutions are practical for the interviewer to take notes and for the candidate as nothing must be installed on his laptop first.
+- Writing code while sharing the screen. The candidate must have prepared a minimal working environment (possible to clone a Git repository or use Docker to smooth the process). The candidate works using his favorite setup so you can evaluate some of his habits like how fast he types and if he relies a lot on shortcuts.
+
+<Admonition type="tip" title="Interviewing in the AI era">
+Writing code without AI is no longer the most important task for software developers. Some platforms like [CoderPad](https://coderpad.io/) support AI features (auto-completion, chat mode or even agent mode) to better match how developers work.
+</Admonition>
+
+<figure>
+  <img src="/posts_resources/2026-06-15-the-most-important-skill/interview-live-coding@2x.png" title="Live Coding Illustrated" width="450" />
+</figure>
+
+## System Design
+
+The system design interview is often considered to be the most complex technical interview (I personally think the most difficult is the next one). Questions seem intimidating. You have to design what large corporations have built over years, from scratch and on a whiteboard\! In practice, when using the right approach and the right knowledge, mastering system design interviews is approachable. The same patterns apply. Like advanced algorithms questions, system design interviews are a great way to validate that a candidate successfully works hard on a topic during an extended period of time. System design interviews are also a great way to dig as deeply as wanted on any topic. You can initiate a discussion about DNS and end up moving down the networking stack. You can ask about a database schema and end up discussing how b-trees work. Therefore, system design interviews are the best way to measure prior expertise to evaluate if a candidate will be able to grow in a new job.
+
+<Admonition type="tip" title="Interviewing in the AI era">
+System design interviews are even more relevant today as designing large systems is not within the reach of AI models, for now.
+</Admonition>
+
+<figure>
+  <img src="/posts_resources/2026-06-15-the-most-important-skill/interview-system-design@2x.png" title="System Design Illustrated" width="450" />
+</figure>
+
+## Behavioral Interview
+
+Last but not least, behavioral interviews are omnipresent. The interviewer focuses on asking questions such as “*Tell me about a time…*” and while questions focus about your past experiences, the interviewer is more interested in learning how you will operate in a new environment. The exercise is a lot more challenging than what you may expect. A behavioral interview is not an informal conversation. You must have prepared the right stories (many experiences are best avoided) using, for example, the STAR model to make it easy for the interviewer to follow what you tell.
+
+<Admonition type="tip" title="Interviewing in the AI era">
+Behavioral interviews, like system design interviews, become even more important.
+</Admonition>
+
+<figure>
+  <img src="/posts_resources/2026-06-15-the-most-important-skill/interview-behavioral@2x.png" title="Behavioral Questions Illustrated" width="450" />
+</figure>
+
+## Informal Conversations
+
+How you think is more important than what you know. It has always been true but becomes even more important with the rise of AI. Therefore, focusing too much during interviews on what a candidate knows is debatable.
+
+I recently experienced a hiring process where every interview was mostly informal conversations about how I work, what I expect, and sharing viewpoints. I wasn't used to that kind of interview. During the last few months, I focused a lot on system design interviews and behavioral questions (the hallmarks of many companies). I must admit those informal conversations have a lot to teach. Conversations are a great way for the company to learn more about the candidate, and inversely. It's like dating. You don't find your life partner using highly structured interviews. You are just trying to find someone who shares your values to share your future life together.
+
+<Admonition type="tip" title="Interviewing in the AI era">
+Informal conversations encourage us to focus on what AI cannot replace, your humanity. Honest conversations about our values, our ambitions, our expectations can teach a lot. Like with behavioral questions, it's easy to identify the best candidates. The conversation will feel more engaging and more inspiring.
+</Admonition>
+
+<figure>
+  <img src="/posts_resources/2026-06-15-the-most-important-skill/interview-conversation@2x.png" title="Conversation Illustrated" width="450" />
+</figure>
+
+# To hire or not to hire…
+
+If you reconsider our two fictional candidates, Alice and Bob, I hope that after having read this article, you are more confused than before about who to hire. Bob could have been the obvious choice but Alice could be a better fit. The answer is similar to challenging programming problems: it depends.
+
+If you are a company, your hiring process must mature as you grow. You cannot expect to grow without adapting how you hire. It's common for small companies to have an informal hiring process, where you don't really know who will interview a candidate or which questions to ask. It's common for small companies to focus on their immediate needs. There are already too many unknowns during the first years of a startup and betting on a candidate whose qualifications doesn't fit the immediate challenges would probably not make things easier. The key is to adapt the hiring process based on the horizon. When your company finally reaches its first successes, when you start to plan for the long-term, it's time to onboard different people. Hiring solely for the immediate problem is no longer important when you are embarking on a long journey full of surprises.
+
