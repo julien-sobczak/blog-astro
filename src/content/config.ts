@@ -2,7 +2,7 @@ import { defineCollection, reference, z } from "astro:content";
 
 const tags = [
   // Growing
-  "studying", "reading", "teaching", "remembering", "leading", "writing", "learning", "understanding", "mastering", "programming", "note-taking", "reflecting", "building", "doing", "thinking", "being", "working", "living", "parenting", 'hiring',
+  "studying", "reading", "teaching", "remembering", "leading", "writing", "learning", "understanding", "mastering", "programming", "note-taking", "reflecting", "building", "doing", "thinking", "being", "working", "living", "parenting", "hiring", "growing",
   // Techniques
   "flashcards", "productivity",
 ] as const;
