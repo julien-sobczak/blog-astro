@@ -1,6 +1,6 @@
 ---
 slug: 2026/06/18/good-to-great
-title: "Book Review: Good to Great"
+title: "Book Review: Good to Great: Why Some Companies Make the Leap ... and Others Don't"
 shortTitle: "Good to Great"
 author: Julien Sobczak
 date: 2026-06-18
@@ -12,7 +12,7 @@ recommendation: 9
 tags: ["working"]
 topics: []
 bookCover: "/posts_resources/covers/good-to-great.jpg"
-bookAuthors: "Collins, James C., Jim Collins"
+bookAuthors: "James Charles Collins, Jim Collins"
 bookIsbn: '9780712676090'
 ---
 
