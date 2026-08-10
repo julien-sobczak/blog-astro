@@ -1,0 +1,1542 @@
+---
+slug: "2026/08/02/pxe-boot-on-linux"
+title: "PXE Booting on a Linux UEFI Machine Illustrated with Code"
+author: "Julien Sobczak"
+date: 2026-08-02
+subject: "PXE Booting"
+description: Discover how a chain of binaries works together to start your server and run your code.
+tags: [programming]
+topics: [linux]
+excerpt: >
+  Discover the steps to boot a bare metal server and make it ready to run your code. It's a long process which may seem complex at first.
+excerpt_only: true
+---
+import Admonition from '../../components/Admonition.astro'
+import Marker from '../../components/Marker.astro'
+import Lead from '../../components/Lead.astro'
+import Expandable from '../../components/Expandable.jsx'
+import Steps from '../../components/Steps.jsx'
+import GitHubCard from '../../components/GitHubCard.jsx'
+
+
+<Lead>
+Your code is probably running in the cloud on a physical server. It may have a lot of software abstractions between your code and that bare metal server but there is no exception, code runs on a physical CPU. 
+</Lead>
+
+In this post, we will discover the steps to boot a bare metal server and make it ready to run your code. It's a long process which may seem complex at first. We will explain each step successively and illustrate what happens using snippets based on the code of OSS projects. Code will not make things simpler, but when a topic seems too obscure, I like to go really deep and observe there is no magic.
+
+Booting a server is a complicated process, where multiple processes load and replace each other, with some touch of Assembly magic, but using a divide-and-conquer approach, we will discover that each step is understable in practice.
+
+It's a long post. I've worked with bare metal servers during the last years and this post condenses so many questions that I asked myself during those years.
+
+<Admonition type="tip" className="content" title="What You Will Learn">
+* What is a system firmware.
+* How works PXE and why iPXE is used in practice.
+* What are the main files to boot a Linux kernel.
+* How Systemd determines the processes to start.
+</Admonition>
+
+<Admonition type="note" className="None" title="Prerequisites">
+I assume no prior knowledge on the topic. You only need to be interested in low-level details and  know how to read C code (and some Assembly code). I ignored everything when I started working with bare metal servers in my job. I had to found out so many answers. Working on this post was the opportunity to validate my comprehension because it's hard, if not impossible, to write (even to yourself) what you don't understand.
+</Admonition>
+
+
+## The Really Short Story
+
+A datacenter contains a lot of servers stacked in racks spreaded in different rooms. At first, the local disks on these servers are empty. Booting a Linux operating system on one of these fresh servers simply means executing the Linux kernel to start a few kernel threads before starting `/sbin/init`, with is usually Systemd, and which is responsible to start user processes. Except things couldn't be that simple:
+
+* The `/sbin/init` is often present on the hard drive (when a server has already been installed) or must be downloaded (on a fresh installation without anything on the disks). In both cases, the kernel needs some drivers but as the kernel must fit in RAM, it has to be small and could not come with thousands of drivers to support every physical machine.
+* The kernel code must be available. You don't want to install each server manually by attaching a media like a USB key. By using its network card, a server can ask at boot time "Who am I and what should I run?" It's called a PXE boot (pronounced "pixie") and could be used to download the kernel.
+* PXE requires network drivers to download the kernel using various protocols (DHCP, TFTP, HTTP). UDP/DHCP is used as the server don't have an IP address immediately. TFTP is used to download small files but is not practical for large files. iPXE implements the PXE standard but support additional protocols like HTTPS. But iPXE must be downloaded too, and executed. 
+* The server needs to know that it must boot on its network card. These preferences must be persisted when the server is turn off but cannot be written on disk for various reasons.
+* PXE is implemented by the firmware of the network card (or by the firmware of the motherboard for integrated NIC). How to load a system firmware when the machine is power on. Firmwares are often implemented in C, which requires RAM, except one of the task of the firmware is to intialize the RAM. Assembly code is inevitable. 
+
+These are just a few challenges to have a running operating system. Most of them are solved by hacks and not necessarily by an elegant design. The boot process is a perillous journey, a succession of steps represented by different programs, each responsible for a subset of tasks, each responsible to load and execute the next one. The end result is an operating system running as if nothing has run before. Except the reality is completely different.  Here is the step-by-step sequence of a standard PXE boot process for a Linux server:
+
+| Step | Action | Component | Protocols/Files | OSS Projects |
+| --- | --- | --- | --- | --- |
+| **1. System firmware Initializing** | Performs hardware initialization, loads network drivers, and executes the UEFI Boot Manager to select network boot. | Motherboard Firmware | UEFI, UNDI, SNP | TianoCore EDK II, coreboot |
+| **2. PXE Booting** | Broadcasts a DHCP request to get an IP and the boot server details, then downloads and executes the UEFI bootloader. | NIC | DHCP, TFTP, `bootx64.efi`, `grubx64.efi` | iPXE, dnsmasq, ISC Kea |
+| **3. Kernel Loading** | The bootloader reads its configuration, fetches the Linux kernel and initial the `initramfs` into memory, which mounts the real root filesystem, and starts the `/sbin/init` system. | UEFI Bootloader | `vmlinuz`, `initramfs`, `squashfs` | Linux Kernel |
+| **4. OS Initializing** | Systemd or sysinit starts all required processes | - | - | Systemd, init |
+
+And now begin the really, really, really long story... I don't expect anyone to read the whole development, especially since we already know the end of the story. I wrote that blog post mostly to myself to identify the remaining gaps in my understanding, even after the countless questions I’ve asked myself over the past five years.
+
+
+## Step 1: System Firmware Initializing
+
+When you turn on a server, the CPU cannot immediately run code. It needs to receive a stable electrical current but like when you are turning on a garden hose that has been sitting empty, during a few seconds, it spits out a mix of air and water. Therefore, the power supply waits for the electrical current to stabilize before sending a signal to the motherboard (called the _Power Good signal_). This signal tells the motherboard that the power is safe and it's time to wake up the CPU. Waking up means sending electricity to specific pins on the processor. We are working with pure electronical circuits for now.
+
+Modern CPUs are hardwired to read the first instruction at a specific memory address (known as the _reset vector_). For x86 CPUs, this address is `0xFFFFFFF0`. Except the RAM is completely empty when a computer is turned off... There is nothing at that address. In practice, the CPU is not asking directly to the RAM. The motherboard chipset recognizes that the CPU asks for the Reset Vector address and redirect that request directly to the system firwmare (BIOS, UEFI).
+
+<Expandable title="Show me how that interception happens" tag="👀 See the code">
+
+<Steps>
+
+1. **The CPU requests the vector**: The moment power stabilizes, the CPU wakes up and puts the address `0xFFFFFFF0` onto its memory bus, asking, "Give me the data located here."
+2. **The chipset decodes the address**: This is where the interception happens. The request hits the motherboard chipset which contains hardwired logic gates called address decoders. These decoders constantly monitor the memory addresses the CPU is asking for.
+3. **The routing to the SPI Bus**: The address decoder is factory-programmed to recognize the `0xFFFFFFF0` range. When it sees this specific address, a physical logic gate flips. It blocks the signal from continuing to the empty system RAM. Instead, the circuit redirects the electrical signal down a completely different pathway called the _SPI (Serial Peripheral Interface) bus_. The SPI bus connects directly to the physical BIOS/UEFI Flash ROM chip soldered onto the motherboard.
+
+</Steps>
+
+</Expandable>
+
+
+<Admonition type="note" className="Question" title="❓ Where is stored the firmware code?">
+
+The firmware code is physically stored on the motherboard, completely separate from your main storage drives (SSD or HDD), on a small, non-volatile memory chip called an _SPI Flash ROM_.
+
+* _Non-volatile_ only means the chip retains its data even when the computer is shutdown.
+* While ROM has been historically immutable (_Read-Only Memory_), modern chips can be rewritten electronically. This is what allows you to perform a "BIOS update" and flash a newer version of the firmware onto the chip.
+
+If the firmware code is on the SPI Flash chip, the firmware configuration (your personal settings like the boot order) is stored in a separate, tiny amount of memory called NVRAM (or historically, CMOS). These settings are kept alive using a circular CR2032 coin-cell battery present on your motherboard. Remove the battery and you restore your firmware to its default settings.
+
+</Admonition>
+
+
+<Admonition type="note" className="None" title="From BIOS to EFI to UEFI">
+
+In the late 1990s, BIOS was severely outdated. BIOS operates only in 16-bit processing mode (when x86 processors were supporting 32-bits mode). BIOS was slow and was unable to boot from hard drives larger than 2.2 TB.
+
+Intel created EFI (Extensible Firmware Interface) as a modern replacement to overcome these limitations and introduce their high-end [Itanium](https://en.wikipedia.org/wiki/Itanium) servers.
+
+Intel also realized that to replace BIOS across the entire PC market, EFI must become an open standard. It handed the EFI specification over to an alliance of major tech companies (including Microsoft, Apple, AMD, Dell, and Lenovo). This group expanded EFI and renamed it UEFI (Unified Extensible Firmware Interface) in 2005.
+
+UEFI is simply the modern, standardized evolution of EFI:
+
+| Feature | EFI | UEFI |
+|---------|-----|------|
+| Ownership | Intel | The UEFI Forum |
+| Era | Late 1990s to 2005 | 2005- |
+| Scope | Intel servers | Universal (PCs, Macs, servers, and ARM devices) |
+| Key Features | Lifted the 2.2 TB drive limit, improved graphical support | Added Secure Boot, network booting |
+
+</Admonition>
+
+This article focuses exclusively on UEFI machines.
+
+<GitHubCard name="OSS EDK II" owner="tianocore" repository="edk2" language="C" creationDate={2006} license="SPDX">
+    To help EFI becomes UEFI, Intel released the code of their preferred EFI implementation. This served as the basis of the community-driven [EDK II project](https://github.com/tianocore/edk2), also known as [TianoCore](https://www.tianocore.org/), reusing the original internal project name "Tiano" used by Intel. Although EDK II implements the UEFI specification and is the most popular solution for manufacturers to implement their firmwares, EDK II is not endorsed by the UEFI Forum.
+</GitHubCard>
+
+<Admonition type="note" className="Question" title="❓ What does a firmware?">
+
+Legacy BIOS was implemented in Assembly and wasn't doing a lot. The main task was to check the hardware (CPU, RAM, motherboard) through a process called POST for _Power-On Self-Test_ to ensure every component was physically present, receiving power, and functioning correctly. Any error and your server was beeping loudly.
+
+UEFI firmwares are now usually implemented in C. It allows to do so much more. It's like a mini-operating system that bootstraps the physical hardware, still doing a diagnostic, and proceeding in different steps.
+
+</Admonition>
+
+### 1. SEC (Security Phase)
+
+When the CPU wakes up, main RAM isn't available yet. The CPU will use its own L1/L2/L3 cache as a temporary "RAM" (a technique called _Cache-As-RAM_) to set up a minimal environment to run minimal code. The SEC phase starts therefore in 100% Assembly, but it transitions to C as quickly as possible, even before RAM is available. Except that modern languages like C require a stack in memory to handle function calls, pass arguments, and store local variables. Assembly code is required to ensure we aren't using the RAM at all. 
+
+<Expandable title="Show me a simplifed version of that code" tag="👀 See the code">
+
+```asm title="edk2/MdePkg/Include/Library/UefiApplicationEntryPoint.h"
+; https://github.com/tianocore/edk2/blob/edk2-stable202605/MdePkg/Include/Library/UefiApplicationEntryPoint.h
+; EDK II SEC Entry (x86 architecture)
+_ModuleEntryPoint:
+    ; 1. Switch CPU from 16-bit Real Mode to 32-bit Protected Mode
+    ;    Required to use more than 1 MB of memory
+    mov     eax, 0x00000023
+    mov     cr0, eax
+    ; See https://github.com/tianocore/edk2/blob/edk2-stable202605/UefiCpuPkg/ResetVector/Vtf0/Ia16/Real16ToFlat32.nasm.inc
+
+    ; 2. Load basic CPU microcode updates
+    ;    CPUs ship with hardware bugs. Patches are available in motherboard ROM.
+    ;    CPU have "internal" register call Model-Specific Register (MSRs)
+    ;    to control many things. Patches update them. Ex:
+    mov     eax, <some ROM address>
+    mov     edx, <some ROM address>
+    mov     ecx, 0x79 ; some MSR register
+    wrmsr   ; Write to Model-Specific Register
+            ; = Write the fix at address eax-edx to the MSR identified by ecx
+
+    ; 3. Configure the CPU cache to act as RAM (CAR)
+    ...
+    wrmsr   ; use another MSR to mark a memory adress as cache-only
+            ; = do not try to write back to RAM
+    ; See https://github.com/tianocore/edk2/blob/edk2-stable202605/OvmfPkg/Sec/X64/SecEntry.nasm
+
+    ; 4. Point the stack pointer (esp) to the top of our new Cache-As-RAM
+    mov     esp, TemporaryRamBase + TemporaryRamSize
+
+    ; 5. Now that a stack exists, we can safely jump into C code
+    call    SecCoreStartupWithStack
+    ; See https://github.com/tianocore/edk2/blob/edk2-stable202605/OvmfPkg/Sec/SecMain.c
+```
+
+`SecCoreStartupWithStack` is the first C-language function executed during the boot process. It acts as the bridge between the architecture-specific assembly code and the UEFI C code. It then permanently hands control over to the PEI phase to begin actual hardware initialization.
+
+</Expandable>
+
+
+### 2. PEI (Pre-EFI Initialization)
+
+The main goal of this phase is to wake up the physical RAM.
+
+* When PEI starts, the system is faking RAM using the CPU cache.
+* When PEI finishes, the physical RAM is powered on and the execution has migrated to it.
+
+<Expandable title="Show me how the PEI phase accomplishes this" tag="👀 See the code">
+
+<Steps>
+
+1. **Discovering and Initializing RAM**
+
+    The CPU cannot just talk to the RAM sticks immediately. It first has to communicate with the memory controller and read the SPD (Serial Presence Detect) chip on each RAM stick to understand its capacity, speed, and timing requirements.
+
+    In EDK II, this hardware-specific work is handled by small plugins called **PEIMs (PEI Modules)**. Once a PEIM successfully initializes the physical memory hardware, it hands the memory block over to the main PEI Core.
+
+    ```c title="MemoryServices.c"
+    // https://github.com/tianocore/edk2/blob/edk2-stable202605/MdeModulePkg/Core/Pei/Memory/MemoryServices.c
+    // Simplified representation of a Memory Initialization PEIM
+    EFI_STATUS
+    InitializePhysicalMemory (
+    IN EFI_PEI_SERVICES  **PeiServices
+    )
+    {
+    UINT64 MemoryBase;
+    UINT64 MemorySize;
+
+    // 1. Hardware-specific code to ping RAM sticks and configure the memory controller
+    ConfigureMemoryController(&MemoryBase, &MemorySize);
+
+    // 2. Register the newly initialized physical RAM with the PEI Core
+    EFI_STATUS Status = (*PeiServices)->PeiInstallPeiMemory (
+                                            PeiServices,
+                                            MemoryBase,
+                                            MemorySize
+                                        );
+
+    return Status;
+    }
+    ```
+
+    The function `PeiInstallPeiMemory` defined [here](https://github.com/tianocore/edk2/blob/edk2-stable202605/MdeModulePkg/Core/Pei/Memory/MemoryServices.c#L73) is where we record the base address and size of the newly available physical RAM.
+
+2. **Leaving Cache-As-RAM**
+
+    Once the `PeiInstallPeiMemory` function is called, the PEI Core knows that physical RAM is finally available. It then copies the stack, the heap, and all initialized variables from the CPU temporary cache into the permanent physical RAM.
+
+    ```c
+    // Inside the EDK II PEI Core (Simplified)
+    VOID
+    PeiCoreMemoryInstallationTransition (
+    IN PEI_CORE_INSTANCE  *PrivateData
+    )
+    {
+    // 1. Allocate a new stack and heap in the permanent physical RAM
+    PhysicalStackBase = AllocatePermanentStack(PrivateData);
+    PhysicalHeapBase  = AllocatePermanentHeap(PrivateData);
+
+    // 2. Copy all existing data from the CPU Cache into physical RAM
+    CopyMem (PhysicalHeapBase, TemporaryCacheHeap, HeapSize);
+    CopyMem (PhysicalStackBase, TemporaryCacheStack, StackSize);
+
+    // 3. Perform an architecture-specific Assembly jump to switch the CPU's
+    // stack pointer (RSP register) to point to the new physical RAM address.
+    // Execution continues seamlessly, but now strictly from real RAM.
+    SwitchStack (
+        (SWITCH_STACK_ENTRY_POINT) PeiCoreAfterMemoryMigration,
+        PhysicalStackBase
+        );
+    }
+    ```
+
+    The function `SwitchStack` moves execution from the CPU cache to the physical RAM. You cannot just write C code for that. You have to physically change the CPU stack pointer register `rsp` to point to the new physical memory address using [Assembly code](https://github.com/tianocore/edk2/blob/edk2-stable202605/MdePkg/Library/BaseLib/X64/SwitchStack.nasm).
+
+    In the UEFI x64 calling convention, arguments are passed in registers `rcx`, `rdx`, `r8`, and `r9`. When `SwitchStack` is called, it receives four parameters:
+
+    1. **`rcx`** = `EntryPoint` (The function to execute on the new stack)
+    2. **`rdx`** = `Context1` (First argument to pass to the EntryPoint)
+    3. **`r8`**  = `Context2` (Second argument to pass to the EntryPoint)
+    4. **`r9`**  = `NewStack` (The address of the new physical memory stack)
+
+    Here is an annotated code illustrating how this switch is executed:
+
+    ```txt title="SwitchStack.nasm"
+    // https://github.com/tianocore/edk2/blob/edk2-stable202605/MdePkg/Library/BaseLib/X64/SwitchStack.nasm
+    global InternalSwitchStack
+
+    section .text
+
+    ; VOID EFIAPI InternalSwitchStack(EntryPoint, Context1, Context2, NewStack)
+    InternalSwitchStack:
+        
+        ; 1. Preserve the EntryPoint
+        ; We need to move the EntryPoint (rcx) to a temporary register (rax) 
+        ; because we have to reuse rcx for the EntryPoint's first argument.
+        mov     rax, rcx    
+
+        ; 2. THE STACK SWITCH
+        ; This single instruction physically moves execution to the new RAM.
+        ; Any subsequent PUSH, POP, CALL, or RET will now use the new memory.
+        mov     rsp, r9     
+
+        ; 3. Setup arguments for the EntryPoint function
+        ; The EntryPoint expects Context1 in rcx and Context2 in rdx.
+        mov     rcx, rdx    ; Move Context1 into the 1st argument register
+        mov     rdx, r8     ; Move Context2 into the 2nd argument register
+
+        ; 4. Allocate Shadow Space
+        ; The x64 ABI requires the caller to allocate 32 bytes (0x20) of 
+        ; "shadow space" on the stack just before calling a function.
+        sub     rsp, 0x20   
+
+        ; 5. Transfer Control
+        ; We use JMP instead of CALL because we are permanently leaving the 
+        ; old stack behind. This function never returns to its original caller.
+        jmp     rax         
+    ```
+</Steps>
+
+
+</Expandable>
+
+RAM is now available so the CPU cache could do its normal job. PEI has completed its primary purpose.
+
+And because physical memory is now vast, the system can afford to load  more complex software. The PEI Core locates the compressed **DXE (Driver Execution Environment)** core in the motherboard ROM, decompresses it into physical RAM, and hands over execution.
+
+<Expandable title="Show me how the DXE core is called" tag="👀 See the code">
+
+The transition represents the exact pivot point in UEFI where the system graduates from its minimal early-boot environment into a fully featured firmware OS.
+
+```c
+// Final step of the PEI Core
+VOID
+PeiCoreAfterMemoryMigration (
+  // We are now safely executing out of physical RAM!
+  )
+{
+  // Locate the DXE Core binary in the firmware volume
+  DxeCoreEntryPoint = FindDxeCore();
+
+  // Hand off execution. PEI is now permanently over.
+  DxeCoreEntryPoint(PhysicalMemoryInfo, HandOffBlockList);
+}
+```
+
+`FindDxeCore()` translates to `DxeIplFindDxeCore()` in EDK II. The firmware doesn't have a traditional file system yet, so it must physically iterate through Firmware Volumes (FVs) on the SPI flash chip, looking for a binary tagged with a specific GUID matching `EFI_FV_FILETYPE_DXE_CORE`.
+
+```c title="DxeLoad.c"
+// https://github.com/tianocore/edk2/blob/master/MdeModulePkg/Core/DxeIplPeim/DxeLoad.c
+EFI_PEI_FILE_HANDLE DxeIplFindDxeCore ( VOID ) 
+{
+  EFI_STATUS            Status;
+  UINTN                 Instance;
+  EFI_PEI_FV_HANDLE     VolumeHandle;
+  EFI_PEI_FILE_HANDLE   FileHandle;
+
+  Instance = 0;
+  while (TRUE) {
+    // 1. Traverse all physical firmware volume instances on the flash chip
+    Status = PeiServicesFfsFindNextVolume (Instance, &VolumeHandle);
+    if (EFI_ERROR (Status)) {
+      break; // End of volumes reached
+    }
+    
+    // 2. Search this specific volume for the DXE Core executable
+    Status = PeiServicesFfsFindNextFile (
+               EFI_FV_FILETYPE_DXE_CORE, // Look exclusively for the DXE Core type
+               VolumeHandle,
+               &FileHandle
+               );
+               
+    if (!EFI_ERROR (Status)) {
+      // 3. Found it! Return the file handle so it can be extracted and loaded into RAM
+      return FileHandle;
+    }
+    Instance++;
+  }
+  return NULL;
+}
+```
+
+Once the DXE core is found, the code decompresses it into physical RAM (`DxeLoadCore()`), before jumping to it (`HandOffToDxeCore`).
+
+```c title="DxeLoad.c"
+// https://github.com/tianocore/edk2/blob/master/MdeModulePkg/Core/DxeIplPeim/DxeLoad.c
+EFI_STATUS EFIAPI DxeLoadCore ( ... ) 
+{
+  // ... [Code to allocate permanent memory and extract the DXE Core PE/COFF image] ...
+
+  // 1. Pass the execution to the architecture-specific handoff function.
+  // The hand-off state is simply a pointer to the Hand-Off Block (HOB) list.
+  HandOffToDxeCore (DxeCoreEntryPoint, HobList);
+
+  // 2. If we get here, then the DXE Core returned. This is a fatal system error.
+  // The DXE phase is permanent until OS boot; it should never return to PEI.
+  ASSERT (FALSE);
+  CpuDeadLoop ();
+  return EFI_OUT_OF_RESOURCES;
+}
+```
+
+The actual handoff reuses the same Assembly function `SwitchStack` that we defined previously.
+
+```c title="DxeLoadFunc.c"
+// https://github.com/tianocore/edk2/blob/master/MdeModulePkg/Core/DxeIplPeim/X64/DxeLoadFunc.c
+VOID HandOffToDxeCore (
+  IN EFI_PHYSICAL_ADDRESS  DxeCoreEntryPoint,
+  IN EFI_PEI_HOB_POINTERS  HobList
+  )
+{
+  // 1. Switch the CPU Stack Pointer (RSP) to the newly allocated DXE stack in permanent RAM
+  // 2. Cast the entry point memory address to a function pointer
+  // 3. Jump to the DXE Core, passing the HOB list as its only argument
+  SwitchStack (
+    (SWITCH_STACK_ENTRY_POINT)(UINTN)DxeCoreEntryPoint, // Jump address (DXE Core)
+    HobList.Raw,                                        // Parameter 1: The HOB List
+    NULL,                                               // Parameter 2: Unused
+    TopOfStack                                          // The new RAM stack pointer
+    );
+}
+```
+
+DXE is now loaded and the boot process continues.
+
+</Expandable>
+
+
+### 3. DXE (Driver Execution Environment)
+
+This is the most elaborate phase, where UEFI truly acts like an OS. The DXE phase is like a _Dependency Injection_ framework. Drivers don't call each other directly. They publish interfaces (_Protocols_) that drivers could depend on.
+
+<Expandable title="Show me how drivers are loaded" tag="👀 See the code">
+
+Before a driver can even run, DXE checks its metadata. In EDK II, every driver has an `.inf` (Information) file containing a `[Depex]` section. Let's use the network card as our example:
+
+```ini
+# Snippet from a standard EDK II Network Driver .inf file
+[Depex]
+  gEfiPciIoProtocolGuid
+```
+
+The network card driver needs the PCI bus to talk to the network card. The above dependency explicitly demands the PCI I/O Protocol.
+
+When the PCI bus driver will complete, the protocol `gEfiPciIoProtocolGuid` will be added and the network driver could now executed. This driver will also expose its capabilities by installing a Protocol (usually `gEfiSimpleNetworkProtocolGuid`, also known as SNP).
+
+```c
+EFI_STATUS
+EFIAPI
+InitializeNetworkInterface (
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
+  )
+{
+  EFI_STATUS  Status;
+
+  // 1. Hardware initialization happens here using PCI I/O...
+
+  // 2. Publish our network interface to the DI Container (Protocol Database)
+  Status = gBS->InstallMultipleProtocolInterfaces (
+                  &ImageHandle,
+                  &gEfiSimpleNetworkProtocolGuid, // The interface ID
+                  &mMyNetworkProtocolInstance,    // The actual struct of function pointers
+                  NULL
+                  );
+
+  return Status;
+}
+```
+
+At this point, the network card is functional, but it isn't doing anything. It's just waiting.
+
+</Expandable>
+
+When the DXE phase completes, the physical hardware is awake, and many protocols have been discovered that allow the firmware to read hard drives, send network packets, and draw graphics on the screen. What you should really do?
+
+
+### 4. BDS (Boot Device Selection)
+
+The sole purpose of BDS is to use those freshly available protocols/APIs to find an operating system and hand over control.
+
+The BDS phase doesn't guess where the OS is. It reads instructions stored in the firmware configuration present in NVRAM, in particular, the variable `BootOrder`.
+
+If the boot order is configured to start on the disks, BDS will use the devices initialized in the DXE phase. For a server starting in a datacenter, the boot order will usually be the network card, a process named PXE booting (Preboot eXecution Environment). Remind that booting on the network is the secret to control remotely a server running in a datacenter. 
+
+<Expandable title="Show me how the bootloader emits network calls" tag="👀 See the code">
+
+The PXE bootloader application doesn't know what kind of network card is installed, and it doesn't care. It just asks for the Protocol `gEfiSimpleNetworkProtocolGuid` that has been published by the network card earlier:
+
+```c
+// Snippet inspired by EDK2 PXE/Network boot consumer code
+EFI_STATUS
+StartPxeBoot ()
+{
+  EFI_STATUS                   Status;
+  EFI_SIMPLE_NETWORK_PROTOCOL  *Snp;
+
+  // "Locate" is the dependency injection request.
+  // Give me whatever implementation of Simple Network is available.
+  Status = gBS->LocateProtocol (
+                  &gEfiSimpleNetworkProtocolGuid,
+                  NULL,
+                  (VOID **)&Snp
+                  );
+
+  if (EFI_ERROR (Status)) {
+    // No network drivers were loaded (or no NIC is present)
+    return Status;
+  }
+
+  // Use Snp->Transmit to send network requests
+  // ...
+}
+```
+
+That's the beauty of dependency injection offered by UEFI. As long a network card driver published `gEfiSimpleNetworkProtocolGuid`, the PXE boot sequence runs exactly the same.
+
+</Expandable>
+
+
+## Step 2: PXE Booting
+
+<Admonition type="note" className="content" title="Integrated NIC vs Dedicated NIC">
+
+For that article, we consider our server has an integrated NIC. The code for the NIC is stored in the same memory chip where the system firmware resides. When pluging a physical network card, and when UEFI enters the DXE phase, it scans the PCIe bus and finds this NIC. UEFI will reach the NIC own physical ROM chip to load the driver as before. The logic is similar. The code is just present inside another ROM.
+
+</Admonition>
+
+When a server is told to boot from the network, it goes through a strict sequence to find an operating system to load without touching a local hard drive at all. PXE is the industry standard.
+
+### 1. DHCP
+
+DHCP requests are sent over UDP (the server still don't have an IP and it cannot therefore perform the three-way handshake required to establish a TCP connection). DHCP requests are binary. We cannot easily visualize the requests unlike HTTP requests but it's enough to imagine a DHCP request as a succession of values:
+
+* **Source IP**: `0.0.0.0` (I don't have an IP yet)
+* **Destination IP**: `255.255.255.255` (Broadcast to everyone)
+* **Source Port**: UDP 68 (DHCP Client)
+* **Destination Port**: UDP 67 (DHCP Server)
+
+When the server tries to PXE boot, it sends a **DHCP Discover** packet. The following fields are required:
+
+* **OP (OpCode)**: `0x01` (This is a Boot Request, not a Reply)
+* **XID (Transaction ID)**: `0x39A8B12C` (A random number so the client can match the server's reply to its original request)
+* **CHADDR (Hardware Address)**: `00:1A:2B:3C:4D:5E` (The physical MAC address of the server's network card)
+* **Magic Cookie**: `0x63825363` (A specific hex value that proves this is a DHCP packet, not a legacy BOOTP packet)
+
+In addition to fixed fields, DHCP supports optional fields. For a DHCP Discover request, the client includes several of these options to tell the server what it needs:
+
+* **Option 53 (Message Type)**: `1` (= Discover).
+* **Option 55 (Parameter Request List)**: The client lists the specific data it wants back from the server. For PXE, it will explicitly request Option `66` (TFTP Server Name) and Option `67` (Bootfile Name).
+* **Option 93 (Client System Architecture)**: Tells the DHCP server what kind of CPU the client has (e.g., `0x0007` for 64-bit UEFI, `0x0000` for Legacy BIOS). This allows the DHCP server to hand out the correct bootloader file.
+
+The DHCP server replies with an IP address, plus requested option `66` (the IP of the boot server) and option `67` (the name of the bootloader file, like `grubx64.efi`).
+
+<Admonition type="note" className="Question" title="❓ What is a boot server?">
+
+A **boot server** is a machine on a network configured to hand out the IP addresses and the files necessary for other computers to start over the network. It is usually a combination of two key services:
+
+* **A DHCP Server**: Useful to get an IP address and retrieve additional information using options as explained just above.
+* **A TFTP Server**: A very simple file server that hosts the bootloader files.
+
+</Admonition>
+
+<Admonition type="note" className="Question" title="❓ What is a bootloader file?">
+
+The bootloader is responsible to load an actual operating system kernel (like Linux or Windows) into memory.
+
+A bootloader file (also called a _Network Bootstrap Program_ or NBP in PXE) is a tiny piece of software that the client computer downloads from the boot server into its RAM.
+
+In practice, these bootloader files have an extension `.efi` and use the same file format used by Microsoft for Windows `.exe`. This format is known as **PE/COFF** (Portable Executable / Common Object File Format) binaries. When EFI was introduced, Intel partnered with Microsoft to transition away from Legacy BIOS. This file contains usually a compiled C program even if some developers has found how to use Rust or C++ to implement it.
+
+</Admonition>
+
+<GitHubCard name="dnsmasq" owner="simonkelley" repository="dnsmasq" language="C" creationDate={2000} license="GPL-2.0">
+    Created in 2000 by British software developer Simon Kelley, `dnsmasq` was born out of a practical need for efficiency. At the time, standard network tools like ISC BIND and ISC DHCP were simply too resource-heavy and complex to run on small home networks and low-power embedded systems. What started as a modest utility has since become an indispensable staple of modern networking.
+</GitHubCard>
+
+<Expandable title="Show me how to start a boot server" tag="👀 See the code">
+
+Let's setup a minimal server.
+
+* There are several approaches to expose the boot server. We will use `dnsmasq` to illustrate a basic setup.
+* There are also several approaches to retrieve a bootloader file. For Debian/Ubuntu, you can download the signed GRUB package using `apt download grub-efi-amd64-signed` and then extract the file using `dpkg -x`.
+
+<Steps>
+
+1. **Prepare the TFTP files**
+
+    We need a place to store the files to serve. By convention, this is usually `/srv/tftp`:
+
+    ```txt
+    /srv/tftp/
+    ├── grubx64.efi          # The UEFI bootloader
+    ├── grub/
+    │   └── grub.cfg         # The GRUB menu configuration
+    └── linux-install/
+        ├── vmlinuz          # The Linux kernel
+        └── initrd.img       # The initial RAM disk
+    ```
+
+2. **Configure `dnsmasq`**
+
+    When a server boots from the network, it broadcasts Option `93` to tell the DHCP server what kind of firmware it is running:
+
+    * Architecture `0` means Legacy BIOS.
+    * Architecture `7` or `9` means x86_64 UEFI.
+
+    We need to configure `dnsmasq` to listen for architectures `7` and `9`, and reply by handing out the previously extracted `grubx64.efi` file. Create or edit your configuration file (often found at `/etc/dnsmasq.conf`):
+
+    ```
+    # /etc/dnsmasq.d/pxe-uefi.conf
+
+    # 1. Enable the integrated DHCP server and define the IP range
+    dhcp-range=192.168.1.100,192.168.1.200,12h
+
+    # 2. Enable the built-in TFTP server and set the root directory
+    enable-tftp
+    tftp-root=/srv/tftp
+
+    # 3. Identify the client architecture using DHCP Option 93
+    # Tag the request as 'efi-x86_64' if the client broadcasts arch 7 or 9
+    dhcp-match=set:efi-x86_64,option:client-arch,7
+    dhcp-match=set:efi-x86_64,option:client-arch,9
+
+    # 4. Serve the correct bootloader based on the tag
+    # If the 'efi-x86_64' tag is present, hand out grubx64.efi
+    dhcp-boot=grubx64.efi
+
+    # (Optional) Log extra DHCP/TFTP information for troubleshooting
+    log-dhcp
+    ```
+
+3. **Configure GRUB**
+
+    Once `dnsmasq` successfully hands `grubx64.efi` to the client machine, the client executes it. The first thing GRUB does is look for its configuration file, typically located at `/srv/tftp/grub/grub.cfg`.
+
+    Here is a basic example of a `grub.cfg` file designed to boot an automated Ubuntu Linux installer:
+
+    ```
+    # /srv/tftp/grub/grub.cfg
+
+    set default="0"
+    set timeout=10
+
+    menuentry "Install Ubuntu Linux (UEFI Network Boot)" {
+        # 1. Load the kernel from the TFTP server
+        linux /linux-install/vmlinuz ip=dhcp url=http://192.168.1.10/ubuntu-24.04-live-server-amd64.iso
+
+        # 2. Load the initial ramdisk
+        initrd /linux-install/initrd.img
+    }
+    ```
+
+</Steps>
+
+In this GRUB example, `vmlinuz` and `initrd.img` are downloaded via TFTP, but the massive `.iso` file is pointed to a standard HTTP web server (like Nginx or Apache) running at `192.168.1.10`. TFTP is fantastic for tiny bootloaders, but it is notoriously slow and unreliable for multi-gigabyte ISO files.
+
+If you restart the `dnsmasq` service (`sudo systemctl restart dnsmasq`) and boot the server, here is exactly what happens:
+
+1. **Client:** Broadcasts, "I am a UEFI x86_64 machine looking for an IP and a boot server!" (Option 93: 9).
+2. **dnsmasq:** Hears the request, checks its config, assigns `192.168.1.101`, and says, "Download `grubx64.efi` from me via TFTP."
+3. **Client:** Downloads and executes `grubx64.efi`.
+4. **GRUB:** Reaches back out via TFTP, downloads `grub.cfg`, and displays the menu.
+5. **Client:** Downloads the Linux kernel and initrd, continue the boot process.
+
+</Expandable>
+
+It works. But this solution has many drawbacks:
+
+* Standard PXE uses TFTP, which was designed in the 1980s:
+  * TFTP transfers files block-by-block and waits for an acknowledgment after every single block (important because UDP is used). On a local network, transferring a 50MB kernel might take a few seconds, but transferring a large ISO is just too long.
+  * TFTP doesn't support encryption...
+* Standard PXE relies on static configuration files. You return a static file to execute on the server. (no way to interact with the user, manage errors, retry, etc.)
+
+
+Enter iPXE.
+
+<GitHubCard name="iPXE" owner="ipxe" repository="ipxe" language="C" creationDate={2010} license="GPL-2.0">
+    The roots of iPXE trace back to the Etherboot project (started in 1995) and its successor, gPXE. In 2010, frustrated by project management disputes and the slow integration of community patches, lead developer Michael Brown hard-forked the codebase to create [iPXE](https://github.com/ipxe/ipxe). Unshackled from its predecessor's constraints, iPXE rapidly evolved to support modern protocols like HTTP booting, iSCSI, FCoE, and Wi-Fi. Today, it has completely eclipsed gPXE to become the de facto open-source network boot firmware, quietly powering millions of bare metal server deployments in major cloud datacenters worldwide.
+</GitHubCard>
+
+GRUB was designed to boot on local hard drives and was later adapted for the network. iPXE was built from the ground up entirely for the network. iPXE is more flexible while not necessarily harder to set up.
+
+<Expandable title="Show me how to start a boot server with iPXE" tag="👀 See the code">
+
+Let's update our setup of `dnsmasq` to use it:
+
+<Steps>
+
+1. **Copy the iPXE bootloader**
+
+    ```
+    /srv/tftp/
+    └── ipxe.efi # UEFI iPXE binary
+    ```
+
+    The file `ipxe.efi` must be compiled first (outside the scope of this article).
+
+2. **Configure `dnsmasq`**
+
+    There is a subtle thing to know. UEFI initializes the PXE boot process by emiting a DHCP request. The DHCP server answers with the address of the boot server used to download the iPXE bootloader. 
+
+    When using iPXE, it completely replaces the motherboard built-in network stack. The boot process is a succession of programs replacing the previous one. The previously IP address retrieved using DHCP could no longer be read. A new DHCP request is required. 
+
+    iPXE comes with its own high-performance drivers as it inherits nothing (UEFI modules are no longer available neither). It is waking up to a blank slate and must configure the network again by reemitting this second DHCP request. This means `dnsmasq` will receive two DHCP requests. The first one must return the iPXE bootloader. The second one must return the iPXE boot script (the equivalent of a GRUB configuration but so much more dynamic).
+
+    ```
+    # 1. Standard DHCP and TFTP settings
+    dhcp-range=192.168.1.100,192.168.1.200,12h
+    enable-tftp
+    tftp-root=/srv/tftp
+
+    # 2. Detect if the request is coming from iPXE (Option 175)
+    # If Option 175 exists, tag the request as 'ipxe'
+    dhcp-match=set:ipxe,175
+
+    # 3. Detect the client architecture (Option 93)
+    # Tag as 'efi-x86_64' for modern UEFI, otherwise assume Legacy BIOS
+    dhcp-match=set:efi-x86_64,option:client-arch,7
+    dhcp-match=set:efi-x86_64,option:client-arch,9
+    dhcp-match=set:legacy,option:client-arch,0
+
+    # 4. THE ROUTING LOGIC
+    # If the client is iPXE, ignore TFTP and point directly to the HTTP script!
+    dhcp-boot=tag:ipxe,http://192.168.1.10/boot.ipxe
+
+    # If the client is NOT iPXE (!ipxe), hand them the correct TFTP binary
+    dhcp-boot=tag:!ipxe,tag:efi-x86_64,ipxe.efi
+    dhcp-boot=tag:!ipxe,tag:legacy,undionly.kpxe
+    ```
+
+    To avoid this complexity, an alternative could be to use a dedicated NIC and flash the NIC ROM to install iPXE directly.
+
+3. **Host the iPXE bootscript**
+
+    As visible in the previous configuration, when the `ipxe` tag is present (second DHCP request), `dnsmasq` points the client to `https://192.168.1.10/boot.ipxe`. We are using HTTPs so this file could not be stored with other TFTP files. We could use a web server (like Nginx or Apache) to host this file `boot.ipxe`:
+
+    ```
+    #!ipxe
+
+    # Get an IP address (iPXE needs an IP for this specific interface)
+    dhcp
+
+    # Clear the screen
+    clear
+
+    # Tell the user what is happening
+    echo ===============================================
+    echo Successfully chained into iPXE!
+    echo Loading Ubuntu via high-speed HTTP...
+    echo ===============================================
+
+    # Define the base URL for your web server hosting the OS files
+    set base http://192.168.1.10/os-images/ubuntu
+
+    # Download the kernel and initrd in a fraction of a second
+    kernel ${base}/vmlinuz ip=dhcp url=${base}/ubuntu-installer.iso
+    initrd ${base}/initrd.img
+
+    # Boot the OS
+    boot
+    ```
+
+    The boot file could also be generated dynamically by a HTTP API, using the IP source to customize the script.
+
+</Steps>
+
+Once everything is restarted, here is the sequence that occurs when you turn on a modern client machine using iPXE:
+
+1. The motherboard asks for a boot file.
+2. `dnsmasq` sees it is a UEFI machine (`tag:efi-x86_64`) but NOT iPXE (`tag:!ipxe`). It serves `ipxe.efi` via TFTP.
+3. The client downloads and executes `ipxe.efi`.
+4. iPXE takes over the network card and asks `dnsmasq` for a boot file, this time sending option `175`.
+5. `dnsmasq` sees option `175` (`tag:ipxe`). It immediately responds with the URL: `http://192.168.1.10/boot.ipxe`.
+6. iPXE reads the script, downloads the multi-megabyte Linux kernel over HTTP almost instantly, and continue the boot of the server with the loading of the kernel.
+
+</Expandable>
+
+## Step 3: Kernel Loading
+
+Before talking about the kernel, we need to talk about a few files first.
+
+You are probably familiar with `.iso` files that you can download directly from the website of your favorite distribution.
+
+An ISO file is just a digital replica of a CD. We can mount an ISO using a loop device just as if we had put a CD into a disk drive.
+
+```shell
+$ wget https://releases.ubuntu.com/resolute/ubuntu-26.04-live-server-amd64.iso
+$ sudo mkdir -p /mnt/iso
+$ sudo mount -o loop ubuntu-26.04-live-server-amd64.iso /mnt/iso
+$ cd /mnt/iso
+
+$ ls -la
+total 84
+dr-xr-xr-x 1 root root  2048 Apr 20 18:23 .
+drwxr-xr-x 3 root root  4096 Jul 28 13:10 ..
+dr-xr-xr-x 1 root root  2048 Apr 20 18:23 .disk
+dr-xr-xr-x 1 root root  2048 Apr 20 18:23 EFI
+dr-xr-xr-x 1 root root  2048 Apr 20 18:23 boot
+-r--r--r-- 1 root root  2048 Apr 20 18:23 boot.catalog
+dr-xr-xr-x 1 root root  4096 Apr 20 18:23 casper
+dr-xr-xr-x 1 root root  2048 Apr 20 18:20 dists
+-r--r--r-- 1 root root 63892 Apr 20 18:23 md5sum.txt
+dr-xr-xr-x 1 root root  2048 Apr 20 18:15 pool
+lr-xr-xr-x 1 root root     1 Apr 20 18:15 ubuntu -> .
+
+$ ls casper/
+initrd
+install-sources.yaml
+ubuntu-server-minimal.squashfs
+vmlinuz
+```
+
+The files that will interest us are `vmlinuz`, `initrd` and `squashfs`. So what contains exactly these files?
+
+<Admonition type="note" className="File" title="<code>vmlinuz</code> = The Kernel">
+
+```txt
+$ sudo file vmlinuz-7.0.0-14-generic
+Linux kernel x86 boot executable, bzImage, version 7.0.0-14-generic 
+(buildd@lcy02-amd64-043) #14-Ubuntu SMP PREEMPT_DYNAMIC Mon Apr 13 11:09:53 UTC 2026, RO-rootFS, Normal VGA, setup size 512*39, syssize 0x107420, jump 0x26c 0x8cd88ec0fc8cd239 instruction, protocol 2.15, 
+from protected-mode code at offset 0x2cc 0x103a520 bytes ZST compressed, relocatable, handover offset 0x1066fc0, 
+legacy 64-bit entry point, can be above 4G, 
+32-bit EFI handoff entry point, 64-bit EFI handoff entry point, 
+EFI kexec boot support, xloadflags bit 5, max cmdline size 2047, init_size 0x44c0000
+```
+
+The file is a `bzImage` file, a file format specifically designed by the Linux kernel (`Linux kernel x86 boot executable`) identified by the `HdrS` signature that must be present at offset `0x0202`:
+
+```shell
+$ hexdump -C -s 0x202 -n 4 /mnt/iso/casper/vmlinuz
+# -C: Canonical hex+ASCII display.
+# -s 0x202: Skip to offset 0x0202 (514 bytes).
+# -n 4: Read exactly 4 bytes.
+00000202  48 64 72 53   |HdrS|
+00000206
+```
+
+This file is also a native UEFI application (`32-bit EFI handoff entry point, 64-bit EFI handoff entry point`). When the kernel is compiled, special headers `MZ` and `PE` are added to make the kernel looks like a standard PE/COFF executable (`CONFIG_EFI=y CONFIG_EFI_STUB=y make bzImage`).
+
+The "MZ" signature, named after Microsoft engineer Mark Zbikowski is easy to locate because it's present at the start of the file: 
+
+```shell
+$ hexdump -C -n 2 vmlinuz
+# -C: Canonical hex+ASCII display.
+# -n 2: Read exactly 2 bytes.
+00000000  4d 5a  |MZ|
+00000002
+```
+
+The "PE" signature starts at the memory offset found by reading the 4 bytes at offset `0x3C`:
+
+```shell
+$ hexdump -s 0x3c -n 4 -C vmlinuz
+0000003c  40 00 00 00   |@...|
+$ hexdump -s 0x40 -n 4 -C vmlinuz
+00000040  50 45 00 00   |PE..|
+```
+
+`vmlinuz` is really a special file. The kernel is a large codebase with millions of lines of C source code that is too big. Space is limited at boot time. Here is the trick:
+
+1. Developers compile the kernel using `gcc` and a `Makefile` (often using a command like `make bzImage`).
+2. The output is a standard executable binary (an ELF file) called `vmlinux`. (covered next)
+3. This binary is compressed (using `gzip`, `bzip2`, `lzma`, or `zstd`) and a tiny "uncompression stub" is glued to the front of it. The resulting file is `vmlinuz` (the "z" means zipped).
+
+{/* TODO schema with the content of vmlinuz */}
+
+Because it has that uncompressed stub glued to the front, you cannot just use a standard command like `unzip vmlinuz`. You have to locate the compressed data inside the file. The easiest way is to use a script provided by the Linux kernel source called `extract-vmlinux`.
+
+```shell
+$ sudo apt-get install linux-headers-$(uname -r)
+# Download the script for your current kernel version
+$ sudo /usr/src/linux-headers-$(uname -r)/scripts/extract-vmlinux /mnt/iso/casper/vmlinuz > vmlinux
+extract-vmlinux: Extracted vmlinux using 'unzstd' from offset 21197
+```
+
+The command `extract-vmlinux` uses a brute-force approach. It uses standard command-line tools to scan the file byte-by-byte, looking for the "magic numbers" (hexadecimal file signatures) of common compression algorithms (ex: `1f 8b 08` for `gzip`). When it found that offset, it run a command like `dd if=bzImage bs=1 skip=18432 | gunzip > vmlinux` to extract the large kernel file. 
+
+In practice, at boot time, things are slighly different. When the file `vmlinuz` is build, a special header is present in the uncompressed part to quickly locate the compressed `vmlinux`. The raw code to decompress is also present in `vmlinuz` as no external binaries still exists. 
+
+To sum up, `vmlinuz` acts like a self-extracting archive that pretends to be a motherboard-level executable (PE/COFF or bzImage), while hiding the real `vmlinux` file deep inside its belly.
+
+</Admonition>
+
+<Admonition type="note" className="File" title="<code>vmlinux</code>">
+
+```shell
+$ sudo file vmlinux
+vmlinux: ELF 64-bit LSB executable
+```
+
+The Linux kernel `vmlinux` is a program using the ELF format (_Executable and Linkable Format_), the standard file format used for executables on Linux (the equivalent of a `.exe` file on Windows). When you type a basic command like `ls`, `grep`, or `python`, you are running an ELF file too:
+
+```shell
+$ readelf -a vmlinux
+ELF Header:
+  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00
+  Class:                             ELF64
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              EXEC (Executable file)
+  Machine:                           Advanced Micro Devices X86-64
+  Version:                           0x1
+  Entry point address:               0x3f23520
+  Start of program headers:          64 (bytes into file)
+  Start of section headers:          69206560 (bytes into file)
+  Flags:                             0x0
+  Size of this header:               64 (bytes)
+  Size of program headers:           56 (bytes)
+  Number of program headers:         3
+  Size of section headers:           64 (bytes)
+  Number of section headers:         42
+  Section header string table index: 41
+# ...
+```
+
+</Admonition>
+
+The kernel is the "brain" of the Linux operating system that make accessible hardware resources to your processes and ensure every process get a chance to run. The kernel is kept intentionally small, meaning it doesn't contain the thousands of drivers needed to mount every possible hard drive. The kernel must be loaded in RAM. It starts by understanding the physical world it woke up in. It probes the hardware, sets up memory management, configures the CPU, and starts the system timer. The kernel must then mount your computer hard drive to access the rest of the operating system files but it hits a classic chicken-and-egg problem:
+
+* To mount the hard drive, the kernel needs the specific driver for your storage controller (like an NVMe, RAID, or SATA driver).
+* But those drivers are stored on the hard drive it is trying to mount...
+
+To solve this, the bootloader (before it died) actually loaded a second file into RAM alongside the kernel.
+
+<Admonition type="note" className="File" title="<code>initrd</code> or <code>initramfs</code> (Initial RAM Filesystem)">
+
+The name `initrd` is used by some Linux distributions and `initramfs` by others. Both represent the same thing.
+
+```shell
+$ file /mnt/iso/casper/initrd
+/mnt/iso/casper/initrd: ASCII cpio archive (SVR4 with no CRC)
+```
+
+It's small. It contains just enough drivers and modules for the kernel to recognize your physical hard drive. You can inspect its content using the command `unmkinitramfs`
+
+```shell
+$ unmkinitramfs /mnt/iso/casper/initrd my_initrd/
+$ cd my_initrd/
+$ ls
+bin  conf  etc  init  kernel  lib  lib64  run  sbin  scripts  usr  var
+$ du -csh .
+148M	.
+```
+
+The goal is to mount the target file system (often on the hard drive). The `initramfs` is just a step towards that goal. 
+
+How to build the most minimal `initramfs`?
+
+* Many people **build a custom `initramfs`** for their specific hardware. When you install manually a Linux distribution (like Ubuntu, Fedora, or Arch) or update your kernel, a background script automatically generates an `initramfs` locally on your machine. Tools like `dracut` or `mkinitcpio` inspect your current system (your storage controllers, your file systems) and decide which kernel modules to include. 
+* In some situations, **a generic `initramfs`** is used like when booting on a Live USB (Linux distributions also come with a default `initramfs`). To support many different hardware configurations without bloating the file, Linux relies on some optimization tricks: 
+  * Ignore audio, GPU and more network drivers, 
+  * Use BusyBox to bundle common UNIX utilities into a single executable file,
+  * Use efficient compression algorithms like Zstandard or XZ.
+
+</Admonition>
+
+We know that to load the kernel, we need a file `vmlinuz` containing the code inside `vmlinux` and a file `initramfs` containing the modules to load the target file system. What does it really mean to load a kernel in practice?
+
+We have seen that the file `vmlinuz` presents itself as a traditional `bzImage` and as a UEFI application. Historically, GRUB (or iXPE) was required to load the kernel, but as the kernel now behaves like a UEFI application, GRUB is optional as the system firmware knows how to do it.
+
+In our case, we are using iPXE to download and boot the kernel. iPXE has already replaced the system firmware in RAM and is thus responsible to load the kernel itself.
+
+<Expandable title="Show me how iPXE is loading the kernel" tag="👀 See the code">
+
+<Steps>
+
+1. **Probing the PE/COFF signature**
+
+    The code checks the file is a proper UEFI application.
+
+    ```c title="ipxe/src/image/efi_image.c"
+    // https://github.com/ipxe/ipxe/blob/v1.21.1/src/image/efi_image.c
+    static int efi_image_probe ( struct image *image ) {
+        static const uint16_t efi_magic = 0x5a4d; /* MZ signature */
+
+        /* Look for the MZ signature indicating a PE/COFF image */
+        if ( ( image->len < sizeof ( efi_magic ) ) ||
+            ( memcmp ( image->data, &efi_magic, sizeof ( efi_magic ) ) != 0 ) ) {
+            DBGC ( image, "EFI %p has no MZ signature\n", image );
+            return -ENOEXEC;
+        }
+        
+        // Image is recognized as a valid UEFI executable
+        return 0;
+    }
+    ```
+
+2. **Loading the image into memory**
+
+    Once recognized, iPXE does not manually map the file `vmlinuz` directly into memory. It invokes the native UEFI `LoadImage()` API provided by the system firmware. The firmware allocates the memory and maps the binary.
+
+    ```c title="ipxe/src/image/efi_image.c"
+    // https://github.com/ipxe/ipxe/blob/v1.21.1/src/image/efi_image.c
+    static int efi_image_exec ( struct image *image ) {
+        EFI_BOOT_SERVICES *bs = efi_systab->BootServices;
+        EFI_HANDLE handle;
+        EFI_STATUS efirc;
+
+        /* Call UEFI Boot Services to load the image */
+        efirc = bs->LoadImage ( FALSE, efi_image_handle, file_path,
+                                image->data, image->len, &handle );
+        
+        if ( efirc != 0 ) {
+            // Handle failure...
+        }
+
+        // ...
+    }
+    ```
+
+    The methods available in the boot services (`bs`) are functions implemented by the system firmware (EDK II) that we discussed in the first step. 
+
+3. **Passing the command line via `LoadOptions`**
+
+    In UEFI, command-line arguments are passed using the `EFI_LOADED_IMAGE_PROTOCOL`. iPXE converts your script command line to UTF-16 (a requirement of the UEFI specification) and assigns it to the `LoadOptions` variable.
+
+    ```c title="ipxe/src/image/efi_image.c"
+    // https://github.com/ipxe/ipxe/blob/v1.21.1/src/image/efi_image.c
+    static int efi_image_exec ( struct image *image ) {
+        // ...
+
+        EFI_LOADED_IMAGE_PROTOCOL *loaded;
+        
+        /* Retrieve the Loaded Image Protocol for our newly loaded kernel */
+        bs->HandleProtocol ( handle, &efi_loaded_image_protocol_guid,
+                            ( void ** ) &loaded );
+
+        /* Convert iPXE command line to UTF-16 and attach it */
+        if ( image->cmdline ) {
+            size_t utf8_len = strlen ( image->cmdline );
+            
+            // Allocate and convert to wide characters
+            loaded->LoadOptions = utf8_to_utf16le ( image->cmdline, &utf16_len );
+            loaded->LoadOptionsSize = utf16_len;
+        }
+
+        // ...
+    }
+    ```
+
+4. **Executing the kernel**
+
+    With the image loaded and the arguments attached, iPXE executes the `StartImage()` API. At this exact moment, iPXE pauses execution and hands control over to the Linux `EFI_STUB`.
+
+    ```c title="ipxe/src/image/efi_image.c"
+    // https://github.com/ipxe/ipxe/blob/v1.21.1/src/image/efi_image.c
+    static int efi_image_exec ( struct image *image ) {
+        /* Transfer control to the Linux EFI Stub */
+        efirc = bs->StartImage ( handle, NULL, NULL );
+
+        /* If the kernel panics or exits, control returns here */
+        if ( efirc != 0 ) {
+            DBGC ( image, "EFI %p returned with status %x\n", image, efirc );
+        }
+        // ...
+    }
+    ```
+
+</Steps>
+
+There is one detail that we haven't covered. What about the `initrd` file?  The kernel needs the `initramfs` file available in RAM, and once again, the previous program (iPXE) is responsible to load it. The logic is easy to understand. The code is more complicated (iPXE exposes the `initrd` file by using a virtual UEFI Simple File System).
+
+</Expandable>
+
+The kernel is now running. What does it do at boot time?
+
+When iPXE hands off control to the kernel, the system first runs architecture-specific assembly code to set up a basic environment. The goal is to unpack `vmlinux` using low-level code that we'll not cover. Once that environment is ready, it jumps to `start_kernel()` defined in file `init/main.c`. This is the most important file where all initialization functions happen before launching the first user-space `init` process.
+
+<Expandable title="Show me the steps done by the kernel at boot time" tag="👀 See the code">
+
+<Steps>
+
+1. **Early CPU and task setup**
+
+    Before diving into complex memory or scheduling, the kernel must set up the most fundamental structures for the processor it is currently running on. It secures the stack for the initial kernel task (process 0, the "swapper" or "idle" thread) and determines the CPU identity.
+
+    ```c title="linux/init/main.c"
+    // https://github.com/torvalds/linux/blob/v7.1/init/main.c
+    asmlinkage __visible void __init __no_sanitize_address start_kernel(void)
+    {
+        char *command_line;
+        char *after_dashes;
+
+        /* Secure the boot stack against overflows */
+        set_task_stack_end_magic(&init_task);
+
+        /* Identify the boot CPU */
+        smp_setup_processor_id();
+        
+        /* Early object debugging and cgroup init */
+        debug_objects_early_init();
+        cgroup_init_early();
+        
+        // ...
+    ```
+
+2. **Architecture initialization**
+
+    The kernel calls `setup_arch()`, which is heavily dependent on the specific architecture (x86, ARM, RISC-V, etc.). This function parses the bootloader command line, sets up the physical memory map (e.g., e820 on x86), and prepares early page tables.
+
+    ```c title="linux/init/main.c"
+    // https://github.com/torvalds/linux/blob/v7.1/init/main.c
+
+        // ...
+
+        /* 
+        * Architecture-specific setup. 
+        * This passes the boot command line back to be parsed.
+        */
+        setup_arch(&command_line);
+
+        /* Parse kernel command line arguments (e.g., "quiet splash init=/bin/systemd") */
+        parse_args("Booting kernel", command_line, __start___param,
+                __stop___param - __start___param,
+                -1, -1, NULL, &unknown_bootoption);
+    ```
+
+3. **Scheduler and memory management**
+
+    With the architecture understood, the kernel sets up its two most critical resource managers: the CPU scheduler and the memory management subsystem. `sched_init()` prepares the runqueues for tasks, and `mm_init()` transitions from the early, primitive boot memory allocator (memblock) to the fully-featured slab/slub allocators and buddy system.
+
+    ```c title="linux/init/main.c"
+    // https://github.com/torvalds/linux/blob/v7.1/init/main.c
+        // ...
+
+        /* Initialize the process scheduler */
+        sched_init();
+
+        /* 
+        * Bring up the full Memory Management system.
+        * This initializes page allocators, slab allocators, and vmalloc. 
+        */
+        mm_init();
+    ```
+
+4. **Interrupts, timers, and RCU**
+
+    Next, the kernel configures how it responds to external events and time passing. It sets up hardware interrupts, initializes the system timer, and brings up Read-Copy-Update (RCU), the kernel's primary lockless synchronization mechanism.
+
+    ```c title="linux/init/main.c"
+    // https://github.com/torvalds/linux/blob/v7.1/init/main.c
+
+        // ...
+
+        /* Early interrupt setup */
+        early_irq_init();
+        
+        /* Architecture-specific interrupt controller setup */
+        init_IRQ();
+
+        /* Initialize system clocks and timers */
+        tick_init();
+        init_timers();
+        hrtimers_init();
+        time_init();
+
+        /* Initialize RCU (Read-Copy-Update) synchronization */
+        rcu_init();
+    ```
+
+5. **Core subsystems and VFS**
+
+    Once CPU, memory, and time are stabilized, the kernel brings up the rest of its core infrastructure. This includes security modules, the Virtual File System (VFS) caches, and the signals API.
+
+    ```c title="linux/init/main.c"
+    // https://github.com/torvalds/linux/blob/v7.1/init/main.c
+
+        // ...
+
+        /* Initialize the Virtual File System (VFS) caches (inodes, dentries) */
+        vfs_caches_init();
+        
+        /* Initialize inter-process communication (signals, IPC) */
+        signals_init();
+        
+        /* Initialize the page writeback mechanism */
+        page_writeback_init();
+    ```
+
+6. **The final handoff** (`rest_init`)
+
+    At the very end of `start_kernel()`, the system is fully operational from a kernel perspective, but no user-space applications are running. The function concludes by calling `rest_init()`.
+
+    ```c title="linux/init/main.c"
+    // https://github.com/torvalds/linux/blob/v7.1/init/main.c
+
+        // ...
+
+        /* 
+        * The final step of start_kernel. 
+        * This function will never return.
+        */
+        rest_init();
+    }
+    ```
+
+    `rest_init()` does not unpack the `initramfs` itself. Instead, its primary job is to create the first kernel threads.
+
+    1. It calls `kernel_thread(kernel_init, ...)` to spawn PID `1`, which will execute the `kernel_init()` function.
+    2. It creates the `kthreadd` daemon on PID `2` (= manages all subsequent kernel threads)
+    3. It calls `cpu_idle()` to transform itself into the idle thread (letting above threads run) 
+
+7. `initramfs` loading (`kernel_init`)
+
+    Once the scheduler switches context to PID `1`, the `kernel_init()` thread takes over. This thread is directly responsible for handling the `initramfs` loaded in memory.
+
+    When `kernel_init()` starts, it triggers a series of registered initialization calls. One of these calls is `populate_rootfs()` which handles the decompression of available `initramfs` archives:
+
+    * A built-in `initramfs` that was compiled inside `vmlinux` directly. The variable `__initramfs_start` contains the address defined by the linker. 
+    * An optional external `initramfs` that has been loaded in memory by a boot loader (like iPXE in our case). The value for `initrd_start` is passed as boot parameters to the kernel.
+
+    Here is a simplified version of `populate_rootfs()`:
+
+    ```c title="linux/init/main.c"
+    // https://github.com/torvalds/linux/blob/v7.1/init/main.c
+    static int __init populate_rootfs(void)
+    {
+        /* __initramfs_start = built-in */
+        char *err = unpack_to_rootfs(__initramfs_start, __initramfs_size);
+        if (err)
+            panic("%s", err); /* Failed to decompress INTERNAL initramfs */
+
+        /* initrd_start = external */
+        if (initrd_start) {
+            printk(KERN_INFO "Trying to unpack rootfs image as initramfs...\n");
+            err = unpack_to_rootfs((char *)initrd_start, initrd_end - initrd_start);
+            if (err) {
+                printk(KERN_EMERG "Initramfs unpacking failed: %s\n", err);
+            }
+        }
+        
+        /* ... cleanup and free memory that held the compressed archive ... */
+        return 0;
+    }
+
+    /* This macro ensures populate_rootfs is registered in the initcall sequence */
+    rootfs_initcall(populate_rootfs);
+    ```
+
+    Once the `initramfs` is populated, the `kernel_init` thread proceeds to launch the first user space process. The code executes `/init` and never returned if successful:
+
+    ```c title="linux/init/main.c"
+    // https://github.com/torvalds/linux/blob/v7.1/init/main.c
+    static char *ramdisk_execute_command = "/init";
+
+    // ...
+
+    static int __ref kernel_init(void *unused)
+    {
+        int ret;
+
+        /* Setup and memory freeing routines */
+        kernel_init_freeable();
+
+        /* 
+        * 1. Try to execute the initramfs init script.
+        * ramdisk_execute_command is usually "/init" by default.
+        */
+        if (ramdisk_execute_command) {
+            ret = run_init_process(ramdisk_execute_command);
+            if (!ret)
+                return 0; /* Control successfully handed off to user space */
+            pr_err("Failed to execute %s (error %d)\n",
+                ramdisk_execute_command, ret);
+        }
+
+        /* 
+        * 2. Fallback mechanisms if the initramfs didn't provide /init 
+        * or execution failed. The kernel tries common standard paths 
+        * on the real root filesystem.
+        */
+        if (execute_command) {
+            ret = run_init_process(execute_command);
+            if (!ret)
+                return 0;
+            panic("Requested init %s failed (error %d).",
+                execute_command, ret);
+        }
+
+        if (!try_to_run_init_process("/sbin/init") ||
+            !try_to_run_init_process("/etc/init") ||
+            !try_to_run_init_process("/bin/init") ||
+            !try_to_run_init_process("/bin/sh"))
+            return 0;
+
+        /* 3. If all attempts fail, the kernel panics */
+        panic("No working init found.  Try passing init= option to kernel. "
+            "See Linux Documentation/admin-guide/init.rst for guidance.");
+    }
+    ```
+
+</Steps>
+
+</Expandable>
+
+The kernel completes by running the script `/init` present in `initramfs`. Before we continue, we still need to talk about a new file.
+
+<Admonition type="note" className="File" title="<code>squashfs</code> = The Root Filesystem">
+
+
+Imagine your server is not booting correctly on the operating system installed on its hard drive. How to debug? Using a `squashfs` file is a solution.
+
+```shell
+$ file ubuntu-server-minimal.squashfs
+ubuntu-server-minimal.squashfs: Squashfs filesystem,
+```
+
+A `squashfs` is a highly compressed, read-only file system. If you look inside an Ubuntu ISO, the `squashfs` file is usually the largest file there (often 2GB+). The `squashfs` contains the entire directory structure of the operating system (`/bin`, `/etc`, `/usr`, `/var`).
+
+A `squashfs` file is built using a tool called `mksquashfs`.
+
+1. The OS developers create a massive folder containing a fully working Linux installation (with the `/bin`, `/etc`, and `/usr` directories, desktop environments, etc.).
+2. They run `mksquashfs /path/to/folder filesystem.squashfs`.
+3. The tool heavily compresses the folder into a single, read-only block device image.
+
+Because a `squashfs` file is literally a filesystem, you can mount the file using a loop device:
+
+```shell
+$ sudo mkdir /mnt/squash
+$ sudo mount -t squashfs -o loop ubuntu-server-minimal.squashfs /mnt/squash
+```
+
+Instead of iPXE downloading the `squashfs` into memory, iPXE usually downloads the kernel and the `initramfs`. It then uses the kernel command line (`imgargs`) to pass a URL to the `squashfs` like this:
+
+```
+#!ipxe
+# 1. Load the kernel and initramfs
+kernel http://192.168.1.10/vmlinuz
+initrd http://192.168.1.10/initrd.img
+
+# 2. Append the command line arguments
+# 'fetch=' tells the initramfs where to go get the squashfs
+imgargs vmlinuz initrd=initrd.img boot=casper fetch=http://192.168.1.10/filesystem.squashfs
+
+# 3. Boot the system
+boot
+```
+
+</Admonition>
+
+
+When the kernel executes the file `/init` inside `initramfs` on a fresh server, the environment is completely empty as we still have nothing on the hard drive. This script (written in Bash) will load various kernel modules, mount the `squashfs` file and seamlessly transition to it so that it becomes the new `/` before calling `/sbin/bin`.
+
+<Expandable title="Show me how <code>/init</code> works" tag="👀 See the code">
+
+This script reads the command line, add kernel modules present in `initramfs`, configures the network, downloads the `squashfs` file, and mounts it:
+
+```bash
+#!/bin/sh
+# 1. Mount virtual filesystems
+mount -t proc proc /proc
+mount -t sysfs sys /sys
+mount -t devtmpfs devtmpfs /dev
+
+# 2. Parse kernel command line arguments (e.g., from GRUB)
+# This is how the script knows where to look for the squashfs
+read -r cmdline < /proc/cmdline
+for arg in $cmdline; do
+    case $arg in
+        fetch=*) SQUASHFS_URL=${arg#fetch=} ;;
+    esac
+done
+
+# 3. Bring up the network interface (e.g., using DHCP)
+ip link set eth0 up
+udhcpc -i eth0
+
+# 4. Load necessary kernel modules
+modprobe squashfs
+modprobe loop
+modprobe overlay
+
+# 5. Mount the physical boot medium (e.g., a Live USB)
+mkdir -p /mnt/boot_medium
+mount -t vfat /dev/sdb1 /mnt/boot_medium
+
+# 6. Mount the SquashFS image using a loop device
+mkdir -p /mnt/squashfs_root
+mount -t squashfs -o loop,ro /mnt/boot_medium/live/filesystem.squashfs /mnt/squashfs_root
+```
+
+Because `squashfs` is strictly read-only, it is combined with a temporary read-write filesystem in RAM using `overlayfs`. This makes the system act like it has a writable hard drive.
+
+```bash
+#!/bin/sh
+# 7. Create a temporary RAM disk for writable changes
+mkdir -p /mnt/cow_ramfs
+mount -t tmpfs tmpfs /mnt/cow_ramfs
+
+# Setup OverlayFS directories
+mkdir -p /mnt/cow_ramfs/upper
+mkdir -p /mnt/cow_ramfs/work
+mkdir -p /mnt/new_root
+
+# 8. Merge the read-only squashfs and the writable ramfs
+mount -t overlay overlay \
+    -o lowerdir=/mnt/squashfs_root,upperdir=/mnt/cow_ramfs/upper,workdir=/mnt/cow_ramfs/work \
+    /mnt/new_root
+```
+
+Now that the final root filesystem is assembled at `/mnt/new_root`, the script must seamlessly transition into it. It cannot just `chroot` because the `initramfs` would remain in memory, wasting RAM.
+
+Instead, it uses the `switch_root` utility.
+
+```bash
+#!/bin/sh
+# 8. Move the virtual filesystems over to the new root
+mount --move /sys /mnt/new_root/sys
+mount --move /proc /mnt/new_root/proc
+mount --move /dev /mnt/new_root/dev
+
+# 9. Execute switch_root to hand over control
+# Syntax: switch_root <new_root_dir> <real_init_binary>
+exec switch_root /mnt/new_root /sbin/init
+```
+
+The `switch_root` command performs important operations to finalize the boot:
+
+1. **Deletes** everything in the current `initramfs` (root `/`) to free up the RAM it was consuming.
+2. **Mounts** `/mnt/new_root` onto the physical `/` root directory of the namespace.
+3. **Executes** `/sbin/init`. This replaces the `switch_root` process (PID 1) with the real init system (PID 1).
+
+At this exact moment, the `initramfs` ceases to exist, and the Linux system is officially running entirely off the `squashfs`. Because `exec()` replaces the program in memory without changing the process ID, `/sbin/init` has now PID `1`.
+
+</Expandable>
+
+
+## Step 4: OS Initializing
+
+In modern Linux systems, `/sbin/init` is almost always a symlink to `/lib/systemd/systemd`.
+
+<GitHubCard name="systemd" owner="systemd" repository="systemd" language="C" creationDate={2010} license="LGPL-2.1">
+    In 2010, software engineers Lennart Poettering and Kay Sievers set out to solve a deeply ingrained frustration with Linux boot times and service management. The traditional SysV `init` system was notoriously slow, relying on a sequential execution of shell scripts that created massive bottlenecks during startup. Inspired by the elegant efficiency of Apple's `launchd`, they envisioned a modern, dependency-based replacement that could drastically speed up booting by aggressively parallelizing service startups through socket and D-Bus activation. Systemd is now used by nearly all major Linux distributions.
+</GitHubCard>
+
+Systemd starts by building a dependency graph to determine what needs to start, and in what order:
+
+1. **Finding the default target**: It looks for a specific unit file called `default.target` (located in `/etc/systemd/system/`). This is usually a symlink to either `multi-user.target` (command line) or `graphical.target` (GUI).
+2. **Pulling dependencies**: Systemd reads this target file and looks for directives like `Wants=` and `Requires=`. If `graphical.target` *wants* `display-manager.service`, Systemd adds the display manager to the queue.
+3. **Determining the order**: To know which processes can start in parallel and which must wait, it evaluates `After=` and `Before=` directives. If a web server has `After=network.target`, Systemd guarantees the network is up before launching the web server.
+4. **Starting the transaction**: It compiles all these units into a "transaction". If there are conflicting dependencies, the transaction fails and an emergency shell is displayed.
+
+For example, on a server running Ubuntu 26.04 Desktop:
+
+```shell
+$ ls -l /lib/systemd/system/default.target
+lrwxrwxrwx 1 root root 16 Aug  3 12:44 /lib/systemd/system/default.target -> graphical.target
+
+$ cat /lib/systemd/system/graphical.target
+[Unit]
+Description=Graphical Interface
+Documentation=man:systemd.special(7)
+Requires=multi-user.target
+Wants=display-manager.service
+Conflicts=rescue.service rescue.target
+After=multi-user.target rescue.service rescue.target display-manager.service
+AllowIsolate=yes
+```
+
+If your code is running as a Systemd unit, it means that you have created a service unit file like `myprogram.service` under `/etc/systemd/system/`. 
+
+```ini
+[Unit]
+Description=My Custom Program Service
+After=network.target 
+
+[Service]
+ExecStart=/usr/local/bin/myprogram
+Restart=on-failure
+User=ubuntu 
+
+[Install]
+WantedBy=multi-user.target
+```
+
+The unit must be enabled using `sudo systemctl enable myprogram.service` to start and `WantedBy` must be referenced in the dependency graph built by Systemd. In this case, we declared `multi-user.target`, which is present in `After` in the default `graphical.target`. 
+
+If your code is running as a container on Kubernetes, other units like `kubelet.service` and `containerd.service` have been configured. Kubernetes will start and ensure your container is up and running.
+
+
+<Expandable title="Show me how Systemd starts" tag="👀 See the code">
+
+The file that interests us is the [file `src/core/main.c`](https://github.com/systemd/systemd/blob/main/src/core/main.c). It's a long file but if we ignore advanced features like container support and security, the logic is easy to follow. Here are the main phases of the `main()` function:
+
+<Steps>
+
+1. **Early API setup**
+
+    Before Systemd can manage processes, it needs the standard filesystems (`/proc`, `/sys`, `/dev`, etc.). If they aren't mounted by the `initramfs`, Systemd does it immediately.
+
+    ```c title="systemd/src/core/main.c"
+    // https://github.com/systemd/systemd/blob/main/src/core/main.c
+    // Mount essential API file systems early on
+    r = mount_setup_early();
+    if (r < 0) {
+            log_emergency_errno(r, "Failed to mount early API filesystems: %m");
+            goto finish;
+    }
+    ```
+
+    The function `mount_setup_early` simply iterates over a static list and call the function `mount` defined by the C standard library (`<sys/mount.h>` in `glibc`) used to call the `mount` system call. 
+
+2. **Creating the manager**
+
+    The `Manager` is the central data structure in Systemd. It parses the unit files, holds the state of all running services, and handles the job queue.
+
+    ```c title="systemd/src/core/main.c"
+    // https://github.com/systemd/systemd/blob/main/src/core/main.c
+    // Allocate and initialize the core Manager object
+    Manager *m = NULL;
+    r = manager_new(UNIT_FILE_SYSTEM, arg_action == ACTION_TEST ? MANAGER_TEST_RUN_BASIC : 0, &m);
+    if (r < 0) {
+            log_emergency_errno(r, "Failed to allocate manager object: %m");
+            goto finish;
+    }
+    ```
+
+3. **Defining the boot target**
+
+    Systemd figures out what it is actually supposed to boot into. If you didn't pass a specific target to the kernel command line (like `systemd.unit=rescue.target`), it defaults to `default.target`.
+
+    ```c title="systemd/src/core/main.c"
+    // https://github.com/systemd/systemd/blob/main/src/core/main.c
+    // SPECIAL_DEFAULT_TARGET is defined as "default.target"
+    const char *target = arg_default_unit ?: SPECIAL_DEFAULT_TARGET;
+    ```
+
+4. **Enqueuing the boot job**
+
+    This is where the dependency graph gets executed. Systemd takes the target identified in the previous step and asks the Manager to create a "job" for it. Because of the `Wants=` and `Requires=` dependencies, asking Systemd to start this single target creates a domino effect that pulls in all your system services.
+
+    ```c title="systemd/src/core/main.c"
+    // https://github.com/systemd/systemd/blob/main/src/core/main.c
+    // Load the target unit
+    Unit *target_unit;
+    r = manager_load_startable_unit_or_warn(m, target, NULL, &target_unit);
+
+    // Add the target unit to the job queue (JOB_START)
+    Job *default_job;
+    r = manager_add_job(m, JOB_START, target_unit, JOB_REPLACE, NULL, &error, &default_job);
+    if (r < 0) {
+            log_emergency_errno(r, "Failed to start default target: %s", bus_error_message(&error, r));
+            goto finish;
+    }
+    ```
+
+5. **The main event loop**
+
+    Once the initial jobs are queued, PID `1` enters an infinite loop. Inside this loop, Systemd executes the queued jobs (starting your services), listens for state changes, reaps zombie processes (a strict requirement for PID `1`), and waits for some events to start delayed processes.
+
+    ```c title="systemd/src/core/main.c"
+    // https://github.com/systemd/systemd/blob/main/src/core/main.c
+    // Sit in the main loop forever (or until shutdown/reboot is requested)
+    r = manager_loop(m);
+    if (r < 0) {
+            log_emergency_errno(r, "Failed to run main loop: %m");
+            goto finish;
+    }
+    ```
+
+</Steps>
+
+</Expandable>
+
+**That's it!** We have covered all the steps between a server being powered on in a datacenter until your code finally get executed. 

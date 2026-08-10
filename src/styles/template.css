@@ -1084,7 +1084,7 @@ footer img.footer-me {
   /* --screen-small-max */
   #page-post article {
     max-width: 800px;
-    font-size: 1em;
+    font-size: 0.9em;
     line-height: 1.5em;
   }
 }
@@ -1094,7 +1094,7 @@ footer img.footer-me {
   /* --screen-medium-min */
   #page-post article {
     max-width: 800px;
-    font-size: 1.15em;
+    font-size: 1em;
     line-height: 1.6em;
   }
 }
@@ -1104,7 +1104,7 @@ footer img.footer-me {
   /* --screen-large-min */
   #page-post article {
     max-width: 800px;
-    font-size: 1.25em;
+    font-size: 1.1em;
     line-height: 1.7em;
   }
 }
@@ -1934,5 +1934,116 @@ mark {
     border-width: 10px;
     border-style: solid;
     border-color: transparent transparent var(--color-base) transparent;
+  }
+}
+
+.Expandable {
+  margin-top: 2rem;
+  position: relative;
+  
+  .ExpandableTag {
+    float: right;
+    padding: 0.25em 1em;
+    border-radius: 50vh;
+    background-color: black;
+    color: white;
+    font-size: 0.7em;
+  }
+
+  details {
+    border: 1px solid black;
+    padding: 1rem;
+  
+    summary {
+      display: list-item;
+    }
+  }
+}
+
+
+/* Reset default list styles and initialize the counter */
+.Steps > ol {
+  list-style-type: none; /* Hide default numbers */
+  counter-reset: custom-counter; /* Create a counter named 'custom-counter' */
+  padding: 0;
+  margin: 30px;
+
+  /* Style the list items and the dotted left border */
+  > li {
+    counter-increment: custom-counter; /* Increment counter for each li */
+    position: relative;
+    
+    /* Spacing */
+    padding-left: 45px; /* Push text to the right so it doesn't overlap the circle */
+    padding-bottom: 30px; /* Vertical space between list items */
+    margin-left: 15px; /* Shift the entire list slightly to the right */
+    
+    /* The Dotted Border */
+    border-left: 2px dotted #a0aec0; 
+
+    /* Create and position the circled numbers */
+    &::before {
+      content: counter(custom-counter);
+      position: absolute;
+      
+      /* Align the circle horizontally so its center rests exactly on the 2px border */
+      left: -16px; 
+      top: -2px; /* Slight adjustment to align vertically with the first line of text */
+      
+      /* Circle dimensions */
+      width: 30px;
+      height: 30px;
+      background-color: black;
+      color: white;
+      border-radius: 50%; /* Turns the square into a circle */
+      
+      /* Flexbox is the easiest way to perfectly center the number inside the circle */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 14px;
+    }
+  }
+}
+
+.GithubCard {
+  border: 1px solid black;
+  margin: 1rem;
+  padding: 1rem 1rem;
+
+  h3 {
+    margin-top: 0;
+  }
+  h3 span {
+    font-weight: bold;
+  }
+  h3 a {
+    float: right;
+    font-size: 0.8rem;
+    text-transform: none;
+    font-family: monospace;
+  }
+  h3 ul {
+    list-style-type: none;
+    font-size: 0.6em;
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+    margin: 0;
+    padding: 0;
+
+    li {
+      background-color: black;
+      color: white;
+      padding: 0.5em;
+    }
+    code {
+      font-family: monospace;
+    }
+  }
+
+  > div {
+    margin: 1em; 
   }
 }
