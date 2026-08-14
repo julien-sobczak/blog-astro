@@ -40,8 +40,9 @@ const readCollection = defineCollection({
     bookCover: z.string(),
     bookAuthors: z.string(),
     bookIsbn: z.string().optional(), // Ex: ISBN is optional on LeanPub
-
+    
     // Reviewing
+    headline: z.string(),
     note: z.number(),
     stars: z.number(),
   })
