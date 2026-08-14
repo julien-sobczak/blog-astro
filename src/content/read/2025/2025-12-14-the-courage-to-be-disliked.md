@@ -1,6 +1,6 @@
 ---
 slug: 2025/12/14/the-courage-to-be-disliked
-title: "Book Review: The Courage To Be Disliked: A single book can change your life"
+title: "Book Review: The Courage To Be Disliked: The life changing multi-million copy global bestseller"
 shortTitle: "The Courage To Be Disliked"
 author: Julien Sobczak
 date: 2025-12-14
