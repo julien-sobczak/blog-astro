@@ -197,20 +197,20 @@ The main goal of this phase is to wake up the physical RAM.
     IN EFI_PEI_SERVICES  **PeiServices
     )
     {
-    UINT64 MemoryBase;
-    UINT64 MemorySize;
+      UINT64 MemoryBase;
+      UINT64 MemorySize;
 
-    // 1. Hardware-specific code to ping RAM sticks and configure the memory controller
-    ConfigureMemoryController(&MemoryBase, &MemorySize);
+      // 1. Hardware-specific code to ping RAM sticks and configure the memory controller
+      ConfigureMemoryController(&MemoryBase, &MemorySize);
 
-    // 2. Register the newly initialized physical RAM with the PEI Core
-    EFI_STATUS Status = (*PeiServices)->PeiInstallPeiMemory (
+      // 2. Register the newly initialized physical RAM with the PEI Core
+      EFI_STATUS Status = (*PeiServices)->PeiInstallPeiMemory (
                                             PeiServices,
                                             MemoryBase,
                                             MemorySize
-                                        );
+      );
 
-    return Status;
+      return Status;
     }
     ```
 
@@ -227,21 +227,21 @@ The main goal of this phase is to wake up the physical RAM.
     IN PEI_CORE_INSTANCE  *PrivateData
     )
     {
-    // 1. Allocate a new stack and heap in the permanent physical RAM
-    PhysicalStackBase = AllocatePermanentStack(PrivateData);
-    PhysicalHeapBase  = AllocatePermanentHeap(PrivateData);
+      // 1. Allocate a new stack and heap in the permanent physical RAM
+      PhysicalStackBase = AllocatePermanentStack(PrivateData);
+      PhysicalHeapBase  = AllocatePermanentHeap(PrivateData);
 
-    // 2. Copy all existing data from the CPU Cache into physical RAM
-    CopyMem (PhysicalHeapBase, TemporaryCacheHeap, HeapSize);
-    CopyMem (PhysicalStackBase, TemporaryCacheStack, StackSize);
+      // 2. Copy all existing data from the CPU Cache into physical RAM
+      CopyMem (PhysicalHeapBase, TemporaryCacheHeap, HeapSize);
+      CopyMem (PhysicalStackBase, TemporaryCacheStack, StackSize);
 
-    // 3. Perform an architecture-specific Assembly jump to switch the CPU's
-    // stack pointer (RSP register) to point to the new physical RAM address.
-    // Execution continues seamlessly, but now strictly from real RAM.
-    SwitchStack (
+      // 3. Perform an architecture-specific Assembly jump to switch the CPU's
+      // stack pointer (RSP register) to point to the new physical RAM address.
+      // Execution continues seamlessly, but now strictly from real RAM.
+      SwitchStack (
         (SWITCH_STACK_ENTRY_POINT) PeiCoreAfterMemoryMigration,
         PhysicalStackBase
-        );
+      );
     }
     ```
 

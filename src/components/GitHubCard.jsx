@@ -10,7 +10,7 @@ export default function GitHubCard({
   return (
     <div className="GithubCard">
       <h3>
-        <span><i class="devicon-github-original"></i> {name} <a href={`https://www.github.com/${owner}/${repository}`}>{`https://www.github.com/${owner}/${repository}`}</a></span>
+        <span><i className="devicon-github-original"></i> {name} <a href={`https://www.github.com/${owner}/${repository}`}>{`https://www.github.com/${owner}/${repository}`}</a></span>
         <ul>
           <li><span className="manuscript">written in</span> <i class={`devicon-${language.toLowerCase()}-plain`}></i></li>
           {license && <li><span className="manuscript">license</span> {license}</li>}
@@ -21,7 +21,7 @@ export default function GitHubCard({
       <div>
         {children}
       </div>
-        
+
     </div>
   );
 }
